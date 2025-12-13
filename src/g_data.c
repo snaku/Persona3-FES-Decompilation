@@ -43,7 +43,7 @@ static const u8* nameTable[] =
 };
 
 static const u16 numOfDaysInMonths[12] =
-{  /*J   F   M   A   M   J   J   A   S   O   N   D*/
+{ /*JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC*/
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
@@ -81,19 +81,32 @@ void FUN_0016f3e0(u32 idx, u32 value)
     gIUnkArr[idx] = value;
 }
 
+// FUN_00521408
+void* P3FES_Memset(void* dst, u8 value, u32 size)
+{
+    // TODO
+    
+    for (u32 i = 0; i < size; i++)
+    {
+        ((u8*)dst)[i] = value;
+    }
+
+    return dst;
+}
+
 // FUN_0016cdf0
 void FUN_0016cdf0(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        // FUN_00521408(&gPlayerData, 0, 60); memset ?
+        P3FES_Memset(&gPlayerData, 0, 60);
         gPlayerData.character.battleStatus.aiTactic = AI_TACTIC_ACT_FREELY;
         gPlayerData.character.id = CHARACTER_HERO;
         gPlayerData.character.sUnk1 = 1;
     }
     else 
     {
-        // FUN_00521408(characters[characterId], 0, 60);
+        P3FES_Memset(characters[characterId], 0, 60);
         characters[characterId]->character.id = characterId;
         characters[characterId]->character.battleStatus.aiTactic = AI_TACTIC_ACT_FREELY;
         characters[characterId]->character.sUnk1 = 1;
