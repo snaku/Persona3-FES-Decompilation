@@ -51,7 +51,7 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
         P3FES_ASSERT("datPersona.c", 848);
     }*/
 
-    if (!(gPlayerData.personas[heroPersonaIdx].sUnk1 & 1))
+    if (!(gPlayerData.personas[heroPersonaIdx].flags & 1))
     {
         persona = NULL;
     }
@@ -61,4 +61,25 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
     }
     
     return persona;
+}
+
+// FUN_00176990
+s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId)
+{
+    s32 skillIdx = 0;
+
+    if (persona == NULL || skillId == 0)
+    {
+        P3FES_ASSERT("datPersona.c", 1588);
+    }
+
+    while (true)
+    {
+        if (skillIdx > 7) return -1; // max idx is 7
+        if (persona->skills[skillIdx] == skillId) break;
+
+        skillIdx++;
+    }
+
+    return skillIdx;
 }
