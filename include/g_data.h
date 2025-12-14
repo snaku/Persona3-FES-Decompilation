@@ -190,16 +190,17 @@ typedef struct
     u8 luck;
 } PersonaStats;
 
-// 33 bytes
+// 52 bytes, not sure of the real size
 typedef struct
 {
-    u16 sUnk1;
+    u16 flags;
     u16 id;
     u8 level;
     u8 unkData[0x03];
     u32 nextExp;      // For characters other than HERO, their exp is linked to their persona
     u16 skills[8];
     PersonaStats stats;
+    u8 unkData[0x13];
 } PersonaData; // For reference: Yukari = 008340ec
 
 // 20 bytes (4 unk bytes are missing, will do it later)
@@ -211,7 +212,7 @@ typedef struct
     u16 firstStat;
     u16 secondStat;
     u16 sUnk2;
-} EquipementData; 
+} EquipementData; // seems like the hero doesn't use this struct but a different one
 
 // start: 0x0836224. 
 typedef struct
@@ -226,6 +227,8 @@ typedef struct
              u8 unkData[0x982];
              u16 equippedPersona;      // 0 to 11
              PersonaData personas[12]; // start: 00836ba8
+             u8 unkData2[0x2AA];
+             PersonaData compendium[188]; // 00836E52. Probably not in this struct. Not sure of the size
     // TODO: The rest of the struct
 } PlayerData;
 
@@ -294,6 +297,7 @@ u16 Character_GetPhysicalCondition(u16 characterId);
 u16 Player_GetActiveSocialLink();
 u8 Player_GetSocialLinkLevel(u16 socialLink);
 
+PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx);
 u8 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day);
 
 const u8* gData_getCourageLevelString(u16 idx);
