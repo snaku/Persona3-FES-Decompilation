@@ -85,7 +85,7 @@ void FUN_0016f3e0(u32 idx, u32 value)
 void* P3FES_Memset(void* dst, u8 value, u32 size)
 {
     // TODO
-    
+
     for (u32 i = 0; i < size; i++)
     {
         ((u8*)dst)[i] = value;
@@ -656,6 +656,28 @@ void FUN_0016e670(u16 socialLink)
     {
         
     }
+}
+
+// FUN_0017c8c0
+PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
+{
+    PersonaData* compendium;
+
+    if (idx < 0 || idx > 255)
+    {
+        P3FES_ASSERT("g_data.c", 6177);
+    }
+
+    if (!(gPlayerData.compendium[idx].flags & 1))
+    {
+        compendium = NULL;
+    }
+    else 
+    {
+        compendium = &gPlayerData.compendium[idx];
+    }
+
+    return compendium;
 }
 
 // FUN_0017d8b0
