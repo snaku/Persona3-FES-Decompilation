@@ -135,3 +135,23 @@ s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId)
 
     return -1;
 }
+
+// FUN_00176a30
+u32 Persona_CountValidSkills(PersonaData* persona)
+{
+    u32 skillIdx;
+    u32 validSkills = 0;
+    
+    if (persona == NULL)
+    {
+        P3FES_ASSERT("datPersona.c", 1601);
+    }
+
+    for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
+    {
+        if (persona->skills[skillIdx] != PERSONA_SKILL_SLASH_ATTACK)
+            validSkills++;
+    }
+
+    return validSkills;
+}
