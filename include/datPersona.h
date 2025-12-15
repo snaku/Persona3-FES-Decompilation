@@ -56,6 +56,6 @@ void Persona_AddExp(PersonaData* persona, u32 exp);
 u8 Persona_SetSkill(PersonaData* persona, u16 skillId);
 u8 Persona_ResetSkill(PersonaData* persona, u16 skillId);
 s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId);
-u32 Persona_CountValidSkills(PersonaData* persona)
+u32 Persona_CountValidSkills(PersonaData* persona);
 
 #endif
