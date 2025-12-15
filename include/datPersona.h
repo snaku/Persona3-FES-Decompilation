@@ -45,6 +45,15 @@ typedef enum
     PERSONA_SKILL_THUNDER_REIGN,
 } PersonaSkills;
 
+typedef enum
+{
+    PERSONA_STAT_STRENGTH,
+    PERSONA_STAT_MAGIC,
+    PERSONA_STAT_ENDURANCE,
+    PERSONA_STAT_AGILITY,
+    PERSONA_STAT_LUCK
+} PersonaStats;
+
 u8 Persona_GetPersonaLevel(PersonaData* persona);
 u32 Persona_GetPersonaNextExp(PersonaData* persona);
 

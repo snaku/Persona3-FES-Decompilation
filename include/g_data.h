@@ -214,16 +214,6 @@ typedef struct
     BattleStatus battleStatus;
 } CharacterHeader; 
 
-// 5 bytes
-typedef struct
-{
-    u8 strength;
-    u8 magic;
-    u8 endurance;
-    u8 agility;
-    u8 luck;
-} PersonaStats;
-
 // 52 bytes, not sure of the real size
 typedef struct
 {
@@ -232,8 +222,8 @@ typedef struct
     u8 level;
     u8 unkData1[0x03];
     u32 nextExp;      // For characters other than HERO, their exp is linked to their persona
-    u16 skills[8];
-    PersonaStats stats;
+    u16 skills[8];    // See enum PersonaSkills
+    u8 stats[5];      // See enum PersonaStats
     u8 unkData2[0x13];
 } PersonaData; // For reference: Yukari = 008340ec
 
