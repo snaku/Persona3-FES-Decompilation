@@ -63,23 +63,75 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
     return persona;
 }
 
+void Persona_AddExp(PersonaData* persona, u32 exp)
+{
+    if (exp < 0)
+    {
+        P3FES_ASSERT("datPersona.c", 1458);
+    }
+
+    persona->nextExp += exp;
+}
+
+// FUN_00176840
+u8 Persona_SetSkill(PersonaData* persona, u16 skillId)
+{
+    u32 skillIdx;
+
+    if (persona == NULL || skillId == PERSONA_SKILL_SLASH_ATTACK)
+    {
+        P3FES_ASSERT("datPersona.c", 1546);
+    }
+
+    for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona); skillIdx++)
+    {
+        if (persona->skills[skillIdx] == PERSONA_SKILL_SLASH_ATTACK)
+        {
+            persona->skills[skillIdx] = skillId;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// FUN_001768e0
+u8 Persona_ResetSkill(PersonaData* persona, u16 skillId)
+{
+    u32 skillIdx;
+
+    if (persona == NULL || skillId == PERSONA_SKILL_SLASH_ATTACK)
+    {
+        P3FES_ASSERT("datPersona.c", 1560);
+    }
+
+    for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
+    {
+        if (persona->skills[skillIdx] == skillId)
+        {
+            persona->skills[skillIdx] = PERSONA_SKILL_SLASH_ATTACK;
+            // FUN_00176510(persona); TODO
+            return true;
+        }
+    }
+    return false;
+}
+
 // FUN_00176990
 s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId)
 {
     s32 skillIdx = 0;
 
-    if (persona == NULL || skillId == 0)
+    if (persona == NULL || skillId == PERSONA_SKILL_SLASH_ATTACK)
     {
         P3FES_ASSERT("datPersona.c", 1588);
     }
 
-    while (true)
+    for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
-        if (skillIdx > 7) return -1; // max idx is 7
-        if (persona->skills[skillIdx] == skillId) break;
-
-        skillIdx++;
+        if (persona->skills[skillIdx] == skillId)
+            return skillIdx;
     }
 
-    return skillIdx;
+    return -1;
 }

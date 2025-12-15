@@ -3,10 +3,58 @@
 
 #include "g_data.h"
 
+// Found in BATTLE/MSG.TBL
+typedef enum
+{
+    PERSONA_SKILL_SLASH_ATTACK,
+    PERSONA_SKILL_AGI,
+    PERSONA_SKILL_AGILAO,
+    PERSONA_SKILL_AGIDYNE,
+    PERSONA_SKILL_MARAGI,
+    PERSONA_SKILL_MARAGION,
+    PERSONA_SKILL_MARAGIDYNE,
+    PERSONA_SKILL_MARALAGIDYNE,
+    PERSONA_SKILL_008,
+    PERSONA_SKILL_RAGNAROK,
+    PERSONA_SKILL_GARU,
+    PERSONA_SKILL_GARULA,
+    PERSONA_SKILL_GARUDYNE,
+    PERSONA_SKILL_MAGARU,
+    PERSONA_SKILL_MAGARULA,
+    PERSONA_SKILL_MAGARUDYNE,
+    PERSONA_SKILL_010,
+    PERSONA_SKILL_011,
+    PERSONA_SKILL_PANTA_RHEI,
+    PERSONA_SKILL_BUFU,
+    PERSONA_SKILL_BUFULA,
+    PERSONA_SKILL_BUFUDYNE,
+    PERSONA_SKILL_MABUFU,
+    PERSONA_SKILL_MABUFULA,
+    PERSONA_SKILL_MABUFUDYNE,
+    PERSONA_SKILL_019,
+    PERSONA_SKILL_01A,
+    PERSONA_SKILL_NIFLHEIM,
+    PERSONA_SKILL_ZIO,
+    PERSONA_SKILL_ZIONGA,
+    PERSONA_SKILL_ZIODYNE,
+    PERSONA_SKILL_MAZIO,
+    PERSONA_SKILL_MAZIONGA,
+    PERSONA_SKILL_MAZIODYNE,
+    PERSONA_SKILL_022,
+    PERSONA_SKILL_023,
+    PERSONA_SKILL_THUNDER_REIGN,
+} PersonaSkills;
+
 u8 Persona_GetPersonaLevel(PersonaData* persona);
 u32 Persona_GetPersonaNextExp(PersonaData* persona);
+
 PersonaData* Persona_GetPersonaByCharacterId(u16 characterId);
 PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx);
+
+void Persona_AddExp(PersonaData* persona, u32 exp);
+
+u8 Persona_SetSkill(PersonaData* persona, u16 skillId);
+u8 Persona_ResetSkill(PersonaData* persona, u16 skillId);
 s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId);
 
 #endif
