@@ -50,6 +50,40 @@ typedef enum
 
 typedef enum
 {
+    ARCANA_00,
+    ARCANA_FOOL,
+    ARCANA_MAGICIAN,
+    ARCANA_PRIESTESS,
+    ARCANA_EMPRESS,
+    ARCANA_EMPEROR,
+    ARCANA_HIERORPHTANT,
+    ARCANA_LOVERS,
+    ARCANA_CHARIOT,
+    ARCANA_JUSTICE,
+    ARCANA_HERMIT,
+    ARCANA_FORTUNE,
+    ARCANA_STRENGTH,
+    ARCANA_HANGED_MAN,
+    ARCANA_DEATH,
+    ARCANA_TOWER,
+    ARCANA_STAR,
+    ARCANA_MOON,
+    ARCANA_SUN,
+    ARCANA_JUDGMENT,
+    ARCANA_AEON,
+    ARCANA_17,
+    ARCANA_18,
+    ARCANA_19,
+    ARCANA_1A,
+    ARCANA_1B,
+    ARCANA_1C,
+    ARCANA_1D,
+    ARCANA_1E,
+    ARCANA_1F,
+} Arcanas;
+
+typedef enum
+{
     SOCIAL_LINK_SEES,
     SOCIAL_LINK_KENJI,
     SOCIAL_LINK_HIDETOSHI = 4,
@@ -196,11 +230,11 @@ typedef struct
     u16 flags;
     u16 id;
     u8 level;
-    u8 unkData[0x03];
+    u8 unkData1[0x03];
     u32 nextExp;      // For characters other than HERO, their exp is linked to their persona
     u16 skills[8];
     PersonaStats stats;
-    u8 unkData[0x13];
+    u8 unkData2[0x13];
 } PersonaData; // For reference: Yukari = 008340ec
 
 // 20 bytes (4 unk bytes are missing, will do it later)
@@ -296,8 +330,8 @@ u16 Character_GetPhysicalCondition(u16 characterId);
 
 u16 Player_GetActiveSocialLink();
 u8 Player_GetSocialLinkLevel(u16 socialLink);
-
 PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx);
+
 u8 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day);
 
 const u8* gData_getCourageLevelString(u16 idx);
