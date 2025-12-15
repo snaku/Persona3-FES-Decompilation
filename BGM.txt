@@ -1,0 +1,52 @@
+//**BGM.CVM**\\
+
+01.ADX = Tartarus THEBEL. 1min57
+
+02.ADX = Nothing. 10sec
+03.ADX = Nothing. 10sec
+04.ADX = Nothing. 10sec
+05.ADX = Nothing. 10sec
+06.ADX = Nothing. 10sec
+07.ADX = Nothing. 10sec
+08.ADX = Nothing. 10sec
+09.ADX = Nothing. 10sec
+10.ADX = Nothing. 10sec
+11.ADX = Nothing. 10sec
+12.ADX = Nothing. 10sec
+13.ADX = Nothing. 10sec
+14.ADX = Nothing. 10sec
+15.ADX = Nothing. 10sec
+16.ADX = Nothing. 10sec
+17.ADX = Nothing. 10sec
+18.ADX = Nothing. 10sec
+41.ADX = Nothing. 10sec
+42.ADX = Nothing. 10sec
+
+19.ADX = ?.  2min35
+20.ADX = Deep Breath Deep Breath. 2min11
+22.ADX = A Deep Mentality. 3min
+25.ADX = When the Moon's Reaching Out Stars. 2min30
+26.ADX = Mass Destruction. 2min59
+27.ADX = Master of Shadow. 2min20
+28.ADX = Unavoidable Battle. 2min39
+29.ADX = Burn My Dread -Last Battle-. 3min26
+30.ADX = Battle Hymn of the Soul. 5min43
+31.ADX = Master of Tartarus. 3min43
+32.ADX = Kyoto. 2min21
+35.ADX = Troubled. 2min26
+36.ADX = That Which Escaped the Darkness. 2min
+37.ADX = Living With Determination. 3min16
+38.ADX = Joy. 2min47
+39.ADX = Fearful Experience. 2min03
+40.ADX = Calamity. 1min47
+43.ADX = Joy. 2min47
+50.ADX = Want To Be Close. 2min41
+51.ADX = Changing Seasons. 3min06
+52.ADX = Memories of the School. 3min59
+71.ADX = Tartarus 1st Floor. 1min17
+77.ADX = Living With Determination. 3min01
+78.ADX = After the Battle. 1min38
+80.ADX = Memories of the City. 5min04
+115.ADX = Title Screen. 3min31
+
+THEME.ADX = Burn My Dread Instrumental (UNUSED)
