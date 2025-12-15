@@ -73,6 +73,40 @@ void Persona_AddExp(PersonaData* persona, u32 exp)
     persona->nextExp += exp;
 }
 
+// FUN_00176510
+void Persona_MoveValidSkillsOnTop(PersonaData* persona)
+{
+    u32 skillIdx;
+    u32 j = 0;
+
+    if (persona == NULL)
+    {
+        P3FES_ASSERT("datPersona.c", 1478);
+    }
+
+    for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
+    {
+        if (persona->skills[skillIdx] == PERSONA_SKILL_SLASH_ATTACK)
+        {
+            j = skillIdx + 1;
+
+            while (j < ARRAY_SIZE(persona->skills) &&
+                  (persona->skills[j] == PERSONA_SKILL_SLASH_ATTACK))
+            {
+                j++;
+            }
+
+            if (j == ARRAY_SIZE(persona->skills)) return;
+        }
+
+        if (skillIdx != j)
+        {
+            persona->skills[skillIdx] = persona->skills[j];
+            persona->skills[j] = PERSONA_SKILL_SLASH_ATTACK;
+        }
+    }
+}
+
 // FUN_00176840
 u8 Persona_SetSkill(PersonaData* persona, u16 skillId)
 {
@@ -110,7 +144,7 @@ u8 Persona_ResetSkill(PersonaData* persona, u16 skillId)
         if (persona->skills[skillIdx] == skillId)
         {
             persona->skills[skillIdx] = PERSONA_SKILL_SLASH_ATTACK;
-            // FUN_00176510(persona); TODO
+            Persona_MoveValidSkillsOnTop(persona);
             return true;
         }
     }

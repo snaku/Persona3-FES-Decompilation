@@ -62,6 +62,7 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx);
 
 void Persona_AddExp(PersonaData* persona, u32 exp);
 
+void Persona_MoveValidSkillsOnTop(PersonaData* persona);
 u8 Persona_SetSkill(PersonaData* persona, u16 skillId);
 u8 Persona_ResetSkill(PersonaData* persona, u16 skillId);
 s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId);
