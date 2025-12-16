@@ -77,7 +77,7 @@ void Persona_AddExp(PersonaData* persona, u32 exp)
 void Persona_MoveValidSkillsOnTop(PersonaData* persona)
 {
     u32 skillIdx;
-    u32 j = 0;
+    u32 nextSkillIdx = 0;
 
     if (persona == NULL)
     {
@@ -88,21 +88,21 @@ void Persona_MoveValidSkillsOnTop(PersonaData* persona)
     {
         if (persona->skills[skillIdx] == PERSONA_SKILL_SLASH_ATTACK)
         {
-            j = skillIdx + 1;
+            nextSkillIdx = skillIdx + 1;
 
-            while (j < ARRAY_SIZE(persona->skills) &&
-                  (persona->skills[j] == PERSONA_SKILL_SLASH_ATTACK))
+            while (nextSkillIdx < ARRAY_SIZE(persona->skills) &&
+                  (persona->skills[nextSkillIdx] == PERSONA_SKILL_SLASH_ATTACK))
             {
-                j++;
+                nextSkillIdx++;
             }
 
-            if (j == ARRAY_SIZE(persona->skills)) return;
+            if (nextSkillIdx == ARRAY_SIZE(persona->skills)) return;
         }
 
-        if (skillIdx != j)
+        if (skillIdx != nextSkillIdx)
         {
-            persona->skills[skillIdx] = persona->skills[j];
-            persona->skills[j] = PERSONA_SKILL_SLASH_ATTACK;
+            persona->skills[skillIdx] = persona->skills[nextSkillIdx];
+            persona->skills[nextSkillIdx] = PERSONA_SKILL_SLASH_ATTACK;
         }
     }
 }
