@@ -3,6 +3,9 @@
 
 #include "g_data.h"
 
+#define PERSONA_FLAG_VALID      (1 << 0) // not sure of this name
+#define PERSONA_FLAG_HEART_ITEM (1 << 4)
+
 // Found in BATTLE/MSG.TBL
 typedef enum
 {
@@ -61,8 +64,11 @@ u16* Persona_GetSkills(PersonaData* persona);
 u16* Persona_GetSkillsByCharacterId(u16 characterId);
 u8 Persona_GetStat2(PersonaData* persona, u16 statId);
 u8 Persona_GetStat3(PersonaData* persona, u16 statId);
+u16 Persona_AddToStat(PersonaData* persona, u16 statId, s8 amount);
+u16 Persona_AddToStatHeroPersonaIdx(u16 heroPersonaIdx, u16 statId, s8 amount);
 
 PersonaData* Persona_GetPersonaByCharacterId(u16 characterId);
+u8 Persona_IsHeroPersonaValid(u16 heroPersonaIdx);
 PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx);
 
 void Persona_AddExp(PersonaData* persona, u32 exp);

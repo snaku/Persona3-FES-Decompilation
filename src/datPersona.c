@@ -56,6 +56,48 @@ u8 Persona_GetStat3(PersonaData* persona, u16 statId)
     return persona->stats3[statId];
 }
 
+// FUN_00174650
+u16 Persona_AddToStat(PersonaData* persona, u16 statId, s8 amount)
+{
+    u8 statTotal;
+
+    if (statId > PERSONA_STAT_LUCK)
+    {
+        P3FES_ASSERT("datPersona.c", 722);
+    }
+    
+    statTotal = persona->stats[statId] + amount;
+    if (statTotal < 100)
+    {
+        if (statTotal < 0)
+        {
+            statTotal = 0;
+        }
+    }
+    else 
+    {
+        statTotal = 99;
+    }
+
+    persona->stats[statId] = statTotal;
+
+    return statTotal;
+}
+
+// FUN_00174710
+u16 Persona_AddToStatHeroPersonaIdx(u16 heroPersonaIdx, u16 statId, s8 amount)
+{
+    u8 statTotal;
+    PersonaData* heroPersona = Persona_GetHeroPersona(heroPersonaIdx);
+
+    if (heroPersona == NULL)
+    {
+        P3FES_ASSERT("datPersona.c", 747);
+    }
+
+    return Persona_AddToStat(heroPersona, statId, amount); // was inlined
+}
+
 // FUN_00174800
 PersonaData* Persona_GetPersonaByCharacterId(u16 characterId)
 {
@@ -83,6 +125,12 @@ PersonaData* Persona_GetPersonaByCharacterId(u16 characterId)
     return persona;
 }
 
+// FUN_00174960
+u8 Persona_IsHeroPersonaValid(u16 heroPersonaIdx)
+{
+    return (gPlayerData.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
+}
+
 // FUN_00174a90
 PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
 {
@@ -94,7 +142,7 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
         P3FES_ASSERT("datPersona.c", 848);
     }*/
 
-    if (!(gPlayerData.personas[heroPersonaIdx].flags & 1))
+    if (!Persona_IsHeroPersonaValid(heroPersonaIdx))
     {
         persona = NULL;
     }
