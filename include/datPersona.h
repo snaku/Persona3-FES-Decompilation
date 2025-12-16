@@ -4,7 +4,7 @@
 #include "g_data.h"
 
 #define PERSONA_FLAG_VALID      (1 << 0) // not sure of this name
-#define PERSONA_FLAG_HEART_ITEM (1 << 4)
+#define PERSONA_FLAG_HEART_ITEM (1 << 2)
 
 // Found in BATTLE/MSG.TBL
 typedef enum
