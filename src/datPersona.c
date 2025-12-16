@@ -7,10 +7,53 @@ u8 Persona_GetPersonaLevel(PersonaData* persona)
     return persona->level;
 }
 
+// FUN_00173300
+u8 Persona_GetPersonaLevelCharacterId(u16 characterId)
+{
+    PersonaData* persona = Persona_GetPersonaByCharacterId(characterId);
+    return persona->level;
+}
+
 // FUN_00173330
 u32 Persona_GetPersonaNextExp(PersonaData* persona)
 {
     return persona->nextExp;
+}
+
+// FUN_00173370
+u16* Persona_GetSkills(PersonaData* persona)
+{
+    return persona->skills;
+}
+
+// FUN_00173380
+u16* Persona_GetSkillsByCharacterId(u16 characterId)
+{
+    PersonaData* persona = Persona_GetPersonaByCharacterId(characterId);
+
+    return persona->skills;
+}
+
+// FUN_00173b00
+u8 Persona_GetStat2(PersonaData* persona, u16 statId)
+{
+    if (statId > PERSONA_STAT_LUCK)
+    {
+        P3FES_ASSERT("datPersona.c", 454);
+    }
+
+    return persona->stats2[statId];
+}
+
+// FUN_00173c00
+u8 Persona_GetStat3(PersonaData* persona, u16 statId)
+{
+    if (statId > PERSONA_STAT_LUCK)
+    {
+        P3FES_ASSERT("datPersona.c", 503);
+    }
+
+    return persona->stats3[statId];
 }
 
 // FUN_00174800
@@ -63,6 +106,7 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
     return persona;
 }
 
+// FUN_001764b0
 void Persona_AddExp(PersonaData* persona, u32 exp)
 {
     if (exp < 0)

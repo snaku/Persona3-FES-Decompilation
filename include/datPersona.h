@@ -55,7 +55,12 @@ typedef enum
 } PersonaStats;
 
 u8 Persona_GetPersonaLevel(PersonaData* persona);
+u8 Persona_GetPersonaLevelCharacterId(u16 characterId);
 u32 Persona_GetPersonaNextExp(PersonaData* persona);
+u16* Persona_GetSkills(PersonaData* persona);
+u16* Persona_GetSkillsByCharacterId(u16 characterId);
+u8 Persona_GetStat2(PersonaData* persona, u16 statId);
+u8 Persona_GetStat3(PersonaData* persona, u16 statId);
 
 PersonaData* Persona_GetPersonaByCharacterId(u16 characterId);
 PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx);
