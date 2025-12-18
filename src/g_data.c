@@ -212,15 +212,13 @@ void Character_AddBattleFlags(u16 characterId, u32 flags)
 // FUN_0016d980
 void Character_SetOldFatigueCounter(u16 characterId, u16 oldFatigueCounter)
 {
-    u16 tmp = oldFatigueCounter;
-
     if (!IS_HERO(characterId))
     {
         characters[characterId]->physicalState.oldFatigueCounter = oldFatigueCounter;
-        tmp = gPlayerData.physicalState.oldFatigueCounter;
+        return;
     }
 
-    gPlayerData.physicalState.oldFatigueCounter = tmp;
+    gPlayerData.physicalState.oldFatigueCounter = oldFatigueCounter;
 }
 
 // FUN_0016d9d0
@@ -313,34 +311,29 @@ u8 Character_DidCharacterLevelUp(u16 characterId, u32 expGain)
 // FUN_0016dad0
 void Character_SetAiTactic(u16 characterId, u8 aiTacticId)
 {
-    u8 tmp;
-
     if (aiTacticId > MAX_AI_TACTIC_ID)
     {
         P3FES_ASSERT("g_data.c", 999);
     }
 
-    tmp = aiTacticId;
     if (!IS_HERO(characterId))
     {
         characters[characterId]->character.battleStatus.aiTactic = aiTacticId;
-        tmp = gPlayerData.character.battleStatus.aiTactic;
+        return;
     }
 
-    gPlayerData.character.battleStatus.aiTactic = tmp;
+    gPlayerData.character.battleStatus.aiTactic = aiTacticId;
 }
 
 // FUN_0016dd80
 u8 Character_GetAiTactic(u16 characterId)
 {
-    u8 aiTactic = gPlayerData.character.battleStatus.aiTactic;
-
     if (!IS_HERO(characterId))
     {
-        aiTactic = characters[characterId]->character.battleStatus.aiTactic;
+        return characters[characterId]->character.battleStatus.aiTactic;
     }
 
-    return aiTactic;
+    return gPlayerData.character.battleStatus.aiTactic;
 }
 
 // FUN_0016d6b0
