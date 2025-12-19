@@ -128,23 +128,17 @@ u32 Game_GetScenarioMode()
 // FUN_0016cd60
 CharacterHeader* Character_GetCharacterHeader(u16 characterId)
 {
-    CharacterHeader* characterHeader;
-
     if (IS_HERO(characterId))
     {
-        characterHeader = &gPlayerData.character;
+        return &gPlayerData.character;
     }
-    else 
+
+    if (characterId < MAX_CHARACTERS)
     {
-        if (characterId > MAX_CHARACTERS)
-        {
-            P3FES_ASSERT("g_data.c", 737);
-        }
-
-        characterHeader = &characters[characterId]->character;
+        return &characters[characterId]->character;
     }
 
-    return characterHeader;
+    P3FES_ASSERT("g_data.c", 737);
 }
 
 // FUN_0016ef20
@@ -212,13 +206,13 @@ void Character_AddBattleFlags(u16 characterId, u32 flags)
 // FUN_0016d980
 void Character_SetOldFatigueCounter(u16 characterId, u16 oldFatigueCounter)
 {
-    if (!IS_HERO(characterId))
+    if (IS_HERO(characterId))
     {
-        characters[characterId]->physicalState.oldFatigueCounter = oldFatigueCounter;
+        gPlayerData.physicalState.oldFatigueCounter = oldFatigueCounter;
         return;
     }
 
-    gPlayerData.physicalState.oldFatigueCounter = oldFatigueCounter;
+    characters[characterId]->physicalState.oldFatigueCounter = oldFatigueCounter;
 }
 
 // FUN_0016d9d0
@@ -276,7 +270,7 @@ u32 Character_GetExpUntilNextLevel(u16 characterId)
     return nextExp;
 }
 
-// 0016d560
+// FUN_0016d560
 u8 Character_DidCharacterLevelUp(u16 characterId, u32 expGain)
 {
     u8 level;
@@ -316,24 +310,24 @@ void Character_SetAiTactic(u16 characterId, u8 aiTacticId)
         P3FES_ASSERT("g_data.c", 999);
     }
 
-    if (!IS_HERO(characterId))
+    if (IS_HERO(characterId))
     {
-        characters[characterId]->character.battleStatus.aiTactic = aiTacticId;
+        gPlayerData.character.battleStatus.aiTactic = aiTacticId;
         return;
     }
 
-    gPlayerData.character.battleStatus.aiTactic = aiTacticId;
+    characters[characterId]->character.battleStatus.aiTactic = aiTacticId;
 }
 
 // FUN_0016dd80
 u8 Character_GetAiTactic(u16 characterId)
 {
-    if (!IS_HERO(characterId))
+    if (IS_HERO(characterId))
     {
-        return characters[characterId]->character.battleStatus.aiTactic;
+        return gPlayerData.character.battleStatus.aiTactic;
     }
 
-    return gPlayerData.character.battleStatus.aiTactic;
+    return characters[characterId]->character.battleStatus.aiTactic;
 }
 
 // FUN_0016d6b0
@@ -394,15 +388,13 @@ void Character_SetPhysicalCondition(u16 characterId, u16 physicalCondition)
 // FUN_0016d930
 void Character_SetFatigueCounter(u16 characterId, u16 fatigueCounter)
 {
-    u16 tmp = fatigueCounter;
-
-    if (!IS_HERO(characterId))
+    if (IS_HERO(characterId))
     {
-        characters[characterId]->physicalState.fatigueCounter = fatigueCounter;
-        tmp = gPlayerData.physicalState.fatigueCounter;
+        gPlayerData.physicalState.fatigueCounter = fatigueCounter;
+        return;
     }
 
-    gPlayerData.physicalState.fatigueCounter = tmp;
+    characters[characterId]->physicalState.fatigueCounter = fatigueCounter;
 }
 
 void Character_SetHealth(u16 characterId, u16 health)
@@ -427,23 +419,18 @@ void Character_SetActiveSocialLink(u16 activeSocialLink)
 // FUN_0016cfe0
 void Character_SetAcademicPoint(u16 characterId, u16 academicPoint)
 {
-    u16 tmp;
-
     if (academicPoint < SOCIAL_STAT_MIN_POINT || academicPoint > SOCIAL_STAT_MAX_POINT)
     {
-        // 0x5e3098 = g_data.c, 0x31d = 797
         P3FES_ASSERT("g_data.c", 797);
     }
 
-    tmp = academicPoint;
-
     if (!IS_HERO(characterId))
     {
-        characters[characterId]->socialStats.academicPoint = academicPoint;
-        tmp = gPlayerData.socialStats.academicPoint;
+        gPlayerData.socialStats.academicPoint = academicPoint;
+        return;
     }
 
-    gPlayerData.socialStats.academicPoint = tmp;
+    characters[characterId]->socialStats.academicPoint = academicPoint;
 }
 
 // FUN_0016d090
@@ -451,7 +438,6 @@ void Character_SetCharmPoint(u16 characterId, u16 charmPoint)
 {
     if (charmPoint < SOCIAL_STAT_MIN_POINT || charmPoint > SOCIAL_STAT_MAX_POINT)
     {
-        // 0x5e3098, 0x31d
         P3FES_ASSERT("g_data.c", 808);
     }
 
@@ -460,11 +446,10 @@ void Character_SetCharmPoint(u16 characterId, u16 charmPoint)
         Character_GetCharmLevel(gPlayerData.socialStats.charmPoint); // ??
         gPlayerData.socialStats.charmPoint = charmPoint;
         Character_GetCharmLevel(charmPoint); // ??
+        return;
     }
-    else 
-    {
-        characters[characterId]->socialStats.charmPoint = charmPoint;
-    }
+
+    characters[characterId]->socialStats.charmPoint = charmPoint;
 }
 
 // FUN_0016d160
@@ -480,11 +465,10 @@ void Character_SetCouragePoint(u16 characterId, u16 couragePoint)
         Character_GetCourageLevel(gPlayerData.socialStats.couragePoint); // ??
         gPlayerData.socialStats.couragePoint = couragePoint;
         Character_GetCourageLevel(couragePoint); // ??
+        return;
     }
-    else 
-    {
-        characters[characterId]->socialStats.couragePoint = couragePoint;
-    }
+
+    characters[characterId]->socialStats.couragePoint = couragePoint;
 }
 
 static inline u16 Inl_Character_GetSocialStatPoint(u16 characterId, u16 baseHeroPoint, u16 baseOtherCharPoint)
@@ -583,33 +567,31 @@ u16 Character_GetCourageLevel(u16 couragePoint)
 // FUN_0016c7e0
 u32 Character_GetNextExp(u16 characterId)
 {
-    u32 nextExp = gPlayerData.nextExp;
     PersonaData* persona;
 
-    if (!IS_HERO(characterId))
+    if (IS_HERO(characterId))
     {
-        persona = Persona_GetPersonaByCharacterId(characterId);
-        if (persona == NULL)
-        {
-            P3FES_ASSERT("g_data.c", 622);
-        }
-
-        nextExp = Persona_GetPersonaNextExp(persona);
+        return gPlayerData.nextExp;
     }
 
-    return nextExp;
+    persona = Persona_GetPersonaByCharacterId(characterId);
+    if (persona == NULL)
+    {
+        P3FES_ASSERT("g_data.c", 622);
+    }
+
+    return Persona_GetPersonaNextExp(persona);
 }
 
+// FUN_0016c920
 u16 Character_GetPhysicalCondition(u16 characterId)
 {
-    u16 tmp = gPlayerData.physicalState.physicalCondition;
-
-    if (!IS_HERO(characterId))
+    if (IS_HERO(characterId))
     {
-        tmp = characters[characterId]->physicalState.physicalCondition;
+        return gPlayerData.physicalState.physicalCondition;
     }
 
-    return tmp;
+    return characters[characterId]->physicalState.physicalCondition;
 }
 
 // FUN_0016dd40
@@ -624,6 +606,7 @@ u8 Player_GetSocialLinkLevel(u16 socialLink)
     return gPlayerData.socialLinkStat[socialLink];
 }
 
+// FUN_0016e100
 u8 Player_SocialLinkLevelIsNotZero(u16 socialLink)
 {
     if (socialLink < SOCIAL_LINK_SEES || socialLink > SOCIAL_LINK_NYX_TEAM)
@@ -654,8 +637,6 @@ void FUN_0016e670(u16 socialLink)
 // FUN_0017c8c0
 PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
 {
-    PersonaData* compendium;
-
     if (idx < 0 || idx > 255)
     {
         P3FES_ASSERT("g_data.c", 6177);
@@ -663,14 +644,12 @@ PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
 
     if (!(gPlayerData.compendium[idx].flags & 1))
     {
-        compendium = NULL;
+        return NULL;
     }
     else 
     {
-        compendium = &gPlayerData.compendium[idx];
+        return &gPlayerData.compendium[idx];
     }
-
-    return compendium;
 }
 
 // FUN_0017d8b0
