@@ -296,6 +296,7 @@ void Calendar_SetTime(u8 time);
 
 CharacterHeader* Character_GetCharacterHeader(u16 characterId);
 u8 Character_GetLevel(u16 characterId);
+u16 Persona_GetPersonaId(u16 characterId);
 u32 Character_GetBattleFlagsNoDown(u16 characterId);
 void Character_AddBattleFlags(u16 characterId, u32 flags);
 void Character_SetOldFatigueCounter(u16 characterId, u16 oldFatigueCounter);

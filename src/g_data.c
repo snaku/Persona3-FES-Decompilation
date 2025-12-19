@@ -94,6 +94,22 @@ void* P3FES_Memset(void* dst, u8 value, u32 size)
     return dst;
 }
 
+// FUN_0016c860 (idk why it's in g_data.c and not in datPersona.c)
+u16 Persona_GetPersonaId(u16 characterId)
+{
+    if (IS_HERO(characterId))
+    {
+        if (gPlayerData.equippedPersona < ARRAY_SIZE(gPlayerData.personas))
+        {
+            return gPlayerData.personas[gPlayerData.equippedPersona].id;
+        }
+
+        P3FES_ASSERT("g_data.c", 633);
+    }
+
+    return characters[characterId]->persona.id;
+}
+
 // FUN_0016cdf0
 void FUN_0016cdf0(u16 characterId)
 {
