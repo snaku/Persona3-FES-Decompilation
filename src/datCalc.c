@@ -35,9 +35,10 @@ void Character_AddBattleFlags_Impl(CharacterHeader* characterHeader, u32 flags)
     const u32 LOW_20_BITS = 0x000FFFFF;
     const u32 HIGH_12_BITS = 0xFFF00000;
 
-    if ((flags & LOW_20_BITS) != 0)
+    if (!(flags & LOW_20_BITS))
     {
-        characterHeader->battleStatus.flags = (characterHeader->battleStatus.flags & HIGH_12_BITS) | (flags & LOW_20_BITS);
+        characterHeader->battleStatus.flags = (characterHeader->battleStatus.flags & HIGH_12_BITS) |
+                                              (flags & LOW_20_BITS);
     }
 
     characterHeader->battleStatus.flags |= (flags & HIGH_12_BITS);
@@ -66,6 +67,60 @@ void Character_RemoveBattleFlags_Impl(CharacterHeader* characterHeader, u32 flag
 u8 Character_HasBattleFlags(CharacterHeader* characterHeader, u32 flags)
 {
     return (characterHeader->battleStatus.flags & flags);
+}
+
+// FUN_00308c60
+u32 Character_GetHeldWeaponType(CharacterHeader* characterHeader)
+{
+    u16 heroWeaponIdx;
+    u16 heroWeaponId;
+    u16 heroWeaponUnkFlag;
+
+    if (characterHeader->sUnk1 & (1 << 2))
+    {
+        return WEAPON_TYPE_1H_SWORD;
+    }
+
+    switch (characterHeader->id)
+    {
+        case CHARACTER_HERO:
+            heroWeaponIdx = Character_GetEquipementIdx(CHARACTER_HERO, EQUIPEMENT_TYPE_WEAPON);
+            heroWeaponId = Character_GetEquipementId(CHARACTER_HERO, heroWeaponIdx);
+            // unkStruct = FUN_00170d60(heroWeaponId);
+            // heroWeaponUnkFlag = unkStruct->flags;
+            if (heroWeaponUnkFlag & (1 << 15) || heroWeaponUnkFlag & (1 << 7))
+                return WEAPON_TYPE_KNIFE;
+            if (heroWeaponUnkFlag & (1 << 14) || heroWeaponUnkFlag & (1 << 6))
+                return WEAPON_TYPE_GUN;
+            if (heroWeaponUnkFlag & (1 << 13) || heroWeaponUnkFlag & (1 << 5))
+                return WEAPON_TYPE_FIST;
+            if (heroWeaponUnkFlag & (1 << 12) || heroWeaponUnkFlag & (1 << 4))
+                return WEAPON_TYPE_AXE;
+            if (heroWeaponUnkFlag & (1 << 11) || heroWeaponUnkFlag & (1 << 3))
+                return WEAPON_TYPE_SPEAR;
+            if (heroWeaponUnkFlag & (1 << 10) || heroWeaponUnkFlag & (1 << 2))
+                return WEAPON_TYPE_BOW;
+            if (heroWeaponUnkFlag & (1 << 9) || heroWeaponUnkFlag & (1 << 1))
+                return WEAPON_TYPE_1H_SWORD;
+            if (heroWeaponUnkFlag & (1 << 8) || heroWeaponUnkFlag & (1 << 0))
+                return WEAPON_TYPE_2H_SWORD;
+
+            P3FES_ASSERT("datCalc.c", 4237);
+        case CHARACTER_YUKARI:            return WEAPON_TYPE_BOW;
+        case CHARACTER_AIGIS:             return WEAPON_TYPE_GUN;
+        case CHARACTER_MITSURU:           return WEAPON_TYPE_1H_SWORD;
+        case CHARACTER_JUNPEI:            return WEAPON_TYPE_2H_SWORD;
+        case CHARACTER_FUUKA:             return WEAPON_TYPE_1H_SWORD;
+        case CHARACTER_AKIHIKO:           return WEAPON_TYPE_FIST;
+        case CHARACTER_KEN:               return WEAPON_TYPE_SPEAR;
+        case CHARACTER_SHINJIRO_OR_METIS: return WEAPON_TYPE_AXE;
+        case CHARACTER_KOROMARU:          return WEAPON_TYPE_KNIFE;
+        default: 
+            P3FES_ASSERT("datCalc.c", 4259);
+            break;
+    }
+
+    return WEAPON_TYPE_1H_SWORD;
 }
 
 // FUN_0030b5a0
