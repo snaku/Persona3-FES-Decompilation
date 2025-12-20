@@ -552,6 +552,37 @@ void FUN_0016ca90(u16 characterId, u16 param_2)
     Character_SetFatigueCounter(characterId, uVar3);
 }
 
+// FUN_0016cb80
+u16 Character_GetEquipementIdx(u16 characterId, u16 equipementType)
+{
+    if (IS_HERO(characterId))
+    {
+        return gPlayerData.equipementsData.equipementsIdx[equipementType];
+    }
+
+    return characters[characterId]->equipementsIdx[equipementType];
+}
+
+// FUN_0016f630
+u16 Character_GetEquipementId(u16 characterId, u16 equipementIdx)
+{
+    // TODO
+    if (characterId == -1) // ?
+    {
+        // return (&DAT_00833e80)[equipementIdx * 10];
+    }
+    else if (IS_HERO(characterId))
+    {
+        return gPlayerData.equipementsData.equipements[equipementIdx].id;
+    }
+    else if (characterId <= 255)
+    {
+        return characters[characterId]->equipements[equipementIdx].id;
+    }
+
+    // return (&DAT_007fd6c8 + equipementIdx * 0x14 + characterId * 0x364);
+}
+
 static inline u16 Inl_Character_GetSocialStatLevel(u16 point, const u16* threshold, u32 size)
 {
     u16 idx = size - 1;

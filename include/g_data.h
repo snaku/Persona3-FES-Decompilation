@@ -140,6 +140,26 @@ typedef enum
 
 typedef enum
 {
+    EQUIPEMENT_TYPE_WEAPON,
+    EQUIPEMENT_TYPE_ARMOR,
+    EQUIPEMENT_TYPE_BOOTS,
+    EQUIPEMENT_TYPE_ACCESSORY
+} EquimentTypes;
+
+typedef enum
+{
+    WEAPON_TYPE_1H_SWORD,
+    WEAPON_TYPE_2H_SWORD,
+    WEAPON_TYPE_HEAVY,
+    WEAPON_TYPE_FIST,
+    WEAPON_TYPE_SPEAR,
+    WEAPON_TYPE_KNIFE,
+    WEAPON_TYPE_BOW,
+    WEAPON_TYPE_GUN
+} WeaponTypes;
+
+typedef enum
+{
     CALENDAR_TIME_LATE_NIGHT1,
     CALENDAR_TIME_EARLY_MORNING,
     CALENDAR_TIME_MORNING,
@@ -229,7 +249,7 @@ typedef struct
     // other data ?
 } PersonaData; // For reference: Yukari = 008340ec
 
-// 20 bytes (4 unk bytes are missing, will do it later)
+// 20 bytes
 typedef struct 
 {
     u16 id;
@@ -238,9 +258,18 @@ typedef struct
     u16 firstStat;
     u16 secondStat;
     u16 sUnk2;
-} EquipementData; // seems like the hero doesn't use this struct but a different one
+    u8 unkData[0x04];
+} EquipementData;
 
-// start: 0x0836224. 
+// 16 bytes
+typedef struct
+{
+    u16 equipementsIdx[4];       // See enum EquipementTypes to access each idx
+    EquipementData* equipements; // 00836794 -> 010c15f0
+    void* unkPtr;                // 00836798 -> 010c2d90
+} PlayerEquipementData;
+
+// start: 00836224. 
 typedef struct
 {
     /*0x00*/ CharacterHeader character;
@@ -249,12 +278,13 @@ typedef struct
     /*0x41*/ u32 nextExp;
     /*0x45*/ PhysicalState physicalState;
     /*0x4B*/ u16 activeSocialLink;
-    /*0x4D*/ u8 socialLinkStat[0x1D];  // there is 22 social link but the array is 30 bytes
+    /*0x4D*/ u8 socialLinkStat[0x1D];
              u8 unkData[0x982];
              u16 equippedPersona;      // 0 to 11
              PersonaData personas[12]; // start: 00836ba8
-             u8 unkData2[0x2AA];
-             PersonaData compendium[188]; // 00836E52. Probably not in this struct. Not sure of the size
+             u8 unkData2[0x292];
+             PlayerEquipementData equipementsData; // 0083678c
+             PersonaData compendium[188]; // 00836E52. Not in this struct (will move it later). Not sure of the size
     // TODO: The rest of the struct
 } PlayerData;
 
@@ -265,6 +295,7 @@ typedef struct
     SocialStats socialStats;
     u8 unkData1[0x06];
     PhysicalState physicalState;
+    u16 equipementsIdx[4];         // always 0, 1, 2, 3
     EquipementData equipements[4];
     u8 unkData2[0x4C];
     PersonaData persona;
@@ -320,6 +351,9 @@ u16 Character_GetCharmLevel(u16 charmPoint);
 u16 Character_GetCourageLevel(u16 couragePoint);
 u32 Character_GetNextExp(u16 characterId);
 u16 Character_GetPhysicalCondition(u16 characterId);
+
+u16 Character_GetEquipementIdx(u16 characterId, u16 equipementType);
+u16 Character_GetEquipementId(u16 characterId, u16 equipementIdx);
 
 u16 Player_GetActiveSocialLink();
 u8 Player_GetSocialLinkLevel(u16 socialLink);
