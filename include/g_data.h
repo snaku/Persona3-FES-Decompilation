@@ -321,7 +321,6 @@ void FUN_0016cdf0(u16 characterId);
 
 u16 Calendar_GetDaysSinceApr5();
 u8 Calendar_GetTime();
-u32 Calendar_GetCurrentDay(u32 monthAndDay);
 void Calendar_SetTime(u8 time);
 
 CharacterHeader* Character_GetCharacterHeader(u16 characterId);
@@ -359,6 +358,8 @@ u8 Player_GetSocialLinkLevel(u16 socialLink);
 PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx);
 
 u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day);
+u32 Calendar_GetWeekDay(u32 daysSinceApr5);
+u32 Calendar_GetCurrentWeekDay();
 u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);

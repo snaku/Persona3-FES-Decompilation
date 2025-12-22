@@ -175,11 +175,6 @@ void Calendar_SetTime(u8 time)
     calendar.time = time;
 }
 
-u32 Calendar_GetCurrentDay(u32 monthAndDay)
-{
-    return (monthAndDay + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
-}
-
 // FUN_0016c470
 u8 Character_GetLevel(u16 characterId)
 {
@@ -723,6 +718,20 @@ u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
     }
 
     return dayAccumulator + day - 5; // - 5 because the game starts in april 5th
+}
+
+// FUN_0017dae0
+u32 Calendar_GetWeekDay(u32 daysSinceApr5)
+{
+    return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
+}
+
+// FUN_0017db00
+u32 Calendar_GetCurrentWeekDay()
+{
+    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
+
+    return Calendar_GetWeekDay(daysSinceApr5); // was inlined
 }
 
 // FUN_0017e480
