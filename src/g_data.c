@@ -567,6 +567,7 @@ u16 Character_GetEquipementIdx(u16 characterId, u16 equipementType)
 u16 Character_GetEquipementId(u16 characterId, u16 equipementIdx)
 {
     // TODO
+    
     if (characterId == -1) // ?
     {
         // return (&DAT_00833e80)[equipementIdx * 10];
@@ -744,6 +745,31 @@ u8 Calendar_IsDateOutsideRange(u32 startMonth, u32 startDay, u32 endMonth, u32 e
     return isOutsideRange;
 }
 
+// FUN_0017e5d0
+u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
+{
+    u32 startDate;
+    u32 endDate;
+    u16 daysSinceApr5;
+
+    if (range == 0)
+    {
+        P3FES_LOG1("Calender chk range is 0");
+        return false;
+    }
+
+    startDate = Calendar_GetDaysSinceStartFromDate(month, day);
+    endDate = startDate + range - 1;
+    daysSinceApr5 = Calendar_GetDaysSinceApr5();
+
+    if (daysSinceApr5 < startDate || endDate < daysSinceApr5)
+    {
+        return false;
+    }
+
+    return true;
+}
+
 // FUN_0011a870
 const u8* gData_getCourageLevelString(u16 idx)
 {
@@ -764,4 +790,10 @@ void P3FES_ASSERT(const u8* file, const u32 line)
     // It's empty because it's only used if the game was compiled in debug
     // which is not the case here.
     return;
+}
+
+// FUN_001052b0
+void P3FES_LOG1(const char* fmt, ...)
+{
+    // ...
 }

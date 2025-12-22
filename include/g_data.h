@@ -304,7 +304,6 @@ typedef struct
 
 typedef struct
 {
-    // TODO: unk data before MonthAndDay
     u16 daysSinceApr5; // 0083679c
     u8 time;
     // TODO: unk data after time
@@ -360,11 +359,13 @@ u8 Player_GetSocialLinkLevel(u16 socialLink);
 PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx);
 
 u8 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day);
+u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);
 
 const u8* gData_getCourageLevelString(u16 idx);
 const u8* gData_getCharmLevelString(u16 idx);
 const u8* gData_getAcademicLevelString(u16 idx);
 
 void P3FES_ASSERT(const u8* file, const u32 line);
+void P3FES_LOG1(const char* fmt, ...);
 
 #endif // G_DATA_H
