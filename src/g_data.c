@@ -701,7 +701,7 @@ PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
 }
 
 // FUN_0017d8b0
-u8 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
+u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
 {
     u32 m = CALENDAR_MONTH_APRIL;
     u32 dayAccumulator = 0;
