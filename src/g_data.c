@@ -749,12 +749,12 @@ u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
     u32 endDate = Calendar_GetDaysSinceStartFromDate(endMonth, endDay);
     u32 testDate = Calendar_GetDaysSinceStartFromDate(monthToTest, dayToTest);
 
-    if (testDate >= startDate && endDate >= testDate)
+    if (testDate < startDate || endDate < testDate)
     {
-        return true;
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 // FUN_0017e5d0
