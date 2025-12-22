@@ -35,6 +35,18 @@ u16 Audio_GetCurrentBgmId()
     return bgm.currBgmId;
 }
 
+// FUN_00108e50
+void Audio_StopPlayingBgm()
+{
+    if (bgm.isBgmPlaying != AUDIO_BGM_NOT_PLAYING)
+    {
+        // FUN_0054d100(bgm.unk5);
+        bgm.isBgmPlaying = AUDIO_BGM_NOT_PLAYING;
+        bgm.unk4 = 0;
+        bgm.currBgmId = BGM_ID_NONE;
+    }
+}
+
 // FUN_001099d0
 u32 Audio_PlayBgm(u16 bgmId, u8 param_2)
 {

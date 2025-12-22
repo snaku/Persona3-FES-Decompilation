@@ -87,6 +87,8 @@ typedef struct
 } BgmData;
 
 u16 Audio_GetCurrentBgmId();
+void Audio_StopPlayingBgm();
 u32 Audio_PlayBgm(u16 bgmId, u8 param_2);
+
 
 #endif
