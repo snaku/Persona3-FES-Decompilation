@@ -731,18 +731,13 @@ u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay
     u32 startDate = Calendar_GetDaysSinceStartFromDate(startMonth, startDay);
     u32 endDate = Calendar_GetDaysSinceStartFromDate(endMonth, endDay);
     u16 currDaysSinceApr5 = Calendar_GetDaysSinceApr5();
-    u8 isOutsideRange;
 
     if (currDaysSinceApr5 < startDate || endDate < currDaysSinceApr5)
     {
-        isOutsideRange = false;
-    }
-    else 
-    {
-        isOutsideRange = true;
+        return false;
     }
 
-    return isOutsideRange;
+    return true;
 }
 
 // FUN_0017e5d0
