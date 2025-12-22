@@ -360,6 +360,7 @@ PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx);
 
 u8 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day);
 u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
+u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);
 
 const u8* gData_getCourageLevelString(u16 idx);

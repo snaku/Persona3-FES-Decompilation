@@ -740,6 +740,23 @@ u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay
     return true;
 }
 
+// FUN_0017e520
+u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
+                                  u32 startMonth, u32 startDay,
+                                  u32 endMonth, u32 endDay)
+{
+    u32 startDate = Calendar_GetDaysSinceStartFromDate(startMonth, startDay);
+    u32 endDate = Calendar_GetDaysSinceStartFromDate(endMonth, endDay);
+    u32 testDate = Calendar_GetDaysSinceStartFromDate(monthToTest, dayToTest);
+
+    if (testDate >= startDate && endDate >= testDate)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 // FUN_0017e5d0
 u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
 {
