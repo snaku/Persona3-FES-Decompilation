@@ -726,7 +726,7 @@ u8 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
 }
 
 // FUN_0017e480
-u8 Calendar_IsDateOutsideRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
+u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
 {
     u32 startDate = Calendar_GetDaysSinceStartFromDate(startMonth, startDay);
     u32 endDate = Calendar_GetDaysSinceStartFromDate(endMonth, endDay);
