@@ -232,7 +232,7 @@ typedef struct
     u16 id;
     u16 sUnk2;
     BattleStatus battleStatus;
-} CharacterHeader; 
+} BattleActorData; 
 
 // 52 bytes, not sure of the real size
 typedef struct
@@ -272,7 +272,7 @@ typedef struct
 // start: 00836224. 
 typedef struct
 {
-    /*0x00*/ CharacterHeader character;
+    /*0x00*/ BattleActorData btlActor;
     /*0x10*/ u8 pad1[0x2B];
     /*0x3B*/ SocialStats socialStats;
     /*0x41*/ u32 nextExp;
@@ -291,7 +291,7 @@ typedef struct
 // 868 bytes
 typedef struct
 {
-    CharacterHeader character;
+    BattleActorData btlActor;
     SocialStats socialStats;
     u8 unkData1[0x06];
     PhysicalState physicalState;
@@ -323,7 +323,7 @@ u16 Calendar_GetDaysSinceApr5();
 u8 Calendar_GetTime();
 void Calendar_SetTime(u8 time);
 
-CharacterHeader* Character_GetCharacterHeader(u16 characterId);
+BattleActorData* Character_GetBtlActor(u16 characterId);
 u8 Character_GetLevel(u16 characterId);
 u16 Persona_GetPersonaId(u16 characterId);
 u32 Character_GetBattleFlagsNoDown(u16 characterId);

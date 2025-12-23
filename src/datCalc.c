@@ -2,13 +2,13 @@
 #include <stdlib.h>
 
 // FUN_002ffcc0
-u8 Character_GetLevel_Impl(CharacterHeader* characterHeader){
+u8 BtlActor_GetLevel(BattleActorData* btlActor){
     u8 level;
     PersonaData* persona;
 
-    if (!(characterHeader->sUnk1 & 4) && !IS_HERO(characterHeader->id))
+    if (!(btlActor->sUnk1 & 4) && !IS_HERO(btlActor->id))
     {
-        persona = Persona_GetPersonaByCharacterId(characterHeader->id);
+        persona = Persona_GetPersonaByCharacterId(btlActor->id);
         if (persona == NULL)
         {
             P3FES_ASSERT("datCalc.c", 66);
@@ -18,7 +18,7 @@ u8 Character_GetLevel_Impl(CharacterHeader* characterHeader){
     }
     else 
     {
-        level = characterHeader->battleStatus.level;
+        level = btlActor->battleStatus.level;
     }
 
     if (level == 0)
@@ -30,58 +30,58 @@ u8 Character_GetLevel_Impl(CharacterHeader* characterHeader){
 }
 
 // FUN_003004f0
-void Character_AddBattleFlags_Impl(CharacterHeader* characterHeader, u32 flags)
+void BtlActor_AddBattleFlags(BattleActorData* btlActor, u32 flags)
 {
     const u32 LOW_20_BITS = 0x000FFFFF;
     const u32 HIGH_12_BITS = 0xFFF00000;
 
     if (!(flags & LOW_20_BITS))
     {
-        characterHeader->battleStatus.flags = (characterHeader->battleStatus.flags & HIGH_12_BITS) |
-                                              (flags & LOW_20_BITS);
+        btlActor->battleStatus.flags = (btlActor->battleStatus.flags & HIGH_12_BITS) |
+                                       (flags & LOW_20_BITS);
     }
 
-    characterHeader->battleStatus.flags |= (flags & HIGH_12_BITS);
+    btlActor->battleStatus.flags |= (flags & HIGH_12_BITS);
 }
 
 // FUN_00300530
-u32 Character_GetBattleFlagsNoDown_Impl(CharacterHeader* characerHeader)
+u32 BtlActor_GetBattleFlagsNoDown(BattleActorData* btlActor)
 {
     // without bit 20 and over (so BATTLE_FLAG_DOWN)
-    return characerHeader->battleStatus.flags & 0x000FFFFF;
+    return btlActor->battleStatus.flags & 0x000FFFFF;
 }
 
 // FUN_00300550
-u32 Character_GetBattleFlags(CharacterHeader* characterHeader)
+u32 BtlActor_GetBattleFlags(BattleActorData* btlActor)
 {
-    return characterHeader->battleStatus.flags;
+    return btlActor->battleStatus.flags;
 }
 
 // FUN_00300560
-void Character_RemoveBattleFlags_Impl(CharacterHeader* characterHeader, u32 flags)
+void BtlActor_RemoveBattleFlags(BattleActorData* btlActor, u32 flags)
 {
-    characterHeader->battleStatus.flags &= ~flags;
+    btlActor->battleStatus.flags &= ~flags;
 }
 
 // FUN_00300580
-u8 Character_HasBattleFlags(CharacterHeader* characterHeader, u32 flags)
+u8 BtlActor_HasBattleFlags(BattleActorData* btlActor, u32 flags)
 {
-    return (characterHeader->battleStatus.flags & flags);
+    return (btlActor->battleStatus.flags & flags);
 }
 
 // FUN_00308c60
-u32 Character_GetHeldWeaponType(CharacterHeader* characterHeader)
+u32 BtlActor_GetHeldWeaponType(BattleActorData* btlActor)
 {
     u16 heroWeaponIdx;
     u16 heroWeaponId;
     u16 heroWeaponUnkFlag;
 
-    if (characterHeader->sUnk1 & (1 << 2))
+    if (btlActor->sUnk1 & (1 << 2))
     {
         return WEAPON_TYPE_1H_SWORD;
     }
 
-    switch (characterHeader->id)
+    switch (btlActor->id)
     {
         case CHARACTER_HERO:
             heroWeaponIdx = Character_GetEquipementIdx(CHARACTER_HERO, EQUIPEMENT_TYPE_WEAPON);
@@ -124,13 +124,13 @@ u32 Character_GetHeldWeaponType(CharacterHeader* characterHeader)
 }
 
 // FUN_0030b5a0
-u8 Character_IsCharacterDead(CharacterHeader* characterHeader, s32 param_2)
+u8 BtlActor_IsCharacterDead(BattleActorData* btlActor, s32 param_2)
 {
     u8 isDead;
 
-    if (!Character_HasBattleFlags(characterHeader, BATTLE_FLAG_DEAD))
+    if (!BtlActor_HasBattleFlags(btlActor, BATTLE_FLAG_DEAD))
     {
-        isDead = characterHeader->battleStatus.health < 1;
+        isDead = btlActor->battleStatus.health < 1;
     }
     else
     {
