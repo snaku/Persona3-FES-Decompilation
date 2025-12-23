@@ -29,6 +29,17 @@ u8 BtlActor_GetLevel(BattleActorData* btlActor){
     return level;
 }
 
+// FUN_002ffd90
+void BtlActor_SetHealth(BattleActorData* btlActor, u16 health)
+{
+    if (health > 999 && !(btlActor->flags & (1 << 2)))
+    {
+        health = 999;
+    }
+
+    btlActor->battleStatus.health = health;
+}
+
 // FUN_003004f0
 void BtlActor_AddBattleFlags(BattleActorData* btlActor, u32 flags)
 {
