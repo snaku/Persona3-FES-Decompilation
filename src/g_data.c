@@ -435,7 +435,7 @@ void Character_SetAcademicPoint(u16 characterId, u16 academicPoint)
         P3FES_ASSERT("g_data.c", 797);
     }
 
-    if (!IS_HERO(characterId))
+    if (IS_HERO(characterId))
     {
         gPlayerData.socialStats.academicPoint = academicPoint;
         return;
