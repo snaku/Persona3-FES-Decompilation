@@ -29,6 +29,18 @@ u8 BtlActor_GetLevel(BattleActorData* btlActor){
     return level;
 }
 
+// FUN_002ffd70
+u16 BtlActor_GetHealth(BattleActorData* btlActor)
+{
+    return btlActor->battleStatus.health;
+}
+
+// FUN_002ffd80
+u16 BtlActor_GetSp(BattleActorData* btlActor)
+{
+    return btlActor->battleStatus.sp;
+}
+
 // FUN_002ffd90
 void BtlActor_SetHealth(BattleActorData* btlActor, u16 health)
 {
@@ -38,6 +50,17 @@ void BtlActor_SetHealth(BattleActorData* btlActor, u16 health)
     }
 
     btlActor->battleStatus.health = health;
+}
+
+// FUN_002ffdc0
+void BtlActor_SetSp(BattleActorData* btlActor, u16 sp)
+{
+    if (sp > 999 && !(btlActor->flags & (1 << 2)))
+    {
+        sp = 999;
+    }
+
+    btlActor->battleStatus.sp = sp;
 }
 
 // FUN_003004f0

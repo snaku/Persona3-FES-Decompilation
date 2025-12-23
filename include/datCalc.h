@@ -4,7 +4,10 @@
 #include "datPersona.h"
 
 u8 BtlActor_GetLevel(BattleActorData* btlActor);
+u16 BtlActor_GetHealth(BattleActorData* btlActor);
+u16 BtlActor_GetSp(BattleActorData* btlActor);
 void BtlActor_SetHealth(BattleActorData* btlActor);
+void BtlActor_SetSp(BattleActorData* btlActor, u16 sp);
 void BtlActor_AddBattleFlags(BattleActorData* btlActor, u32 flags);
 u32 BtlActor_GetBattleFlagsNoDown(BattleActorData* btlActor);
 u32 BtlActor_GetBattleFlags(BattleActorData* btlActor);
