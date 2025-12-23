@@ -6,7 +6,7 @@ u8 BtlActor_GetLevel(BattleActorData* btlActor){
     u8 level;
     PersonaData* persona;
 
-    if (!(btlActor->sUnk1 & 4) && !IS_HERO(btlActor->id))
+    if (!(btlActor->flags & 4) && !IS_HERO(btlActor->id))
     {
         persona = Persona_GetPersonaByCharacterId(btlActor->id);
         if (persona == NULL)
@@ -76,7 +76,7 @@ u32 BtlActor_GetHeldWeaponType(BattleActorData* btlActor)
     u16 heroWeaponId;
     u16 heroWeaponUnkFlag;
 
-    if (btlActor->sUnk1 & (1 << 2))
+    if (btlActor->flags & (1 << 2))
     {
         return WEAPON_TYPE_1H_SWORD;
     }

@@ -228,9 +228,9 @@ typedef struct
 // 15 bytes
 typedef struct
 {
-    u16 sUnk1;
+    u16 flags;
     u16 id;
-    u16 sUnk2;
+    u16 id2;
     BattleStatus battleStatus;
 } BattleActorData; 
 

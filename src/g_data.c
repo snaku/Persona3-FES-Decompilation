@@ -118,14 +118,14 @@ void FUN_0016cdf0(u16 characterId)
         P3FES_Memset(&gPlayerData, 0, 60);
         gPlayerData.btlActor.battleStatus.aiTactic = AI_TACTIC_ACT_FREELY;
         gPlayerData.btlActor.id = CHARACTER_HERO;
-        gPlayerData.btlActor.sUnk1 = 1;
+        gPlayerData.btlActor.flags = 1;
     }
     else 
     {
         P3FES_Memset(characters[characterId], 0, 60);
         characters[characterId]->btlActor.id = characterId;
         characters[characterId]->btlActor.battleStatus.aiTactic = AI_TACTIC_ACT_FREELY;
-        characters[characterId]->btlActor.sUnk1 = 1;
+        characters[characterId]->btlActor.flags = 1;
     }
 }
 
