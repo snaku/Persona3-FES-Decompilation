@@ -209,7 +209,7 @@ u8 Persona_SetSkill(PersonaData* persona, u16 skillId)
         P3FES_ASSERT("datPersona.c", 1546);
     }
 
-    for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona); skillIdx++)
+    for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
         if (persona->skills[skillIdx] == PERSONA_SKILL_SLASH_ATTACK)
         {
