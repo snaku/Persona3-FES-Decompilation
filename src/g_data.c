@@ -675,7 +675,7 @@ PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
         P3FES_ASSERT("g_data.c", 6177);
     }
 
-    if (!(gPlayerData.compendium[idx].flags & 1))
+    if (!(gPlayerData.compendium[idx].flags & PERSONA_FLAG_VALID))
     {
         return NULL;
     }
