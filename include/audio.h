@@ -11,41 +11,41 @@
 typedef enum
 {
     BGM_ID_TARTARUS_THEBEL = 1,            // 01.ADX (1st block, also used for Monad)
-    BGM_ID_MASS_DESTRUCTION,               // 26.ADX
-    BGM_ID_SHADOW,                         // 19.ADX
+    BGM_ID_MASS_DESTRUCTION,               // 26.ADX (Id in the code is 2 but ADX id = 26)
+    BGM_ID_SHADOW = 19,                    // 19.ADX
     BGM_ID_DEEP_BREATH,                    // 20.ADX
     BGM_ID_BASEMENT,                       // 21.ADX
     BGM_ID_DEEP_MENTALITY,                 // 22.ADX
     BGM_ID_DEEP_BREATH_2,                  // 23.ADX (unused)
     BGM_ID_DEEP_BREATH_3,                  // 24.ADX (unused)
     BGM_ID_MOON_REACHING_OUT_STARS,        // 25.ADX
-    BGM_ID_MASTER_OF_SHADOW,               // 27.ADX
+    BGM_ID_MASTER_OF_SHADOW = 27,          // 27.ADX
     BGM_ID_UNAVOIDABLE_BATTLE,             // 28.ADX (strega battle ost)
     BGM_ID_BURN_MY_DREAD_LAST,             // 29.ADX
     BGM_ID_BATTLE_HYMN_OF_SOUL,            // 30.ADX (nyx battle)
     BGM_ID_MASTER_OF_TARTARUS,             // 31.ADX (tartarus bosses)
     BGM_ID_KYOTO,                          // 32.ADX
-    BGM_ID_TROUBLED,                       // 35.ADX
+    BGM_ID_TROUBLED = 35,                  // 35.ADX
     BGM_ID_ESCAPED_THE_DARKNESS,           // 36.ADX
     BGM_ID_LIVING_WITH_DETERMINATION,      // 37.ADX
     BGM_ID_JOY_1,                          // 38.ADX
     BGM_ID_FEARFUL_EXPERIENCE,             // 39.ADX
     BGM_ID_CALAMITY,                       // 40.ADX
-    BGM_ID_JOY_2,                          // 43.ADX
+    BGM_ID_JOY_2 = 43,                     // 43.ADX
     BGM_ID_MYSTERIOUS_FEELING,             // 44.ADX
     BGM_ID_CRISIS,                         // 45.ADX
     BGM_ID_PATH_IS_OPEN,                   // 46.ADX (social link level 10)
-    BGM_ID_WANT_TO_BE_CLOSE,               // 50.ADX
+    BGM_ID_WANT_TO_BE_CLOSE = 50,          // 50.ADX
     BGM_ID_CHANGING_SEASONS,               // 51.ADX
     BGM_ID_MEMORIES_OF_SCHOOL_1,           // 52.ADX (school during january)
     BGM_ID_IWATODAI_DORM,                  // 53.ADX
     BGM_ID_ARIA_OF_THE_SOUL,               // 54.ADX
     BGM_ID_TANAKA_AMAZING_COMM,            // 55.ADX
     BGM_ID_PAULOWNIA_MALL,                 // 56.ADX
-    BGM_ID_AFTER_BATTLE,                   // 60.ADX
+    BGM_ID_AFTER_BATTLE = 60,              // 60.ADX
     BGM_ID_UNK_34,                         // 61.ADX (unused)
     BGM_ID_PATH_WAS_CLOSED,                // 62.ADX (game over)
-    BGM_ID_TARTARUS_ARQA,                  // 70.ADX (tartarus 2nd block)
+    BGM_ID_TARTARUS_ARQA = 70,             // 70.ADX (tartarus 2nd block)
     BGM_ID_VOICE_SOMEONE_CALLS,            // 71.ADX (tartarus 1st floor)
     BGM_ID_TARTARUS_TZIAH,                 // 72.ADX (tartarus 4th block)
     BGM_ID_TARTARUS_HARABAH,               // 73.ADX (tartarus 5th block)
@@ -69,7 +69,7 @@ typedef enum
     BGM_ID_AFTERNOON_BREAK,                // 91.ADX
     BGM_ID_UNK_58,                         // 92.ADX
     BGM_ID_VELVET_ROOM_FINAL,              // 93.ADX
-    BGM_ID_MAIN_MENU,                      // 115.ADX
+    BGM_ID_MAIN_MENU = 115,                // 115.ADX
     BGM_ID_NONE = 0xFFFF,
 } BgmId;
 
