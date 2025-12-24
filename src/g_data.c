@@ -1,6 +1,7 @@
 #include "g_data.h"
 #include "datPersona.h"
 #include "datCalc.h"
+#include "temporary.h"
 
 #include <stdlib.h>
 
@@ -67,9 +68,6 @@ static const u8* physicalConditionsString[13] =
 
 static u32 gIUnkArr[128]; // TODO
 
-// 007cdfa4. It's probably in a struct. See enum GameScenario
-static u32 scenarioMode;
-
 // TODO
 void FUN_0016f3e0(u32 idx, u32 value)
 {
@@ -130,15 +128,15 @@ void FUN_0016cdf0(u16 characterId)
 }
 
 // FUN_0017d7f0
-void Game_SetScenarioMode(u32 scenario)
+void GlobalCtx_SetScenarioMode(u32 scenario)
 {
-    scenarioMode = scenario;
+    ctx.scenarioMode = scenario;
 }
 
 // FUN_0017d800
-u32 Game_GetScenarioMode()
+u32 GlobalCtx_GetScenarioMode()
 {
-    return scenarioMode;
+    return ctx.scenarioMode;
 }
 
 // FUN_0016cd60

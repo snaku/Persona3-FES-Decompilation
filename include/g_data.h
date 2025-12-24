@@ -313,8 +313,8 @@ extern CalendarData calendar;
 extern PlayerData gPlayerData;
 extern CharacterData* characters[MAX_CHARACTERS];
 
-void Game_SetScenarioMode(u32 scenario);
-u32 Game_GetScenarioMode();
+void GlobalCtx_SetScenarioMode(u32 scenario);
+u32 GlobalCtx_GetScenarioMode();
 
 void FUN_0016f3e0(u32 idx, u32 value);
 void FUN_0016cdf0(u16 characterId);
