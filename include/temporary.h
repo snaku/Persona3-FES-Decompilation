@@ -39,4 +39,31 @@ typedef struct
     u8 a;
 } RGBA;
 
+// TODO
+typedef struct
+{
+    u16 flags;
+    u32 currFloor;
+} TartarusData;
+
+// TODO
+typedef struct
+{
+    TartarusData* tartarus; // 0x3c
+} UnkStruct1;
+
+// TODO
+typedef struct
+{
+    u8 unkData1[0x124];
+    u32 scenarioMode;       // 007cdfa4. See enum GameScenario
+    u8 unkData2[0x448];
+    BattleData* battle;     // 007ce3ec. NULL when not in a battle
+    UnkStruct1* unkStruct1; // 007ce268. NULL when not in tartarus
+} GlobalCtx;
+
+GlobalCtx ctx; // 007cde80
+
+u32 GlobalCtx_GetCurrentTartarusFloor();
+
 #endif
