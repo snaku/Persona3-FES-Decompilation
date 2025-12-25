@@ -62,6 +62,7 @@ u8 Persona_GetPersonaLevelCharacterId(u16 characterId);
 u32 Persona_GetPersonaNextExp(PersonaData* persona);
 u16* Persona_GetSkills(PersonaData* persona);
 u16* Persona_GetSkillsByCharacterId(u16 characterId);
+inline u8 Persona_GetStat(PersonaData* persona, u16 statId);
 u8 Persona_GetStat2(PersonaData* persona, u16 statId);
 u8 Persona_GetStat3(PersonaData* persona, u16 statId);
 u16 Persona_AddToStat(PersonaData* persona, u16 statId, s8 amount);

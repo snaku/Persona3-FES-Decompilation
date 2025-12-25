@@ -34,6 +34,17 @@ u16* Persona_GetSkillsByCharacterId(u16 characterId)
     return persona->skills;
 }
 
+// was probably inlined
+inline u8 Persona_GetStat(PersonaData* persona, u16 statId)
+{
+    if (statId > PERSONA_STAT_LUCK)
+    {
+        P3FES_ASSERT("datPersona.c", 316);
+    }
+
+    return persona->stats[statId];
+}
+
 // FUN_00173b00
 u8 Persona_GetStat2(PersonaData* persona, u16 statId)
 {
