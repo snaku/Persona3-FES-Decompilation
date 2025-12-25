@@ -311,7 +311,7 @@ typedef struct
 
 extern CalendarData calendar;
 extern PlayerData gPlayerData;
-extern CharacterData* characters[MAX_CHARACTERS];
+extern CharacterData gCharacters[MAX_CHARACTERS];
 
 void GlobalCtx_SetScenarioMode(u32 scenario);
 u32 GlobalCtx_GetScenarioMode();

@@ -114,7 +114,7 @@ PersonaData* Persona_GetPersonaByCharacterId(u16 characterId)
             P3FES_ASSERT("datPersona.c", 779);
         }
 
-        persona = &characters[characterId]->persona;
+        persona = &gCharacters[characterId].persona;
     }
 
     if (persona == NULL)
