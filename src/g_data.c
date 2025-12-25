@@ -5,21 +5,6 @@
 
 #include <stdlib.h>
 
-const u8* courageLevelString[] =
-{
-    "Timid", "Ordinary", "Determined", "Though", "Fearless", "Badass"
-};
-
-const u8* charmLevelString[] =
-{   
-    "Plain", "Unpolished", "Confident", "Smooth", "Popular", "Charismatic"
-};
-
-const u8* academicLevelString[] = 
-{
-    "Slacker", "Average", "Above Average", "Smart", "Intelligent", "Genius"
-};
-
 // 005dc050, TODO
 const u32 playerNextExpThreshold[MAX_CHARACTER_LEVEL] = 
 {
@@ -777,20 +762,6 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
     }
 
     return true;
-}
-
-// FUN_0011a870
-const u8* gData_getCourageLevelString(u16 idx)
-{
-    return courageLevelString[idx];
-}
-const u8* gData_getCharmLevelString(u16 idx)
-{
-    return charmLevelString[idx];
-}
-const u8* gData_getAcademicLevelString(u16 idx)
-{
-    return academicLevelString[idx];
 }
 
 void P3FES_ASSERT(const u8* file, const u32 line)
