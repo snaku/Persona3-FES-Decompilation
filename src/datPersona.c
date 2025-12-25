@@ -34,6 +34,23 @@ u16* Persona_GetSkillsByCharacterId(u16 characterId)
     return persona->skills;
 }
 
+// FUN_00173580
+u16 Persona_GetTotalStat(PersonaData* persona, u16 statId)
+{
+    u16 naturalStat = Persona_GetNaturalStat(persona, statId);
+    u16 bonusStat = Persona_GetBonusStat(persona, statId);
+    u16 stat3 = Persona_GetStat3(persona, statId);
+
+    u16 total = naturalStat + bonusStat + stat3;
+
+    if (total > 99)
+    {
+        return 99;
+    }
+
+    return total;
+}
+
 // was probably inlined
 inline u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
 {
