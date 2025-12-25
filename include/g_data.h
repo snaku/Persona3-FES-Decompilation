@@ -241,11 +241,11 @@ typedef struct
     u16 id;
     u8 level;
     u8 unkData1[0x03];
-    u32 nextExp;   // For characters other than HERO, their exp is linked to their persona
-    u16 skills[8]; // See enum PersonaSkills
-    u8 stats[5];   // See enum PersonaStats
-    u8 stats2[5];  // ??
-    u8 stats3[5];  // ??
+    u32 nextExp;        // For characters other than HERO, their exp is linked to their persona
+    u16 skills[8];      // See enum PersonaSkills
+    u8 naturalStats[5]; // stats gained naturally. See enum PersonaStats
+    u8 bonusStats[5];   // stats gained through incense cards. See enum PersonaStats
+    u8 stats3[5];       // ??
     // other data ?
 } PersonaData; // For reference: Yukari = 008340ec
 

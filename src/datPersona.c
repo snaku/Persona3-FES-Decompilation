@@ -35,25 +35,25 @@ u16* Persona_GetSkillsByCharacterId(u16 characterId)
 }
 
 // was probably inlined
-inline u8 Persona_GetStat(PersonaData* persona, u16 statId)
+inline u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
 {
     if (statId > PERSONA_STAT_LUCK)
     {
         P3FES_ASSERT("datPersona.c", 316);
     }
 
-    return persona->stats[statId];
+    return persona->naturalStats[statId];
 }
 
 // FUN_00173b00
-u8 Persona_GetStat2(PersonaData* persona, u16 statId)
+u8 Persona_GetBonusStat(PersonaData* persona, u16 statId)
 {
     if (statId > PERSONA_STAT_LUCK)
     {
         P3FES_ASSERT("datPersona.c", 454);
     }
 
-    return persona->stats2[statId];
+    return persona->bonusStats[statId];
 }
 
 // FUN_00173c00
@@ -68,7 +68,7 @@ u8 Persona_GetStat3(PersonaData* persona, u16 statId)
 }
 
 // FUN_00174650
-u16 Persona_AddToStat(PersonaData* persona, u16 statId, s8 amount)
+u16 Persona_AddToNaturalStat(PersonaData* persona, u16 statId, s8 amount)
 {
     u8 statTotal;
 
@@ -77,7 +77,7 @@ u16 Persona_AddToStat(PersonaData* persona, u16 statId, s8 amount)
         P3FES_ASSERT("datPersona.c", 722);
     }
     
-    statTotal = persona->stats[statId] + amount;
+    statTotal = persona->naturalStats[statId] + amount;
     if (statTotal < 100)
     {
         if (statTotal < 0)
@@ -90,13 +90,13 @@ u16 Persona_AddToStat(PersonaData* persona, u16 statId, s8 amount)
         statTotal = 99;
     }
 
-    persona->stats[statId] = statTotal;
+    persona->naturalStats[statId] = statTotal;
 
     return statTotal;
 }
 
 // FUN_00174710
-u16 Persona_AddToStatHeroPersonaIdx(u16 heroPersonaIdx, u16 statId, s8 amount)
+u16 Persona_AddToNaturalStatHeroPersonaIdx(u16 heroPersonaIdx, u16 statId, s8 amount)
 {
     u8 statTotal;
     PersonaData* heroPersona = Persona_GetHeroPersona(heroPersonaIdx);
@@ -106,7 +106,7 @@ u16 Persona_AddToStatHeroPersonaIdx(u16 heroPersonaIdx, u16 statId, s8 amount)
         P3FES_ASSERT("datPersona.c", 747);
     }
 
-    return Persona_AddToStat(heroPersona, statId, amount); // was inlined
+    return Persona_AddToNaturalStat(heroPersona, statId, amount); // was inlined
 }
 
 // FUN_00174800
