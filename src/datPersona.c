@@ -73,6 +73,22 @@ u8 Persona_GetBonusStat(PersonaData* persona, u16 statId)
     return persona->bonusStats[statId];
 }
 
+// FUN_00173b60
+void Persona_SetBonusStatByCharacterId(u16 characterId, u16 statId, u8 amount)
+{
+    PersonaData* persona = Persona_GetPersonaByCharacterId(characterId);
+
+    persona->bonusStats[statId] = amount;
+}
+
+// FUN_00173bb0
+void Persona_AddToBonusStatByCharacterId(u16 characterId, u16 statId, s8 amount)
+{
+    PersonaData* persona = Persona_GetPersonaByCharacterId(characterId);
+
+    persona->bonusStats[statId] += amount;
+}
+
 // FUN_00173c00
 u8 Persona_GetStat3(PersonaData* persona, u16 statId)
 {
