@@ -2,6 +2,7 @@
 #define BTLACTION_H
 
 #include "Utils.h"
+#include "g_data.h"
 
 typedef enum
 {
@@ -43,13 +44,23 @@ typedef enum
     BTL_ACTION_STATE_TEST
 } BattleActionState;
 
+typedef struct
+{
+    BattleActorData* btlActor; // 0xa2c
+} BtlActionUnkStruct;
+
 // TODO
 typedef struct 
 {
-    u16 currState; // 0xc
-    u16 unk_0E;
-    u16 oldState;  // 0x10
-    u32 unk_1C;
+    u16 currState;                  // 0xc
+    u16 unk_0e;                     // 0e
+    u16 oldState;                   // 0x10
+    u32 unk_14;                     // 0x14
+    u32 unk_18;                     // 0x18
+    u32 unkTimer;                   // 0x1c. Resets on state change
+    u32 unk_20;                     // 0x20
+    u32 idleWeaponAnimTimer;        // 0x24. Decrement every frame. If underflow, play animation
+    BtlActionUnkStruct* unkStruct1; // 0x28
 } BattleActionStruct;
 
 #endif
