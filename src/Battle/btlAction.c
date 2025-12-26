@@ -73,6 +73,7 @@ void BtlAction_InitStateExit(BattleActionStruct* btlAction);
 void BtlAction_UpdateStateExit(BattleActionStruct* btlAction);
 void BtlAction_InitStateTest(BattleActionStruct* btlAction);
 void BtlAction_UpdateStateTest(BattleActionStruct* btlAction);
+void BtlAction_SetStateAndInit(BattleActionStruct* btlAction, u16 btlState);
 
 typedef struct
 {
@@ -533,11 +534,11 @@ void BtlAction_InitStateTest(BattleActionStruct* btlAction)
 // FUN_00299d30
 void BtlAction_UpdateStateTest(BattleActionStruct* btlAction)
 {
-    BtlAction_SetStateAndExecute(btlAction, BTL_ACTION_STATE_COMMAND);
+    BtlAction_SetStateAndInit(btlAction, BTL_ACTION_STATE_COMMAND);
 }
 
 // FUN_00299d60
-void BtlAction_SetStateAndExecute(BattleActionStruct* btlAction, u16 btlState)
+void BtlAction_SetStateAndInit(BattleActionStruct* btlAction, u16 btlState)
 {
     btlAction->oldState = btlAction->currState;
     btlAction->currState = btlState;
