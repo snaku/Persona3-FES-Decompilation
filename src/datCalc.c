@@ -2,13 +2,13 @@
 #include <stdlib.h>
 
 // FUN_002ffcc0
-u8 BtlActor_GetLevel(BattleActorData* btlActor){
+u8 BtlActor_GetLevel(BattleActorData* btlActorData){
     u8 level;
     PersonaData* persona;
 
-    if (!(btlActor->flags & 4) && !IS_HERO(btlActor->id))
+    if (!(btlActorData->flags & 4) && !IS_HERO(btlActorData->id))
     {
-        persona = Persona_GetPersonaByCharacterId(btlActor->id);
+        persona = Persona_GetPersonaByCharacterId(btlActorData->id);
         if (persona == NULL)
         {
             P3FES_ASSERT("datCalc.c", 66);
@@ -18,7 +18,7 @@ u8 BtlActor_GetLevel(BattleActorData* btlActor){
     }
     else 
     {
-        level = btlActor->battleStatus.level;
+        level = btlActorData->battleStatus.level;
     }
 
     if (level == 0)
@@ -30,92 +30,92 @@ u8 BtlActor_GetLevel(BattleActorData* btlActor){
 }
 
 // FUN_002ffd70
-u16 BtlActor_GetHealth(BattleActorData* btlActor)
+u16 BtlActor_GetHealth(BattleActorData* btlActorData)
 {
-    return btlActor->battleStatus.health;
+    return btlActorData->battleStatus.health;
 }
 
 // FUN_002ffd80
-u16 BtlActor_GetSp(BattleActorData* btlActor)
+u16 BtlActor_GetSp(BattleActorData* btlActorData)
 {
-    return btlActor->battleStatus.sp;
+    return btlActorData->battleStatus.sp;
 }
 
 // FUN_002ffd90
-void BtlActor_SetHealth(BattleActorData* btlActor, u16 health)
+void BtlActor_SetHealth(BattleActorData* btlActorData, u16 health)
 {
-    if (health > 999 && !(btlActor->flags & (1 << 2)))
+    if (health > 999 && !(btlActorData->flags & (1 << 2)))
     {
         health = 999;
     }
 
-    btlActor->battleStatus.health = health;
+    btlActorData->battleStatus.health = health;
 }
 
 // FUN_002ffdc0
-void BtlActor_SetSp(BattleActorData* btlActor, u16 sp)
+void BtlActor_SetSp(BattleActorData* btlActorData, u16 sp)
 {
-    if (sp > 999 && !(btlActor->flags & (1 << 2)))
+    if (sp > 999 && !(btlActorData->flags & (1 << 2)))
     {
         sp = 999;
     }
 
-    btlActor->battleStatus.sp = sp;
+    btlActorData->battleStatus.sp = sp;
 }
 
 // FUN_003004f0
-void BtlActor_AddBattleFlags(BattleActorData* btlActor, u32 flags)
+void BtlActor_AddBattleFlags(BattleActorData* btlActorData, u32 flags)
 {
     const u32 LOW_20_BITS = 0x000FFFFF;
     const u32 HIGH_12_BITS = 0xFFF00000;
 
     if (!(flags & LOW_20_BITS))
     {
-        btlActor->battleStatus.flags = (btlActor->battleStatus.flags & HIGH_12_BITS) |
+        btlActorData->battleStatus.flags = (btlActorData->battleStatus.flags & HIGH_12_BITS) |
                                        (flags & LOW_20_BITS);
     }
 
-    btlActor->battleStatus.flags |= (flags & HIGH_12_BITS);
+    btlActorData->battleStatus.flags |= (flags & HIGH_12_BITS);
 }
 
 // FUN_00300530
-u32 BtlActor_GetBattleFlagsNoDown(BattleActorData* btlActor)
+u32 BtlActor_GetBattleFlagsNoDown(BattleActorData* btlActorData)
 {
     // without bit 20 and over (so BATTLE_FLAG_DOWN)
-    return btlActor->battleStatus.flags & 0x000FFFFF;
+    return btlActorData->battleStatus.flags & 0x000FFFFF;
 }
 
 // FUN_00300550
-u32 BtlActor_GetBattleFlags(BattleActorData* btlActor)
+u32 BtlActor_GetBattleFlags(BattleActorData* btlActorData)
 {
-    return btlActor->battleStatus.flags;
+    return btlActorData->battleStatus.flags;
 }
 
 // FUN_00300560
-void BtlActor_RemoveBattleFlags(BattleActorData* btlActor, u32 flags)
+void BtlActor_RemoveBattleFlags(BattleActorData* btlActorData, u32 flags)
 {
-    btlActor->battleStatus.flags &= ~flags;
+    btlActorData->battleStatus.flags &= ~flags;
 }
 
 // FUN_00300580
-u8 BtlActor_HasBattleFlags(BattleActorData* btlActor, u32 flags)
+u8 BtlActor_HasBattleFlags(BattleActorData* btlActorData, u32 flags)
 {
-    return (btlActor->battleStatus.flags & flags);
+    return (btlActorData->battleStatus.flags & flags);
 }
 
 // FUN_00308c60
-u32 BtlActor_GetHeldWeaponType(BattleActorData* btlActor)
+u32 BtlActor_GetHeldWeaponType(BattleActorData* btlActorData)
 {
     u16 heroWeaponIdx;
     u16 heroWeaponId;
     u16 heroWeaponUnkFlag;
 
-    if (btlActor->flags & (1 << 2))
+    if (btlActorData->flags & (1 << 2))
     {
         return WEAPON_TYPE_1H_SWORD;
     }
 
-    switch (btlActor->id)
+    switch (btlActorData->id)
     {
         case CHARACTER_HERO:
             heroWeaponIdx = Character_GetEquipementIdx(CHARACTER_HERO, EQUIPEMENT_TYPE_WEAPON);
@@ -158,13 +158,13 @@ u32 BtlActor_GetHeldWeaponType(BattleActorData* btlActor)
 }
 
 // FUN_0030b5a0
-u8 BtlActor_IsCharacterDead(BattleActorData* btlActor, s32 param_2)
+u8 BtlActor_IsCharacterDead(BattleActorData* btlActorData, s32 param_2)
 {
     u8 isDead;
 
-    if (!BtlActor_HasBattleFlags(btlActor, BATTLE_FLAG_DEAD))
+    if (!BtlActor_HasBattleFlags(btlActorData, BATTLE_FLAG_DEAD))
     {
-        isDead = btlActor->battleStatus.health < 1;
+        isDead = btlActorData->battleStatus.health < 1;
     }
     else
     {
