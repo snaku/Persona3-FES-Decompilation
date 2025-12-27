@@ -26,9 +26,8 @@ typedef struct
     // data inbetween...
     u16 unk_36;                     // 0x36
     // data inbetween...
-    BattleActor* prev;       // 0x95
-    // data inbetween...
     BattleActor* next;       // 0x4a4
+    BattleActor* prev;       // 0x4a8
 } BattleActor; 
 
 #endif
