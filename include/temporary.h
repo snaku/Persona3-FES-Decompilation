@@ -8,7 +8,7 @@
 
 #include "Utils.h"
 #include "mathTypes.h"
-#include "Battle/btlAction.h"
+#include "Battle/btlActor.h"
 
 const f32 PI = 3.141592f; // 007cae58
 
@@ -29,7 +29,7 @@ typedef struct
     // TODO
     u32 flags;
     Camera camera;
-    BattleActionStruct* btlAction;
+    BattleActor* prevActor; // 0x14c
 } BattleCtx;
 
 // 4 bytes
