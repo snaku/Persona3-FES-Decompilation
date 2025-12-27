@@ -8,6 +8,7 @@
 
 #include "Utils.h"
 #include "mathTypes.h"
+#include "Battle/btlAction.h"
 
 const f32 PI = 3.141592f; // 007cae58
 
@@ -28,7 +29,8 @@ typedef struct
     // TODO
     u32 flags;
     Camera camera;
-} BattleData;
+    BattleActionStruct* btlAction;
+} BattleCtx;
 
 // 4 bytes
 typedef struct
@@ -58,12 +60,13 @@ typedef struct
     u8 unkData1[0x124];
     u32 scenarioMode;       // 007cdfa4. See enum GameScenario
     u8 unkData2[0x448];
-    BattleData* battle;     // 007ce3ec. NULL when not in a battle
+    BattleCtx* btlCtx;     // 007ce3ec. NULL when not in a battle
     UnkStruct1* unkStruct1; // 007ce268. NULL when not in tartarus
 } GlobalCtx;
 
 GlobalCtx ctx; // 007cde80
 
 u32 GlobalCtx_GetCurrentTartarusFloor();
+void* P3FES_Memset(void* dst, u8 value, u32 size);
 
 #endif
