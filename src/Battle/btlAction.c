@@ -567,7 +567,7 @@ BattleActor* BtlAction_AllocAndInit()
 
     // FUN_002d1570(btlActor + 0x38);
 
-    btlActor->unk_0e = 0;
+    btlActor->pendingState = BTL_ACTION_STATE_NON;
     btlActor->unk_14 = 8;
 
     // uVar3 = FUN_0027cb80();
@@ -601,3 +601,12 @@ BattleActor* BtlAction_AllocAndInit()
 
     return btlActor;
 }
+
+void BtlAction_FUN_00299fb0()
+{
+    BattleActor* btlActor = ctx.btlCtx->prevActor;
+
+    // TODO
+}
+
+// 01604130
