@@ -38,7 +38,7 @@ u8* Day_GetCurrentDayString(u32 month, u32 day)
     u32 currentDay;
 
     currentDay = Calendar_GetDaysSinceStartFromDate(month, day);
-    currentDay = Calendar_GetCurrentDay(currentDay);
+    currentDay = Calendar_GetWeekDay(currentDay);
 
     switch(currentDay)
     {
