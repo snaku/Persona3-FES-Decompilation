@@ -1,5 +1,6 @@
-#include "Battle/btlMain.h"
+#include "Battle/btlActor.h"
 #include "Battle/btlAction.h"
+#include "Battle/btlMain.h"
 #include "temporary.h"
 
 #include <stdlib.h>
@@ -90,6 +91,7 @@ void BtlMain_UpdateActors()
                     {
                         actorToUpdate->prev->next = actorToUpdate->next;
                     }
+
                     if (actorToUpdate->next == NULL)
                     {
                         ctx.btlCtx->prevActor = actorToUpdate->prev;

@@ -2,7 +2,8 @@
 #define BTLMAIN_H
 
 #include "Utils.h"
-#include "Battle/btlActor.h"
+
+typedef struct BattleActor BattleActor;
 
 BattleActor* BtlMain_CreateActor();
 void BtlMain_UpdateActors();

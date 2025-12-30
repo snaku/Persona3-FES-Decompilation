@@ -1,14 +1,15 @@
 #ifndef BTLACTOR_H
 #define BTLACTOR_H
 
-#include "g_data.h"
+#include "Utils.h"
 
 typedef struct BattleActor BattleActor;
+struct BattleActorData;
 
 // TODO
 typedef struct
 {
-    BattleActorData* actorData;
+    struct BattleActorData* actorData;
 } BattleActorUnkStruct;
 
 // TODO. 1200 bytes
