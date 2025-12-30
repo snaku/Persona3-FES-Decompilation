@@ -78,20 +78,11 @@ void BtlAction_UpdateStateExit(BattleActor* btlActor);
 void BtlAction_InitStateTest(BattleActor* btlActor);
 void BtlAction_UpdateStateTest(BattleActor* btlActor);
 
-void BtlAction_SetStateAndInit(BattleActor* btlActor, u16 btlState);
-
-typedef struct
-{
-    void (*BtlAction_InitState)(BattleActor* btlActor);
-    void (*BtlAction_UpdateState)(BattleActor* btlActor);
-    const char* name;
-} BattleActionStateEntry;
-
 // 007cc530
-static u32 gUnk_007cc530 = 0;
+u32 gUnk_007cc530 = 0;
 
 // 00693410
-static BattleActionStateEntry gActionStateTable[] = 
+BattleActionStateEntry gActionStateTable[] = 
 {
     {BtlAction_InitStateNon, BtlAction_UpdateStateNon, "NON"},
     {BtlAction_InitStateStandBy, BtlAction_UpdateStateStandBy, "STANDBY"},
@@ -553,60 +544,6 @@ void BtlAction_SetStateAndInit(BattleActor* btlActor, u16 btlState)
     btlActor->unkTimer = 0;
 
     gActionStateTable[btlState].BtlAction_InitState(btlActor);
-}
-
-// FUN_00299e90. Not in this file ?
-BattleActor* BtlAction_AllocAndInit()
-{
-    BattleActor* btlActor;
-
-    // alloc btlActor:
-
-    // btlActor = (*DAT_00960178)(sizeof(BattleActionStruct), 0x40000);
-    P3FES_Memset(btlActor, 0, sizeof(BattleActor));
-
-    // FUN_002d1570(btlActor + 0x38);
-
-    btlActor->pendingState = BTL_ACTION_STATE_NON;
-    btlActor->unk_14 = 8;
-
-    // uVar3 = FUN_0027cb80();
-
-    // 0xFFFFFFE = u32 max - 1
-    if (gUnk_007cc530 > 0xFFFFFFE)
-    {
-        gUnk_007cc530 = 1;
-    }
-
-    btlActor->unk_08 = gUnk_007cc530;
-    btlActor->idleWeaponAnimTimer = -1;
-    gUnk_007cc530++;
-
-    // uVar1 = FUN_002ffbc0(0x3c);
-    // btlActor->unk_36 = uVar1;
-
-    if (ctx.btlCtx->prevActor == NULL)
-    {
-        btlActor->prev = NULL;
-    }
-    else 
-    {
-        ctx.btlCtx->prevActor->next = btlActor;
-        btlActor->prev = ctx.btlCtx->prevActor;
-    }
-    
-    ctx.btlCtx->prevActor = btlActor;
-
-    BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_NON); // was inlined
-
-    return btlActor;
-}
-
-void BtlAction_FUN_00299fb0()
-{
-    BattleActor* btlActor = ctx.btlCtx->prevActor;
-
-    // TODO
 }
 
 // 01604130
