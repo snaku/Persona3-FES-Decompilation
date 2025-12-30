@@ -3,13 +3,16 @@
 
 #include "g_data.h"
 
+typedef struct BattleActor BattleActor;
+
+// TODO
 typedef struct
 {
     BattleActorData* actorData;
 } BattleActorUnkStruct;
 
-// TODO. Really not sure of this name. 1200 bytes
-typedef struct 
+// TODO. 1200 bytes
+struct BattleActor
 {
     // data before...
     u32 unk_08;                     // 0x8
@@ -19,7 +22,8 @@ typedef struct
     u16 oldState;                   // 0x10
     u16 stateTimer;                 // 0x12. If > 0, decrement every frame and if == 0, new state will be pendingState
     u16 unk_14;                     // 0x14
-    u32 unk_18;                     // 0x18
+    u16 unk_18;                     // 0x18
+    u16 unk_1a;                     // 0x1a
     u32 unkTimer;                   // 0x1c. Resets on state change
     u32 unk_20;                     // 0x20
     u32 idleWeaponAnimTimer;        // 0x24. Decrement every frame. If underflow, play animation
@@ -29,6 +33,6 @@ typedef struct
     // data inbetween...
     BattleActor* next;       // 0x4a4
     BattleActor* prev;       // 0x4a8
-} BattleActor; 
+}; 
 
 #endif
