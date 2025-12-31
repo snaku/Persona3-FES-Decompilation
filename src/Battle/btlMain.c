@@ -36,17 +36,17 @@ BattleActor* BtlMain_CreateActor()
     // btlActor->unk_36 = uVar1;
     btlActor->next = NULL;
     
-    if (ctx.btlCtx->prevActor == NULL)
+    if (ctx.btlCtx->prevActorCreated == NULL)
     {
         btlActor->prev = NULL;
     }
     else 
     {
-        ctx.btlCtx->prevActor->next = btlActor;
-        btlActor->prev = ctx.btlCtx->prevActor;
+        ctx.btlCtx->prevActorCreated->next = btlActor;
+        btlActor->prev = ctx.btlCtx->prevActorCreated;
     }
     
-    ctx.btlCtx->prevActor = btlActor;
+    ctx.btlCtx->prevActorCreated = btlActor;
 
     BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_NON); // was inlined
 
@@ -56,7 +56,7 @@ BattleActor* BtlMain_CreateActor()
 // FUN_00299fb0
 void BtlMain_UpdateActors()
 {
-    BattleActor* currActor = ctx.btlCtx->prevActor;
+    BattleActor* currActor = ctx.btlCtx->prevActorCreated;
     BattleActor* actorToUpdate = currActor;
     u8 canUpdateActor;
 
@@ -83,27 +83,25 @@ void BtlMain_UpdateActors()
 
         if (canUpdateActor && !(actorToUpdate->unk_1a & (1 << 2)))
         {
-            if (!(actorToUpdate->unk_18 & (1 << 0)))
+            if (!(actorToUpdate->unk_18 & (1 << 0)) &&
+                 (actorToUpdate->unk_1a & (1 << 1)))
             {
-                if (actorToUpdate->unk_1a & (1 << 1))
+                if (actorToUpdate->prev != NULL)
                 {
-                    if (actorToUpdate->prev != NULL)
-                    {
-                        actorToUpdate->prev->next = actorToUpdate->next;
-                    }
-
-                    if (actorToUpdate->next == NULL)
-                    {
-                        ctx.btlCtx->prevActor = actorToUpdate->prev;
-                    }
-                    else 
-                    {
-                        actorToUpdate->next->prev = actorToUpdate->prev;
-                    }
-
-                    // !!free!!
-                    // (*0096017c)(actorToUpdate);
+                    actorToUpdate->prev->next = actorToUpdate->next;
                 }
+
+                if (actorToUpdate->next == NULL)
+                {
+                    ctx.btlCtx->prevActorCreated = actorToUpdate->prev;
+                }
+                else 
+                {
+                    actorToUpdate->next->prev = actorToUpdate->prev;
+                }
+
+                // !!free!!
+                // (*0096017c)(actorToUpdate);
             }
             else
             {

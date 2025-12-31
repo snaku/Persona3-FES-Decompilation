@@ -29,7 +29,8 @@ typedef struct
     // TODO
     u32 flags;
     Camera camera;
-    BattleActor* prevActor; // 0x14c
+    BattleActor* unkBtlActor_148;  // 0x148
+    BattleActor* prevActorCreated; // 0x14c
 } BattleCtx;
 
 // 4 bytes
