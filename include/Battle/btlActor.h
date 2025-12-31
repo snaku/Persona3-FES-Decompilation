@@ -9,7 +9,10 @@ struct BattleActorData;
 // TODO
 typedef struct
 {
-    struct BattleActorData* actorData;
+    // data before...
+    u32 unkFlag_9c;                    // 0x9c
+    // data inbetween...
+    struct BattleActorData* actorData; // 0xa2c
 } BattleActorUnkStruct;
 
 // TODO. 1200 bytes
@@ -28,7 +31,8 @@ struct BattleActor
     u32 unkTimer;                   // 0x1c. Resets on state change
     u32 unk_20;                     // 0x20
     u32 idleWeaponAnimTimer;        // 0x24. Decrement every frame. If underflow, play animation
-    BattleActorUnkStruct* unkStruct1; // 0x28
+    // data inbetween...
+    BattleActorUnkStruct* unkStruct1; // 0x30
     // data inbetween...
     u16 unk_36;                     // 0x36
     // data inbetween...
