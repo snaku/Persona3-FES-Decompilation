@@ -31,6 +31,13 @@ typedef struct
     Camera camera;
     BattleActor* unkBtlActor_148;  // 0x148
     BattleActor* prevActorCreated; // 0x14c
+    // Data inbetween...
+    BattleActor* unkBtlActor_254;  // 0x254
+    // Data inbetween...
+    BattleActor* prevActorPlaying;   // 0x280. The actor who played before current actor
+    BattleActor* currActorPlaying;   // 0x284. The actor who's currently playing
+    BattleActor* nextActorPlaying;   // 0x288. The actor who will play next
+    BattleActor* unkBtlActor_28c; // 0x28c
 } BattleCtx;
 
 // 4 bytes
