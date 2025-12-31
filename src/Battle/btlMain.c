@@ -116,11 +116,11 @@ void BtlMain_UpdateActors()
 // FUN_0029ad20
 BattleActor* BtlMain_GetCurrActorPlaying()
 {
-    BattleActor* currActorPlaying = ctx.btlCtx->currActorPlaying;
+    BattleActor* currActorPlaying = ctx.btlCtx->unkBtlActor_284;
     
     if (currActorPlaying == NULL)
     {
-        currActorPlaying = ctx.btlCtx->unkBtlActor_254;
+        currActorPlaying = ctx.btlCtx->currActorPlaying;
     }
 
     return currActorPlaying;
