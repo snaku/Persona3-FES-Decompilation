@@ -159,7 +159,16 @@ void BtlAction_InitStateStandBy(BattleActor* btlActor)
 // FUN_0028a9c0
 void BtlAction_UpdateStateStandBy(BattleActor* btlActor)
 {
-    // TODO
+    if ((btlActor->unkStruct1->unkFlag_9c & (1 << 4)))
+    {
+        BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_ENDURE);
+        return;
+    }
+    
+    if (btlActor->unkStruct1->unkFlag_9c & (1 << 0))
+    {
+        BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_DEAD);
+    }
 }
 
 // FUN_0028aa20
