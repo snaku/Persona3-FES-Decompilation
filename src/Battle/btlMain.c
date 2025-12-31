@@ -111,3 +111,17 @@ void BtlMain_UpdateActors()
         }
     }
 }
+
+
+// FUN_0029ad20
+BattleActor* BtlMain_GetCurrActorPlaying()
+{
+    BattleActor* currActorPlaying = ctx.btlCtx->currActorPlaying;
+    
+    if (currActorPlaying == NULL)
+    {
+        currActorPlaying = ctx.btlCtx->unkBtlActor_254;
+    }
+
+    return currActorPlaying;
+}
