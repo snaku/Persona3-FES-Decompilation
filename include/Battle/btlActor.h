@@ -21,7 +21,7 @@ struct BattleActorCore
 struct BattleActor
 {
     // data before...
-    u32 unk_08;                 // 0x8
+    u32 actorId;                // 0x8
     // data inbetween...
     u16 currState;              // 0xc
     u16 pendingState;           // 0xe
