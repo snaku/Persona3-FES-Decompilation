@@ -10,6 +10,7 @@ BattleActor* BtlMain_CreateActor();
 void BtlMain_UpdateActors();
 void BtlMain_DestroyAllActors();
 BattleActor* BtlMain_GetActorByActorCore(BattleActorCore* btlActorCore);
+BattleActor* BtlMain_GetActorByActorId(u32 actorId);
 BattleActor* BtlMain_GetCurrActorPlaying();
 
 #endif

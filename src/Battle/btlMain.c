@@ -28,7 +28,7 @@ BattleActor* BtlMain_CreateActor()
         gUnk_007cc530 = 1;
     }
 
-    btlActor->unk_08 = gUnk_007cc530;
+    btlActor->actorId = gUnk_007cc530;
     btlActor->idleWeaponAnimTimer = -1;
     gUnk_007cc530++;
 
@@ -149,6 +149,24 @@ BattleActor* BtlMain_GetActorByActorCore(BattleActorCore* btlActorCore)
     while (btlActor != NULL)
     {
         if (btlActor->actorCore == btlActorCore)
+        {
+            return btlActor;
+        }
+
+        btlActor = btlActor->prev;
+    }
+
+    return NULL;
+}
+
+// FUN_0029a210
+BattleActor* BtlMain_GetActorByActorId(u32 actorId)
+{
+    BattleActor* btlActor = ctx.btlCtx->prevActorCreated;
+
+    while (btlActor != NULL)
+    {
+        if (btlActor->actorId == actorId)
         {
             return btlActor;
         }
