@@ -6,14 +6,15 @@
 typedef struct BattleActor BattleActor;
 struct BattleActorData;
 
-// TODO
+// TODO. This struct contains the pos, rot and scale (and other unknown things) of the actor
+// temporary name maybe ?
 typedef struct
 {
     // data before...
     u32 unkFlag_9c;                    // 0x9c
     // data inbetween...
     struct BattleActorData* actorData; // 0xa2c
-} BattleActorUnkStruct;
+} BattleActorCore;
 
 // TODO. 1200 bytes
 struct BattleActor
@@ -32,7 +33,7 @@ struct BattleActor
     u32 unk_20;                     // 0x20
     u32 idleWeaponAnimTimer;        // 0x24. Decrement every frame. If underflow, play animation
     // data inbetween...
-    BattleActorUnkStruct* unkStruct1; // 0x30
+    BattleActorCore* actorCore; // 0x30
     // data inbetween...
     u16 unk_36;                     // 0x36
     // data inbetween...
