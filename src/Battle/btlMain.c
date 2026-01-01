@@ -141,6 +141,24 @@ void BtlMain_DestroyAllActors()
     }
 }
 
+// FUN_0029a1d0
+BattleActor* BtlMain_GetActorByActorCore(BattleActorCore* btlActorCore)
+{
+    BattleActor* btlActor = ctx.btlCtx->prevActorCreated;
+
+    while (btlActor != NULL)
+    {
+        if (btlActor->actorCore == btlActorCore)
+        {
+            return btlActor;
+        }
+
+        btlActor = btlActor->prev;
+    }
+
+    return NULL;
+}
+
 // FUN_0029ad20
 BattleActor* BtlMain_GetCurrActorPlaying()
 {
