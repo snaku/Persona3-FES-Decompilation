@@ -106,7 +106,7 @@ void BtlMain_UpdateActors()
             else
             {
                 gActionStateTable[actorToUpdate->currState].BtlAction_UpdateState(actorToUpdate);
-                actorToUpdate->unkTimer += 2;
+                actorToUpdate->stateTimer += 2;
             }
         }
     }

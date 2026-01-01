@@ -552,7 +552,7 @@ void BtlAction_SetStateAndInit(BattleActor* btlActor, u16 btlState)
 {
     btlActor->oldState = btlActor->currState;
     btlActor->currState = btlState;
-    btlActor->unkTimer = 0;
+    btlActor->stateTimer = 0;
 
     gActionStateTable[btlState].BtlAction_InitState(btlActor);
 }

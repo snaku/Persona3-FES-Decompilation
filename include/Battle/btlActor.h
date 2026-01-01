@@ -28,7 +28,7 @@ struct BattleActor
     u16 unk_14;                     // 0x14
     u16 unk_18;                     // 0x18
     u16 unk_1a;                     // 0x1a
-    u32 unkTimer;                   // 0x1c. Resets on state change
+    u32 stateTimer;                 // 0x1c. 60hz timer (+=2 per frame at 30fps). Reset on state change
     u32 unk_20;                     // 0x20
     u32 idleWeaponAnimTimer;        // 0x24. Decrement every frame. If underflow, play animation
     // data inbetween...
