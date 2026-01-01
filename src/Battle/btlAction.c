@@ -78,6 +78,8 @@ void BtlAction_UpdateStateExit(BattleActor* btlActor);
 void BtlAction_InitStateTest(BattleActor* btlActor);
 void BtlAction_UpdateStateTest(BattleActor* btlActor);
 
+void BtlAction_SetStateWithDelay(BattleActor* btlActor, u16 btlState, u16 delay);
+
 // 007cc530
 u32 gUnk_007cc530 = 0;
 
@@ -164,7 +166,7 @@ void BtlAction_UpdateStateStandBy(BattleActor* btlActor)
         BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_ENDURE);
         return;
     }
-    
+
     if (btlActor->unkStruct1->unkFlag_9c & (1 << 0))
     {
         BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_DEAD);
@@ -553,6 +555,21 @@ void BtlAction_SetStateAndInit(BattleActor* btlActor, u16 btlState)
     btlActor->unkTimer = 0;
 
     gActionStateTable[btlState].BtlAction_InitState(btlActor);
+}
+
+// FUN_00299db0. 'delay' = number of frames
+void BtlAction_SetStateWithDelay(BattleActor* btlActor, u16 btlState, u16 delay)
+{
+    if (delay == 0)
+    {
+        btlActor->pendingState = BTL_ACTION_STATE_NON;
+        btlActor->pendingStateTimer = 0;
+        BtlAction_SetStateAndInit(btlActor, btlState); // was probably inlined ?
+        return;
+    }
+
+    btlActor->pendingState = btlState;
+    btlActor->pendingStateTimer = delay;
 }
 
 // 01604130
