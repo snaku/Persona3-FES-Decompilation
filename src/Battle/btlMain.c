@@ -112,6 +112,34 @@ void BtlMain_UpdateActors()
     }
 }
 
+// FUN_0029a140
+void BtlMain_DestroyAllActors()
+{
+    BattleActor* currActor = ctx.btlCtx->prevActorCreated;
+    BattleActor* prevActor;
+
+    while (currActor != NULL)
+    {   
+        prevActor = currActor->prev;
+        if (prevActor != NULL)
+        {
+            prevActor->next = currActor->next;
+        }
+
+        if (currActor->next == NULL)
+        {
+            ctx.btlCtx->prevActorCreated = currActor->prev;
+        }
+        else
+        {
+            currActor->next->prev = currActor->prev;
+        }
+
+        // !!free!!
+        // (*0096017c)(currActor);
+        currActor = prevActor;
+    }
+}
 
 // FUN_0029ad20
 BattleActor* BtlMain_GetCurrActorPlaying()
@@ -124,4 +152,11 @@ BattleActor* BtlMain_GetCurrActorPlaying()
     }
 
     return currActorPlaying;
+}
+
+u8 BtlMain_FUN_0029a4f0(BattleActor* btlActor)
+{
+    // TODO
+
+    return true;
 }
