@@ -67,10 +67,10 @@ void BtlMain_UpdateActors()
         canUpdateActor = true;
 
         if (actorToUpdate->pendingState != BTL_ACTION_STATE_NON &&
-            actorToUpdate->stateTimer != 0)
+            actorToUpdate->pendingStateTimer != 0)
         {
-            actorToUpdate->stateTimer--;
-            if (actorToUpdate->stateTimer == 0)
+            actorToUpdate->pendingStateTimer--;
+            if (actorToUpdate->pendingStateTimer == 0)
             {
                 BtlAction_SetStateAndInit(actorToUpdate, actorToUpdate->pendingState); // was inlined
                 actorToUpdate->pendingState = BTL_ACTION_STATE_NON;

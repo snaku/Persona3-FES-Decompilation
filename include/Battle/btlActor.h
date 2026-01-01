@@ -24,7 +24,7 @@ struct BattleActor
     u16 currState;                  // 0xc
     u16 pendingState;               // 0xe
     u16 oldState;                   // 0x10
-    u16 stateTimer;                 // 0x12. If > 0, decrement every frame and if == 0, new state will be pendingState
+    u16 pendingStateTimer;          // 0x12. If > 0, decrement every frame and if == 0, new state will be pendingState
     u16 unk_14;                     // 0x14
     u16 unk_18;                     // 0x18
     u16 unk_1a;                     // 0x1a
