@@ -43,4 +43,6 @@ typedef struct
 
 extern BattleStateEntry gBattleStateTable[];
 
+void BtlState_ProcessBattleState();
+
 #endif
