@@ -330,10 +330,7 @@ void BtlState_ProcessBattleState()
 
     if (ctx.btlCtx->btlStateCtx.stateToSet != BTL_STATE_NULL)
     {
-        ctx.btlCtx->btlStateCtx.currState = ctx.btlCtx->btlStateCtx.stateToSet;
-        ctx.btlCtx->btlStateCtx.stateTimer = 0;
-
-        gBattleStateTable[ctx.btlCtx->btlStateCtx.currState].BtlState_InitState(&ctx.btlCtx->btlStateCtx);
+        BtlState_SetStateAndInit(ctx.btlCtx->btlStateCtx.stateToSet); // was inlined
 
         ctx.btlCtx->btlStateCtx.stateToSet = BTL_STATE_NULL;
     }
