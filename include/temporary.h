@@ -9,6 +9,7 @@
 #include "Utils.h"
 #include "mathTypes.h"
 #include "Battle/btlActor.h"
+#include "Battle/btlState.h"
 
 const f32 PI = 3.141592f; // 007cae58
 
@@ -37,7 +38,9 @@ typedef struct
     BattleActor* nextActorPlaying; // 0x258. The actor who will play next
     BattleActor* unkBtlActor_25c;  // 0x25c
     // Data inbetween...
-    BattleActor* unkBtlActor_284;   // 0x284
+    BattleActor* unkBtlActor_284;  // 0x284
+    // Data inbetween...
+    BattleStateCtx btlStateCtx;    // 0x2b4
 } BattleCtx;
 
 // 4 bytes
