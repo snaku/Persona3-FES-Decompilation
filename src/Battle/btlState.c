@@ -314,6 +314,15 @@ u32 BtlState_UpdateStateMcNop(BattleStateCtx* btlStateCtx)
     return BTL_STATE_NULL;
 }
 
+// FUN_0029de20
+void BtlState_SetStateAndInit(u32 btlState)
+{
+    ctx.btlCtx->btlStateCtx.currState = btlState;
+    ctx.btlCtx->btlStateCtx.stateTimer = 0;
+    
+    gBattleStateTable[ctx.btlCtx->btlStateCtx.currState].BtlState_InitState(&ctx.btlCtx->btlStateCtx);
+}
+
 // FUN_0029de80
 void BtlState_ProcessBattleState()
 {
@@ -323,7 +332,9 @@ void BtlState_ProcessBattleState()
     {
         ctx.btlCtx->btlStateCtx.currState = ctx.btlCtx->btlStateCtx.stateToSet;
         ctx.btlCtx->btlStateCtx.stateTimer = 0;
+
         gBattleStateTable[ctx.btlCtx->btlStateCtx.currState].BtlState_InitState(&ctx.btlCtx->btlStateCtx);
+
         ctx.btlCtx->btlStateCtx.stateToSet = BTL_STATE_NULL;
     }
 
