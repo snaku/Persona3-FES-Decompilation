@@ -1,3 +1,10 @@
 #include "Battle/btlState.h"
+#include "temporary.h"
 
-// TODO
+#include <stdlib.h>
+
+// 00693760
+BattleStateEntry gBattleStateTable[] = 
+{
+    {NULL, NULL, "NULL"}
+};
