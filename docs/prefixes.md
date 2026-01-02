@@ -2,12 +2,14 @@
 
 ## Developer prefixes
 
-| Prefix |   Developper Name |       File name example       |     Notes     |
+| Prefix |   Developer Name |       File name example       |     Notes     |
 |--------|-------------------|-------------------------------|---------------|
 |  'k_'  |  Yujiro Kosaka    | 'k_dungeon.c', 'k_fldCamera.c'|   field dev   |
 |  'mt'  |  Masaya Takano    | 'mt_EvtMain.c', 'mt_EvtMenu.c'|   event dev   |
 |  'h_'  |  Hirokazu Tohyama | 'h_sfdPlay.c', 'h_malloc.c'   |   chief dev   |
 |  'nm'  |  Nobuyoshi Miwa   | 'nmSequence.c', 'nmCmdList.c' |  facility dev |
+|  'd_'  |  Daisuke Yajima   | 'd_sysm.c', d_sysmdrw.c'      |  field sub dev|
+|  'y_'  |  Yukinobu Miyashita| 'y_stparts.c'                |  interface sub dev|
 
 ## Functional prefixes
 
