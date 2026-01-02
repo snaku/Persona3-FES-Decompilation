@@ -229,7 +229,10 @@ void BtlState_InitStateLose(BattleStateCtx* btlStateCtx)
 // FUN_0029d730
 u32 BtlState_UpdateStateLose(BattleStateCtx* btlStateCtx)
 {
-    // TODO
+    if (btlStateCtx->stateTimer >= 31)
+    {
+        return BTL_STATE_FADE_OUT;
+    }
 
     return BTL_STATE_NULL;
 }
