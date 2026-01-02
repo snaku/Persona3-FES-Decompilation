@@ -45,5 +45,6 @@ extern BattleStateEntry gBattleStateTable[];
 
 void BtlState_SetStateAndInit(u32 btlState);
 void BtlState_ProcessBattleState();
+void BtlState_SetStateNon();
 
 #endif

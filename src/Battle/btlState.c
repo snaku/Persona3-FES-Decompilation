@@ -344,3 +344,11 @@ void BtlState_ProcessBattleState()
 
     ctx.btlCtx->btlStateCtx.stateTimer++;
 }
+
+// FUN_0029df40. Called when 'btlCtx' is allocated
+void BtlState_SetStateNon()
+{
+    BtlState_SetStateAndInit(BTL_STATE_NON); // was inlined
+
+    ctx.btlCtx->btlStateCtx.stateToSet = BTL_STATE_NULL;
+}
