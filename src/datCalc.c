@@ -8,7 +8,7 @@ u8 Unit_GetLevel(UnitData* unit){
     u8 level;
     PersonaData* persona;
 
-    if (!(unit->flags & 4) && !IS_HERO(unit->id))
+    if (!(unit->flags & UNIT_FLAG_ENEMY) && !IS_HERO(unit->id))
     {
         persona = Persona_GetPersonaByCharacterId(unit->id);
         if (persona == NULL)
@@ -46,7 +46,7 @@ u16 Unit_GetSp(UnitData* unit)
 // FUN_002ffd90
 void Unit_SetHealth(UnitData* unit, u16 health)
 {
-    if (health > 999 && !(unit->flags & (1 << 2)))
+    if (health > 999 && !(unit->flags & UNIT_FLAG_ENEMY))
     {
         health = 999;
     }
@@ -57,7 +57,7 @@ void Unit_SetHealth(UnitData* unit, u16 health)
 // FUN_002ffdc0
 void Unit_SetSp(UnitData* unit, u16 sp)
 {
-    if (sp > 999 && !(unit->flags & (1 << 2)))
+    if (sp > 999 && !(unit->flags & UNIT_FLAG_ENEMY))
     {
         sp = 999;
     }
@@ -112,7 +112,7 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
     u16 heroWeaponId;
     u16 heroWeaponUnkFlag;
 
-    if (unit->flags & (1 << 2))
+    if (unit->flags & UNIT_FLAG_ENEMY)
     {
         return WEAPON_TYPE_1H_SWORD;
     }
@@ -164,7 +164,7 @@ u8 Unit_IsCharacterDead(UnitData* unit, s32 param_2)
 {
     u8 isDead;
 
-    if (!Unit_HasBattleFlags(unit, UNIT_FLAG_DEAD))
+    if (!Unit_HasBattleFlags(unit, UNIT_STATUS_FLAG_DEAD))
     {
         isDead = unit->status.health < 1;
     }

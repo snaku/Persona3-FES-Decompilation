@@ -88,14 +88,14 @@ void FUN_0016cdf0(u16 characterId)
         P3FES_Memset(&gPlayerData, 0, 60);
         gPlayerData.unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
         gPlayerData.unit.id = CHARACTER_HERO;
-        gPlayerData.unit.flags = 1;
+        gPlayerData.unit.flags = UNIT_FLAG_ACTIVE;
     }
     else 
     {
         P3FES_Memset(&gCharacters[characterId], 0, 60);
         gCharacters[characterId].unit.id = characterId;
         gCharacters[characterId].unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
-        gCharacters[characterId].unit.flags = 1;
+        gCharacters[characterId].unit.flags = UNIT_FLAG_ACTIVE;
     }
 }
 
@@ -631,7 +631,7 @@ void FUN_0016e670(u16 socialLink)
 
     if (Player_GetSocialLinkLevel(socialLink) < 1)
     {
-        printf("no exist comu %s %d", "g_data.c", 1568);
+        //printf("no exist comu %s %d", "g_data.c", 1568);
     }
     else
     {
