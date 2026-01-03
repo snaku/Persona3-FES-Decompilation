@@ -9,39 +9,13 @@
 #include "Utils.h"
 #include "mathTypes.h"
 #include "Battle/btlActor.h"
-#include "Battle/btlState.h"
+#include "Battle/btlCtx.h"
 
 const f32 PI = 3.141592f; // 007cae58
 
 #define QUARTER_PI ((PI) / 4)
 #define DEG_TO_RAD(deg) (PI * (deg) / 180.0f)
 #define RAD_TO_DEG(rad) ((rad) * 180.0f / PI)
-
-typedef struct
-{
-    // TODO
-    Vec3f pos;
-    Vec3f rot;
-    f32 fov;
-} Camera;
-
-typedef struct
-{
-    // TODO
-    u32 flags;
-    Camera camera;
-    BattleActor* unkBtlActor_148;  // 0x148
-    BattleActor* prevActorCreated; // 0x14c
-    // Data inbetween...
-    BattleActor* prevActorPlaying; // 0x250. The actor who played before current actor
-    BattleActor* currActorPlaying; // 0x254. The actor who's currently playing
-    BattleActor* nextActorPlaying; // 0x258. The actor who will play next
-    BattleActor* unkBtlActor_25c;  // 0x25c
-    // Data inbetween...
-    BattleActor* unkBtlActor_284;  // 0x284
-    // Data inbetween...
-    BattleStateCtx btlStateCtx;    // 0x2b4
-} BattleCtx;
 
 // 4 bytes
 typedef struct
