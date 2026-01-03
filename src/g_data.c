@@ -1,5 +1,5 @@
-#include "g_data.h"
 #include "datPersona.h"
+#include "g_data.h"
 #include "datCalc.h"
 #include "temporary.h"
 

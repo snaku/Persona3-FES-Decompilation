@@ -1,4 +1,6 @@
 #include "datPersona.h"
+#include "g_data.h"
+
 #include <stdlib.h>
 
 // FUN_001732f0

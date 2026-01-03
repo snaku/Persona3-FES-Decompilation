@@ -1,7 +1,7 @@
 #ifndef DATPERSONA_H
 #define DATPERSONA_H
 
-#include "g_data.h"
+#include "Utils.h"
 
 #define PERSONA_FLAG_VALID      (1 << 0) // not sure of this name
 #define PERSONA_FLAG_HEART_ITEM (1 << 2)
@@ -56,6 +56,21 @@ typedef enum
     PERSONA_STAT_AGILITY,
     PERSONA_STAT_LUCK
 } PersonaStats;
+
+// 52 bytes, not sure of the real size
+typedef struct
+{
+    u16 flags;
+    u16 id;
+    u8 level;
+    u8 unkData1[0x03];
+    u32 nextExp;        // For characters other than HERO, their exp is linked to their persona
+    u16 skills[8];      // See enum PersonaSkills
+    u8 naturalStats[5]; // stats gained naturally. See enum PersonaStats
+    u8 bonusStats[5];   // stats gained through incense cards. See enum PersonaStats
+    u8 stats3[5];       // ??
+    // other data ?
+} PersonaData; // For reference: Yukari = 008340ec
 
 u8 Persona_GetPersonaLevel(PersonaData* persona);
 u8 Persona_GetPersonaLevelCharacterId(u16 characterId);
