@@ -86,16 +86,16 @@ void FUN_0016cdf0(u16 characterId)
     if (IS_HERO(characterId))
     {
         P3FES_Memset(&gPlayerData, 0, 60);
-        gPlayerData.btlActor.battleStatus.aiTactic = AI_TACTIC_ACT_FREELY;
-        gPlayerData.btlActor.id = CHARACTER_HERO;
-        gPlayerData.btlActor.flags = 1;
+        gPlayerData.unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
+        gPlayerData.unit.id = CHARACTER_HERO;
+        gPlayerData.unit.flags = 1;
     }
     else 
     {
         P3FES_Memset(&gCharacters[characterId], 0, 60);
-        gCharacters[characterId].btlActor.id = characterId;
-        gCharacters[characterId].btlActor.battleStatus.aiTactic = AI_TACTIC_ACT_FREELY;
-        gCharacters[characterId].btlActor.flags = 1;
+        gCharacters[characterId].unit.id = characterId;
+        gCharacters[characterId].unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
+        gCharacters[characterId].unit.flags = 1;
     }
 }
 
@@ -112,16 +112,16 @@ u32 GlobalCtx_GetScenarioMode()
 }
 
 // FUN_0016cd60
-BattleActorData* Character_GetBtlActor(u16 characterId)
+UnitData* Character_GetUnit(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return &gPlayerData.btlActor;
+        return &gPlayerData.unit;
     }
 
     if (characterId < MAX_CHARACTERS)
     {
-        return &gCharacters[characterId].btlActor;
+        return &gCharacters[characterId].unit;
     }
 
     P3FES_ASSERT("g_data.c", 737);
@@ -150,10 +150,10 @@ u8 Character_GetLevel(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return BtlActor_GetLevel(&gPlayerData.btlActor);
+        return Unit_GetLevel(&gPlayerData.unit);
     }
 
-    return BtlActor_GetLevel(&gCharacters[characterId].btlActor);
+    return Unit_GetLevel(&gCharacters[characterId].unit);
 }
 
 // FUN_0016c970
@@ -161,10 +161,10 @@ u32 Character_GetBattleFlagsNoDown(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return BtlActor_GetBattleFlagsNoDown(&gPlayerData.btlActor);
+        return Unit_GetBattleFlagsNoDown(&gPlayerData.unit);
     }
 
-    return BtlActor_GetBattleFlagsNoDown(&gCharacters[characterId].btlActor);
+    return Unit_GetBattleFlagsNoDown(&gCharacters[characterId].unit);
 }
 
 // FUN_0016d8b0
@@ -172,10 +172,10 @@ void Character_AddBattleFlags(u16 characterId, u32 flags)
 {
     if (IS_HERO(characterId))
     {
-        BtlActor_AddBattleFlags(&gPlayerData.btlActor, flags);
+        Unit_AddBattleFlags(&gPlayerData.unit, flags);
     }
 
-    BtlActor_AddBattleFlags(&gCharacters[characterId].btlActor, flags);
+    Unit_AddBattleFlags(&gCharacters[characterId].unit, flags);
 }
 
 // FUN_0016d980
@@ -195,10 +195,10 @@ void Character_RemoveBattleFlags(u16 characterId, u32 flags)
 {
     if (IS_HERO(characterId))
     {
-        BtlActor_RemoveBattleFlags(&gPlayerData.btlActor, flags);
+        Unit_RemoveBattleFlags(&gPlayerData.unit, flags);
     }
 
-    BtlActor_RemoveBattleFlags(&gCharacters[characterId].btlActor, flags);
+    Unit_RemoveBattleFlags(&gCharacters[characterId].unit, flags);
 }
 
 // FUN_0016d2f0
@@ -285,11 +285,11 @@ void Character_SetAiTactic(u16 characterId, u8 aiTacticId)
 
     if (IS_HERO(characterId))
     {
-        gPlayerData.btlActor.battleStatus.aiTactic = aiTacticId;
+        gPlayerData.unit.status.aiTactic = aiTacticId;
         return;
     }
 
-    gCharacters[characterId].btlActor.battleStatus.aiTactic = aiTacticId;
+    gCharacters[characterId].unit.status.aiTactic = aiTacticId;
 }
 
 // FUN_0016dd80
@@ -297,10 +297,10 @@ u8 Character_GetAiTactic(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return gPlayerData.btlActor.battleStatus.aiTactic;
+        return gPlayerData.unit.status.aiTactic;
     }
 
-    return gCharacters[characterId].btlActor.battleStatus.aiTactic;
+    return gCharacters[characterId].unit.status.aiTactic;
 }
 
 // FUN_0016d6b0
@@ -376,11 +376,11 @@ void Character_SetHealth(u16 characterId, u16 health)
 
     if (!IS_HERO(characterId))
     {
-        gCharacters[characterId].btlActor.battleStatus.health = health;
-        tmp = gPlayerData.btlActor.battleStatus.health;
+        gCharacters[characterId].unit.status.health = health;
+        tmp = gPlayerData.unit.status.health;
     }
 
-    gPlayerData.btlActor.battleStatus.health = tmp;
+    gPlayerData.unit.status.health = tmp;
 }
 
 // FUN_0016e920

@@ -1,3 +1,5 @@
+/*This file is horrible*/
+
 #ifndef G_DATA_H
 #define G_DATA_H
 
@@ -207,7 +209,7 @@ typedef struct
     u16 sp;
     u32 flags;   // See BATTLE_FLAG_*
     u8 aiTactic; // See enum AiTactic
-} BattleStatus;
+} UnitStatus;
 
 // 6 bytes
 typedef struct
@@ -231,8 +233,8 @@ typedef struct
     u16 flags;
     u16 id;
     u16 id2;
-    BattleStatus battleStatus;
-} BattleActorData; 
+    UnitStatus status;
+} UnitData; 
 
 // 52 bytes, not sure of the real size
 typedef struct
@@ -272,7 +274,7 @@ typedef struct
 // start: 00836224. 
 typedef struct
 {
-    /*0x00*/ BattleActorData btlActor;
+    /*0x00*/ UnitData unit;
     /*0x10*/ u8 pad1[0x2B];
     /*0x3B*/ SocialStats socialStats;
     /*0x41*/ u32 nextExp;
@@ -291,7 +293,7 @@ typedef struct
 // 868 bytes
 typedef struct
 {
-    BattleActorData btlActor;
+    UnitData unit;
     SocialStats socialStats;
     u8 unkData1[0x06];
     PhysicalState physicalState;
@@ -323,7 +325,7 @@ u16 Calendar_GetDaysSinceApr5();
 u8 Calendar_GetTime();
 void Calendar_SetTime(u8 time);
 
-BattleActorData* Character_GetBtlActor(u16 characterId);
+UnitData* Character_GetUnit(u16 characterId);
 u8 Character_GetLevel(u16 characterId);
 u16 Persona_GetPersonaId(u16 characterId);
 u32 Character_GetBattleFlagsNoDown(u16 characterId);

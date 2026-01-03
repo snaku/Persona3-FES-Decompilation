@@ -3,18 +3,18 @@
 
 #include "datPersona.h"
 
-u8 BtlActor_GetLevel(BattleActorData* btlActorData);
-u16 BtlActor_GetHealth(BattleActorData* btlActorData);
-u16 BtlActor_GetSp(BattleActorData* btlActorData);
-void BtlActor_SetHealth(BattleActorData* btlAbtlActorDatactor, u16 health);
-void BtlActor_SetSp(BattleActorData* btlActorData, u16 sp);
-void BtlActor_AddBattleFlags(BattleActorData* btlActorData, u32 flags);
-u32 BtlActor_GetBattleFlagsNoDown(BattleActorData* btlActorData);
-u32 BtlActor_GetBattleFlags(BattleActorData* btlActorData);
-void BtlActor_RemoveBattleFlags(BattleActorData* btlActorData, u32 flags);
-u8 BtlActor_HasBattleFlags(BattleActorData* btlActorData, u32 flags);
-u32 BtlActor_GetHeldWeaponType(BattleActorData* btlActorData);
-u8 BtlActor_IsCharacterDead(BattleActorData* btlActorData, s32 param_2);
+u8 Unit_GetLevel(UnitData* unit);
+u16 Unit_GetHealth(UnitData* unit);
+u16 Unit_GetSp(UnitData* unit);
+void Unit_SetHealth(UnitData* unit, u16 health);
+void Unit_SetSp(UnitData* unit, u16 sp);
+void Unit_AddBattleFlags(UnitData* unit, u32 flags);
+u32 Unit_GetBattleFlagsNoDown(UnitData* unit);
+u32 Unit_GetBattleFlags(UnitData* unit);
+void Unit_RemoveBattleFlags(UnitData* unit, u32 flags);
+u8 Unit_HasBattleFlags(UnitData* unit, u32 flags);
+u32 Unit_GetHeldWeaponType(UnitData* unit);
+u8 Unit_IsCharacterDead(UnitData* unit, s32 param_2);
 void FUN_0030c440();
 
 #endif

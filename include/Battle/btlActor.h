@@ -5,7 +5,7 @@
 
 typedef struct BattleActor BattleActor;
 typedef struct BattleActorCore BattleActorCore;
-struct BattleActorData;
+struct UnitData;
 
 // TODO. This struct contains the pos, rot and scale (and other unknown things) of the actor
 // temporary name maybe ?
@@ -14,7 +14,7 @@ struct BattleActorCore
     // data before...
     u32 unkFlag_9c;                    // 0x9c
     // data inbetween...
-    struct BattleActorData* actorData; // 0xa2c
+    struct UnitData* unit; // 0xa2c
 };
 
 // TODO. 1200 bytes
@@ -23,8 +23,8 @@ struct BattleActor
     // data before...
     u32 actorId;                // 0x8
     // data inbetween...
-    u16 currState;              // 0xc
-    u16 pendingState;           // 0xe
+    u16 currState;              // 0xc. See enum 'BattleActionState'
+    u16 pendingState;           // 0xe. See enum 'BattleActionState'
     u16 oldState;               // 0x10
     u16 pendingStateTimer;      // 0x12. If > 0, decrement every frame and if == 0, new state will be pendingState
     u16 unk_14;                 // 0x14
