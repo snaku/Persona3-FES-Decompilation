@@ -159,6 +159,37 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
     return WEAPON_TYPE_1H_SWORD;
 }
 
+// FUN_003009a0. Return true if unit has at least one equipment with the effect
+u8 Unit_HasEquipmentEffect(UnitData* unit, u16 effect)
+{
+    u8 equipWithEffectNum = 0;
+    u16 equipIdx;
+    u8 equipEffect;
+
+    if (unit->flags & UNIT_FLAG_ENEMY)
+    {
+        return false;
+    }
+
+    if (unit->id > MAX_CHARACTERS)
+    {
+        P3FES_ASSERT("datCalc.h", 286);
+    }
+
+    for (u32 i = 0; i < EQUIPEMENT_TYPE_ACCESSORY; i++)
+    {
+        equipIdx = Character_GetEquipementIdx(unit->id, i);
+        equipEffect = Character_GetEquipementEffect(unit->id, equipIdx);
+
+        if (effect == equipEffect)
+        {
+            equipWithEffectNum++;
+        }
+    }
+
+    return equipWithEffectNum != 0;
+}
+
 // FUN_0030b5a0
 u8 Unit_IsUnitDead(UnitData* unit, s32 param_2)
 {
