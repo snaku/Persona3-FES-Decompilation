@@ -15,19 +15,6 @@
 #define SOCIAL_STAT_MIN_POINT 0
 #define SOCIAL_STAT_MAX_POINT 999
 
-#define BATTLE_FLAG_CHARM    (1 << 0)  // 0x01
-#define BATTLE_FLAG_DISTRESS (1 << 1)  // 0x02
-#define BATTLE_FLAG_DIZZY    (1 << 2)  // 0x04
-#define BATTLE_FLAG_FEAR     (1 << 3)  // 0x08
-#define BATTLE_FLAG_RAGE     (1 << 4)  // 0x10
-#define BATTLE_FLAG_FREEZE   (1 << 5)  // 0x20
-#define BATTLE_FLAG_SHOCK    (1 << 6)  // 0x40
-#define BATTLE_FLAG_POISON   (1 << 7)  // 0x80
-#define BATTLE_FLAG_ORGIA    (1 << 8)  // 0x100
-#define BATTLE_FLAG_OVERHEAT (1 << 9)  // 0x200
-#define BATTLE_FLAG_DEAD     (1 << 19) // 0x80000
-#define BATTLE_FLAG_DOWN     (1 << 20) // 0x100000
-
 typedef enum
 {
     GAME_SCENARIO_JOURNEY,
