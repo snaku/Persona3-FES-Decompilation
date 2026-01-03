@@ -210,7 +210,8 @@ typedef struct
 {
     u16 id;
     u32 type;
-    u16 sUnk1;
+    u8 cUnk1;
+    u8 effect;
     u16 firstStat;
     u16 secondStat;
     u16 sUnk2;
