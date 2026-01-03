@@ -2,6 +2,9 @@
 
 #include <stdlib.h>
 
+const f32 PI = 3.141592f;
+GlobalCtx ctx;
+
 // FUN_001bff20
 u32 GlobalCtx_GetCurrentTartarusFloor()
 {

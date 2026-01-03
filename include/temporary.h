@@ -11,7 +11,7 @@
 #include "Battle/btlActor.h"
 #include "Battle/btlCtx.h"
 
-const f32 PI = 3.141592f; // 007cae58
+extern const f32 PI; // 007cae58
 
 #define QUARTER_PI ((PI) / 4)
 #define DEG_TO_RAD(deg) (PI * (deg) / 180.0f)
@@ -49,7 +49,7 @@ typedef struct
     UnkStruct1* unkStruct1; // 007ce268. NULL when not in tartarus
 } GlobalCtx;
 
-GlobalCtx ctx; // 007cde80
+extern GlobalCtx ctx; // 007cde80
 
 u32 GlobalCtx_GetCurrentTartarusFloor();
 void* P3FES_Memset(void* dst, u8 value, u32 size);
