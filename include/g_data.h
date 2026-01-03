@@ -309,6 +309,7 @@ u16 Character_GetPhysicalCondition(u16 characterId);
 
 u16 Character_GetEquipementIdx(u16 characterId, u16 equipementType);
 u16 Character_GetEquipementId(u16 characterId, u16 equipementIdx);
+u8 Character_GetEquipementEffect(u16 characterId, u16 equipementIdx);
 
 u16 Player_GetActiveSocialLink();
 u8 Player_GetSocialLinkLevel(u16 socialLink);

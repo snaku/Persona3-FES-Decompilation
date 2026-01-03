@@ -541,6 +541,25 @@ u16 Character_GetEquipementId(u16 characterId, u16 equipementIdx)
     // return (&DAT_007fd6c8 + equipementIdx * 0x14 + characterId * 0x364);
 }
 
+// FUN_0016f900
+u8 Character_GetEquipementEffect(u16 characterId, u16 equipementIdx)
+{
+    if (characterId == -1)
+    {
+        // return (&DAT_00833e89)[characterId * 0x14];
+    }
+    else if (IS_HERO(characterId))
+    {
+        return gPlayerData.equipementsData.equipements[equipementIdx].effect;
+    }
+    else if (characterId <= 255)
+    {
+        return gCharacters[characterId].equipements[equipementIdx].effect;
+    }
+
+    // return (equpementIdx * 0x14 + characterId * 0x364 + 0x7fd6d1);
+}
+
 static inline u16 Inl_Character_GetSocialStatLevel(u16 point, const u16* threshold, u32 size)
 {
     u16 idx = size - 1;
