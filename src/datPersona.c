@@ -54,7 +54,7 @@ u16 Persona_GetTotalStat(PersonaData* persona, u16 statId)
 }
 
 // was probably inlined
-inline u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
+u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
 {
     if (statId > PERSONA_STAT_LUCK)
     {
