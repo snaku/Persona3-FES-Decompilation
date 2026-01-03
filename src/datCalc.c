@@ -83,7 +83,7 @@ void Unit_AddBattleFlags(UnitData* unit, u32 flags)
 // FUN_00300530
 u32 Unit_GetBattleFlagsNoDown(UnitData* unit)
 {
-    // without bit 20 and over (so UNIT_FLAG_DOWN)
+    // without bit 20 and over (so UNIT_STATUS_FLAG_DOWN)
     return unit->status.flags & 0x000FFFFF;
 }
 
@@ -160,7 +160,7 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
 }
 
 // FUN_0030b5a0
-u8 Unit_IsCharacterDead(UnitData* unit, s32 param_2)
+u8 Unit_IsUnitDead(UnitData* unit, s32 param_2)
 {
     u8 isDead;
 

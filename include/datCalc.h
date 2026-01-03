@@ -15,7 +15,7 @@ u32 Unit_GetBattleFlags(UnitData* unit);
 void Unit_RemoveBattleFlags(UnitData* unit, u32 flags);
 u8 Unit_HasBattleFlags(UnitData* unit, u32 flags);
 u32 Unit_GetHeldWeaponType(UnitData* unit);
-u8 Unit_IsCharacterDead(UnitData* unit, s32 param_2);
+u8 Unit_IsUnitDead(UnitData* unit, s32 param_2);
 void FUN_0030c440();
 
 #endif
