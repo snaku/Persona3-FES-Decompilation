@@ -1,4 +1,6 @@
 #include "datCalc.h"
+#include "g_data.h"
+
 #include <stdlib.h>
 
 // FUN_002ffcc0
@@ -81,7 +83,7 @@ void Unit_AddBattleFlags(UnitData* unit, u32 flags)
 // FUN_00300530
 u32 Unit_GetBattleFlagsNoDown(UnitData* unit)
 {
-    // without bit 20 and over (so BATTLE_FLAG_DOWN)
+    // without bit 20 and over (so UNIT_FLAG_DOWN)
     return unit->status.flags & 0x000FFFFF;
 }
 
@@ -162,7 +164,7 @@ u8 Unit_IsCharacterDead(UnitData* unit, s32 param_2)
 {
     u8 isDead;
 
-    if (!Unit_HasBattleFlags(unit, BATTLE_FLAG_DEAD))
+    if (!Unit_HasBattleFlags(unit, UNIT_FLAG_DEAD))
     {
         isDead = unit->status.health < 1;
     }
