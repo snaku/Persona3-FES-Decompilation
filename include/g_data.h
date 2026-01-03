@@ -3,7 +3,7 @@
 #ifndef G_DATA_H
 #define G_DATA_H
 
-#include "Utils.h"
+#include "datUnit.h"
 
 #define MAX_CHARACTERS CHARACTER_MAX - 1 // there's 10 characters in persona 3, but the player has its own struct
 #define MAX_CHARACTER_LEVEL 99
@@ -201,16 +201,6 @@ typedef enum
     CALENDAR_DAY_MAX
 } CalendarDays;
 
-// 10 bytes
-typedef struct
-{
-    u8 level;
-    u16 health;
-    u16 sp;
-    u32 flags;   // See BATTLE_FLAG_*
-    u8 aiTactic; // See enum AiTactic
-} UnitStatus;
-
 // 6 bytes
 typedef struct
 {
@@ -226,15 +216,6 @@ typedef struct
     u16 fatigueCounter;    // if 0, character will become tired
     u16 oldFatigueCounter; // value before entering tartarus
 } PhysicalState;
-
-// 15 bytes
-typedef struct
-{
-    u16 flags;
-    u16 id;
-    u16 id2;
-    UnitStatus status;
-} UnitData; 
 
 // 52 bytes, not sure of the real size
 typedef struct
