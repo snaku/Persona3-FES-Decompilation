@@ -322,10 +322,6 @@ u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay
 u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);
 
-const u8* gData_getCourageLevelString(u16 idx);
-const u8* gData_getCharmLevelString(u16 idx);
-const u8* gData_getAcademicLevelString(u16 idx);
-
 void P3FES_ASSERT(const u8* file, const u32 line);
 void P3FES_LOG1(const char* fmt, ...);
 
