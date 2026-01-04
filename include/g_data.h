@@ -130,10 +130,10 @@ typedef enum
 
 typedef enum
 {
-    EQUIPEMENT_TYPE_WEAPON,
-    EQUIPEMENT_TYPE_ARMOR,
-    EQUIPEMENT_TYPE_BOOTS,
-    EQUIPEMENT_TYPE_ACCESSORY
+    EQUIPMENT_TYPE_WEAPON,
+    EQUIPMENT_TYPE_ARMOR,
+    EQUIPMENT_TYPE_BOOTS,
+    EQUIPMENT_TYPE_ACCESSORY
 } EquimentTypes;
 
 typedef enum
@@ -216,15 +216,15 @@ typedef struct
     u16 secondStat;
     u16 sUnk2;
     u8 unkData[0x04];
-} EquipementData;
+} EquipmentData;
 
 // 16 bytes
 typedef struct
 {
-    u16 equipementsIdx[4];       // See enum EquipementTypes to access each idx
-    EquipementData* equipements; // 00836794 -> 010c15f0
+    u16 equipmentsIdx[4];       // See enum EquipmentTypes to access each idx
+    EquipmentData* equipments; // 00836794 -> 010c15f0
     void* unkPtr;                // 00836798 -> 010c2d90
-} PlayerEquipementData;
+} PlayerEquipmentData;
 
 // start: 00836224. 
 typedef struct
@@ -240,7 +240,7 @@ typedef struct
              u16 equippedPersona;      // 0 to 11
              PersonaData personas[12]; // start: 00836ba8
              u8 unkData2[0x292];
-             PlayerEquipementData equipementsData; // 0083678c
+             PlayerEquipmentData equipmentsData; // 0083678c
              PersonaData compendium[188]; // 00836E52. Not in this struct (will move it later). Not sure of the size
     // TODO: The rest of the struct
 } PlayerData;
@@ -252,8 +252,8 @@ typedef struct
     SocialStats socialStats;
     u8 unkData1[0x06];
     PhysicalState physicalState;
-    u16 equipementsIdx[4];         // always 0, 1, 2, 3
-    EquipementData equipements[4];
+    u16 equipmentsIdx[4];         // always 0, 1, 2, 3
+    EquipmentData equipments[4];
     u8 unkData2[0x4C];
     PersonaData persona;
     u8 unkData3[0x297]; // TODO
@@ -307,9 +307,9 @@ u16 Character_GetCourageLevel(u16 couragePoint);
 u32 Character_GetNextExp(u16 characterId);
 u16 Character_GetPhysicalCondition(u16 characterId);
 
-u16 Character_GetEquipementIdx(u16 characterId, u16 equipementType);
-u16 Character_GetEquipementId(u16 characterId, u16 equipementIdx);
-u8 Character_GetEquipementEffect(u16 characterId, u16 equipementIdx);
+u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType);
+u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx);
+u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx);
 
 u16 Player_GetActiveSocialLink();
 u8 Player_GetSocialLinkLevel(u16 socialLink);

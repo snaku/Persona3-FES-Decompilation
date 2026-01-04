@@ -120,8 +120,8 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
     switch (unit->id)
     {
         case CHARACTER_HERO:
-            heroWeaponIdx = Character_GetEquipementIdx(CHARACTER_HERO, EQUIPEMENT_TYPE_WEAPON);
-            heroWeaponId = Character_GetEquipementId(CHARACTER_HERO, heroWeaponIdx);
+            heroWeaponIdx = Character_GetEquipmentIdx(CHARACTER_HERO, EQUIPMENT_TYPE_WEAPON);
+            heroWeaponId = Character_GetEquipmentId(CHARACTER_HERO, heroWeaponIdx);
             // unkStruct = FUN_00170d60(heroWeaponId);
             // heroWeaponUnkFlag = unkStruct->flags;
             if (heroWeaponUnkFlag & (1 << 15) || heroWeaponUnkFlag & (1 << 7))
@@ -166,15 +166,15 @@ u8 Unit_CountEquipmentWithEffectById(u16 characterId, u16 effect)
     u16 equipIdx;
     u8 equipEffect;
 
-    if (characterId > MAX_CHARACTERS)
+    if (characterId >= CHARACTER_MAX)
     {
         P3FES_ASSERT("datCalc.h", 286);
     }
 
-    for (u32 i = 0; i < EQUIPEMENT_TYPE_ACCESSORY; i++)
+    for (u32 i = 0; i < EQUIPMENT_TYPE_ACCESSORY; i++)
     {
-        equipIdx = Character_GetEquipementIdx(characterId, i);
-        equipEffect = Character_GetEquipementEffect(characterId, equipIdx);
+        equipIdx = Character_GetEquipmentIdx(characterId, i);
+        equipEffect = Character_GetEquipmentEffect(characterId, equipIdx);
 
         if (effect == equipEffect)
         {

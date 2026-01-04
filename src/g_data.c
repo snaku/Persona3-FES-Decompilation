@@ -510,39 +510,39 @@ void FUN_0016ca90(u16 characterId, u16 param_2)
 }
 
 // FUN_0016cb80
-u16 Character_GetEquipementIdx(u16 characterId, u16 equipementType)
+u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType)
 {
     if (IS_HERO(characterId))
     {
-        return gPlayerData.equipementsData.equipementsIdx[equipementType];
+        return gPlayerData.equipmentsData.equipmentsIdx[equipmentType];
     }
 
-    return gCharacters[characterId].equipementsIdx[equipementType];
+    return gCharacters[characterId].equipmentsIdx[equipmentType];
 }
 
 // FUN_0016f630
-u16 Character_GetEquipementId(u16 characterId, u16 equipementIdx)
+u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx)
 {
     // TODO
     
     if (characterId == -1) // ?
     {
-        // return (&DAT_00833e80)[equipementIdx * 10];
+        // return (&DAT_00833e80)[equipmentIdx * 10];
     }
     else if (IS_HERO(characterId))
     {
-        return gPlayerData.equipementsData.equipements[equipementIdx].id;
+        return gPlayerData.equipmentsData.equipments[equipmentIdx].id;
     }
     else if (characterId <= 255)
     {
-        return gCharacters[characterId].equipements[equipementIdx].id;
+        return gCharacters[characterId].equipments[equipmentIdx].id;
     }
 
-    // return (&DAT_007fd6c8 + equipementIdx * 0x14 + characterId * 0x364);
+    // return (&DAT_007fd6c8 + equipmentIdx * 0x14 + characterId * 0x364);
 }
 
 // FUN_0016f900
-u8 Character_GetEquipementEffect(u16 characterId, u16 equipementIdx)
+u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx)
 {
     if (characterId == -1)
     {
@@ -550,11 +550,11 @@ u8 Character_GetEquipementEffect(u16 characterId, u16 equipementIdx)
     }
     else if (IS_HERO(characterId))
     {
-        return gPlayerData.equipementsData.equipements[equipementIdx].effect;
+        return gPlayerData.equipmentsData.equipments[equipmentIdx].effect;
     }
     else if (characterId <= 255)
     {
-        return gCharacters[characterId].equipements[equipementIdx].effect;
+        return gCharacters[characterId].equipments[equipmentIdx].effect;
     }
 
     // return (equpementIdx * 0x14 + characterId * 0x364 + 0x7fd6d1);
