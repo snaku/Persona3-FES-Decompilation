@@ -6,7 +6,7 @@
 
 typedef struct BattleActor BattleActor;
 
-typedef struct
+typedef struct BattleCtx
 {
     // TODO
     u32 flags;

@@ -1,11 +1,11 @@
 #ifndef BTLACTOR_H
 #define BTLACTOR_H
 
-#include "Utils.h"
+#include "datUnit.h"
 
 typedef struct BattleActor BattleActor;
 typedef struct BattleActorCore BattleActorCore;
-struct UnitData;
+typedef struct UnitData UnitData;
 
 // TODO. This struct contains the pos, rot and scale (and other unknown things) of the actor
 // temporary name maybe ?
@@ -14,7 +14,7 @@ struct BattleActorCore
     // data before...
     u32 unkFlag_9c;                    // 0x9c
     // data inbetween...
-    struct UnitData* unit; // 0xa2c
+    UnitData* unit; // 0xa2c
 };
 
 // TODO. 1200 bytes

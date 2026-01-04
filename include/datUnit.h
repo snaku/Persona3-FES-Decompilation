@@ -30,7 +30,7 @@ typedef struct
 } UnitStatus;
 
 // 15 bytes
-typedef struct
+typedef struct UnitData
 {
     u16 flags; // See 'UNIT_FLAG_*'
     u16 id;

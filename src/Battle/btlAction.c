@@ -1,6 +1,8 @@
+#include "datUnit.h"
+#include "datCalc.h"
+#include "Battle/btlCtx.h"
 #include "Battle/btlActor.h"
 #include "Battle/btlAction.h"
-#include "datCalc.h"
 #include "temporary.h"
 
 #include <stdlib.h>

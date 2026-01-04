@@ -1,3 +1,5 @@
+#include "datUnit.h"
+#include "Battle/btlCtx.h"
 #include "Battle/btlActor.h"
 #include "Battle/btlAction.h"
 #include "Battle/btlMain.h"

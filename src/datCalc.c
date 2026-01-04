@@ -1,5 +1,5 @@
-#include "datCalc.h"
 #include "g_data.h"
+#include "datCalc.h"
 
 #include <stdlib.h>
 

@@ -2,7 +2,8 @@
 #define DATCALC_H
 
 #include "datPersona.h"
-#include "datUnit.h"
+
+typedef struct UnitData UnitData;
 
 u8 Unit_GetLevel(UnitData* unit);
 u16 Unit_GetHealth(UnitData* unit);

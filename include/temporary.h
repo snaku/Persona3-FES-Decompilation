@@ -9,13 +9,14 @@
 #include "Utils.h"
 #include "mathTypes.h"
 #include "Battle/btlActor.h"
-#include "Battle/btlCtx.h"
 
 extern const f32 PI; // 007cae58
 
 #define QUARTER_PI ((PI) / 4)
 #define DEG_TO_RAD(deg) (PI * (deg) / 180.0f)
 #define RAD_TO_DEG(rad) ((rad) * 180.0f / PI)
+
+typedef struct BattleCtx BattleCtx;
 
 // 4 bytes
 typedef struct

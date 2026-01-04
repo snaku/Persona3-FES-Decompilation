@@ -1,3 +1,4 @@
+#include "Battle/btlCtx.h"
 #include "Battle/btlState.h"
 #include "temporary.h"
 
