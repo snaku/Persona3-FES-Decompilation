@@ -173,6 +173,7 @@ void Character_AddBattleFlags(u16 characterId, u32 flags)
     if (IS_HERO(characterId))
     {
         Unit_AddBattleFlags(&gPlayerData.unit, flags);
+        return;
     }
 
     Unit_AddBattleFlags(&gCharacters[characterId].unit, flags);
