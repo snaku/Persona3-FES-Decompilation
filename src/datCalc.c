@@ -171,16 +171,20 @@ u8 Unit_CountEquipmentWithEffectById(u16 characterId, u16 effect)
         P3FES_ASSERT("datCalc.h", 286);
     }
 
-    for (u32 i = 0; i < EQUIPMENT_TYPE_ACCESSORY; i++)
-    {
-        equipIdx = Character_GetEquipmentIdx(characterId, i);
-        equipEffect = Character_GetEquipmentEffect(characterId, equipIdx);
+    // weapon
+    equipIdx = Character_GetEquipmentIdx(characterId, EQUIPMENT_TYPE_WEAPON);
+    equipEffect = Character_GetEquipmentEffect(characterId, equipIdx);
+    if (effect == equipEffect) equipWithEffectNum++;
 
-        if (effect == equipEffect)
-        {
-            equipWithEffectNum++;
-        }
-    }
+    // armor
+    equipIdx = Character_GetEquipmentIdx(characterId, EQUIPMENT_TYPE_ARMOR);
+    equipEffect = Character_GetEquipmentEffect(characterId, equipIdx);
+    if (effect == equipEffect) equipWithEffectNum++;
+
+    // boots
+    equipIdx = Character_GetEquipmentIdx(characterId, EQUIPMENT_TYPE_BOOTS);
+    equipEffect = Character_GetEquipmentEffect(characterId, equipIdx);
+    if (effect == equipEffect) equipWithEffectNum++;
 
     return equipWithEffectNum;
 }
