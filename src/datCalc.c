@@ -159,8 +159,8 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
     return WEAPON_TYPE_1H_SWORD;
 }
 
-// FUN_003009a0. Return true if unit has at least one equipment with the effect
-u8 Unit_HasEquipmentEffect(UnitData* unit, u16 effect)
+// FUN_003009a0. Return the number of equipments with the effect
+u8 Unit_CountEquipmentWithEffect(UnitData* unit, u16 effect)
 {
     u8 equipWithEffectNum = 0;
     u16 equipIdx;
@@ -168,7 +168,7 @@ u8 Unit_HasEquipmentEffect(UnitData* unit, u16 effect)
 
     if (unit->flags & UNIT_FLAG_ENEMY)
     {
-        return false;
+        return 0;
     }
 
     if (unit->id > MAX_CHARACTERS)
@@ -187,7 +187,7 @@ u8 Unit_HasEquipmentEffect(UnitData* unit, u16 effect)
         }
     }
 
-    return equipWithEffectNum != 0;
+    return equipWithEffectNum;
 }
 
 // FUN_0030b5a0
