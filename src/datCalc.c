@@ -159,27 +159,22 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
     return WEAPON_TYPE_1H_SWORD;
 }
 
-// FUN_003009a0. Return the number of equipments with the effect
-u8 Unit_CountEquipmentWithEffect(UnitData* unit, u16 effect)
+// FUN_00300870. Return the number of equipments with the effect
+u8 Unit_CountEquipmentWithEffectById(u16 characterId, u16 effect)
 {
     u8 equipWithEffectNum = 0;
     u16 equipIdx;
     u8 equipEffect;
 
-    if (unit->flags & UNIT_FLAG_ENEMY)
-    {
-        return 0;
-    }
-
-    if (unit->id > MAX_CHARACTERS)
+    if (characterId > MAX_CHARACTERS)
     {
         P3FES_ASSERT("datCalc.h", 286);
     }
 
     for (u32 i = 0; i < EQUIPEMENT_TYPE_ACCESSORY; i++)
     {
-        equipIdx = Character_GetEquipementIdx(unit->id, i);
-        equipEffect = Character_GetEquipementEffect(unit->id, equipIdx);
+        equipIdx = Character_GetEquipementIdx(characterId, i);
+        equipEffect = Character_GetEquipementEffect(characterId, equipIdx);
 
         if (effect == equipEffect)
         {
@@ -188,6 +183,17 @@ u8 Unit_CountEquipmentWithEffect(UnitData* unit, u16 effect)
     }
 
     return equipWithEffectNum;
+}
+
+// FUN_003009a0. Return the number of equipments with the effect
+u8 Unit_CountEquipmentWithEffect(UnitData* unit, u16 effect)
+{
+    if (unit->flags & UNIT_FLAG_ENEMY)
+    {
+        return 0;
+    }
+
+    return Unit_CountEquipmentWithEffectById(unit->id, effect); // was probably inlined
 }
 
 // FUN_0030b5a0
