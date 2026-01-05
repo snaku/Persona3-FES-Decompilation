@@ -5,6 +5,7 @@
 
 #include "datUnit.h"
 #include "datPersona.h"
+#include "datCalendar.h"
 
 #define MAX_CHARACTERS CHARACTER_MAX - 1 // there's 10 characters in persona 3, but the player has its own struct
 #define MAX_CHARACTER_LEVEL 99
@@ -148,47 +149,6 @@ typedef enum
     WEAPON_TYPE_GUN
 } WeaponTypes;
 
-typedef enum
-{
-    CALENDAR_TIME_LATE_NIGHT1,
-    CALENDAR_TIME_EARLY_MORNING,
-    CALENDAR_TIME_MORNING,
-    CALENDAR_TIME_LUNCH,
-    CALENDAR_TIME_AFTERNOON,
-    CALENDAR_TIME_AFTER_SCHOOL,
-    CALENDAR_TIME_EVENING,
-    CALENDAR_TIME_LATE_NIGHT2,
-    CALENDAR_TIME_DARK_HOUR
-} CalendarTime;
-
-typedef enum
-{
-    CALENDAR_MONTH_JANUARY = 1,
-    CALENDAR_MONTH_FEBRUARY,
-    CALENDAR_MONTH_MARCH,
-    CALENDAR_MONTH_APRIL,
-    CALENDAR_MONTH_MAY,
-    CALENDAR_MONTH_JUNE,
-    CALENDAR_MONTH_JULY,
-    CALENDAR_MONTH_AUGUST,
-    CALENDAR_MONTH_SEPTEMBER,
-    CALENDAR_MONTH_OCTOBER,
-    CALENDAR_MONTH_NOVEMBER,
-    CALENDAR_MONTH_DECEMBER
-} CalendarMonths;
-
-typedef enum
-{
-    CALENDAR_DAY_SUNDAY,
-    CALENDAR_DAY_MONDAY,
-    CALENDAR_DAY_TUESDAY,
-    CALENDAR_DAY_WEDNESDAY,
-    CALENDAR_DAY_THURSDAY,
-    CALENDAR_DAY_FRIDAY,
-    CALENDAR_DAY_SATURDAY,
-    CALENDAR_DAY_MAX
-} CalendarDays;
-
 // 6 bytes
 typedef struct
 {
@@ -259,15 +219,8 @@ typedef struct
     u8 unkData3[0x297]; // TODO
 } CharacterData;
 
-typedef struct
-{
-    u16 daysSinceApr5; // 0083679c
-    u8 time;
-    // TODO: unk data after time
-} CalendarData;
-
-extern CalendarData calendar;
 extern PlayerData gPlayerData;
+extern CalendarData calendar;
 extern CharacterData gCharacters[MAX_CHARACTERS];
 
 void GlobalCtx_SetScenarioMode(u32 scenario);
@@ -314,13 +267,6 @@ u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx);
 u16 Player_GetActiveSocialLink();
 u8 Player_GetSocialLinkLevel(u16 socialLink);
 PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx);
-
-u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day);
-u32 Calendar_GetWeekDay(u32 daysSinceApr5);
-u32 Calendar_GetCurrentWeekDay();
-u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
-u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
-u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);
 
 void P3FES_ASSERT(const u8* file, const u32 line);
 void P3FES_LOG1(const char* fmt, ...);
