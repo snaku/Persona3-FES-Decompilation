@@ -30,6 +30,26 @@ u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
     return dayAccumulator + day - 5; // - 5 because the game starts in april 5th
 }
 
+// FUN_0017da40. Return the current day of the month
+u32 Calendar_GetCurrentDay()
+{
+    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
+    u16 month = CALENDAR_MONTH_APRIL;
+
+    while (numOfDaysInMonths[month] <= daysSinceApr5)
+    {
+        daysSinceApr5 -= numOfDaysInMonths[month];
+        month++;
+
+        if (month >= CALENDAR_MONTH_MAX)
+        {
+            month = CALENDAR_MONTH_JANUARY;
+        }
+    }
+
+    return daysSinceApr5 + 1;
+}
+
 // FUN_0017dae0
 u32 Calendar_GetWeekDay(u32 daysSinceApr5)
 {

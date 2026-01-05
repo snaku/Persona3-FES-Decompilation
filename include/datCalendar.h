@@ -29,7 +29,8 @@ typedef enum
     CALENDAR_MONTH_SEPTEMBER,
     CALENDAR_MONTH_OCTOBER,
     CALENDAR_MONTH_NOVEMBER,
-    CALENDAR_MONTH_DECEMBER
+    CALENDAR_MONTH_DECEMBER,
+    CALENDAR_MONTH_MAX
 } CalendarMonths;
 
 typedef enum
@@ -54,6 +55,7 @@ typedef struct
 extern const u16 numOfDaysInMonths[12];
 
 u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day);
+u32 Calendar_GetCurrentDay();
 u32 Calendar_GetWeekDay(u32 daysSinceApr5);
 u32 Calendar_GetCurrentWeekDay();
 u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
