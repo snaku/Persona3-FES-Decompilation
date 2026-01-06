@@ -265,6 +265,7 @@ void Calendar_SetTime(u8 time);
 void Calendar_SetDaysSkipTarget(u16 days);
 void Calendar_SetTimeSkipTarget(u8 time);
 void Calendar_SetSkipToTarget(u32 val);
+void Global_SetGlobalFlag(u32 bit, u8 enabled);
 u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx);
 u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx);
 
@@ -274,5 +275,6 @@ PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx);
 
 void P3FES_ASSERT(const u8* file, const u32 line);
 void P3FES_LOG1(const char* fmt, ...);
+void P3FES_LOG3(const char* fmt, ...);
 
 #endif // G_DATA_H

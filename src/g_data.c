@@ -46,6 +46,10 @@ static const u8* physicalConditionsString[13] =
     "The medicine cured your illness."
 };
 
+// 0083a21c
+static u32 gGlobalFlags[176];
+
+// 0083a4dc
 static u32 gIUnkArr[128]; // TODO
 
 // TODO
@@ -552,6 +556,46 @@ void Calendar_SetSkipToTarget(u32 val)
     calendar.skipToTarget = val;
 }
 
+// FUN_0016f1f0
+void Global_SetGlobalFlag(u32 bit, u8 enabled)
+{
+    u32 bitField;
+    s32 idx;
+
+    // 5632 is the total number of bit 
+    // (There are 176 u32 in the array. u32 = 4 bytes = 32 bit. 32 * 176 = 5632)
+    if ((s32)bit < 0 || (s32)bit >= 5632)
+    {
+        P3FES_ASSERT("g_data.c", 1933);
+    }
+
+    if (bit == 4982)
+    {
+        P3FES_LOG3("hit \n");
+    }
+
+    idx = bit / 32;
+    if ((s32)bit < 0)
+    {
+        idx = (s32)(bit + 0x1f) / 32;
+    }
+
+    bitField = bit & 0x1f;
+    if ((s32)bit < 0 && bitField != 0)
+    {
+        bitField -= 32;
+    }
+
+    bitField = 1 << (bitField & 0x1f);
+    if (enabled)
+    {
+        gGlobalFlags[idx] |= bitField;
+        return;
+    }
+    
+    gGlobalFlags[idx] &= ~bitField;
+}
+
 // FUN_0016f630
 u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx)
 {
@@ -716,6 +760,12 @@ void P3FES_ASSERT(const u8* file, const u32 line)
 
 // FUN_001052b0
 void P3FES_LOG1(const char* fmt, ...)
+{
+    // ...
+}
+
+// FUN_005225a8
+void P3FES_LOG3(const char* fmt, ...)
 {
     // ...
 }
