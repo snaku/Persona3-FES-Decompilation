@@ -137,6 +137,32 @@ u32 Calendar_GetCurrentWeekDay()
     return Calendar_GetWeekDay(daysSinceApr5); // was inlined
 }
 
+// FUN_0017dcf0
+u8 Calendar_IsHolidayOrSunday()
+{
+    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
+    u32 currDayOfMonth;
+    u32 currMonth;
+
+    if (Calendar_GetWeekDay(daysSinceApr5) == CALENDAR_DAY_SUNDAY)
+    {
+        return true;
+    }
+
+    currMonth = Calendar_GetMonthFromDaysSinceApr5(daysSinceApr5);
+    currDayOfMonth = Calendar_GetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
+
+    for (u16 i = 0; i < 0x164; i++)
+    {
+        if (holidays[i].month == -1) break;
+        if (currMonth == holidays[i].month && currDayOfMonth == holidays[i].day)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 // FUN_0017e480
 u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)

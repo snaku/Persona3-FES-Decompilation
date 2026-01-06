@@ -60,6 +60,7 @@ u32 Calendar_GetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5);
 u32 Calendar_GetCurrentDay();
 u32 Calendar_GetWeekDay(u32 daysSinceApr5);
 u32 Calendar_GetCurrentWeekDay();
+u8 Calendar_IsHolidayOrSunday();
 u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);
