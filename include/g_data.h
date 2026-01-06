@@ -246,7 +246,6 @@ void Character_SetHealth(u16 characterId, u16 health);
 void Character_SetActiveSocialLink(u16 activeSocialLink);
 u16 Calendar_GetDaysSinceApr5();
 u8 Calendar_GetTime();
-void Calendar_SetTime(u8 time);
 u16 Calendar_GetDaysSkipTarget();
 u8 Calendar_GetTimeSkipTarget();
 u32 Calendar_GetSkipToTarget();
@@ -261,8 +260,11 @@ u16 Character_GetCharmLevel(u16 charmPoint);
 u16 Character_GetCourageLevel(u16 couragePoint);
 u32 Character_GetNextExp(u16 characterId);
 u16 Character_GetPhysicalCondition(u16 characterId);
-
 u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType);
+void Calendar_SetTime(u8 time);
+void Calendar_SetDaysSkipTarget(u16 days);
+void Calendar_SetTimeSkipTarget(u8 time);
+void Calendar_SetSkipToTarget(u32 val);
 u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx);
 u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx);
 

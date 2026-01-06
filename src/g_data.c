@@ -397,12 +397,6 @@ u32 Calendar_GetSkipToTarget()
     return calendar.skipToTarget;
 }
 
-// FUN_0016f150
-void Calendar_SetTime(u8 time)
-{
-    calendar.time = time;
-}
-
 // FUN_0016cfe0
 void Character_SetAcademicPoint(u16 characterId, u16 academicPoint)
 {
@@ -532,6 +526,30 @@ u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType)
     }
 
     return gCharacters[characterId].equipmentsIdx[equipmentType];
+}
+
+// FUN_0016f150
+void Calendar_SetTime(u8 time)
+{
+    calendar.time = time;
+}
+
+// FUN_0016f160
+void Calendar_SetDaysSkipTarget(u16 days)
+{
+    calendar.daysSkipTarget = days;
+}
+
+// FUN_0016f170
+void Calendar_SetTimeSkipTarget(u8 time)
+{
+    calendar.timeSkipTarget = time;
+}
+
+// FUN_0016f180
+void Calendar_SetSkipToTarget(u32 val)
+{
+    calendar.skipToTarget = val;
 }
 
 // FUN_0016f630
