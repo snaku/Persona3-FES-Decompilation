@@ -46,7 +46,7 @@ static const u8* physicalConditionsString[13] =
     "The medicine cured your illness."
 };
 
-// 0083a21c
+// 0083a21c. See 'g_flags.h' !!!
 static u32 gGlobalFlags[176];
 
 // 0083a4dc
@@ -556,7 +556,7 @@ void Calendar_SetSkipToTarget(u32 val)
     calendar.skipToTarget = val;
 }
 
-// FUN_0016f1f0
+// FUN_0016f1f0. See 'g_flags.h' !!!
 void Global_SetGlobalFlag(u32 bit, u8 enabled)
 {
     u32 bitField;
