@@ -54,6 +54,7 @@ typedef struct
 
 extern const u16 numOfDaysInMonths[12];
 
+u32 Calendar_GetMonthFromDaysSinceApr5(u16 daysSinceApr5);
 u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day);
 u32 Calendar_GetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5);
 u32 Calendar_GetCurrentDay();

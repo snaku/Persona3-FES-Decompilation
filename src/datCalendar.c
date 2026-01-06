@@ -40,6 +40,25 @@ const u16 numOfDaysInMonths[12] =
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
+// FUN_0017d830
+u32 Calendar_GetMonthFromDaysSinceApr5(u16 daysSinceApr5)
+{
+    u16 month = CALENDAR_MONTH_APRIL;
+
+    while (numOfDaysInMonths[month] <= daysSinceApr5)
+    {
+        daysSinceApr5 -= numOfDaysInMonths[month];
+        month++;
+
+        if (month >= CALENDAR_MONTH_DECEMBER)
+        {
+            month = CALENDAR_MONTH_JANUARY;
+        }
+    }
+
+    return month;
+}
+
 // FUN_0017d8b0
 u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
 {
