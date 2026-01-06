@@ -95,7 +95,7 @@ u32 Calendar_GetCurrentMonth()
         daysSinceApr5 -= numOfDaysInMonths[month];
         month++;
 
-        if (month >= CALENDAR_MONTH_DECEMBER)
+        if (month >= CALENDAR_MONTH_MAX)
         {
             month = CALENDAR_MONTH_JANUARY;
         }
