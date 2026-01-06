@@ -229,10 +229,6 @@ u32 GlobalCtx_GetScenarioMode();
 void FUN_0016f3e0(u32 idx, u32 value);
 void FUN_0016cdf0(u16 characterId);
 
-u16 Calendar_GetDaysSinceApr5();
-u8 Calendar_GetTime();
-void Calendar_SetTime(u8 time);
-
 UnitData* Character_GetUnit(u16 characterId);
 u8 Character_GetLevel(u16 characterId);
 u16 Persona_GetPersonaId(u16 characterId);
@@ -248,6 +244,12 @@ void Character_SetPhysicalCondition(u16 characterId, u16 physicalCondition);
 void Character_SetFatigueCounter(u16 characterId, u16 fatigueCounter);
 void Character_SetHealth(u16 characterId, u16 health);
 void Character_SetActiveSocialLink(u16 activeSocialLink);
+u16 Calendar_GetDaysSinceApr5();
+u8 Calendar_GetTime();
+void Calendar_SetTime(u8 time);
+u16 Calendar_GetDaysSkipTarget();
+u8 Calendar_GetTimeSkipTarget();
+u32 Calendar_GetSkipToTarget();
 void Character_SetAcademicPoint(u16 characterId, u16 academicPoint);
 void Character_SetCharmPoint(u16 characterId, u16 charmPoint);
 void Character_SetCouragePoint(u16 characterId, u16 couragePoint);

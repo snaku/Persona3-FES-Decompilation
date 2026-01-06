@@ -122,24 +122,6 @@ UnitData* Character_GetUnit(u16 characterId)
     P3FES_ASSERT("g_data.c", 737);
 }
 
-// FUN_0016ef20
-u16 Calendar_GetDaysSinceApr5()
-{
-    return calendar.daysSinceApr5;
-}
-
-// FUN_0016ef30
-u8 Calendar_GetTime()
-{
-    return calendar.time;
-}
-
-// FUN_0016f150
-void Calendar_SetTime(u8 time)
-{
-    calendar.time = time;
-}
-
 // FUN_0016c470
 u8 Character_GetLevel(u16 characterId)
 {
@@ -383,6 +365,42 @@ void Character_SetHealth(u16 characterId, u16 health)
 void Character_SetActiveSocialLink(u16 activeSocialLink)
 {
     gPlayerData.activeSocialLink = activeSocialLink;
+}
+
+// FUN_0016ef20
+u16 Calendar_GetDaysSinceApr5()
+{
+    return calendar.daysSinceApr5;
+}
+
+// FUN_0016ef30
+u8 Calendar_GetTime()
+{
+    return calendar.time;
+}
+
+// FUN_0016ef40
+u16 Calendar_GetDaysSkipTarget()
+{
+    return calendar.daysSkipTarget;
+}
+
+// FUN_0016ef50
+u8 Calendar_GetTimeSkipTarget()
+{
+    return calendar.timeSkipTarget;
+}
+
+// FUN_0016ef60
+u32 Calendar_GetSkipToTarget()
+{
+    return calendar.skipToTarget;
+}
+
+// FUN_0016f150
+void Calendar_SetTime(u8 time)
+{
+    calendar.time = time;
 }
 
 // FUN_0016cfe0
