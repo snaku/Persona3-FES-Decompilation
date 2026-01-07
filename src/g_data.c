@@ -1,5 +1,6 @@
 #include "datPersona.h"
 #include "g_data.h"
+#include "g_flags.h"
 #include "datCalc.h"
 #include "temporary.h"
 
@@ -530,6 +531,49 @@ u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType)
     }
 
     return gCharacters[characterId].equipmentsIdx[equipmentType];
+}
+
+// FUN_0016ef70. Updates 'calendar.daysSinceApr5' and sets the correct 'G_FLAG_DAY_*' flags
+void Calendar_UpdateDateAndDayFlags(u16 daysSinceApr5)
+{
+    u32 currentWeekDay;
+    u8 holidayOrSunday;
+
+    Global_SetGlobalFlag(G_FLAG_DAY_IS_MONDAY, false);
+    Global_SetGlobalFlag(G_FLAG_DAY_IS_TUESDAY, false);
+    Global_SetGlobalFlag(G_FLAG_DAY_IS_WEDNESDAY, false);
+    Global_SetGlobalFlag(G_FLAG_DAY_IS_THURSDAY, false);
+    Global_SetGlobalFlag(G_FLAG_DAY_IS_FRIDAY, false);
+    Global_SetGlobalFlag(G_FLAG_DAY_IS_SATURDAY, false);
+    Global_SetGlobalFlag(G_FLAG_DAY_IS_SUNDAY, false);
+    Global_SetGlobalFlag(G_FLAG_DAY_IS_DAYOFF, false);
+
+    if (daysSinceApr5 != calendar.daysSinceApr5)
+    {
+        // FUN_00172890(); TODO
+        // FUN_00172e10(); TODO
+        Global_SetGlobalFlag(2444, false);
+    }
+
+    calendar.daysSinceApr5 = daysSinceApr5;
+
+    currentWeekDay = Calendar_GetCurrentWeekDay();
+    switch (currentWeekDay)
+    {
+        case CALENDAR_DAY_SUNDAY:    Global_SetGlobalFlag(G_FLAG_DAY_IS_SUNDAY, true);    break;
+        case CALENDAR_DAY_MONDAY:    Global_SetGlobalFlag(G_FLAG_DAY_IS_MONDAY, true);    break;
+        case CALENDAR_DAY_TUESDAY:   Global_SetGlobalFlag(G_FLAG_DAY_IS_TUESDAY, true);   break;
+        case CALENDAR_DAY_WEDNESDAY: Global_SetGlobalFlag(G_FLAG_DAY_IS_WEDNESDAY, true); break;
+        case CALENDAR_DAY_THURSDAY:  Global_SetGlobalFlag(G_FLAG_DAY_IS_THURSDAY, true);  break;
+        case CALENDAR_DAY_FRIDAY:    Global_SetGlobalFlag(G_FLAG_DAY_IS_FRIDAY, true);    break;
+        case CALENDAR_DAY_SATURDAY:  Global_SetGlobalFlag(G_FLAG_DAY_IS_SATURDAY, true);  break;
+    }
+
+    holidayOrSunday = Calendar_IsHolidayOrSunday();
+    if (holidayOrSunday)
+    {
+        Global_SetGlobalFlag(G_FLAG_DAY_IS_DAYOFF, true);
+    }
 }
 
 // FUN_0016f150

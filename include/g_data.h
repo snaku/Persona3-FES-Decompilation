@@ -261,6 +261,7 @@ u16 Character_GetCourageLevel(u16 couragePoint);
 u32 Character_GetNextExp(u16 characterId);
 u16 Character_GetPhysicalCondition(u16 characterId);
 u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType);
+void Calendar_UpdateDateAndDayFlags(u16 daysSinceApr5);
 void Calendar_SetTime(u8 time);
 void Calendar_SetDaysSkipTarget(u16 days);
 void Calendar_SetTimeSkipTarget(u8 time);
