@@ -599,7 +599,7 @@ void Global_SetGlobalFlag(u32 bit, u8 enabled)
 // FUN_0016f2e0
 void Global_ResetGlobalFlags()
 {
-    for (u32 i = 0; i <= ARRAY_SIZE(gGlobalFlags); i++)
+    for (u32 i = 0; i < ARRAY_SIZE(gGlobalFlags); i++)
     {
         gGlobalFlags[i] = 0;
     }
