@@ -12,6 +12,7 @@
 #define G_FLAG_DAY_IS_SATURDAY      2573 // idx 80 (1 << 13)
 #define G_FLAG_DAY_IS_SUNDAY        2574 // idx 80 (1 << 14). DAYOFF flag is also activated when it's sunday
 #define G_FLAG_DAY_IS_DAYOFF        2575 // idx 80 (1 << 15). Holiday or sunday
+#define G_FLAG_MAP_STUD_HELP_SEEN   2680 // idx 83 (1 << 24). "When you speak to this student, the Town Map will be displayed."
 #define G_FLAG_ROOM_HELP_SEEN       3086 // idx 96 (1 << 14). "If you go back into your room, it will become midnight"
 #define G_FLAG_HERO_HANDS_IN_POCKET 3125 // idx 98 (1 << 21)
 
