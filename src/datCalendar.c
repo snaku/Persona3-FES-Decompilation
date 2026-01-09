@@ -137,7 +137,7 @@ u32 Calendar_GetCurrentMonth()
 u32 Calendar_GetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
 {
     u16 month = CALENDAR_MONTH_APRIL;
-    
+
     daysSinceApr5 += 4;
 
     while (numOfDaysInMonths[month] <= daysSinceApr5)
@@ -270,4 +270,10 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
     }
 
     return true;
+}
+
+// FUN_00181b50
+u8 Calendar_GetMoonPhase(u32 daysSinceApr5)
+{
+    return daysMoonPhases[daysSinceApr5];
 }
