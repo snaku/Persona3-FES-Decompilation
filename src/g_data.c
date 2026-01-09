@@ -620,10 +620,10 @@ void Global_SetGlobalFlag(u32 bit, u8 enabled)
         P3FES_LOG3("hit \n");
     }
 
-    idx = bit / 32;
+    idx = bit >> 5;
     if ((s32)bit < 0)
     {
-        idx = (s32)(bit + 0x1f) / 32;
+        idx = (s32)(bit + 0x1f) >> 5;
     }
 
     bitField = bit & 0x1f;
