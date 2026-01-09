@@ -1,8 +1,6 @@
 #include "g_data.h"
 #include "datCalc.h"
 
-#include <stdlib.h>
-
 // FUN_002ffcc0
 u8 Unit_GetLevel(UnitData* unit){
     u8 level;

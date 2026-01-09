@@ -1,7 +1,5 @@
 #include "temporary.h"
 
-#include <stdlib.h>
-
 const f32 PI = 3.141592f;
 GlobalCtx ctx;
 

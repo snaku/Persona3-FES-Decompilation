@@ -5,8 +5,6 @@
 #include "Battle/btlAction.h"
 #include "temporary.h"
 
-#include <stdlib.h>
-
 void BtlAction_InitStateNon(BattleActor* btlActor);
 void BtlAction_UpdateStateNon(BattleActor* btlActor);
 void BtlAction_InitStateStandBy(BattleActor* btlActor);

@@ -4,8 +4,6 @@
 #include "datCalc.h"
 #include "temporary.h"
 
-#include <stdlib.h>
-
 // 005dc050, TODO
 const u32 playerNextExpThreshold[MAX_CHARACTER_LEVEL] = 
 {
@@ -52,6 +50,10 @@ static u32 gGlobalFlags[176];
 
 // 0083a4dc
 static u32 gIUnkArr[128]; // TODO
+
+PlayerData gPlayerData;
+CalendarData calendar;
+CharacterData gCharacters[MAX_CHARACTERS];
 
 // TODO
 void FUN_0016f3e0(u32 idx, u32 value)

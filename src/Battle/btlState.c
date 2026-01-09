@@ -2,8 +2,6 @@
 #include "Battle/btlState.h"
 #include "temporary.h"
 
-#include <stdlib.h>
-
 void BtlState_InitStateNon(BattleStateCtx* btlStateCtx);
 u32 BtlState_UpdateStateNon(BattleStateCtx* btlStateCtx);
 void BtlState_InitStateInit(BattleStateCtx* btlStateCtx);

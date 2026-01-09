@@ -5,8 +5,6 @@
 #include "Battle/btlMain.h"
 #include "temporary.h"
 
-#include <stdlib.h>
-
 // FUN_00299e90
 BattleActor* BtlMain_CreateActor()
 {

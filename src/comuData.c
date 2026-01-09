@@ -1,8 +1,6 @@
 #include "comuData.h"
 #include "g_data.h"
 
-#include <stdlib.h>
-
 static const u8* daysStrings[CALENDAR_DAY_MAX] =
 {
     "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
