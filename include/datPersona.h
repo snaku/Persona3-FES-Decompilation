@@ -63,7 +63,6 @@ typedef struct
     u16 flags;
     u16 id;
     u8 level;
-    u8 unkData1[0x03];
     u32 nextExp;        // For characters other than HERO, their exp is linked to their persona
     u16 skills[8];      // See enum PersonaSkills
     u8 naturalStats[5]; // stats gained naturally. See enum PersonaStats
