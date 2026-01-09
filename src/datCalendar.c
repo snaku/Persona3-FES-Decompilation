@@ -72,6 +72,8 @@ u32 Calendar_GetMonthFromDaysSinceApr5(u16 daysSinceApr5)
 {
     u16 month = CALENDAR_MONTH_APRIL;
 
+    daysSinceApr5 += 4;
+
     while (numOfDaysInMonths[month] <= daysSinceApr5)
     {
         daysSinceApr5 -= numOfDaysInMonths[month];
@@ -114,7 +116,7 @@ u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
 // FUN_0017d920
 u32 Calendar_GetCurrentMonth()
 {
-    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
+    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
 
     while (numOfDaysInMonths[month] <= daysSinceApr5)
@@ -135,6 +137,8 @@ u32 Calendar_GetCurrentMonth()
 u32 Calendar_GetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
 {
     u16 month = CALENDAR_MONTH_APRIL;
+    
+    daysSinceApr5 += 4;
 
     while (numOfDaysInMonths[month] <= daysSinceApr5)
     {
@@ -153,7 +157,7 @@ u32 Calendar_GetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
 // FUN_0017da40. Return the current day of the month
 u32 Calendar_GetCurrentDay()
 {
-    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
+    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
 
     while (numOfDaysInMonths[month] <= daysSinceApr5)
