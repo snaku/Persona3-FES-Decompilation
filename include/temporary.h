@@ -17,6 +17,7 @@ extern const f32 PI; // 007cae58
 #define RAD_TO_DEG(rad) ((rad) * 180.0f / PI)
 
 typedef struct BattleCtx BattleCtx;
+typedef struct KwlnTask KwlnTask;
 
 // 4 bytes
 typedef struct
@@ -37,17 +38,11 @@ typedef struct
 // TODO
 typedef struct
 {
-    TartarusData* tartarus; // 0x3c
-} UnkStruct1;
-
-// TODO
-typedef struct
-{
     u8 unkData1[0x124];
     u32 scenarioMode;       // 007cdfa4. See enum GameScenario
     u8 unkData2[0x448];
-    BattleCtx* btlCtx;     // 007ce3ec. NULL when not in a battle
-    UnkStruct1* unkStruct1; // 007ce268. NULL when not in tartarus
+    BattleCtx* btlCtx;      // 007ce3ec. NULL when not in a battle
+    KwlnTask* dungeonTask;  // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
 } GlobalCtx;
 
 extern GlobalCtx ctx; // 007cde80
