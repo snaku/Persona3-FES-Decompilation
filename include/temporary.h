@@ -31,13 +31,6 @@ typedef struct
 // TODO
 typedef struct
 {
-    u16 flags;
-    u32 currFloor;
-} TartarusData;
-
-// TODO
-typedef struct
-{
     u8 unkData1[0x124];
     u32 scenarioMode;       // 007cdfa4. See enum GameScenario
     u8 unkData2[0x448];
