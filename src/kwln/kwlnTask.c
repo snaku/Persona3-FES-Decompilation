@@ -28,4 +28,9 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     task->update = update;
     task->destroy = destroy;
     task->taskData = taskData;
+    task->next = NULL;
+    task->prev = NULL;
+    task->unk_48 = NULL;
+
+    return task;
 }
