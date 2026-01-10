@@ -10,4 +10,6 @@ typedef struct DungeonData
     u32 currFloor;
 } DungeonData;
 
+u32 Dungeon_GetCurrentFloor();
+
 #endif
