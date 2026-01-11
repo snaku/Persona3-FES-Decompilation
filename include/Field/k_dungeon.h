@@ -11,5 +11,6 @@ typedef struct DungeonData
 } DungeonData;
 
 u32 Dungeon_GetCurrentFloor();
+u8 Dungeon_IsCurrentFloorExplorable();
 
 #endif
