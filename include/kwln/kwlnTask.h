@@ -3,6 +3,9 @@
 
 #include "Utils.h"
 
+#define KWLN_TASK_CONTINUE 0
+#define KWLN_TASK_STOP    -1
+
 struct KwlnTask;
 
 typedef s32 (*KwlnTask_Update)(struct KwlnTask* task);
@@ -18,7 +21,7 @@ typedef struct KwlnTask
     u32 unk_24;
     u32 taskTimer;
     u8 unkData2[0x0c];
-    KwlnTask_Update update;   // return 0 = continue task and return -1 = destroy task
+    KwlnTask_Update update;   // return KWLN_TASK_CONTINUE to continue, return KWLN_TASK_STOP to destroy
     KwlnTask_Destroy destroy;
     void* taskData;           // Pointer to data specific to the curr task (like a Camera struct)
     struct KwlnTask* next;
