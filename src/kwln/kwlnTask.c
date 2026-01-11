@@ -1,5 +1,63 @@
 #include "kwln/kwlnTask.h"
 #include "g_data.h"
+#include "temporary.h"
+
+// FUN_00193ec0
+u8 KwlnTask_UpdateTask(KwlnTask* task)
+{
+    // TODO
+
+    return true;
+}
+
+// FUN_00194100
+void KwlnTask_UpdateAll()
+{
+    KwlnTask* currTask = ctx.rootProcTask;
+    KwlnTask* cursor;
+    KwlnTask* prevTask;
+    u8 updateRes;
+
+    if (ctx.rootProcTask != NULL)
+    {
+        while (currTask != NULL)
+        {
+            prevTask = currTask->prev;
+            updateRes = KwlnTask_UpdateTask(currTask);
+
+            if (!updateRes)
+            {
+                currTask = ctx.rootProcTask;
+
+                if (prevTask != NULL)
+                {
+                    cursor = prevTask;
+
+                    while (cursor != NULL && (cursor->unk_1c & 0xF) == 3)
+                    {
+                        prevTask = cursor->prev;
+                        if (prevTask == NULL)
+                        {
+                            cursor = cursor->unk_48;
+                            break;
+                        }
+                        
+                        cursor = cursor->prev;
+                    }
+
+                    if (cursor != NULL)
+                    {
+                        currTask = cursor->next;
+                    }
+                }
+            }
+            else
+            {
+                currTask = currTask->next;
+            }
+        }
+    }
+}
 
 // FUN_00194c50
 KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
@@ -10,7 +68,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
 
     if (taskName[0] == '\0')
     {
-        P3FES_ASSERT("kwlnTask.c", 1022);
+        //P3FES_ASSERT("kwlnTask.c", 1022);
     }
 
     // !! ALLOC !!
@@ -18,7 +76,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
 
     if (task == NULL)
     {
-        P3FES_ASSERT("kwlnTask.c", 1032);
+        //P3FES_ASSERT("kwlnTask.c", 1032);
         return NULL;
     }
 
@@ -31,6 +89,6 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     task->next = NULL;
     task->prev = NULL;
     task->unk_48 = NULL;
-
+    
     return task;
 }

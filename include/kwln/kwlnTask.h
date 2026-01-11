@@ -12,7 +12,8 @@ typedef void (*KwlnTask_Destroy)(struct KwlnTask* task);
 typedef struct KwlnTask
 {
     u8 taskName[24];
-    u8 unkData1[0x08];
+    u32 unk_18;
+    u32 unk_1c;
     u32 unk_20;
     u32 unk_24;
     u32 taskTimer;
@@ -26,6 +27,8 @@ typedef struct KwlnTask
     u8 unkData3[0x18];
 } KwlnTask;
 
+u8 KwlnTask_UpdateTask(KwlnTask* task);
+void KwlnTask_UpdateAll();
 KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
 
 #endif
