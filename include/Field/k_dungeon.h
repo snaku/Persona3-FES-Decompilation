@@ -3,6 +3,12 @@
 
 #include "Utils.h"
 
+typedef enum
+{
+    // TODO
+    DUNGEON_STATE_STOP = 9
+} DungeonState;
+
 // TODO
 typedef struct DungeonData
 {
