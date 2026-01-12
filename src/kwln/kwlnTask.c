@@ -5,7 +5,7 @@
 // FUN_00193ec0
 u8 KwlnTask_UpdateTask(KwlnTask* task)
 {
-    // TODO
+    // !! TODO !!
 
     return true;
 }
@@ -41,7 +41,7 @@ void KwlnTask_UpdateAll()
                             cursor = cursor->unk_48;
                             break;
                         }
-                        
+
                         cursor = cursor->prev;
                     }
 
@@ -68,7 +68,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
 
     if (taskName[0] == '\0')
     {
-        //P3FES_ASSERT("kwlnTask.c", 1022);
+        P3FES_ASSERT("kwlnTask.c", 1022);
     }
 
     // !! ALLOC !!
@@ -76,7 +76,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
 
     if (task == NULL)
     {
-        //P3FES_ASSERT("kwlnTask.c", 1032);
+        P3FES_ASSERT("kwlnTask.c", 1032);
         return NULL;
     }
 
@@ -89,6 +89,9 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     task->next = NULL;
     task->prev = NULL;
     task->unk_48 = NULL;
+    task->parent = NULL;
+    task->child = NULL;
+    task->nextChild = NULL;
     
     return task;
 }
