@@ -3,6 +3,8 @@
 
 #include "Utils.h"
 
+#define GET_TASK_DATA(type, kwlnTask) ((type*)kwlnTask->taskData)
+
 #define KWLN_TASK_CONTINUE 0
 #define KWLN_TASK_STOP    -1
 
