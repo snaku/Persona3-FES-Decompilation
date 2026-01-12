@@ -59,6 +59,15 @@ void KwlnTask_UpdateAll()
     }
 }
 
+// FUN_00194b20
+KwlnTask* KwlnTask_Create(KwlnTask* parentTask, u8* taskName, u32 param_3, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
+{
+    KwlnTask* task = KwlnTask_Init(taskName, param_3, update, destroy, taskData);
+    KwlnTask_AddChild(parentTask, task);
+
+    return task;
+}
+
 // FUN_00194c50
 KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
 {
