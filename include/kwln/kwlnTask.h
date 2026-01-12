@@ -39,5 +39,6 @@ u8 KwlnTask_UpdateTask(KwlnTask* task);
 void KwlnTask_UpdateAll();
 KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
 void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask);
+void KwlnTask_RemoveParent(KwlnTask* childTask);
 
 #endif
