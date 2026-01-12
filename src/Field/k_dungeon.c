@@ -2,7 +2,7 @@
 #include "kwln/kwlnTask.h"
 #include "temporary.h"
 
-#define DUNGEON_TASK_DATA GET_TASK_DATA(DungeonData, ctx.dungeonTask)
+#define DUNGEON_TASK_DATA ((DungeonData*)ctx.dungeonTask->taskData)
 
 // FUN_001bff20
 u32 Dungeon_GetCurrentFloor()
