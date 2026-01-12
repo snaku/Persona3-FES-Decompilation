@@ -105,6 +105,12 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     return task;
 }
 
+// FUN_00195540
+void* KwlnTask_GetTaskData(KwlnTask* task)
+{
+    return task->taskData;
+}
+
 // FUN_00195550
 void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask)
 {
