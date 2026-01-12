@@ -95,3 +95,41 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     
     return task;
 }
+
+// FUN_00195550
+void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask)
+{
+    KwlnTask* parent;
+    KwlnTask* child;
+    KwlnTask* currChild; // current child of the parent
+    KwlnTask* lastChild; // last child of the parent
+
+    if (parentTask != NULL)
+    {
+        child = childTask;
+        if (child->parent != NULL)
+        {
+            // FUN_001955f0(childTask);
+        }
+
+        parent = parentTask;
+        currChild = parent->child;
+
+        if (parent->child == NULL)
+        {
+            parent->child = child;
+        }
+        else
+        {
+            while (currChild != NULL)
+            {
+                lastChild = currChild;
+                currChild = lastChild->nextChild;
+            }
+
+            lastChild->nextChild = child;
+        }
+
+        child->parent = parent;
+    }
+}
