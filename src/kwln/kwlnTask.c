@@ -105,6 +105,12 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     return task;
 }
 
+// FUN_00195520
+u32 KwlnTask_GetTaskTimer(KwlnTask* task)
+{
+    return task->taskTimer;
+}
+
 // FUN_00195540
 void* KwlnTask_GetTaskData(KwlnTask* task)
 {
