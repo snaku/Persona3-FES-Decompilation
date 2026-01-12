@@ -2,6 +2,8 @@
 #include "kwln/kwlnTask.h"
 #include "temporary.h"
 
+#define DUNGEON_TASK_DATA GET_TASK_DATA(DungeonData, ctx.dungeonTask)
+
 // FUN_001bff20
 u32 Dungeon_GetCurrentFloor()
 {
@@ -10,7 +12,7 @@ u32 Dungeon_GetCurrentFloor()
         return 0;
     }
 
-    return ((DungeonData*)ctx.dungeonTask->taskData)->currFloor;
+    return DUNGEON_TASK_DATA->currFloor;
 }
 
 // FUN_001bff50
@@ -24,7 +26,7 @@ u8 Dungeon_IsCurrentFloorExplorable()
     }
     else 
     {
-        currFloor = ((DungeonData*)ctx.dungeonTask->taskData)->currFloor;
+        currFloor = DUNGEON_TASK_DATA->currFloor;
     }
 
     // seems like tartarus was supposed to have 399 floors
