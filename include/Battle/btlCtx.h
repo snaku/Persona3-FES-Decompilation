@@ -5,6 +5,7 @@
 #include "cameraStruct.h"
 
 typedef struct BattleActor BattleActor;
+typedef struct KwlnTask KwlnTask;
 
 typedef struct BattleCtx
 {
@@ -22,6 +23,10 @@ typedef struct BattleCtx
     BattleActor* unkBtlActor_284;  // 0x284
     // Data inbetween...
     BattleStateCtx btlStateCtx;    // 0x2b4
+    // Data inbetween...
+    KwlnTask* btlTask;             // 0xd18
+    u8 unkData1[0x10];
+    KwlnTask* btlPanelTask;        // 0xd2c
 } BattleCtx;
 
 #endif
