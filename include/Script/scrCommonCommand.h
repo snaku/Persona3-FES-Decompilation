@@ -1,0 +1,6 @@
+#ifndef SCRCOMMONCOMMAND_H
+#define SCRCOMMONCOMMAND_H
+
+// TODO
+
+#endif
