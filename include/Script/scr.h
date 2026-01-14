@@ -3,7 +3,7 @@
 
 #include "Utils.h"
 
-#define SCR_MAX_ARGS 26
+#define SCR_MAX_ARGS 28
 
 typedef struct KwlnTask KwlnTask;
 
