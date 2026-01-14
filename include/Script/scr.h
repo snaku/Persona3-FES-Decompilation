@@ -19,6 +19,13 @@ typedef union
     f32 fVal;
 } ScrValues;
 
+typedef struct
+{
+    u8 unkData1[0x08];
+    u8 magic[4];       // "FLW0"
+    // other unkdata after
+} ScrHeader;
+
 // 252 bytes. Data of a function
 typedef struct ProcedureData
 {
@@ -27,6 +34,7 @@ typedef struct ProcedureData
     u32 argCount;                      // 0x1c
     u8 argTypes[SCR_MAX_ARGS];         // 0x20. See enum 'ScrTypes'
     ScrValues argValues[SCR_MAX_ARGS]; // 0x3c
+    ScrHeader* scrHeader;              // 0xac
     u8 unkData1[0x7c];
     KwlnTask* prcdTask;                // 0xe4
     u8 unkData2[0x14];
