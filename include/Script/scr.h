@@ -9,7 +9,9 @@ typedef struct KwlnTask KwlnTask;
 typedef struct ScriptData
 {
     u8 scrName[24];    // same as scrTask->taskName
-    u8 unkData1[0xcc];
+    u32 unk_18;
+    u32 argCount;      // 0x1c
+    u8 unkData1[0xc4];
     KwlnTask* scrTask; // 0xe4
     u8 unkData2[0x14];
 } ScriptData;
