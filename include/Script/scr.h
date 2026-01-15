@@ -29,7 +29,7 @@ typedef struct
     u32 contentType; // See enum 'ScrContentType'
     u32 unk_04;
     u32 unk_08;
-    u32 offset;      // To get the addr of the content: addr = &header + header->entry[type].offset
+    u32 offset;      // To get the addr of the content: addr = header + header->entry[type].offset
 } ScrContentEntry;
 
 // 112 bytes
@@ -65,7 +65,8 @@ typedef struct ProcedureData
     void* instrContent;                // 0xbc
     void* msgContent;                  // 0xc0
     void* stringsContent;              // 0xc4
-    u8 unkData1[0x1c];
+    u32 prcdIdx;                       // 0xc8. Procedure position in the .BF file
+    u8 unkData1[0x18];
     KwlnTask* prcdTask;                // 0xe4
     u8 unkData2[0x14];
 } ProcedureData;

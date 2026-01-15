@@ -3,18 +3,18 @@
 
 // FUN_0035b570
 ProcedureData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
-                               uintptr_t prdcAddr, uintptr_t labelsAddr, uintptr_t instrAddr,
-                               uintptr_t msgAddr, uintptr_t stringsAddr, void* unkStruct)
+                               uintptr_t prcdAddr, uintptr_t labelsAddr, uintptr_t instrAddr,
+                               uintptr_t msgAddr, uintptr_t stringsAddr, u32 prcdIdx)
 {
     ProcedureData* prcdData;
 
     // !!! TODO !!!
-    
+
     return prcdData;
 }
 
 // FUN_0035b930
-ProcedureData* Scr_StartScript2(ScrHeader* header, void* unkStruct)
+ProcedureData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
 {
     // Need to rework a little bit
 
@@ -68,7 +68,7 @@ ProcedureData* Scr_StartScript2(ScrHeader* header, void* unkStruct)
             }
         }
 
-        return Scr_StartScript(header, header->entries, prcdAddr, labelsAddr, instrAddr, msgAddr, stringsAddr, unkStruct);
+        return Scr_StartScript(header, header->entries, prcdAddr, labelsAddr, instrAddr, msgAddr, stringsAddr, prcdIdx);
     }
 
     // !! LOG !!
