@@ -13,19 +13,42 @@ typedef enum
     SCR_TYPE_FLOAT
 } ScrTypes;
 
-typedef union 
+typedef enum
 {
-    s32 iVal;
-    f32 fVal;
-} ScrValues;
+    SCR_CONTENT_TYPE_PROCEDURE,
+    SCR_CONTENT_TYPE_LABEL,
+    SCR_CONTENT_TYPE_INSTR,
+    SCR_CONTENT_TYPE_MSG,
+    SCR_CONTENT_TYPE_STRINGS,
+    SCR_CONTENT_TYPE_MAX
+} ScrContentType;
 
+// 16 bytes
+typedef struct
+{
+    u32 contentType; // See enum 'ScrContentType'
+    u32 unk_04;
+    u32 unk_08;
+    u32 offset;      // To get the addr of the content: addr = &header + header->entry[type].offset
+} ScrContentEntry;
+
+// 112 bytes
 typedef struct
 {
     u8 unkData1[0x04];
     u32 scrSize;       // 0x04. size of the .BF file (in bytes)
     u8 magic[4];       // 0x08. "FLW0"
-    // other unkdata after
+    u32 unk_0c;
+    u32 totalEntries;  // 0x10
+    u8 unkData2[0x0c];
+    ScrContentEntry entries[SCR_CONTENT_TYPE_MAX];
 } ScrHeader;
+
+typedef union 
+{
+    s32 iVal;
+    f32 fVal;
+} ScrValues;
 
 // 252 bytes. Data of a function
 typedef struct ProcedureData
