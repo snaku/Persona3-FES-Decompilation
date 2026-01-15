@@ -53,14 +53,15 @@ typedef union
 // 252 bytes. Data of a function
 typedef struct ProcedureData
 {
-    u8 prcdName[24];                   // same as prcdTask->taskName
+    u8 prcdName[24];                                  // same as prcdTask->taskName
     u32 unk_18;
-    u32 argCount;                      // 0x1c
-    u8 argTypes[SCR_MAX_ARGS];         // 0x20. See enum 'ScrTypes'
-    ScrValues argValues[SCR_MAX_ARGS]; // 0x3c
-    ScrHeader* scrHeader;              // 0xac
-    u8 unkData1[0x7c];
-    KwlnTask* prcdTask;                // 0xe4
+    u32 argCount;                                     // 0x1c
+    u8 argTypes[SCR_MAX_ARGS];                        // 0x20. See enum 'ScrTypes'
+    ScrValues argValues[SCR_MAX_ARGS];                // 0x3c
+    ScrHeader* scrHeader;                             // 0xac
+    ScrContentEntry (*entries)[SCR_CONTENT_TYPE_MAX]; // 0xb0
+    u8 unkData1[0x30];
+    KwlnTask* prcdTask;                               // 0xe4
     u8 unkData2[0x14];
 } ProcedureData;
 
