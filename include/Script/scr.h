@@ -33,7 +33,7 @@ typedef struct
 } ScrContentEntry;
 
 // 112 bytes
-typedef struct
+typedef struct ScrHeader
 {
     u8 unkData1[0x04];
     u32 scrSize;       // 0x04. size of the .BF file (in bytes)
@@ -53,20 +53,20 @@ typedef union
 // 252 bytes. Data of a function
 typedef struct ProcedureData
 {
-    u8 prcdName[24];                                  // same as prcdTask->taskName
+    u8 prcdName[24];                   // same as prcdTask->taskName
     u32 unk_18;
-    u32 argCount;                                     // 0x1c
-    u8 argTypes[SCR_MAX_ARGS];                        // 0x20. See enum 'ScrTypes'
-    ScrValues argValues[SCR_MAX_ARGS];                // 0x3c
-    ScrHeader* scrHeader;                             // 0xac
-    ScrContentEntry (*entries)[SCR_CONTENT_TYPE_MAX]; // 0xb0
-    void* proceduresContent;                          // 0xb4
-    void* labelsContent;                              // 0xb8
-    void* instrContent;                               // 0xbc
-    void* msgContent;                                 // 0xc0
-    void* stringsContent;                             // 0xc4
+    u32 argCount;                      // 0x1c
+    u8 argTypes[SCR_MAX_ARGS];         // 0x20. See enum 'ScrTypes'
+    ScrValues argValues[SCR_MAX_ARGS]; // 0x3c
+    ScrHeader* scrHeader;              // 0xac
+    ScrContentEntry* entries;          // 0xb0
+    void* proceduresContent;           // 0xb4
+    void* labelsContent;               // 0xb8
+    void* instrContent;                // 0xbc
+    void* msgContent;                  // 0xc0
+    void* stringsContent;              // 0xc4
     u8 unkData1[0x1c];
-    KwlnTask* prcdTask;                               // 0xe4
+    KwlnTask* prcdTask;                // 0xe4
     u8 unkData2[0x14];
 } ProcedureData;
 
