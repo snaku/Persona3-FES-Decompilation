@@ -60,7 +60,12 @@ typedef struct ProcedureData
     ScrValues argValues[SCR_MAX_ARGS];                // 0x3c
     ScrHeader* scrHeader;                             // 0xac
     ScrContentEntry (*entries)[SCR_CONTENT_TYPE_MAX]; // 0xb0
-    u8 unkData1[0x30];
+    void* proceduresContent;                          // 0xb4
+    void* labelsContent;                              // 0xb8
+    void* instrContent;                               // 0xbc
+    void* msgContent;                                 // 0xc0
+    void* stringsContent;                             // 0xc4
+    u8 unkData1[0x1c];
     KwlnTask* prcdTask;                               // 0xe4
     u8 unkData2[0x14];
 } ProcedureData;
