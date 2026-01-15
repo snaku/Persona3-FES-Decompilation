@@ -26,10 +26,10 @@ typedef enum
 // 16 bytes
 typedef struct
 {
-    u32 contentType; // See enum 'ScrContentType'
+    u32 contentType;  // 0x00. See enum 'ScrContentType'
     u32 unk_04;
-    u32 unk_08;
-    u32 offset;      // To get the addr of the content: addr = header + header->entry[type].offset
+    u32 elementCount; // 0x08
+    u32 offset;       // 0x0c. To get the addr of the content: addr = header + header->entry[type].offset
 } ScrContentEntry;
 
 // 112 bytes
