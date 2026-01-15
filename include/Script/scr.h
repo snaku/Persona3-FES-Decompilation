@@ -21,8 +21,9 @@ typedef union
 
 typedef struct
 {
-    u8 unkData1[0x08];
-    u8 magic[4];       // "FLW0"
+    u8 unkData1[0x04];
+    u32 scrSize;       // 0x04. size of the .BF file (in bytes)
+    u8 magic[4];       // 0x08. "FLW0"
     // other unkdata after
 } ScrHeader;
 
