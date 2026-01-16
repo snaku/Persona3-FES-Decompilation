@@ -3,7 +3,7 @@
 
 #include "Utils.h"
 
-#define SCR_MAX_ARGS 28
+#define SCR_MAX_STACK_SIZE 28
 
 typedef struct KwlnTask KwlnTask;
 
@@ -50,25 +50,25 @@ typedef union
     f32 fVal;
 } ScrValues;
 
-// 252 bytes. Data of a function
-typedef struct ProcedureData
+// 252 bytes
+typedef struct ScrData
 {
-    u8 prcdName[24];                   // same as prcdTask->taskName
+    u8 scrName[24];                            // Name of the current procedure (same as task->taskName)
     u32 unk_18;
-    u32 argCount;                      // 0x1c
-    u8 argTypes[SCR_MAX_ARGS];         // 0x20. See enum 'ScrTypes'
-    ScrValues argValues[SCR_MAX_ARGS]; // 0x3c
-    ScrHeader* scrHeader;              // 0xac
-    ScrContentEntry* entries;          // 0xb0
-    void* proceduresContent;           // 0xb4
-    void* labelsContent;               // 0xb8
-    void* instrContent;                // 0xbc
-    void* msgContent;                  // 0xc0
-    void* stringsContent;              // 0xc4
-    u32 prcdIdx;                       // 0xc8. Procedure position in the .BF file
+    u32 stackSize;                             // 0x1c
+    u8 stackTypes[SCR_MAX_STACK_SIZE];         // 0x20. Types of each variables in the stack. See enum 'ScrTypes'
+    ScrValues stackValues[SCR_MAX_STACK_SIZE]; // 0x3c. Values of each variables in the stack
+    ScrHeader* scrHeader;                      // 0xac
+    ScrContentEntry* entries;                  // 0xb0
+    void* proceduresContent;                   // 0xb4
+    void* labelsContent;                       // 0xb8
+    void* instrContent;                        // 0xbc
+    void* msgContent;                          // 0xc0
+    void* stringsContent;                      // 0xc4
+    u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
     u8 unkData1[0x18];
-    KwlnTask* prcdTask;                // 0xe4
+    KwlnTask* task;                            // 0xe4
     u8 unkData2[0x14];
-} ProcedureData;
+} ScrData;
 
 #endif

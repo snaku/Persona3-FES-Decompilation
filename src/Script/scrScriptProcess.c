@@ -2,19 +2,19 @@
 #include "g_data.h"
 
 // FUN_0035b570
-ProcedureData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
+ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
                                void* prcdAddr, void* labelsAddr, void* instrAddr,
                                void* msgAddr, void* stringsAddr, u32 prcdIdx)
 {
-    ProcedureData* prcdData;
+    ScrData* scrData;
 
     // !!! TODO !!!
 
-    return prcdData;
+    return scrData;
 }
 
 // FUN_0035b930
-ProcedureData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
+ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
 {
     // Need to rework a little bit
 
@@ -43,7 +43,7 @@ ProcedureData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
             }
             else if (currEntry->contentType == SCR_CONTENT_TYPE_MSG)
             {
-                if (currEntry->unk_08 != 0)
+                if (currEntry->elementCount != 0)
                 {
                     msgAddr = (uintptr_t)header + currEntry->offset;
                 }
