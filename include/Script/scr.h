@@ -35,6 +35,13 @@ typedef union
     f32 fVal;
 } ScrValues;
 
+// 4 bytes
+typedef struct
+{
+    u16 opCode;  // 0x00
+    u16 operand; // 0x02
+} ScrInstructionContent;
+
 // 252 bytes
 typedef struct ScrData
 {
@@ -47,7 +54,7 @@ typedef struct ScrData
     ScrContentEntry* entries;                  // 0xb0
     void* proceduresContent;                   // 0xb4
     void* labelsContent;                       // 0xb8
-    void* instrContent;                        // 0xbc
+    ScrInstructionContent* instrContent;       // 0xbc
     void* msgContent;                          // 0xc0
     void* stringsContent;                      // 0xc4
     u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
