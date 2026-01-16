@@ -2,26 +2,11 @@
 #define SCR_H
 
 #include "Utils.h"
+#include "Script/scrTypes.h"
 
 #define SCR_MAX_STACK_SIZE 28
 
 typedef struct KwlnTask KwlnTask;
-
-typedef enum
-{
-    SCR_VALUE_TYPE_INT,
-    SCR_VALUE_TYPE_FLOAT
-} ScrValueType;
-
-typedef enum
-{
-    SCR_CONTENT_TYPE_PROCEDURE,
-    SCR_CONTENT_TYPE_LABEL,
-    SCR_CONTENT_TYPE_INSTR,
-    SCR_CONTENT_TYPE_MSG,
-    SCR_CONTENT_TYPE_STRINGS,
-    SCR_CONTENT_TYPE_MAX
-} ScrContentType;
 
 // 16 bytes
 typedef struct

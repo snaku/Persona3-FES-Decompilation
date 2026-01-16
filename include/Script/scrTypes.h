@@ -1,0 +1,20 @@
+#ifndef SCRTYPES_H
+#define SCRTYPES_H
+
+typedef enum
+{
+    SCR_VALUE_TYPE_INT,
+    SCR_VALUE_TYPE_FLOAT
+} ScrValueType;
+
+typedef enum
+{
+    SCR_CONTENT_TYPE_PROCEDURE,
+    SCR_CONTENT_TYPE_LABEL,
+    SCR_CONTENT_TYPE_INSTR,
+    SCR_CONTENT_TYPE_MSG,
+    SCR_CONTENT_TYPE_STRINGS,
+    SCR_CONTENT_TYPE_MAX
+} ScrContentType;
+
+#endif
