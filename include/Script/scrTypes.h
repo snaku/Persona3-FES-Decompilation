@@ -17,4 +17,11 @@ typedef enum
     SCR_CONTENT_TYPE_MAX
 } ScrContentType;
 
+// TODO
+typedef enum
+{
+    SCR_OP_CODE_PUSHI, // push int 
+    SCR_OP_CODE_PUSHF, // push float
+} ScrOpCode;
+
 #endif
