@@ -2,7 +2,7 @@
 #include "Script/scrTraceCode.h"
 #include "g_data.h"
 
-u32 Scr_ExecOpCodePushi(ScrData* scrData);
+u32 Scr_ExecOpCodePushi(ScrData* scr);
 
 typedef u32 (*Scr_ExecOpCode)(ScrData* scr);
 
@@ -15,11 +15,11 @@ static const Scr_ExecOpCode opCodeFuncTable[] =
 // FUN_0035c300. Push int 
 u32 Scr_ExecOpCodePushi(ScrData* scr)
 {
-    u16 operand;
+    s32 operand;
 
     scr->instrIdx++;
 
-    operand = scr->instrContent[scr->instrIdx].operand;
+    operand = scr->instrContent[scr->instrIdx].iOperand;
 
     // idx 27 is reserved, maybe for return value ?
     if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
