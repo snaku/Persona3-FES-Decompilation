@@ -46,7 +46,7 @@ typedef struct
 typedef struct ScrData
 {
     u8 scrName[24];                            // Name of the current procedure (same as task->taskName)
-    u32 unk_18;
+    u32 instrIdx;                              // 0x18. Index of the curr instruction
     u32 stackIdx;                              // 0x1c
     u8 stackTypes[SCR_MAX_STACK_SIZE];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
     ScrValues stackValues[SCR_MAX_STACK_SIZE]; // 0x3c. Values of each variables in the stack
