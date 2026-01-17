@@ -4,7 +4,7 @@
 #include "Utils.h"
 #include "Script/scrTypes.h"
 
-#define SCR_MAX_STACK_SIZE 28
+#define SCR_MAX_STACK_SIZE 27
 
 typedef struct KwlnTask KwlnTask;
 
@@ -57,7 +57,9 @@ typedef struct ScrData
     u32 instrIdx;                              // 0x18. Index of the curr instruction
     u32 stackIdx;                              // 0x1c
     u8 stackTypes[SCR_MAX_STACK_SIZE];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
+    u8 retType;                                // 0x3b. Type of the return value
     ScrValues stackValues[SCR_MAX_STACK_SIZE]; // 0x3c. Values of each variables in the stack
+    ScrValues retValue;                        // 0xa8. Value of the return value
     ScrHeader* scrHeader;                      // 0xac
     ScrContentEntry* entries;                  // 0xb0
     void* proceduresContent;                   // 0xb4

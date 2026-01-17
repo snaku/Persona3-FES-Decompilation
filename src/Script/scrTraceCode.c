@@ -10,7 +10,8 @@ typedef u32 (*Scr_ExecOpCode)(ScrData* scr);
 // 0069d3e0
 static const Scr_ExecOpCode opCodeFuncTable[] =
 {
-    Scr_ExecOpCodePushi, Scr_ExecOpCodePushf,
+    // NULL func are unknown for now
+    Scr_ExecOpCodePushi, Scr_ExecOpCodePushf, NULL, NULL,
 };
 
 // FUN_0035c300. Push int 
@@ -22,8 +23,7 @@ u32 Scr_ExecOpCodePushi(ScrData* scr)
 
     operand = scr->instrContent[scr->instrIdx].iOperand;
 
-    // idx 27 is reserved, maybe for return value ?
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
+    if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
     {
         P3FES_ASSERT("scrTraceCode.c", 43);
     }
@@ -46,7 +46,7 @@ u32 Scr_ExecOpCodePushf(ScrData* scr)
 
     operand = scr->instrContent[scr->instrIdx].fOperand;
 
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
+    if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
     {
         P3FES_ASSERT("scrTraceCode.c", 55);
     }
