@@ -4,6 +4,7 @@
 
 u32 Scr_ExecOpCodePushi(ScrData* scr);
 u32 Scr_ExecOpCodePushf(ScrData* scr);
+u32 Scr_ExecOpCodePushRet(ScrData* scr);
 
 typedef u32 (*Scr_ExecOpCode)(ScrData* scr);
 
@@ -12,6 +13,7 @@ static const Scr_ExecOpCode opCodeFuncTable[] =
 {
     // NULL func are unknown for now
     Scr_ExecOpCodePushi, Scr_ExecOpCodePushf, NULL, NULL,
+    Scr_ExecOpCodePushRet
 };
 
 // FUN_0035c300. Push int 
@@ -53,6 +55,23 @@ u32 Scr_ExecOpCodePushf(ScrData* scr)
 
     scr->stackTypes[scr->stackIdx] = SCR_VALUE_TYPE_FLOAT;
     scr->stackValues[scr->stackIdx].fVal = operand;
+
+    scr->stackIdx++;
+    scr->instrIdx++;
+
+    return 1;
+}
+
+// FUN_0035c870. Push return value
+u32 Scr_ExecOpCodePushRet(ScrData* scr)
+{
+    if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
+    {
+        P3FES_ASSERT("scrTraceCode.c", 268);
+    }
+
+    scr->stackTypes[scr->stackIdx] = scr->retType;
+    scr->stackValues[scr->stackIdx] = scr->retValue;
 
     scr->stackIdx++;
     scr->instrIdx++;
