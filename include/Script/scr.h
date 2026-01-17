@@ -29,17 +29,25 @@ typedef struct ScrHeader
     ScrContentEntry entries[SCR_CONTENT_TYPE_MAX];
 } ScrHeader;
 
+// 4 bytes
 typedef union 
 {
+    s16 sVal;
     s32 iVal;
     f32 fVal;
 } ScrValues;
 
 // 4 bytes
-typedef struct
+typedef union
 {
-    u16 opCode;  // 0x00
-    u16 operand; // 0x02
+    struct
+    {
+        u16 opCode;
+        s16 sOperand;
+    } opOperand16;
+    
+    s32 iOperand;
+    f32 fOperand;
 } ScrInstructionContent;
 
 // 252 bytes
