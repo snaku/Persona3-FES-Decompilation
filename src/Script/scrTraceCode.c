@@ -71,7 +71,7 @@ u32 Scr_ExecOpCodePushRet(ScrData* scr)
     }
 
     scr->stackTypes[scr->stackIdx] = scr->retType;
-    scr->stackValues[scr->stackIdx] = scr->retValue;
+    scr->stackValues[scr->stackIdx].fVal = scr->retValue.fVal;
 
     scr->stackIdx++;
     scr->instrIdx++;
