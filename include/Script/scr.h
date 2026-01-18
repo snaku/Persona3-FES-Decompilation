@@ -48,12 +48,12 @@ typedef union
     
     s32 iOperand;
     f32 fOperand;
-} ScrInstructionContent;
+} ScrInstruction;
 
 // 252 bytes
 typedef struct ScrData
 {
-    u8 scrName[24];                            // Name of the current procedure (same as task->taskName)
+    u8 scrName[24];                            // 0x00. Name of the current procedure (same as task->taskName)
     u32 instrIdx;                              // 0x18. Index of the curr instruction
     u32 stackIdx;                              // 0x1c
     u8 stackTypes[SCR_MAX_STACK_SIZE];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
@@ -64,7 +64,7 @@ typedef struct ScrData
     ScrContentEntry* entries;                  // 0xb0
     void* proceduresContent;                   // 0xb4
     void* labelsContent;                       // 0xb8
-    ScrInstructionContent* instrContent;       // 0xbc
+    ScrInstruction* instrContent;              // 0xbc
     void* msgContent;                          // 0xc0
     void* stringsContent;                      // 0xc4
     u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
