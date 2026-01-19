@@ -3,6 +3,9 @@
 
 #include "Utils.h"
 
+#define KWLN_TASK_GET_STATE(task)        ((task)->stateAndFlags & 0xF)
+#define KWLN_TASK_SET_STATE(task, state) ((task)->stateAndFlags = ((task)->stateAndFlags & 0xFFFFFFF0) | (state))
+
 #define KWLN_TASK_CONTINUE 0
 #define KWLN_TASK_STOP    -1
 
@@ -11,12 +14,20 @@ struct KwlnTask;
 typedef s32 (*KwlnTask_Update)(struct KwlnTask* task);
 typedef void (*KwlnTask_Destroy)(struct KwlnTask* task);
 
+typedef enum
+{
+    KWLN_TASK_STATE_0,
+    KWLN_TASK_STATE_CREATED,
+    KWLN_TASK_STATE_RUNNING,
+    KWLN_TASK_STATE_DESTROY
+} KwlnTaskState;
+
 // 104 bytes
 typedef struct KwlnTask
 {
     u8 taskName[24];            // 0x00
     u32 unk_18;                 // 0x18
-    u32 unk_1c;                 // 0x1c
+    u32 stateAndFlags;          // 0x1c. bits 0 to 3 are for state, bits 4 to 31 are maybe for flags
     u32 unk_20;                 // 0x20
     u32 unk_24;                 // 0x24
     u32 taskTimer;              // 0x28
