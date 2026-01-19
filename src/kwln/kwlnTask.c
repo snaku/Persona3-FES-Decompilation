@@ -1,5 +1,6 @@
 #include "kwln/kwlnTask.h"
 #include "g_data.h"
+#include "h_malloc.h"
 #include "temporary.h"
 
 // FUN_00193ec0
@@ -80,9 +81,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
         P3FES_ASSERT("kwlnTask.c", 1022);
     }
 
-    // !! ALLOC !!
-    // task = FUN_00191af0(sizeof(KwlnTask)); 
-
+    task = (KwlnTask*)H_Malloc(sizeof(KwlnTask));
     if (task == NULL)
     {
         P3FES_ASSERT("kwlnTask.c", 1032);
