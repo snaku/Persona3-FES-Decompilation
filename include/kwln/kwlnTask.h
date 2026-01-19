@@ -14,22 +14,22 @@ typedef void (*KwlnTask_Destroy)(struct KwlnTask* task);
 // 104 bytes
 typedef struct KwlnTask
 {
-    u8 taskName[24];
-    u32 unk_18;
-    u32 unk_1c;
-    u32 unk_20;
-    u32 unk_24;
-    u32 taskTimer;
-    u8 unkData2[0x0c];
-    KwlnTask_Update update;     // return KWLN_TASK_CONTINUE to continue, return KWLN_TASK_STOP to destroy
-    KwlnTask_Destroy destroy;
-    void* taskData;             // Pointer to data specific to the curr task (like a Camera struct)
-    struct KwlnTask* next;
-    struct KwlnTask* prev;
-    struct KwlnTask* unk_48;
-    struct KwlnTask* parent;
-    struct KwlnTask* child;     // first child of the task
-    struct KwlnTask* nextChild; // if current task has a parent, points to the next child of the parent
+    u8 taskName[24];            // 0x00
+    u32 unk_18;                 // 0x18
+    u32 unk_1c;                 // 0x1c
+    u32 unk_20;                 // 0x20
+    u32 unk_24;                 // 0x24
+    u32 taskTimer;              // 0x28
+    u8 unkData2[0x08];
+    KwlnTask_Update update;     // 0x34. return KWLN_TASK_CONTINUE to continue, return KWLN_TASK_STOP to destroy
+    KwlnTask_Destroy destroy;   // 0x38
+    void* taskData;             // 0x3c. Pointer to data specific to the curr task (like a Camera struct)
+    struct KwlnTask* next;      // 0x40
+    struct KwlnTask* prev;      // 0x44
+    struct KwlnTask* unk_48;    // 0x48
+    struct KwlnTask* parent;    // 0x4c
+    struct KwlnTask* child;     // 0x50. first child of the task
+    struct KwlnTask* nextChild; // 0x54. if current task has a parent, points to the next child of the parent
     u8 unkData3[0x0c];
 } KwlnTask;
 
