@@ -3,6 +3,8 @@
 #include "h_malloc.h"
 #include "temporary.h"
 
+void KwlnTask_DetachParent(KwlnTask* task);
+
 // FUN_001939d0
 void KwlnTask_FUN_001939d0(KwlnTask* task)
 {
@@ -233,4 +235,23 @@ void KwlnTask_RemoveParent(KwlnTask* childTask)
 
     childTask->parent = NULL;
     childTask->nextChild = NULL;
+}
+
+// FUN_00195690
+void KwlnTask_DetachParent(KwlnTask* task)
+{
+    KwlnTask* currTask;
+    KwlnTask* next = task->child;
+
+    while (next != NULL)
+    {
+        if (next->parent == task)
+        {
+            currTask = next;
+        }
+
+        next = next->nextChild;
+        currTask->parent = NULL;
+        currTask->nextChild = NULL;
+    } 
 }
