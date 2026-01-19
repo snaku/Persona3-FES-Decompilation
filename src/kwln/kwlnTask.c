@@ -3,6 +3,17 @@
 #include "h_malloc.h"
 #include "temporary.h"
 
+// FUN_001939d0
+void KwlnTask_FUN_001939d0(KwlnTask* task)
+{
+    // TODO
+}
+
+void KwlnTask_FUN_00193ba0(KwlnTask* task)
+{
+    // TODO
+}
+
 // FUN_00193ec0
 u8 KwlnTask_UpdateTask(KwlnTask* task)
 {
@@ -34,7 +45,8 @@ void KwlnTask_UpdateAll()
                 {
                     cursor = prevTask;
 
-                    while (cursor != NULL && (cursor->unk_1c & 0xF) == 3)
+                    while (cursor != NULL && 
+                          (KWLN_TASK_GET_STATE(cursor) == KWLN_TASK_STATE_DESTROY))
                     {
                         prevTask = cursor->prev;
                         if (prevTask == NULL)
@@ -72,9 +84,9 @@ KwlnTask* KwlnTask_Create(KwlnTask* parentTask, u8* taskName, u32 param_3, KwlnT
 // FUN_00194c50
 KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
 {
-    // TODO !!
-
     KwlnTask* task;
+    u8 currChar;
+    u32 i;
 
     if (taskName[0] == '\0')
     {
@@ -88,9 +100,25 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
         return NULL;
     }
 
+    task->nameChkSum = 0;
+    i = 0;
+    do
+    {
+        currChar = taskName[i];
+        task->taskName[i] = currChar;
+        task->nameChkSum += taskName[i];
+
+        i++;
+    } while (currChar != '\0' && i < 23);
+
+    task->taskName[23] = '\0';
+    task->stateAndFlags = KWLN_TASK_STATE_0;
+    task->stateAndFlags = KWLN_TASK_STATE_CREATED;
     task->unk_20 = param_2;
     task->unk_24 = 0;
     task->taskTimer = 0;
+    task->unk_2c = 0;
+    task->unk_30 = 2;
     task->update = update;
     task->destroy = destroy;
     task->taskData = taskData;
@@ -100,7 +128,23 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     task->parent = NULL;
     task->child = NULL;
     task->nextChild = NULL;
+    task->unk_58 = 0;
+    task->unk_5c = 0;
+    task->unk_60 = 0;
+    task->unk_64 = 0;
     
+    KwlnTask_FUN_00193ba0(task);
+
+    if (task->unk_2c == 0)
+    {
+        KwlnTask_FUN_001939d0(task);
+        KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_RUNNING);
+        KwlnTask_FUN_00193ba0(task);
+
+        task->unk_24 = 0;
+        task->taskTimer = 0;
+    }
+
     return task;
 }
 
