@@ -26,7 +26,7 @@ typedef enum
 typedef struct KwlnTask
 {
     u8 taskName[24];            // 0x00
-    u32 unk_18;                 // 0x18
+    u32 nameChkSum;             // 0x18. Sum of each char in 'taskName'
     u32 stateAndFlags;          // 0x1c. bits 0 to 3 are for state, bits 4 to 31 are maybe for flags
     u32 unk_20;                 // 0x20
     u32 unk_24;                 // 0x24
