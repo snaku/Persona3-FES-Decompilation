@@ -5,6 +5,7 @@
 
 #define KWLN_TASK_GET_STATE(task)        ((task)->stateAndFlags & 0xF)
 #define KWLN_TASK_SET_STATE(task, state) ((task)->stateAndFlags = ((task)->stateAndFlags & 0xFFFFFFF0) | (state))
+#define KWLN_TASK_RESET_STATE(task)      ((task)->stateAndFlags = ((task)->stateAndFlags) & 0xFFFFFFF0)
 
 #define KWLN_TASK_CONTINUE 0
 #define KWLN_TASK_STOP    -1
