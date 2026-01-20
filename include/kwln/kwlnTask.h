@@ -31,9 +31,9 @@ typedef struct KwlnTask
     u32 stateAndFlags;          // 0x1c. bits 0 to 3 are for state, bits 4 to 31 are maybe for flags
     u32 unk_20;                 // 0x20
     u32 unk_24;                 // 0x24
-    u32 taskTimer;              // 0x28
-    s32 unk_2c;                 // 0x2c
-    s32 unk_30;                 // 0x30
+    u32 taskTimer;              // 0x28. Number of frames since the creation of the task
+    s32 unkTimer;               // 0x2c
+    s32 destroyTimer;           // 0x30. Number of frames until task can be destroyed
     KwlnTask_Update update;     // 0x34. return KWLN_TASK_CONTINUE to continue, return KWLN_TASK_STOP to destroy
     KwlnTask_Destroy destroy;   // 0x38
     void* taskData;             // 0x3c. Pointer to data specific to the curr task (like a Camera struct)
