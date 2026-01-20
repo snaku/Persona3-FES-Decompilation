@@ -74,6 +74,66 @@ void KwlnTask_UpdateAll()
     }
 }
 
+// FUN_001949e0. Called every frame in the game main loop
+u8 KwlnTask_Main()
+{
+    KwlnTask* currTask;
+    KwlnTask* nextTask = ctx.unkTask1;
+
+    while (currTask != NULL)
+    {
+        currTask = nextTask;
+
+        if (nextTask->unkTimer > 0)
+        {
+            nextTask->unkTimer--;
+        }
+
+        nextTask = currTask->next;
+        if (nextTask->unkTimer == 0)
+        {
+            KwlnTask_FUN_001939d0(currTask);
+            KWLN_TASK_SET_STATE(currTask, KWLN_TASK_STATE_RUNNING);
+            KwlnTask_FUN_00193ba0(currTask);
+
+            currTask->unk_24 = 0;
+            currTask->taskTimer = 0;
+        }
+    }
+
+    KwlnTask_UpdateAll();
+
+    nextTask = ctx.unkTask2;
+    while (currTask != NULL)
+    {
+        currTask = nextTask;
+
+        if (currTask->destroyTimer > 0)
+        {
+            currTask->destroyTimer--;
+        }
+
+        nextTask = currTask->next;
+        if (currTask->destroyTimer == 0)
+        {
+            KwlnTask_FUN_001939d0(currTask);
+            
+            if (currTask->destroy != NULL)
+            {
+                currTask->destroy(currTask);
+            }
+
+            KWLN_TASK_RESET_STATE(currTask);
+            KwlnTask_RemoveParent(currTask);
+            KwlnTask_DetachParent(currTask);
+
+            H_Free((uintptr_t)currTask);
+        }
+    }
+
+    return true;
+}
+
 // FUN_00194b20
 KwlnTask* KwlnTask_Create(KwlnTask* parentTask, u8* taskName, u32 param_3, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
 {
@@ -119,8 +179,8 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     task->unk_20 = param_2;
     task->unk_24 = 0;
     task->taskTimer = 0;
-    task->unk_2c = 0;
-    task->unk_30 = 2;
+    task->unkTimer = 0;
+    task->destroyTimer = 2;
     task->update = update;
     task->destroy = destroy;
     task->taskData = taskData;
@@ -137,7 +197,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     
     KwlnTask_FUN_00193ba0(task);
 
-    if (task->unk_2c == 0)
+    if (task->unkTimer == 0)
     {
         KwlnTask_FUN_001939d0(task);
         KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_RUNNING);
