@@ -17,7 +17,7 @@ typedef void (*KwlnTask_Destroy)(struct KwlnTask* task);
 
 typedef enum
 {
-    KWLN_TASK_STATE_0,
+    KWLN_TASK_STATE_NULL,
     KWLN_TASK_STATE_CREATED,
     KWLN_TASK_STATE_RUNNING,
     KWLN_TASK_STATE_DESTROY

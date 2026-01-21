@@ -174,7 +174,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     } while (currChar != '\0' && i < 23);
 
     task->taskName[23] = '\0';
-    task->stateAndFlags = KWLN_TASK_STATE_0;
+    task->stateAndFlags = KWLN_TASK_STATE_NULL;
     task->stateAndFlags = KWLN_TASK_STATE_CREATED;
     task->unk_20 = param_2;
     task->unk_24 = 0;
