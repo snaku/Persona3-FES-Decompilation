@@ -32,8 +32,8 @@ typedef struct KwlnTask
     u32 unk_20;                 // 0x20
     u32 unk_24;                 // 0x24
     u32 taskTimer;              // 0x28. Number of frames since the creation of the task
-    s32 unkTimer;               // 0x2c
-    s32 destroyTimer;           // 0x30. Number of frames until task can be destroyed
+    s32 runningDelay;           // 0x2c. Number of frames until the task can transition from state 'CREATED' to 'RUNNING'
+    s32 destroyDelay;           // 0x30. Number of frames until task can be destroyed
     KwlnTask_Update update;     // 0x34. return KWLN_TASK_CONTINUE to continue, return KWLN_TASK_STOP to destroy
     KwlnTask_Destroy destroy;   // 0x38
     void* taskData;             // 0x3c. Pointer to data specific to the curr task (like a Camera struct)

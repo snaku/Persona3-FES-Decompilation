@@ -84,13 +84,13 @@ u8 KwlnTask_Main()
     {
         currTask = nextTask;
 
-        if (nextTask->unkTimer > 0)
+        if (nextTask->runningDelay > 0)
         {
-            nextTask->unkTimer--;
+            nextTask->runningDelay--;
         }
 
         nextTask = currTask->next;
-        if (nextTask->unkTimer == 0)
+        if (nextTask->runningDelay == 0)
         {
             KwlnTask_FUN_001939d0(currTask);
             KWLN_TASK_SET_STATE(currTask, KWLN_TASK_STATE_RUNNING);
@@ -108,13 +108,13 @@ u8 KwlnTask_Main()
     {
         currTask = nextTask;
 
-        if (currTask->destroyTimer > 0)
+        if (currTask->destroyDelay > 0)
         {
-            currTask->destroyTimer--;
+            currTask->destroyDelay--;
         }
 
         nextTask = currTask->next;
-        if (currTask->destroyTimer == 0)
+        if (currTask->destroyDelay == 0)
         {
             KwlnTask_FUN_001939d0(currTask);
             
@@ -179,8 +179,8 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     task->unk_20 = param_2;
     task->unk_24 = 0;
     task->taskTimer = 0;
-    task->unkTimer = 0;
-    task->destroyTimer = 2;
+    task->runningDelay = 0;
+    task->destroyDelay = 2;
     task->update = update;
     task->destroy = destroy;
     task->taskData = taskData;
@@ -197,7 +197,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     
     KwlnTask_FUN_00193ba0(task);
 
-    if (task->unkTimer == 0)
+    if (task->runningDelay == 0)
     {
         KwlnTask_FUN_001939d0(task);
         KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_RUNNING);
