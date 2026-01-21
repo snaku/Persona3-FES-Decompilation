@@ -27,12 +27,12 @@ u8 KwlnTask_UpdateTask(KwlnTask* task)
 // FUN_00194100
 void KwlnTask_UpdateAll()
 {
-    KwlnTask* currTask = ctx.rootProcTask;
+    KwlnTask* currTask = ctx.runningTaskList;
     KwlnTask* cursor;
     KwlnTask* prevTask;
     u8 updateRes;
 
-    if (ctx.rootProcTask != NULL)
+    if (ctx.runningTaskList != NULL)
     {
         while (currTask != NULL)
         {
@@ -41,7 +41,7 @@ void KwlnTask_UpdateAll()
 
             if (!updateRes)
             {
-                currTask = ctx.rootProcTask;
+                currTask = ctx.runningTaskList;
 
                 if (prevTask != NULL)
                 {
@@ -78,7 +78,7 @@ void KwlnTask_UpdateAll()
 u8 KwlnTask_Main()
 {
     KwlnTask* currTask;
-    KwlnTask* nextTask = ctx.unkTask1;
+    KwlnTask* nextTask = ctx.createTaskList;
 
     while (currTask != NULL)
     {
@@ -103,7 +103,7 @@ u8 KwlnTask_Main()
 
     KwlnTask_UpdateAll();
 
-    nextTask = ctx.unkTask2;
+    nextTask = ctx.destroyTaskList;
     while (currTask != NULL)
     {
         currTask = nextTask;
