@@ -16,7 +16,7 @@ void KwlnTask_RemoveTaskFromList(KwlnTask* task)
        (taskState != KWLN_TASK_STATE_CREATED))
     {
         // !! LOG !!
-        // FUN_0019d400("Process state Invalid!!", "kwlnTask.c", 70);
+        // FUN_0019d400("Process stat Invalid!!", "kwlnTask.c", 70);
         return;
     }
 
@@ -81,7 +81,8 @@ void KwlnTask_RemoveTaskFromList(KwlnTask* task)
     }
 }
 
-void KwlnTask_FUN_00193ba0(KwlnTask* task)
+// FUN_00193ba0
+void KwlnTask_AddToList(KwlnTask* task)
 {
     // TODO
 }
@@ -164,7 +165,7 @@ u8 KwlnTask_Main()
         {
             KwlnTask_RemoveTaskFromList(currTask);
             KWLN_TASK_SET_STATE(currTask, KWLN_TASK_STATE_RUNNING);
-            KwlnTask_FUN_00193ba0(currTask);
+            KwlnTask_AddToList(currTask);
 
             currTask->unk_24 = 0;
             currTask->taskTimer = 0;
@@ -265,19 +266,53 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     task->unk_60 = 0;
     task->unk_64 = 0;
     
-    KwlnTask_FUN_00193ba0(task);
+    KwlnTask_AddToList(task);
 
     if (task->runningDelay == 0)
     {
         KwlnTask_RemoveTaskFromList(task);
         KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_RUNNING);
-        KwlnTask_FUN_00193ba0(task);
+        KwlnTask_AddToList(task);
 
         task->unk_24 = 0;
         task->taskTimer = 0;
     }
 
     return task;
+}
+
+// FUN_00195460. Return true if 'task' is in a list
+u8 KwlnTask_Exists(KwlnTask* task)
+{
+    // need to rework a little bit
+
+    KwlnTask* list;
+    u32 i;
+
+    if (task != NULL)
+    {
+        for (i = 0; i < 3; i++)
+        {
+            switch (i)
+            {
+                case 0: list = ctx.stagedTaskHead;  break;
+                case 1: list = ctx.runningTaskHead; break;
+                case 2: list = ctx.destroyTaskHead; break;
+            }
+
+            while (list != NULL)
+            {
+                if (list == task)
+                {
+                    return true;
+                }
+
+                list = list->next;
+            }
+        }
+    }
+
+    return false;
 }
 
 // FUN_00195520

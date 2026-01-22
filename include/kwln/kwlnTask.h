@@ -54,6 +54,7 @@ void KwlnTask_UpdateAll();
 u8 KwlnTask_Main();
 KwlnTask* KwlnTask_Create(KwlnTask* parentTask, u8* taskName, u32 param_3, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
 KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
+u8 KwlnTask_Exists(KwlnTask* task);
 u32 KwlnTask_GetTaskTimer(KwlnTask* task);
 void* KwlnTask_GetTaskData(KwlnTask* task);
 void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask);
