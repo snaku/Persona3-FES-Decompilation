@@ -260,7 +260,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
     task->unk_48 = NULL;
     task->parent = NULL;
     task->child = NULL;
-    task->nextChild = NULL;
+    task->sibling = NULL;
     task->unk_58 = 0;
     task->unk_5c = 0;
     task->unk_60 = 0;
@@ -355,10 +355,10 @@ void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask)
             while (currChild != NULL)
             {
                 lastChild = currChild;
-                currChild = lastChild->nextChild;
+                currChild = lastChild->sibling;
             }
 
-            lastChild->nextChild = child;
+            lastChild->sibling = child;
         }
 
         child->parent = parent;
@@ -374,7 +374,7 @@ void KwlnTask_RemoveParent(KwlnTask* childTask)
 
     if (parent == NULL)
     {
-        if (childTask->nextChild != NULL)
+        if (childTask->sibling != NULL)
         {
             P3FES_ASSERT("kwlnTask.c", 1519);
         }
@@ -385,21 +385,21 @@ void KwlnTask_RemoveParent(KwlnTask* childTask)
     currChild = parent->child;
     if (parent->child == childTask)
     {
-        parent->child = childTask->nextChild;
+        parent->child = childTask->sibling;
     }
     else
     {
         while (currChild != childTask)
         {
             lastChild = currChild;
-            currChild = lastChild->nextChild;
+            currChild = lastChild->sibling;
         }
 
-        lastChild->nextChild = childTask->nextChild;
+        lastChild->sibling = childTask->sibling;
     }
 
     childTask->parent = NULL;
-    childTask->nextChild = NULL;
+    childTask->sibling = NULL;
 }
 
 // FUN_00195690
@@ -415,8 +415,8 @@ void KwlnTask_DetachParent(KwlnTask* task)
             currTask = next;
         }
 
-        next = next->nextChild;
+        next = next->sibling;
         currTask->parent = NULL;
-        currTask->nextChild = NULL;
+        currTask->sibling = NULL;
     } 
 }

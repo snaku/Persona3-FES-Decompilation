@@ -41,8 +41,8 @@ typedef struct KwlnTask
     struct KwlnTask* prev;      // 0x44
     struct KwlnTask* unk_48;    // 0x48
     struct KwlnTask* parent;    // 0x4c
-    struct KwlnTask* child;     // 0x50. first child of the task
-    struct KwlnTask* nextChild; // 0x54. if current task has a parent, points to the next child of the parent
+    struct KwlnTask* child;     // 0x50. First child of the task
+    struct KwlnTask* sibling;   // 0x54. Next task sharing the same parent
     s32 unk_58;                 // 0x58
     s32 unk_5c;                 // 0x5c
     s32 unk_60;                 // 0x60
