@@ -3,6 +3,10 @@
 #include "h_malloc.h"
 #include "temporary.h"
 
+// !! TEMPORARY !! MOVE LATER
+void FUN_0019d400(const u8* param_1, const u8* file, u32 line);
+
+
 void KwlnTask_DetachParent(KwlnTask* task);
 
 // FUN_001939d0. Remove a task from a list by its current state
@@ -16,7 +20,7 @@ void KwlnTask_RemoveTaskFromList(KwlnTask* task)
        (taskState != KWLN_TASK_STATE_CREATED))
     {
         // !! LOG !!
-        // FUN_0019d400("Process stat Invalid!!", "kwlnTask.c", 70);
+        FUN_0019d400("Process stat Invalid!!", "kwlnTask.c", 70);
         return;
     }
 
@@ -81,10 +85,133 @@ void KwlnTask_RemoveTaskFromList(KwlnTask* task)
     }
 }
 
-// FUN_00193ba0
+// FUN_00193ba0. Add a task from a list by its current state
 void KwlnTask_AddToList(KwlnTask* task)
 {
-    // TODO
+    KwlnTask* list;
+    u32 taskState = KWLN_TASK_GET_STATE(task);
+
+    switch (taskState)
+    {
+        case KWLN_TASK_STATE_CREATED: list = ctx.stagedTaskHead;  break;
+        case KWLN_TASK_STATE_RUNNING: list = ctx.runningTaskHead; break;
+        case KWLN_TASK_STATE_DESTROY: list = ctx.destroyTaskHead; break;
+        case KWLN_TASK_STATE_NULL: // fallthrough
+        default: FUN_0019d400("Process stat Invalid!!", "kwlnTask.c", 143); return;
+    }
+
+    if (list == NULL)
+    {
+        switch (taskState)
+        {
+            case KWLN_TASK_STATE_CREATED:
+                ctx.stagedTaskHead = task;
+                ctx.stagedTaskTail = task;
+                break;
+            case KWLN_TASK_STATE_RUNNING:
+                ctx.runningTaskHead = task;
+                ctx.runningTaskTail = task;
+                break;
+            case KWLN_TASK_STATE_DESTROY:
+                ctx.destroyTaskHead = task;
+                ctx.destroyTaskTail = task;
+                break;
+        }
+
+        task->unk_48 = NULL;
+        task->prev = NULL;
+        task->next = NULL;
+    }
+    else
+    {
+        while (list != NULL)
+        {
+            if (task->unk_20 < list->unk_20)
+            {
+                if (list->prev == NULL)
+                {
+                    switch (taskState)
+                    {
+                        case KWLN_TASK_STATE_CREATED: ctx.stagedTaskHead = task;  break;
+                        case KWLN_TASK_STATE_RUNNING: ctx.runningTaskHead = task; break;
+                        case KWLN_TASK_STATE_DESTROY: ctx.destroyTaskHead = task; break;
+                    }
+
+                    task->prev = NULL;
+                    task->next = list;
+                    list->unk_48 = task;
+                    list->prev = task;
+                }
+                else
+                {
+                    list->prev->next = task;
+                    task->unk_48 = list->prev;
+                    task->prev = list->prev;
+                    task->next = list;
+                    list->unk_48 = task;
+                    list->prev = task;
+                }
+
+                break;
+            }
+
+            list = list->next;
+        }
+
+        if (list == NULL)
+        {
+            taskState = KWLN_TASK_GET_STATE(task); // again
+            switch (taskState)
+            {
+                case KWLN_TASK_STATE_CREATED: 
+                    ctx.stagedTaskTail->next = task;
+                    task->unk_48 = ctx.stagedTaskTail;
+                    task->prev = ctx.stagedTaskTail;
+                    ctx.stagedTaskTail = task;
+                    break;
+                case KWLN_TASK_STATE_RUNNING: 
+                    ctx.runningTaskTail->next = task;
+                    task->unk_48 = ctx.runningTaskTail;
+                    task->prev = ctx.runningTaskTail;
+                    ctx.runningTaskTail = task;
+                    break;
+                case KWLN_TASK_STATE_DESTROY: 
+                    ctx.destroyTaskTail->next = task;
+                    task->unk_48 = ctx.destroyTaskTail;
+                    task->prev = ctx.destroyTaskTail;
+                    ctx.destroyTaskTail = task;
+                    break;
+            }
+
+            task->next = NULL;
+        }
+    }
+
+    taskState = KWLN_TASK_GET_STATE(task); // again
+    switch (taskState)
+    {
+        case KWLN_TASK_STATE_CREATED:
+            ctx.numTaskStaged++;
+            if (ctx.numTaskStaged > 10000)
+            {
+                P3FES_ASSERT("kwlnTask.c", 226);
+            }
+            break;
+        case KWLN_TASK_STATE_RUNNING:
+            ctx.numTaskRunning++;
+            if (ctx.numTaskRunning > 10000)
+            {
+                P3FES_ASSERT("kwlnTask.c", 230);
+            }
+            break;
+        case KWLN_TASK_STATE_DESTROY:
+            ctx.numTaskDestroy++;
+            if (ctx.numTaskDestroy > 10000)
+            {
+                P3FES_ASSERT("kwlnTask.c", 234);
+            }
+            break;
+    }
 }
 
 // FUN_00193ec0
