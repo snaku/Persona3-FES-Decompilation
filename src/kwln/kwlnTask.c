@@ -5,10 +5,80 @@
 
 void KwlnTask_DetachParent(KwlnTask* task);
 
-// FUN_001939d0
-void KwlnTask_FUN_001939d0(KwlnTask* task)
+// FUN_001939d0. Remove a task from a list by its current state
+void KwlnTask_RemoveTaskFromList(KwlnTask* task)
 {
-    // TODO
+    u32 taskState = KWLN_TASK_GET_STATE(task);
+
+    if (taskState == KWLN_TASK_STATE_NULL ||
+       (taskState != KWLN_TASK_STATE_DESTROY) &&
+       (taskState != KWLN_TASK_STATE_RUNNING) &&
+       (taskState != KWLN_TASK_STATE_CREATED))
+    {
+        // !! LOG !!
+        // FUN_0019d400("Process state Invalid!!", "kwlnTask.c", 70);
+        return;
+    }
+
+    if (task->prev == NULL)
+    {
+        if (taskState == KWLN_TASK_STATE_DESTROY)
+        {
+            ctx.destroyTaskHead = task->next;
+        }
+        else if (taskState == KWLN_TASK_STATE_RUNNING)
+        {
+            ctx.runningTaskHead = task->next;
+        }
+        else if (taskState == KWLN_TASK_STATE_CREATED)
+        {
+            ctx.stagedTaskHead = task->next;
+        }
+    }
+    else 
+    {
+        task->prev->next = task->next;
+    }
+
+    if (task->next == NULL)
+    {
+        taskState = KWLN_TASK_GET_STATE(task);
+
+        if (taskState == KWLN_TASK_STATE_DESTROY)
+        {
+            ctx.destroyTaskTail = task->prev;
+        }
+        else if (taskState == KWLN_TASK_STATE_RUNNING)
+        {
+            ctx.runningTaskTail = task->prev;
+        }
+        else if (taskState == KWLN_TASK_STATE_CREATED)
+        {
+            ctx.stagedTaskTail = task->prev;
+        }
+    }
+    else
+    {
+        task->next->unk_48 = task->prev;
+        task->next->prev = task->prev;
+    }
+
+    task->next = NULL;
+    task->prev = NULL;
+
+    taskState = KWLN_TASK_GET_STATE(task);
+    if (taskState == KWLN_TASK_STATE_DESTROY)
+    {
+        ctx.numTaskDestroy--;
+    }
+    else if (taskState == KWLN_TASK_STATE_RUNNING)
+    {
+        ctx.numTaskRunning--;
+    }
+    else if (taskState == KWLN_TASK_STATE_CREATED)
+    {
+        ctx.numTaskStaged--;
+    }
 }
 
 void KwlnTask_FUN_00193ba0(KwlnTask* task)
@@ -92,7 +162,7 @@ u8 KwlnTask_Main()
         nextTask = currTask->next;
         if (nextTask->runningDelay == 0)
         {
-            KwlnTask_FUN_001939d0(currTask);
+            KwlnTask_RemoveTaskFromList(currTask);
             KWLN_TASK_SET_STATE(currTask, KWLN_TASK_STATE_RUNNING);
             KwlnTask_FUN_00193ba0(currTask);
 
@@ -116,7 +186,7 @@ u8 KwlnTask_Main()
         nextTask = currTask->next;
         if (currTask->destroyDelay == 0)
         {
-            KwlnTask_FUN_001939d0(currTask);
+            KwlnTask_RemoveTaskFromList(currTask);
             
             if (currTask->destroy != NULL)
             {
@@ -199,7 +269,7 @@ KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnT
 
     if (task->runningDelay == 0)
     {
-        KwlnTask_FUN_001939d0(task);
+        KwlnTask_RemoveTaskFromList(task);
         KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_RUNNING);
         KwlnTask_FUN_00193ba0(task);
 
