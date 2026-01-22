@@ -34,10 +34,15 @@ typedef struct
     u8 unkData1[0x124];
     u32 scenarioMode;            // 007cdfa4. See enum GameScenario
     u8 unkData2[0x448];
-    KwlnTask* createTaskList;    // 007ce064. List of every task created, but not running
-    KwlnTask* destroyTaskList;   // 007ce070. List of every task to be destroyed
-    KwlnTask* prevDestroyedTask; // 007ce074
-    KwlnTask* runningTaskList;   // 007ce07c. List of every task currently running
+    KwlnTask* stagedTaskHead;    // 007ce064. Head of tasks in 'KWLN_TASK_STATE_CREATED' state
+    KwlnTask* stagedTaskTail;    // 007ce068. Tail of tasks in 'KWLN_TASK_STATE_CREATED' state
+    u32 numTaskStaged;           // 007ce06c. Total number of task in 'KWLN_TASK_STATE_CREATED' state
+    KwlnTask* destroyTaskHead;   // 007ce070. Head of tasks in 'KWLN_TASK_STATE_DESTROY' state
+    KwlnTask* destroyTaskTail;   // 007ce074. Tail of tasks in 'KWLN_TASK_STATE_DESTROY' state
+    u32 numTaskDestroy;          // 007ce078. Total number of task in 'KWLN_TASK_STATE_DESTROY' state
+    KwlnTask* runningTaskHead;   // 007ce07c. Head of tasks in 'KWLN_TASK_STATE_RUNNING' state
+    KwlnTask* runningTaskTail;   // 007ce080. Tail of tasks in 'KWLN_TASK_STATE_RUNNING' state
+    u32 numTaskRunning;          // 007ce084. Total number of task in 'KWLN_TASK_STATE_RUNNING' state
     KwlnTask* rootProcTask;      // 007ce0d0. Task name = "root proc"
     KwlnTask* dungeonTask;       // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
