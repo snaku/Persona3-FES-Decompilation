@@ -126,7 +126,7 @@ void KwlnTask_AddToList(KwlnTask* task)
     {
         while (list != NULL)
         {
-            if (task->unk_20 < list->unk_20)
+            if (task->priority < list->priority)
             {
                 if (list->prev == NULL)
                 {
@@ -333,16 +333,16 @@ u8 KwlnTask_Main()
 }
 
 // FUN_00194b20
-KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 param_3, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
+KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priority, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
 {
-    KwlnTask* task = KwlnTask_Init(taskName, param_3, update, destroy, taskData);
+    KwlnTask* task = KwlnTask_Init(taskName, priority, update, destroy, taskData);
     KwlnTask_AddChild(parentTask, task);
 
     return task;
 }
 
 // FUN_00194c50
-KwlnTask* KwlnTask_Init(const char* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
+KwlnTask* KwlnTask_Init(const char* taskName, u32 priority, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
 {
     KwlnTask* task;
     u8 currChar;
@@ -374,7 +374,7 @@ KwlnTask* KwlnTask_Init(const char* taskName, u32 param_2, KwlnTask_Update updat
     task->taskName[23] = '\0';
     task->stateAndFlags = KWLN_TASK_STATE_NULL;
     task->stateAndFlags = KWLN_TASK_STATE_CREATED;
-    task->unk_20 = param_2;
+    task->priority = priority;
     task->unk_24 = 0;
     task->taskTimer = 0;
     task->runningDelay = 0;

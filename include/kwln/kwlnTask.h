@@ -29,7 +29,7 @@ typedef struct KwlnTask
     char taskName[24];          // 0x00
     u32 nameChkSum;             // 0x18. Sum of each char in 'taskName'
     u32 stateAndFlags;          // 0x1c. bits 0 to 3 are for state, bits 4 to 31 are maybe for flags
-    u32 unk_20;                 // 0x20
+    u32 priority;               // 0x20
     u32 unk_24;                 // 0x24
     u32 taskTimer;              // 0x28. Number of frames since the creation of the task
     s32 runningDelay;           // 0x2c. Number of frames until the task can transition from state 'CREATED' to 'RUNNING'
@@ -52,8 +52,8 @@ typedef struct KwlnTask
 u8 KwlnTask_UpdateTask(KwlnTask* task);
 void KwlnTask_UpdateAll();
 u8 KwlnTask_Main();
-KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 param_3, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
-KwlnTask* KwlnTask_Init(const char* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
+KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priority, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
+KwlnTask* KwlnTask_Init(const char* taskName, u32 priority, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
 u8 KwlnTask_Exists(KwlnTask* task);
 KwlnTask* KwlnTask_GetTaskByName(const char* name);
 u32 KwlnTask_GetTaskTimer(KwlnTask* task);
