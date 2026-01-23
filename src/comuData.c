@@ -1,13 +1,13 @@
 #include "comuData.h"
 #include "g_data.h"
 
-static const u8* daysStrings[CALENDAR_DAY_MAX] =
+static const char* daysStrings[CALENDAR_DAY_MAX] =
 {
     "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 };
 
 // 006a3ca0 (ultimate social link personas)
-static const u8* ultSLPersonasStrings[22] = 
+static const char* ultSLPersonasStrings[22] = 
 {
     "Susano-o", "Surt", "Scathach",
     "Alilat", "Odin", "Kohryu",
@@ -20,7 +20,7 @@ static const u8* ultSLPersonasStrings[22] =
 };
 
 // 006a3b40 (Will see were those strings are used in game later)
-static const u8* unkStrings1[5] = 
+static const char* unkStrings1[5] = 
 {
     "A perfect gift to capture a woman's heart!",
     "This'll make you much stronger!",
@@ -30,9 +30,9 @@ static const u8* unkStrings1[5] =
 };
 
 // FUN_003c4130
-u8* Day_GetCurrentDayString(u32 month, u32 day)
+char* Day_GetCurrentDayString(u32 month, u32 day)
 {
-    u8* dayString;
+    const char* dayString;
     u32 currentDay;
 
     currentDay = Calendar_GetDaysSinceStartFromDate(month, day);
@@ -70,7 +70,7 @@ u8* Day_GetCurrentDayString(u32 month, u32 day)
 }
 
 // FUN_003c4210
-u8* ComuData_FUN_003c4210(u32 idx)
+const char* ComuData_FUN_003c4210(u32 idx)
 {
     if (idx > ARRAY_SIZE(unkStrings1))
     {
@@ -80,7 +80,7 @@ u8* ComuData_FUN_003c4210(u32 idx)
     return unkStrings1[idx];
 }
 
-u8* ComuData_GetUltSLPersonasString(u32 idx)
+const char* ComuData_GetUltSLPersonasString(u32 idx)
 {
     idx--;
     if (idx < 0 || idx > ARRAY_SIZE(ultSLPersonasStrings) - 1)

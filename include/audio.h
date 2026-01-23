@@ -83,7 +83,7 @@ typedef struct
     u16 unk4;
     u32 unk5;
     u16 unk6;
-    u8* currBgmAdxString;
+    char* currBgmAdxString;
 } BgmData;
 
 u16 Audio_GetCurrentBgmId();

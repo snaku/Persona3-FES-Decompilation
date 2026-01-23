@@ -26,7 +26,7 @@ typedef enum
 // 104 bytes
 typedef struct KwlnTask
 {
-    u8 taskName[24];            // 0x00
+    char taskName[24];          // 0x00
     u32 nameChkSum;             // 0x18. Sum of each char in 'taskName'
     u32 stateAndFlags;          // 0x1c. bits 0 to 3 are for state, bits 4 to 31 are maybe for flags
     u32 unk_20;                 // 0x20
@@ -52,8 +52,8 @@ typedef struct KwlnTask
 u8 KwlnTask_UpdateTask(KwlnTask* task);
 void KwlnTask_UpdateAll();
 u8 KwlnTask_Main();
-KwlnTask* KwlnTask_Create(KwlnTask* parentTask, u8* taskName, u32 param_3, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
-KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
+KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 param_3, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
+KwlnTask* KwlnTask_Init(const char* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
 u8 KwlnTask_Exists(KwlnTask* task);
 u32 KwlnTask_GetTaskTimer(KwlnTask* task);
 void* KwlnTask_GetTaskData(KwlnTask* task);

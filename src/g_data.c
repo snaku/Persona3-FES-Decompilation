@@ -18,7 +18,7 @@ const u16 charmLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };
 const u16 courageLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };
 
 // 005e35ec. TODO
-static const u8* nameTable[] =
+static const char* nameTable[] =
 {
     "Metis", "Aigis", "Mitsuru Kirijo", "Junpei Iori", "Fuuka Yamagishi", "Akihiko Sanada",
     "Ken Amada", "Shinjiro Aragaki", "Koromaru", "Shuji Ikutsuki", "Pharos", 
@@ -28,7 +28,7 @@ static const u8* nameTable[] =
 };
 
 // 005e4150
-static const u8* physicalConditionsString[13] = 
+static const char* physicalConditionsString[13] = 
 {
     "You recovered from your cold.",
     "Your cold is not gone yet...",
@@ -805,7 +805,7 @@ PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
     return &gPlayerData.compendium[idx];
 }
 
-void P3FES_ASSERT(const u8* file, const u32 line)
+void P3FES_ASSERT(const char* file, const u32 line)
 {
     // Probably an assert function. 
     // It's empty because it's only used if the game was compiled in debug

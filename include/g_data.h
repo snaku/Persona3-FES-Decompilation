@@ -275,7 +275,7 @@ u16 Player_GetActiveSocialLink();
 u8 Player_GetSocialLinkLevel(u16 socialLink);
 PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx);
 
-void P3FES_ASSERT(const u8* file, const u32 line);
+void P3FES_ASSERT(const char* file, const u32 line);
 void P3FES_LOG1(const char* fmt, ...);
 void P3FES_LOG3(const char* fmt, ...);
 

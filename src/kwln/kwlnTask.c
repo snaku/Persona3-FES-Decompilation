@@ -4,7 +4,7 @@
 #include "temporary.h"
 
 // !! TEMPORARY !! MOVE LATER
-void FUN_0019d400(const u8* param_1, const u8* file, u32 line);
+void FUN_0019d400(const char* param_1, const char* file, u32 line);
 
 
 void KwlnTask_DetachParent(KwlnTask* task);
@@ -333,7 +333,7 @@ u8 KwlnTask_Main()
 }
 
 // FUN_00194b20
-KwlnTask* KwlnTask_Create(KwlnTask* parentTask, u8* taskName, u32 param_3, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
+KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 param_3, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
 {
     KwlnTask* task = KwlnTask_Init(taskName, param_3, update, destroy, taskData);
     KwlnTask_AddChild(parentTask, task);
@@ -342,7 +342,7 @@ KwlnTask* KwlnTask_Create(KwlnTask* parentTask, u8* taskName, u32 param_3, KwlnT
 }
 
 // FUN_00194c50
-KwlnTask* KwlnTask_Init(u8* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
+KwlnTask* KwlnTask_Init(const char* taskName, u32 param_2, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
 {
     KwlnTask* task;
     u8 currChar;

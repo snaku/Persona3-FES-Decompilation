@@ -1,7 +1,7 @@
 #include "audio.h"
 
 // 007cb2a8. See enum BgmId
-static const u8* bgmStrings[82] = 
+static const char* bgmStrings[82] = 
 {
     "01.ADX", "26.ADX", "19.ADX", "20.ADX", "21.ADX",
     "22.ADX", "23.ADX", "24.ADX", "25.ADX", "27.ADX",
@@ -51,12 +51,11 @@ void Audio_StopPlayingBgm()
 u32 Audio_PlayBgm(u16 bgmId, u8 param_2)
 {
     // TODO
-
     u16 currBgmId = bgm.currBgmId;
 
     if (bgm.isBgmPlaying == AUDIO_BGM_NOT_PLAYING)
     {
-        currBgmId = -1;
+        currBgmId = BGM_ID_NONE;
     }
 
     if (bgmId != currBgmId)
