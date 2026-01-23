@@ -332,10 +332,46 @@ u8 KwlnTask_Main()
     return true;
 }
 
-// FUN_00194b20
+// FUN_00194b20. Create a new task. 'parentTask' can be NULL
 KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priority, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
 {
     KwlnTask* task = KwlnTask_Init(taskName, priority, update, destroy, taskData);
+    KwlnTask_AddChild(parentTask, task);
+
+    return task;
+}
+
+// FUN_00194b80. Create a new task and adjust priority by the parent hierarchy. 'parentTask' can be NULL
+KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, u32 priority, const char* name, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
+{
+    KwlnTask* task;
+    KwlnTask* currParent;
+    u32 maxPriority;
+
+    if (parentTask != NULL)
+    {
+        maxPriority = 0;
+
+        currParent = parentTask;
+        while (currParent != NULL)
+        {
+            if (priority <= currParent->priority &&
+               (currParent->priority < priority + 1024) &&
+               (maxPriority < currParent->priority))
+            {
+                maxPriority = currParent->priority;
+            }
+
+            currParent = currParent->parent;
+        }
+
+        if (maxPriority != 0)
+        {
+            priority = maxPriority + 1;
+        }
+    }
+
+    task = KwlnTask_Init(name, priority, update, destroy, taskData);
     KwlnTask_AddChild(parentTask, task);
 
     return task;
