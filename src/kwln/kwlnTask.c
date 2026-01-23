@@ -351,8 +351,8 @@ KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, u32 priority, co
     if (parentTask != NULL)
     {
         maxPriority = 0;
-
         currParent = parentTask;
+
         while (currParent != NULL)
         {
             if (priority <= currParent->priority &&
@@ -377,8 +377,12 @@ KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, u32 priority, co
     return task;
 }
 
-// FUN_00194c50
-KwlnTask* KwlnTask_Init(const char* taskName, u32 priority, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
+// FUN_00194c50. Init a new task. See 'KwlnTask_InitEx' for adjustable 'runningDelay' and 'destroyDelay'
+KwlnTask* KwlnTask_Init(const char* taskName,
+                        u32 priority,
+                        KwlnTask_Update update,
+                        KwlnTask_Destroy destroy,
+                        void* taskData)
 {
     KwlnTask* task;
     u8 currChar;
@@ -415,6 +419,79 @@ KwlnTask* KwlnTask_Init(const char* taskName, u32 priority, KwlnTask_Update upda
     task->taskTimer = 0;
     task->runningDelay = 0;
     task->destroyDelay = 2;
+    task->update = update;
+    task->destroy = destroy;
+    task->taskData = taskData;
+    task->next = NULL;
+    task->prev = NULL;
+    task->unk_48 = NULL;
+    task->parent = NULL;
+    task->child = NULL;
+    task->sibling = NULL;
+    task->unk_58 = 0;
+    task->unk_5c = 0;
+    task->unk_60 = 0;
+    task->unk_64 = 0;
+    
+    KwlnTask_AddToList(task);
+
+    if (task->runningDelay == 0)
+    {
+        KwlnTask_RemoveTaskFromList(task);
+        KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_RUNNING);
+        KwlnTask_AddToList(task);
+
+        task->unk_24 = 0;
+        task->taskTimer = 0;
+    }
+
+    return task;
+}
+
+// FUN_00194e10. Init a new task with adjustable 'runningDelay' and 'destroyDelay'
+KwlnTask* KwlnTask_InitEx(const char* taskName,
+                                 u32 priority,
+                                 s32 runningDelay,
+                                 s32 destroyDelay,
+                                 KwlnTask_Update update,
+                                 KwlnTask_Destroy destroy,
+                                 void* taskData)
+{
+    KwlnTask* task;
+    u8 currChar;
+    u32 i;
+
+    if (taskName[0] == '\0')
+    {
+        P3FES_ASSERT("kwlnTask.c", 1101);
+    }
+
+    task = (KwlnTask*)H_Malloc(sizeof(KwlnTask));
+    if (task == NULL)
+    {
+        P3FES_ASSERT("kwlnTask.c", 1109);
+        return NULL;
+    }
+
+    task->nameChkSum = 0;
+    i = 0;
+    do
+    {
+        currChar = taskName[i];
+        task->taskName[i] = currChar;
+        task->nameChkSum += taskName[i];
+
+        i++;
+    } while (currChar != '\0' && i < 23);
+
+    task->taskName[23] = '\0';
+    task->stateAndFlags = KWLN_TASK_STATE_NULL;
+    task->stateAndFlags = KWLN_TASK_STATE_CREATED;
+    task->priority = priority;
+    task->unk_24 = 0;
+    task->taskTimer = 0;
+    task->runningDelay = runningDelay;
+    task->destroyDelay = destroyDelay;
     task->update = update;
     task->destroy = destroy;
     task->taskData = taskData;
