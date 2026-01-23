@@ -442,6 +442,53 @@ u8 KwlnTask_Exists(KwlnTask* task)
     return false;
 }
 
+// FUN_00195340
+KwlnTask* KwlnTask_GetTaskByName(const char* name)
+{
+    KwlnTask* list;
+    u32 i;
+    u32 j;
+    u32 k;
+    u32 nameChkSum = 0;
+    
+    for (i = 0; name[i] != '\0'; i++)
+    {
+        nameChkSum += name[i];
+    }
+
+    for (j = 0; j < 3; j++)
+    {
+        switch (j)
+        {
+            case 0: list = ctx.stagedTaskHead;  break;
+            case 1: list = ctx.runningTaskHead; break;
+            case 2: list = ctx.destroyTaskHead; break;
+        }
+
+        while (list != NULL)
+        {
+            k = i;
+
+            if (list->nameChkSum == nameChkSum)
+            {
+                while (k > 0 && name[k-1] == list->taskName[k-1])
+                {
+                    k--;
+                }
+
+                if (k == 0)
+                {
+                    return list;
+                }
+            }
+
+            list = list->next;
+        }
+    }
+
+    return NULL;
+}
+
 // FUN_00195520
 u32 KwlnTask_GetTaskTimer(KwlnTask* task)
 {
