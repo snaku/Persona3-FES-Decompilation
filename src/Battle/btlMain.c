@@ -1,8 +1,11 @@
 #include "datUnit.h"
+
 #include "Battle/btlCtx.h"
 #include "Battle/btlActor.h"
 #include "Battle/btlAction.h"
 #include "Battle/btlMain.h"
+
+#include "rw/rwplcore.h"
 #include "temporary.h"
 
 // FUN_00299e90
@@ -10,9 +13,7 @@ BattleActor* BtlMain_CreateActor()
 {
     BattleActor* btlActor;
 
-    // alloc btlActor:
-
-    // btlActor = (*DAT_00960178)(sizeof(BattleActionStruct), 0x40000);
+    btlActor = rwGlobals.memFuncs.Rw_Malloc(sizeof(BattleActor), 0x40000);
     P3FES_Memset(btlActor, 0, sizeof(BattleActor));
 
     // FUN_002d1570(btlActor + 0x38);
@@ -100,8 +101,7 @@ void BtlMain_UpdateActors()
                     actorToUpdate->next->prev = actorToUpdate->prev;
                 }
 
-                // !!free!!
-                // (*0096017c)(actorToUpdate);
+                rwGlobals.memFuncs.Rw_Free(actorToUpdate);
             }
             else
             {
@@ -135,8 +135,8 @@ void BtlMain_DestroyAllActors()
             currActor->next->prev = currActor->prev;
         }
 
-        // !!free!!
-        // (*0096017c)(currActor);
+        rwGlobals.memFuncs.Rw_Free(currActor);
+
         currActor = prevActor;
     }
 }
