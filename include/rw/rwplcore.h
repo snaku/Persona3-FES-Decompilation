@@ -33,4 +33,6 @@ typedef struct
 
 extern RwGlobals rwGlobals; // not sure where to place this
 
+RwBool RwEngine_Init(const RwMemoryFunctions* memFuncs, RwUInt32 flags, RwUInt32 resArenaSize);
+
 #endif
