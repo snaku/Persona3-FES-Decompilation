@@ -1,3 +1,5 @@
 #include "rw/rwplcore.h"
 
-// TODO
+// 00960070
+RwGlobals rwGlobals;
+
