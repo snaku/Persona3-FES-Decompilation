@@ -29,6 +29,8 @@ typedef struct
 {
     u8 unkData1[0x108];
     RwMemoryFunctions memFuncs; // 0x108
+    u8 unkData2[0x18];
+    RwUInt32 resArenaSize;      // 0x130
 } RwGlobals;
 
 extern RwGlobals rwGlobals; // not sure where to place this
