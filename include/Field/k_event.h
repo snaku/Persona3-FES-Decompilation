@@ -3,6 +3,15 @@
 
 #include "Utils.h"
 
+// 4 bytes
+typedef struct FieldDrawCmd
+{
+    u8 unk_00;
+    u8 unk_01;
+    u8 unk_02;
+    u8 unk_03;
+} FieldDrawCmd;
+
 // 288 bytes
 typedef struct FieldEvent
 {
