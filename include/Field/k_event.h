@@ -21,4 +21,6 @@ typedef struct FieldEvent
     u8 unkData2[0xc0];
 } FieldEvent;
 
+KwlnTask* FldEvent_CreateTasks(KwlnTask* fldRootTask);
+
 #endif

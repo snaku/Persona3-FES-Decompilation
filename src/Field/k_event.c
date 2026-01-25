@@ -4,6 +4,39 @@
 
 KwlnTask* FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 
+// FUN_001c8620
+s32 FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
+{
+    // TODO
+
+    return KWLN_TASK_CONTINUE;
+}
+
+// FUN_001cd570
+void FldEvent_DestroyFldEventTask(KwlnTask* fldEventTask)
+{
+    rwGlobals.memFuncs.Rw_Free(fldEventTask->taskData);
+}
+
+// FUN_001cd5a0. Create 'field event' and 'draw command' tasks
+KwlnTask* FldEvent_CreateTasks(KwlnTask* fldRootTask)
+{
+    FieldEvent* fldEvent;
+    KwlnTask* fldEventTask;
+
+    fldEvent = rwGlobals.memFuncs.Rw_Calloc(1, sizeof(FieldEvent), 0x40000);
+    if (fldEvent == NULL)
+    {
+        return NULL;
+    }
+
+    fldEventTask = KwlnTask_CreateWithAutoPriority(fldRootTask, 10, "field event", FldEvent_UpdateFldEventTask, FldEvent_DestroyFldEventTask, fldEvent);
+    
+    fldEvent->drawCmdTask = FldEvent_CreateDrawCmdTask(fldEventTask);
+
+    return fldEventTask;
+}
+
 // FUN_001cd690
 s32 FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
 {
