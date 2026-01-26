@@ -3,6 +3,13 @@
 
 #include "Utils.h"
 
+typedef enum
+{
+    // TODO
+    FIELD_EVENT_TYPE_OBJ_INTERACT = 2, // Player is interacting with an object
+    FIELD_EVENT_TYPE_DESTROY = 32      // destroy 'field event' task
+} FieldEventType;
+
 // 4 bytes
 typedef struct FieldDrawCmd
 {
