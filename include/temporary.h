@@ -19,15 +19,6 @@ extern const f32 PI; // 007cae58
 typedef struct BattleCtx BattleCtx;
 typedef struct KwlnTask KwlnTask;
 
-// 4 bytes
-typedef struct
-{
-    u8 r;
-    u8 g;
-    u8 b;
-    u8 a;
-} RGBA;
-
 // TODO
 typedef struct
 {

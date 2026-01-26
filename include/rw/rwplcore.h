@@ -17,6 +17,25 @@ typedef unsigned long RwUInt64;
 typedef float RwReal;
 typedef RwInt32 RwBool;
 
+// 4 bytes. Values from 0 to 255
+typedef struct RwRGBA
+{
+    RwUInt8 r;
+    RwUInt8 g;
+    RwUInt8 b;
+    RwUInt8 a;
+} RwRGBA;
+
+// 16 bytes. Values from 0.0f to 1.0f
+typedef struct RwRGBAReal
+{
+    RwReal r;
+    RwReal g;
+    RwReal b;
+    RwReal a;
+} RwRGBAReal;
+
+// 16 bytes
 typedef struct RwMemoryFunctions
 {
     void* (*Rw_Malloc)(RwUInt32 size, RwUInt32 param_3);
@@ -25,6 +44,7 @@ typedef struct RwMemoryFunctions
     void* (*Rw_Calloc)(RwUInt32 elemCount, RwUInt32 elemSize, RwUInt32 param_3);
 } RwMemoryFunctions;
 
+// 308 bytes
 typedef struct
 {
     u8 unkData1[0x108];
