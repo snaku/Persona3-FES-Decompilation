@@ -12,4 +12,6 @@ typedef struct
     u8 unkData[0x04];
 } FieldShadowMap;
 
+KwlnTask* FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask);
+
 #endif
