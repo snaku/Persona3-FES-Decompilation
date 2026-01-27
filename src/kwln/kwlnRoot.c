@@ -98,9 +98,10 @@ s32 KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 
     if (ctx.fogParameter.fogEnabled)
     {
-        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_ENABLE, true);
-        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_COLOR, PACK_RWRGBA(ctx.fogParameter.r, ctx.fogParameter.g, ctx.fogParameter.b, ctx.fogParameter.a));
-        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_TYPE, RW_FOG_TYPE_1);
+        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_ENABLE, (void*)true);
+        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_COLOR,
+                                       (void*)PACK_RWRGBA(ctx.fogParameter.r, ctx.fogParameter.g, ctx.fogParameter.b, ctx.fogParameter.a));
+        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_TYPE, (void*)RW_FOG_TYPE_1);
     }
 
     camera = KwlnRoot_GetMainCamera();
