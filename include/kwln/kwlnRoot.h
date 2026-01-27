@@ -3,6 +3,9 @@
 
 #include "Utils.h"
 
+typedef struct KwlnTask KwlnTask;
+typedef struct RwCamera RwCamera;
+
 // 8 bytes
 typedef struct KwlnRoot
 {
