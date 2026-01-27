@@ -4,6 +4,8 @@
 #include "temporary.h"
 #include "h_snd.h"
 
+KwlnTask* KwlnRoot_Create2DDrawBeginTask();
+
 // FUN_00198590. Not sure if it's in this file or in 'kwln.c' ?
 RwCamera* KwlnRoot_GetMainCamera()
 {
@@ -43,4 +45,18 @@ KwlnTask* KwlnRoot_CreateRootProcTask()
     H_Snd_FUN_00109ca0(1, 2);
 
     return rootProcTask;
+}
+
+// FUN_001989e0
+s32 KwlnRoot_Update2DDrawBeginTask(KwlnTask* drawBegin2dTask)
+{
+    // TODO
+
+    return KWLN_TASK_CONTINUE;
+}
+
+// FUN_00198b50
+KwlnTask* KwlnRoot_Create2DDrawBeginTask()
+{
+    return KwlnTask_Init("2D Draw Begin", 4196, KwlnRoot_Update2DDrawBeginTask, NULL, NULL);
 }
