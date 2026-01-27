@@ -42,7 +42,17 @@ typedef enum
 {
     // TODO
     RW_RENDER_STATE_0,
+    RW_RENDER_STATE_FOG_ENABLE = 14,
+    RW_RENDER_STATE_FOG_COLOR,
+    RW_RENDER_STATE_FOG_TYPE,
 } RwRenderState;
+
+typedef enum
+{
+    // TODO
+    RW_FOG_TYPE_0,
+    RW_FOG_TYPE_1
+} RwFogType;
 
 // See enmu 'RwRenderState'
 typedef RwBool (*RwRenderState_SetFunc)(RwRenderState renderState, void* val);
