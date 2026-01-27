@@ -94,7 +94,17 @@ KwlnTask* KwlnRoot_Create2DDrawEndTask()
 // FUN_00198d20
 s32 KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 {
-    // TODO
+    RwCamera* camera;
+
+    if (ctx.fogParameter.fogEnabled)
+    {
+        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_ENABLE, true);
+        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_COLOR, PACK_RWRGBA(ctx.fogParameter.r, ctx.fogParameter.g, ctx.fogParameter.b, ctx.fogParameter.a));
+        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_TYPE, RW_FOG_TYPE_1);
+    }
+
+    camera = KwlnRoot_GetMainCamera();
+    RwCamera_EndUpdate(camera);
 
     return KWLN_TASK_CONTINUE;
 }
