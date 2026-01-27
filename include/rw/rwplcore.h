@@ -17,6 +17,9 @@ typedef unsigned long RwUInt64;
 typedef float RwReal;
 typedef RwInt32 RwBool;
 
+// pack RGBA components into an unsigned int
+#define PACK_RWRGBA(r,g,b,a) ((RwUInt32)(((a) << 24) | ((r) << 16) | ((g) << 8) | (b)))
+
 // 4 bytes. Values from 0 to 255
 typedef struct RwRGBA
 {
