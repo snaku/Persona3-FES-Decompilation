@@ -18,6 +18,7 @@ extern const f32 PI; // 007cae58
 
 typedef struct BattleCtx BattleCtx;
 typedef struct KwlnTask KwlnTask;
+typedef struct RwCamera RwCamera;
 
 // TODO
 typedef struct
@@ -34,6 +35,7 @@ typedef struct
     KwlnTask* runningTaskHead;   // 007ce07c. Head of tasks in 'KWLN_TASK_STATE_RUNNING' state
     KwlnTask* runningTaskTail;   // 007ce080. Tail of tasks in 'KWLN_TASK_STATE_RUNNING' state
     u32 numTaskRunning;          // 007ce084. Total number of task in 'KWLN_TASK_STATE_RUNNING' state
+    RwCamera* mainCamera;        // 007ce0c0
     KwlnTask* rootProcTask;      // 007ce0d0. Task name = "root proc"
     KwlnTask* dungeonTask;       // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
