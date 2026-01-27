@@ -5,6 +5,7 @@
 #include "h_snd.h"
 
 KwlnTask* KwlnRoot_Create2DDrawBeginTask();
+KwlnTask* KwlnRoot_Create2DDrawBeginPreEndTask();
 
 // FUN_00198590. Not sure if it's in this file or in 'kwln.c' ?
 RwCamera* KwlnRoot_GetMainCamera()
@@ -55,8 +56,20 @@ s32 KwlnRoot_Update2DDrawBeginTask(KwlnTask* drawBegin2dTask)
     return KWLN_TASK_CONTINUE;
 }
 
+// FUN_00198b10
+s32 KwlnRoot_Update2DDrawPreEndTask(KwlnTask* drawBegin2dPETask)
+{
+    return KWLN_TASK_CONTINUE;
+}
+
 // FUN_00198b50
 KwlnTask* KwlnRoot_Create2DDrawBeginTask()
 {
     return KwlnTask_Init("2D Draw Begin", 4196, KwlnRoot_Update2DDrawBeginTask, NULL, NULL);
+}
+
+// FUN_00198b90
+KwlnTask* KwlnRoot_Create2DDrawBeginPreEndTask()
+{
+    return KwlnTask_Init("2D Draw Begin Pre End", 5231, KwlnRoot_Update2DDrawPreEndTask, NULL, NULL);
 }
