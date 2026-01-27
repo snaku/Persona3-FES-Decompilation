@@ -1,7 +1,14 @@
 #include "kwln/kwlnRoot.h"
 #include "kwln/kwlnTask.h"
 #include "rw/rwplcore.h"
+#include "temporary.h"
 #include "h_snd.h"
+
+// FUN_00198590. Not sure if it's in this file or in 'kwln.c' ?
+RwCamera* KwlnRoot_GetMainCamera()
+{
+    return ctx.mainCamera;
+}
 
 // FUN_00198650
 s32 KwlnRoot_UpdateRootProcTask(KwlnTask* rootProcTask)
@@ -31,7 +38,7 @@ KwlnTask* KwlnRoot_CreateRootProcTask()
         return NULL;
     }
 
-    rootProcTask = KwlnTask_Init("rootProc", 0, NULL, NULL, root);
+    rootProcTask = KwlnTask_Init("rootProc", 0, KwlnRoot_UpdateRootProcTask, KwlnRoot_DestroyRootProcTask, root);
     H_Snd_FUN_00109ca0(0, 1);
     H_Snd_FUN_00109ca0(1, 2);
 

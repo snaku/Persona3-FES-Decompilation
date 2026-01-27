@@ -10,6 +10,7 @@ typedef struct KwlnRoot
     u32 unk_04;
 } KwlnRoot;
 
+RwCamera* KwlnRoot_GetMainCamera();
 KwlnTask* KwlnRoot_CreateRootProcTask();
 
 #endif
