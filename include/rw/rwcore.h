@@ -16,4 +16,7 @@ typedef struct RwCamera
     RwCameraEndUpdateFunc endUpdate;     // 0x1c
 } RwCamera;
 
+RwCamera* RwCamera_BeginUpdate(RwCamera* camera);
+RwCamera* RwCamera_EndUpdate(RwCamera* camera);
+
 #endif
