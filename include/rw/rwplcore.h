@@ -69,10 +69,12 @@ typedef struct RwMemoryFunctions
 // 308 bytes
 typedef struct
 {
-    u8 unkData1[0x108];
-    RwMemoryFunctions memFuncs; // 0x108
-    u8 unkData2[0x18];
-    RwUInt32 resArenaSize;      // 0x130
+    u8 unkData1[0x10];
+    RwDevice device;            // 0x10
+    u8 unkData2[0xec];
+    RwMemoryFunctions memFuncs; // 0x134
+    u8 unkData3[0x10];
+    RwUInt32 resArenaSize;      // 0x154
 } RwGlobals;
 
 extern RwGlobals rwGlobals; // not sure where to place this
