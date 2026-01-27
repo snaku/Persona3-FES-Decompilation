@@ -1,12 +1,10 @@
-// temporary file name
-
-#ifndef AUDIO_H
-#define AUDIO_H
+#ifndef H_SND_H
+#define H_SND_H
 
 #include "Utils.h"
 
-#define AUDIO_BGM_PLAYING     1
-#define AUDIO_BGM_NOT_PLAYING 0
+#define H_SND_BGM_PLAYING     1
+#define H_SND_BGM_NOT_PLAYING 0
 
 typedef enum
 {
@@ -86,9 +84,9 @@ typedef struct
     char* currBgmAdxString;
 } BgmData;
 
-u16 Audio_GetCurrentBgmId();
-void Audio_StopPlayingBgm();
-u32 Audio_PlayBgm(u16 bgmId, u8 param_2);
-
+u16 H_Snd_GetCurrentBgmId();
+void H_Snd_StopPlayingBgm();
+u32 H_Snd_PlayBgm(u16 bgmId, u8 param_2);
+u8 H_Snd_FUN_00109ca0(s16 param_1, s16 param_2);
 
 #endif

@@ -1,4 +1,4 @@
-#include "audio.h"
+#include "h_snd.h"
 
 // 007cb2a8. See enum BgmId
 static const char* bgmStrings[82] = 
@@ -25,9 +25,9 @@ static const char* bgmStrings[82] =
 static BgmData bgm;
 
 // FUN_00108e50
-u16 Audio_GetCurrentBgmId()
+u16 H_Snd_GetCurrentBgmId()
 {
-    if (bgm.isBgmPlaying == AUDIO_BGM_NOT_PLAYING)
+    if (bgm.isBgmPlaying == H_SND_BGM_NOT_PLAYING)
     {
         return BGM_ID_NONE;
     }
@@ -36,24 +36,24 @@ u16 Audio_GetCurrentBgmId()
 }
 
 // FUN_00108e50
-void Audio_StopPlayingBgm()
+void H_Snd_StopPlayingBgm()
 {
-    if (bgm.isBgmPlaying != AUDIO_BGM_NOT_PLAYING)
+    if (bgm.isBgmPlaying != H_SND_BGM_NOT_PLAYING)
     {
         // FUN_0054d100(bgm.unk5);
-        bgm.isBgmPlaying = AUDIO_BGM_NOT_PLAYING;
+        bgm.isBgmPlaying = H_SND_BGM_NOT_PLAYING;
         bgm.unk4 = 0;
         bgm.currBgmId = BGM_ID_NONE;
     }
 }
 
 // FUN_001099d0
-u32 Audio_PlayBgm(u16 bgmId, u8 param_2)
+u32 H_Snd_PlayBgm(u16 bgmId, u8 param_2)
 {
     // TODO
     u16 currBgmId = bgm.currBgmId;
 
-    if (bgm.isBgmPlaying == AUDIO_BGM_NOT_PLAYING)
+    if (bgm.isBgmPlaying == H_SND_BGM_NOT_PLAYING)
     {
         currBgmId = BGM_ID_NONE;
     }
@@ -61,7 +61,7 @@ u32 Audio_PlayBgm(u16 bgmId, u8 param_2)
     if (bgmId != currBgmId)
     {
         bgm.unk2 = 0;
-        bgm.isBgmPlaying = AUDIO_BGM_PLAYING;
+        bgm.isBgmPlaying = H_SND_BGM_PLAYING;
         bgm.unk3 = 1;
         // DAT_007e4560 = bgm.currBgmId;
         bgm.unk5 = 0;
@@ -69,7 +69,15 @@ u32 Audio_PlayBgm(u16 bgmId, u8 param_2)
         P3FES_LOG2("", bgm.currBgmAdxString, bgmStrings[bgmId]);
     }
 
-    return AUDIO_BGM_PLAYING;
+    return H_SND_BGM_PLAYING;
+}
+
+// FUN_00109ca0
+u8 H_Snd_FUN_00109ca0(s16 param_1, s16 param_2)
+{
+    // TODO
+
+    return true;
 }
 
 // FUN_00523ac8. TEMPORARY IN THIS FILE !
