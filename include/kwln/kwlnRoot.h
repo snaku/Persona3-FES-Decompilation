@@ -1,6 +1,13 @@
 #ifndef KWLNROOT_H
 #define KWLNROOT_H
 
-// TODO
+#include "Utils.h"
+
+// 8 bytes
+typedef struct KwlnRoot
+{
+    u32 state;
+    u32 unk_04;
+} KwlnRoot;
 
 #endif
