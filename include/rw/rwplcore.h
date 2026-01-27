@@ -38,6 +38,25 @@ typedef struct RwRGBAReal
     RwReal a;
 } RwRGBAReal;
 
+typedef enum
+{
+    // TODO
+    RW_RENDER_STATE_0,
+} RwRenderState;
+
+// See enmu 'RwRenderState'
+typedef RwBool (*RwRenderState_SetFunc)(RwRenderState renderState, void* val);
+typedef RwBool (*RwRenderState_GetFunc)(RwRenderState renderState, void* val);
+
+// 56 bytes
+typedef struct RwDevice
+{
+    u8 unkData1[0x10];
+    RwRenderState_SetFunc setRenderState; // 0x10
+    RwRenderState_GetFunc getRenderState; // 0x14
+    u8 unkData2[0x20];
+} RwDevice;
+
 // 16 bytes
 typedef struct RwMemoryFunctions
 {
