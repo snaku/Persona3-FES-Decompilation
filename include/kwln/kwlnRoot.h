@@ -10,4 +10,6 @@ typedef struct KwlnRoot
     u32 unk_04;
 } KwlnRoot;
 
+KwlnTask* KwlnRoot_CreateRootProcTask();
+
 #endif
