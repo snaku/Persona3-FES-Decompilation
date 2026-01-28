@@ -20,6 +20,18 @@ typedef RwInt32 RwBool;
 // pack RGBA components into an unsigned int
 #define PACK_RWRGBA(r,g,b,a) ((RwUInt32)(((a) << 24) | ((r) << 16) | ((g) << 8) | (b)))
 
+// macros to call 'RwGlobals' func ptr
+// memFuncs
+#define RW_MALLOC(size, param_3)          rwGlobals.memFuncs.Rw_Malloc((size), (param_3))
+#define RW_FREE(ptr)                      rwGlobals.memFuncs.Rw_Free((ptr))
+#define RW_REALLOC(ptr, newSize, param_3) rwGlobals.memFuncs.Rw_Realloc((ptr), (newSize), (param_3))
+#define RW_CALLOC(count, size, param_3)   rwGlobals.memFuncs.Rw_Calloc((count), (size), (param_3))
+
+// device
+#define RWRENDERSTATE_SET(state, val) rwGlobals.device.setRenderState((state), (void*)(val))
+#define RWRENDERSTATE_GET(state, val) rwGlobals.device.getRenderState((state), (void*)(val))
+
+
 // 4 bytes. Values from 0 to 255
 typedef struct RwRGBA
 {
