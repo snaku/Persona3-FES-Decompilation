@@ -7,6 +7,7 @@
 KwlnTask* KwlnRoot_Create2DDrawBeginTask();
 KwlnTask* KwlnRoot_Create2DDrawBeginPreEndTask();
 KwlnTask* KwlnRoot_Create2DDrawEndTask();
+KwlnTask* KwlnRoot_Create3DOn2DZClearTask();
 KwlnTask* KwlnRoot_Create3DOn2DDrawEndTask();
 
 // FUN_00198590. Not sure if it's in this file or in 'kwln.c' ?
@@ -106,6 +107,17 @@ KwlnTask* KwlnRoot_Create2DDrawEndTask()
     return KwlnTask_Init("2D Draw End", 5241, KwlnRoot_Update2DDrawEndTask, NULL, NULL);
 }
 
+// FUN_00198c10
+s32 KwlnRoot_Update3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
+{
+    RwCamera* camera = KwlnRoot_GetMainCamera();
+    RwRGBA* clearColor = KwlnRoot_GetClearColor();
+
+    RwCamera_Clear(camera, clearColor, RW_CAMERA_CLEAR_MODE_ZBUFFER);
+
+    return KWLN_TASK_CONTINUE;
+}
+
 // FUN_00198d20
 s32 KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 {
@@ -122,6 +134,12 @@ s32 KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
     RwCamera_EndUpdate(camera);
 
     return KWLN_TASK_CONTINUE;
+}
+
+// FUN_00198dd0
+KwlnTask* KwlnRoot_Create3DOn2DZClearTask()
+{
+    return KwlnTask_Init("3D on 2D Zclear", 5243, KwlnRoot_Update3DOn2DZClearTask, NULL, NULL);
 }
 
 // FUN_00198e50
