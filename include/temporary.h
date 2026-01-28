@@ -7,8 +7,8 @@
 #define TEMPORARY_H
 
 #include "Utils.h"
-#include "mathTypes.h"
 #include "Battle/btlActor.h"
+#include "rw/rwcore.h"
 
 extern const f32 PI; // 007cae58
 
@@ -50,6 +50,7 @@ typedef struct
     RwCamera* mainCamera;        // 007ce0c0
     KwlnTask* rootProcTask;      // 007ce0d0. Task name = "root proc"
     FogParameter fogParameter;   // 007ce0d4
+    RwRGBA clearColor;           // 007ce128
     KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
     KwlnTask* dungeonTask;       // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
