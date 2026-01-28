@@ -28,7 +28,7 @@ void KwlnRoot_DestroyRootProcTask(KwlnTask* rootProcTask)
 {
     // TODO
 
-    rwGlobals.memFuncs.Rw_Free(rootProcTask->taskData);
+    RW_FREE(rootProcTask->taskData);
 }
 
 // FUN_00198940
@@ -37,7 +37,7 @@ KwlnTask* KwlnRoot_CreateRootProcTask()
     KwlnTask* rootProcTask;
     KwlnRoot* root;
 
-    root = rwGlobals.memFuncs.Rw_Calloc(1, sizeof(KwlnRoot), 0x40000);
+    root = RW_CALLOC(1, sizeof(KwlnRoot), 0x40000);
     if (root == NULL)
     {
         return NULL;
@@ -98,10 +98,9 @@ s32 KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 
     if (ctx.fogParameter.fogEnabled)
     {
-        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_ENABLE, (void*)true);
-        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_COLOR,
-                                       (void*)PACK_RWRGBA(ctx.fogParameter.r, ctx.fogParameter.g, ctx.fogParameter.b, ctx.fogParameter.a));
-        rwGlobals.device.setRenderState(RW_RENDER_STATE_FOG_TYPE, (void*)RW_FOG_TYPE_1);
+        RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_ENABLE, true);
+        RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_COLOR, PACK_RWRGBA(ctx.fogParameter.r, ctx.fogParameter.g, ctx.fogParameter.b, ctx.fogParameter.a));
+        RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_TYPE, RW_FOG_TYPE_1);
     }
 
     camera = KwlnRoot_GetMainCamera();

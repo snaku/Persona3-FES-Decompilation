@@ -15,7 +15,7 @@ s32 FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 // FUN_001cd570
 void FldEvent_DestroyFldEventTask(KwlnTask* fldEventTask)
 {
-    rwGlobals.memFuncs.Rw_Free(fldEventTask->taskData);
+    RW_FREE(fldEventTask->taskData);
 }
 
 // FUN_001cd5a0. Create 'field event' and 'draw command' tasks
@@ -24,7 +24,7 @@ KwlnTask* FldEvent_CreateTasks(KwlnTask* fldRootTask)
     FieldEvent* fldEvent;
     KwlnTask* fldEventTask;
 
-    fldEvent = rwGlobals.memFuncs.Rw_Calloc(1, sizeof(FieldEvent), 0x40000);
+    fldEvent = RW_CALLOC(1, sizeof(FieldEvent), 0x40000);
     if (fldEvent == NULL)
     {
         return NULL;
@@ -48,7 +48,7 @@ s32 FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
 // FUN_001cd6e0
 void FldEvent_DestroyDrawCmdTask(KwlnTask* drawCmdTask)
 {
-    rwGlobals.memFuncs.Rw_Free(drawCmdTask->taskData);
+    RW_FREE(drawCmdTask->taskData);
 }
 
 // FUN_001cd710
@@ -56,7 +56,7 @@ KwlnTask* FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask)
 {
     FieldDrawCmd* drawCmd;
 
-    drawCmd = rwGlobals.memFuncs.Rw_Calloc(1, sizeof(FieldDrawCmd), 0x40000);
+    drawCmd = RW_CALLOC(1, sizeof(FieldDrawCmd), 0x40000);
     if (drawCmd == NULL)
     {
         return NULL;

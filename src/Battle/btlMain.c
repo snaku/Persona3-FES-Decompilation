@@ -13,7 +13,7 @@ BattleActor* BtlMain_CreateActor()
 {
     BattleActor* btlActor;
 
-    btlActor = rwGlobals.memFuncs.Rw_Malloc(sizeof(BattleActor), 0x40000);
+    btlActor = RW_MALLOC(sizeof(BattleActor), 0x40000);
     P3FES_Memset(btlActor, 0, sizeof(BattleActor));
 
     // FUN_002d1570(btlActor + 0x38);
@@ -101,7 +101,7 @@ void BtlMain_UpdateActors()
                     actorToUpdate->next->prev = actorToUpdate->prev;
                 }
 
-                rwGlobals.memFuncs.Rw_Free(actorToUpdate);
+                RW_FREE(actorToUpdate);
             }
             else
             {
@@ -135,7 +135,7 @@ void BtlMain_DestroyAllActors()
             currActor->next->prev = currActor->prev;
         }
 
-        rwGlobals.memFuncs.Rw_Free(currActor);
+        RW_FREE(currActor);
 
         currActor = prevActor;
     }
