@@ -15,6 +15,12 @@ RwCamera* KwlnRoot_GetMainCamera()
     return ctx.mainCamera;
 }
 
+// FUN_001985a0. Not sure if it's in this file or in 'kwln.c' ?
+RwRGBA* KwlnRoot_GetClearColor()
+{
+    return &ctx.clearColor;
+}
+
 // FUN_001985b0. Not sure if it's in this file or in 'kwln.c' ?
 void KwlnRoot_SetClearColor(u8 r, u8 g, u8 b, u8 a)
 {

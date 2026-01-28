@@ -5,6 +5,7 @@
 
 typedef struct KwlnTask KwlnTask;
 typedef struct RwCamera RwCamera;
+typedef struct RwRGBA RwRGBA;
 
 // 8 bytes
 typedef struct KwlnRoot
@@ -14,6 +15,7 @@ typedef struct KwlnRoot
 } KwlnRoot;
 
 RwCamera* KwlnRoot_GetMainCamera();
+RwRGBA* KwlnRoot_GetClearColor();
 void KwlnRoot_SetClearColor(u8 r, u8 g, u8 b, u8 a);
 KwlnTask* KwlnRoot_CreateRootProcTask();
 
