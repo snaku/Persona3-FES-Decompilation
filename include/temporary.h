@@ -24,11 +24,11 @@ typedef struct
 {
     u32 fogEnabled;
     u8 r;              // red component
-    u8 unkData1[0x02];
+    u8 unkData1[0x03];
     u8 g;              // green component
-    u8 unkData2[0x02];
+    u8 unkData2[0x03];
     u8 b;              // blue component
-    u8 unkData[0x02];
+    u8 unkData3[0x03];
     u8 a;              // alpha component
 } FogParameter;
 
@@ -50,6 +50,7 @@ typedef struct
     RwCamera* mainCamera;        // 007ce0c0
     KwlnTask* rootProcTask;      // 007ce0d0. Task name = "root proc"
     FogParameter fogParameter;   // 007ce0d4
+    KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
     KwlnTask* dungeonTask;       // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
 } GlobalCtx;
