@@ -5,18 +5,27 @@
 
 struct RwCamera;
 
-typedef struct RwCamera* (*RwCameraBeginUpdateFunc)(struct RwCamera* camera);
-typedef struct RwCamera* (*RwCameraEndUpdateFunc)(struct RwCamera* camera);
+typedef struct RwCamera* (*RwCamera_BeginUpdateFunc)(struct RwCamera* camera);
+typedef struct RwCamera* (*RwCamera_EndUpdateFunc)(struct RwCamera* camera);
 
 // TODO
 typedef struct RwCamera
 {
     u8 unkData1[0x18];
-    RwCameraBeginUpdateFunc beginUpdate; // 0x18
-    RwCameraEndUpdateFunc endUpdate;     // 0x1c
+    RwCamera_BeginUpdateFunc beginUpdate; // 0x18
+    RwCamera_EndUpdateFunc endUpdate;     // 0x1c
 } RwCamera;
+
+typedef enum
+{
+    // TODO: names
+    RW_CAMERA_CLEAR_MODE_0,
+    RW_CAMERA_CLEAR_MODE_1,
+    RW_CAMERA_CLEAR_MODE_2
+} RwCameraClearMode;
 
 RwCamera* RwCamera_BeginUpdate(RwCamera* camera);
 RwCamera* RwCamera_EndUpdate(RwCamera* camera);
+RwCamera* RwCamera_Clear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode);
 
 #endif

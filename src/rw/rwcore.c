@@ -11,3 +11,11 @@ RwCamera* RwCamera_BeginUpdate(RwCamera* camera)
 {
     return camera->beginUpdate(camera);
 }
+
+// FUN_004c9e90
+RwCamera* RwCamera_Clear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode)
+{
+    // TODO
+
+    return camera;
+}
