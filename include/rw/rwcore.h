@@ -21,7 +21,7 @@ typedef enum
     // TODO: names
     RW_CAMERA_CLEAR_MODE_0,
     RW_CAMERA_CLEAR_MODE_1,
-    RW_CAMERA_CLEAR_MODE_2
+    RW_CAMERA_CLEAR_MODE_ZBUFFER // clear Z buffer
 } RwCameraClearMode;
 
 RwCamera* RwCamera_BeginUpdate(RwCamera* camera);
