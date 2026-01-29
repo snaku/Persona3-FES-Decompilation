@@ -35,9 +35,10 @@ typedef struct
 // TODO
 typedef struct
 {
-    u8 unkData1[0x124];
+    // data before
     u32 scenarioMode;            // 007cdfa4. See enum GameScenario
-    u8 unkData2[0x448];
+    KwlnTask* calendarDrawTask;  // 007cdfec. Task name = "CalenderDraw"
+    // data after
     KwlnTask* stagedTaskHead;    // 007ce064. Head of tasks in 'KWLN_TASK_STATE_CREATED' state
     KwlnTask* stagedTaskTail;    // 007ce068. Tail of tasks in 'KWLN_TASK_STATE_CREATED' state
     u32 numTaskStaged;           // 007ce06c. Total number of task in 'KWLN_TASK_STATE_CREATED' state
@@ -48,12 +49,13 @@ typedef struct
     KwlnTask* runningTaskTail;   // 007ce080. Tail of tasks in 'KWLN_TASK_STATE_RUNNING' state
     u32 numTaskRunning;          // 007ce084. Total number of task in 'KWLN_TASK_STATE_RUNNING' state
     RwCamera* mainCamera;        // 007ce0c0
-    KwlnTask* rootProcTask;      // 007ce0d0. Task name = "root proc"
+    KwlnTask* rootProcTask;      // 007ce0d0. Task name = "rootProc"
     FogParameter fogParameter;   // 007ce0d4
     RwRGBA clearColor;           // 007ce128
     KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
     KwlnTask* dungeonTask;       // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
+    // data after
 } GlobalCtx;
 
 extern GlobalCtx ctx; // 007cde80
