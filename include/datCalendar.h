@@ -3,6 +3,8 @@
 
 #include "Utils.h"
 
+typedef struct KwlnTask KwlnTask;
+
 typedef enum
 {
     CALENDAR_TIME_NULL,
@@ -108,6 +110,7 @@ u8 Calendar_IsHolidayOrSunday();
 u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);
+KwlnTask* Calendar_CreateDrawTask();
 u8 Calendar_GetCurrentMoonPhase();
 u8 Calendar_GetMoonPhase(u32 daysSinceApr5);
 

@@ -1,4 +1,8 @@
+#include "kwln/kwlnTask.h"
+#include "rw/rwcore.h"
 #include "g_data.h"
+#include "temporary.h"
+#include "h_sfdply.h"
 
 typedef struct
 {
@@ -195,6 +199,7 @@ u8 Calendar_IsHolidayOrSunday()
     u32 currDayOfMonth;
     u32 currMonth;
 
+    // was inlined
     if (Calendar_GetWeekDay(daysSinceApr5) == CALENDAR_DAY_SUNDAY)
     {
         return true;
@@ -270,6 +275,47 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
     }
 
     return true;
+}
+
+// FUN_0017e680
+s32 Calendar_UpdateDrawTask(KwlnTask* clndDrawTask)
+{
+    // TODO
+
+    return KWLN_TASK_CONTINUE;
+}
+
+// FUN_0017faa0
+void Calendar_DestroyDrawTask(KwlnTask* clndDrawTask)
+{
+    RW_FREE(clndDrawTask->taskData);
+    ctx.calendarDrawTask = NULL;
+}
+
+// FUN_0017fb90
+KwlnTask* Calendar_CreateDrawTask()
+{
+    KwlnTask* clndDrawTask;
+    CalendarDrawData* clndDrawData;
+
+    clndDrawData = RW_CALLOC(1, sizeof(CalendarDrawData), 0x40000);
+    if (clndDrawData == NULL)
+    {
+        return NULL;
+    }
+
+    clndDrawTask = KwlnTask_CreateWithAutoPriority(NULL, 4207, "CalenderDraw", NULL, Calendar_DestroyDrawTask, clndDrawData);
+    if (clndDrawTask == NULL)
+    {
+        return NULL;
+    }
+
+    ctx.calendarDrawTask = clndDrawTask;
+
+    clndDrawData->state = 3;
+    H_SfdPlay_CreateTask(clndDrawTask);
+
+    return clndDrawTask;
 }
 
 // FUN_00181b10
