@@ -91,11 +91,11 @@ typedef struct
 } CalendarData;
 
 // 44 bytes
-typedef struct CalendarDrawData
+typedef struct CalendarTaskData
 {
     u32 state;
     u8 unkData[0x28];
-} CalendarDrawData;
+} CalendarTaskData;
 
 extern const u16 numOfDaysInMonths[12];
 
@@ -110,7 +110,7 @@ u8 Calendar_IsHolidayOrSunday();
 u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);
-KwlnTask* Calendar_CreateDrawTask();
+KwlnTask* Calendar_CreateTask();
 u8 Calendar_GetCurrentMoonPhase();
 u8 Calendar_GetMoonPhase(u32 daysSinceApr5);
 

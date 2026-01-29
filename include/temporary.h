@@ -39,7 +39,7 @@ typedef struct
     KwlnTask* sfdPlayTask;       // 007cdf14. Task name = "H_SfdPlay"
     // data after
     u32 scenarioMode;            // 007cdfa4. See enum GameScenario
-    KwlnTask* calendarDrawTask;  // 007cdfec. Task name = "CalenderDraw"
+    KwlnTask* clndTask;          // 007cdfec. Task name = "CalenderDraw"
     // data after
     KwlnTask* stagedTaskHead;    // 007ce064. Head of tasks in 'KWLN_TASK_STATE_CREATED' state
     KwlnTask* stagedTaskTail;    // 007ce068. Tail of tasks in 'KWLN_TASK_STATE_CREATED' state

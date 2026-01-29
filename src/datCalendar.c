@@ -278,7 +278,7 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
 }
 
 // FUN_0017e680
-s32 Calendar_UpdateDrawTask(KwlnTask* clndDrawTask)
+s32 Calendar_UpdateTask(KwlnTask* clndTask)
 {
     // TODO
 
@@ -286,36 +286,38 @@ s32 Calendar_UpdateDrawTask(KwlnTask* clndDrawTask)
 }
 
 // FUN_0017faa0
-void Calendar_DestroyDrawTask(KwlnTask* clndDrawTask)
+void Calendar_DestroyTask(KwlnTask* clndTask)
 {
-    RW_FREE(clndDrawTask->taskData);
-    ctx.calendarDrawTask = NULL;
+    RW_FREE(clndTask->taskData);
+    ctx.clndTask = NULL;
 }
 
 // FUN_0017fb90
-KwlnTask* Calendar_CreateDrawTask()
+KwlnTask* Calendar_CreateTask()
 {
-    KwlnTask* clndDrawTask;
-    CalendarDrawData* clndDrawData;
+    // Seems like it's way more than just a draw task ?
 
-    clndDrawData = RW_CALLOC(1, sizeof(CalendarDrawData), 0x40000);
-    if (clndDrawData == NULL)
+    KwlnTask* clndTask;
+    CalendarTaskData* clndTaskData;
+
+    clndTaskData = RW_CALLOC(1, sizeof(CalendarTaskData), 0x40000);
+    if (clndTaskData == NULL)
     {
         return NULL;
     }
 
-    clndDrawTask = KwlnTask_CreateWithAutoPriority(NULL, 4207, "CalenderDraw", Calendar_UpdateDrawTask, Calendar_DestroyDrawTask, clndDrawData);
-    if (clndDrawTask == NULL)
+    clndTask = KwlnTask_CreateWithAutoPriority(NULL, 4207, "CalenderDraw", Calendar_UpdateTask, Calendar_DestroyTask, clndTaskData);
+    if (clndTask == NULL)
     {
         return NULL;
     }
 
-    ctx.calendarDrawTask = clndDrawTask;
+    ctx.clndTask = clndTask;
 
-    clndDrawData->state = 3;
-    H_SfdPlay_CreateTask(clndDrawTask);
+    clndTaskData->state = 3;
+    H_SfdPlay_CreateTask(clndTask);
 
-    return clndDrawTask;
+    return clndTask;
 }
 
 // FUN_00181b10
