@@ -90,10 +90,16 @@ typedef struct
     u8 timeSkipTarget;  // see enum 'CalendarTime'
 } CalendarData;
 
+typedef enum
+{
+    CALENDAR_TASK_STATE_0,
+    CALENDAR_TASK_STATE_DEBUG, // render a debug calendar that lets you select the date and time
+} CalendarTaskState;
+
 // 44 bytes
 typedef struct CalendarTaskData
 {
-    u32 state;
+    u32 state;        // See enum 'CalendarTaskState'
     u8 unkData[0x28];
 } CalendarTaskData;
 
