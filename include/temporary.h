@@ -36,6 +36,8 @@ typedef struct
 typedef struct
 {
     // data before
+    KwlnTask* sfdPlayTask;       // 007cdf14. Task name = "H_SfdPlay"
+    // data after
     u32 scenarioMode;            // 007cdfa4. See enum GameScenario
     KwlnTask* calendarDrawTask;  // 007cdfec. Task name = "CalenderDraw"
     // data after
