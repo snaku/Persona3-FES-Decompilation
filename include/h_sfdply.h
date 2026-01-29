@@ -17,4 +17,6 @@ typedef struct SfdPlay
     u8 unkData3[0x20];
 } SfdPlay;
 
+KwlnTask* H_SfdPlay_CreateTask(KwlnTask* calendarTask);
+
 #endif
