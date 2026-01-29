@@ -304,7 +304,7 @@ KwlnTask* Calendar_CreateDrawTask()
         return NULL;
     }
 
-    clndDrawTask = KwlnTask_CreateWithAutoPriority(NULL, 4207, "CalenderDraw", NULL, Calendar_DestroyDrawTask, clndDrawData);
+    clndDrawTask = KwlnTask_CreateWithAutoPriority(NULL, 4207, "CalenderDraw", Calendar_UpdateDrawTask, Calendar_DestroyDrawTask, clndDrawData);
     if (clndDrawTask == NULL)
     {
         return NULL;
