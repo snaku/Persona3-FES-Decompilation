@@ -88,6 +88,13 @@ typedef struct
     u8 timeSkipTarget;  // see enum 'CalendarTime'
 } CalendarData;
 
+// 44 bytes
+typedef struct CalendarDrawData
+{
+    u32 state;
+    u8 unkData[0x28];
+} CalendarDrawData;
+
 extern const u16 numOfDaysInMonths[12];
 
 u32 Calendar_GetMonthFromDaysSinceApr5(u16 daysSinceApr5);
