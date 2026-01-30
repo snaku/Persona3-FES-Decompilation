@@ -290,7 +290,7 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
 }
 
 // FUN_0017e680
-s32 Calendar_UpdateTask(KwlnTask* clndTask)
+u32 Calendar_UpdateTask(KwlnTask* clndTask)
 {
     // TODO
 

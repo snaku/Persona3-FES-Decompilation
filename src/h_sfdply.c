@@ -4,7 +4,7 @@
 #include "temporary.h"
 
 // FUN_0010a860
-s32 H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
+u32 H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
 {
     // TODO
 

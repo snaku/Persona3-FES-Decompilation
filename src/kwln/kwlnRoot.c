@@ -32,7 +32,7 @@ void KwlnRoot_SetClearColor(u8 r, u8 g, u8 b, u8 a)
 }
 
 // FUN_00198650
-s32 KwlnRoot_UpdateRootProcTask(KwlnTask* rootProcTask)
+u32 KwlnRoot_UpdateRootProcTask(KwlnTask* rootProcTask)
 {
     // TODO
 
@@ -67,7 +67,7 @@ KwlnTask* KwlnRoot_CreateRootProcTask()
 }
 
 // FUN_001989e0
-s32 KwlnRoot_Update2DDrawBeginTask(KwlnTask* drawBegin2dTask)
+u32 KwlnRoot_Update2DDrawBeginTask(KwlnTask* drawBegin2dTask)
 {
     // TODO
 
@@ -75,13 +75,13 @@ s32 KwlnRoot_Update2DDrawBeginTask(KwlnTask* drawBegin2dTask)
 }
 
 // FUN_00198b10
-s32 KwlnRoot_Update2DDrawPreEndTask(KwlnTask* drawBegin2dPETask)
+u32 KwlnRoot_Update2DDrawPreEndTask(KwlnTask* drawBegin2dPETask)
 {
     return KWLN_TASK_CONTINUE;
 }
 
 // FUN_00198b20
-s32 KwlnRoot_Update2DDrawEndTask(KwlnTask* drawEnd2dTask)
+u32 KwlnRoot_Update2DDrawEndTask(KwlnTask* drawEnd2dTask)
 {
     RwCamera* camera = KwlnRoot_GetMainCamera();
     RwCamera_EndUpdate(camera);
@@ -108,7 +108,7 @@ KwlnTask* KwlnRoot_Create2DDrawEndTask()
 }
 
 // FUN_00198c10
-s32 KwlnRoot_Update3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
+u32 KwlnRoot_Update3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
 {
     RwCamera* camera = KwlnRoot_GetMainCamera();
     RwRGBA* clearColor = KwlnRoot_GetClearColor();
@@ -119,7 +119,7 @@ s32 KwlnRoot_Update3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
 }
 
 // FUN_00198d20
-s32 KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
+u32 KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 {
     RwCamera* camera;
 

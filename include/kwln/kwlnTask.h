@@ -8,11 +8,11 @@
 #define KWLN_TASK_RESET_STATE(task)      ((task)->stateAndFlags = ((task)->stateAndFlags) & 0xFFFFFFF0)
 
 #define KWLN_TASK_CONTINUE 0
-#define KWLN_TASK_STOP    -1
+#define KWLN_TASK_STOP     0xFFFFFFFF
 
 struct KwlnTask;
 
-typedef s32 (*KwlnTask_Update)(struct KwlnTask* task);
+typedef u32 (*KwlnTask_Update)(struct KwlnTask* task);
 typedef void (*KwlnTask_Destroy)(struct KwlnTask* task);
 
 typedef enum
@@ -28,7 +28,7 @@ typedef struct KwlnTask
 {
     char taskName[24];          // 0x00
     u32 nameChkSum;             // 0x18. Sum of each char in 'taskName'
-    u32 stateAndFlags;          // 0x1c. bits 0 to 3 are for state, bits 4 to 31 are maybe for flags
+    u32 stateAndFlags;          // 0x1c. bits 0 to 3 are for state, bits 4 to 31 are maybe for flags. See enum 'KwlnTaskState'
     u32 priority;               // 0x20
     u32 unk_24;                 // 0x24
     u32 taskTimer;              // 0x28. Number of frames since the creation of the task
