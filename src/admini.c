@@ -28,7 +28,7 @@ static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] =
 };
 
 // FUN_0027c3b0
-KwlnTask_Update Admini_UpdateTask_Call(KwlnTask* adminiTask)
+void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
 {
     // TODO
 
@@ -36,7 +36,7 @@ KwlnTask_Update Admini_UpdateTask_Call(KwlnTask* adminiTask)
 }
 
 // FUN_0027c5a0
-KwlnTask_Update Admini_UpdateTask_Exit(KwlnTask* adminiTask)
+void* Admini_UpdateTask_Exit(KwlnTask* adminiTask)
 {
     Admini* admini;
     s32 exitVal;
@@ -50,7 +50,7 @@ KwlnTask_Update Admini_UpdateTask_Exit(KwlnTask* adminiTask)
     if (admini->taskId >= ADMINI_TASK_ID_NULL &&
        (gAdminiTasksTable[admini->taskId].Admini_Exit != NULL))
     {
-        exitVal = gAdminiTasksTable[admini->taskId].Admini_Exit();  
+        exitVal = gAdminiTasksTable[admini->taskId].Admini_Exit();
         if (exitVal < 0)
         {
             return NULL;
@@ -60,11 +60,11 @@ KwlnTask_Update Admini_UpdateTask_Exit(KwlnTask* adminiTask)
         admini->taskId = ADMINI_TASK_ID_INVALID;
     }
 
-    return Admini_UpdateTask_Call;
+    return (void*)Admini_UpdateTask_Call;
 }
 
 // FUN_0027c650
-KwlnTask_Update Admini_UpdateTask_Check(KwlnTask* adminiTask)
+void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
 {
     // TODO
 
@@ -107,7 +107,7 @@ KwlnTask* Admini_CreateTask()
     admini->taskData = NULL;
     admini->taskDataSize = 0;
 
-    return KwlnTask_Create(NULL, "admini", 1, Admini_UpdateTask_Check, Admini_DestroyTask, admini);
+    return KwlnTask_Create(NULL, "admini", 1, (void*)Admini_UpdateTask_Check, Admini_DestroyTask, admini);
 }
 
 // FUN_0027c9e0

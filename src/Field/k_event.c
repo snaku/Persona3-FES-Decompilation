@@ -5,7 +5,7 @@
 KwlnTask* FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 
 // FUN_001c8620
-u32 FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
+void* FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 {
     // TODO
 
@@ -38,7 +38,7 @@ KwlnTask* FldEvent_CreateTasks(KwlnTask* fldRootTask)
 }
 
 // FUN_001cd690
-u32 FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
+void* FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
 {
     // TODO
 

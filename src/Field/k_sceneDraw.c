@@ -3,7 +3,7 @@
 #include "Field/k_shadow.h"
 
 // FUN_0019d410. 'draw opac field'
-u32 FldSceneDraw_UpdateDrwOpcFldTask(KwlnTask* drwOpcFld)
+void* FldSceneDraw_UpdateDrwOpcFldTask(KwlnTask* drwOpcFld)
 {
     // TODO
     
@@ -11,7 +11,7 @@ u32 FldSceneDraw_UpdateDrwOpcFldTask(KwlnTask* drwOpcFld)
 }
 
 // FUN_0019d4a0. 'draw trans field'
-u32 FldSceneDraw_UpdateDrwTrnsFldTask(KwlnTask* drwTrnsFldTask)
+void* FldSceneDraw_UpdateDrwTrnsFldTask(KwlnTask* drwTrnsFldTask)
 {
     // TODO
 
@@ -19,7 +19,7 @@ u32 FldSceneDraw_UpdateDrwTrnsFldTask(KwlnTask* drwTrnsFldTask)
 }
 
 // FUN_0019d530. 'draw trans field(sort)'
-u32 FldSceneDraw_UpdateDrwTrnsFldSrtTask(KwlnTask* drwTrnsFldSrtTask)
+void* FldSceneDraw_UpdateDrwTrnsFldSrtTask(KwlnTask* drwTrnsFldSrtTask)
 {
     // TODO
 
@@ -27,7 +27,7 @@ u32 FldSceneDraw_UpdateDrwTrnsFldSrtTask(KwlnTask* drwTrnsFldSrtTask)
 }
 
 // FUN_0019d780. 'draw opac field object'
-u32 FldSceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldTask)
+void* FldSceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldTask)
 {
     // TODO
     
@@ -35,7 +35,7 @@ u32 FldSceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldTask)
 }
 
 // FUN_0019de40. 'draw trans field object'
-u32 FldSceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
+void* FldSceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
 {
     // TODO
 
@@ -43,7 +43,7 @@ u32 FldSceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
 }
 
 // FUN_0019e1b0. 'draw trans field obj preChar'
-u32 FldSceneDraw_UpdateDrwTrnsFldObjPCTask(KwlnTask* drwTrnsFldObjPCTask)
+void* FldSceneDraw_UpdateDrwTrnsFldObjPCTask(KwlnTask* drwTrnsFldObjPCTask)
 {
     // TODO
 
@@ -51,7 +51,7 @@ u32 FldSceneDraw_UpdateDrwTrnsFldObjPCTask(KwlnTask* drwTrnsFldObjPCTask)
 }
 
 // FUN_0019e330. 'draw character model'
-u32 FldSceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
+void* FldSceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 {
     // TODO
 
@@ -59,7 +59,7 @@ u32 FldSceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 }
 
 // FUN_0019ef80. 'draw trans NPC(sort)'
-u32 FldSceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
+void* FldSceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
 {
     // TODO
 
@@ -67,7 +67,7 @@ u32 FldSceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
 }
 
 // FUN_0019f470. 'draw persona model'
-u32 FldSceneDraw_UpdateDrwPrsnaMdlTask(KwlnTask* drwPrsnaMdlTask)
+void* FldSceneDraw_UpdateDrwPrsnaMdlTask(KwlnTask* drwPrsnaMdlTask)
 {
     // TODO
 

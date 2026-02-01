@@ -3,7 +3,7 @@
 #include "rw/rwplcore.h"
 
 // FUN_0019c4b0
-u32 FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
+void* FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 {
     // TODO
 

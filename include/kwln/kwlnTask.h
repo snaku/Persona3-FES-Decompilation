@@ -7,12 +7,12 @@
 #define KWLN_TASK_SET_STATE(task, state) ((task)->stateAndFlags = ((task)->stateAndFlags & 0xFFFFFFF0) | (state))
 #define KWLN_TASK_RESET_STATE(task)      ((task)->stateAndFlags = ((task)->stateAndFlags) & 0xFFFFFFF0)
 
-#define KWLN_TASK_CONTINUE 0
-#define KWLN_TASK_STOP     0xFFFFFFFF
+#define KWLN_TASK_CONTINUE ((void*)0)
+#define KWLN_TASK_STOP     ((void*)0xFFFFFFFF)
 
 struct KwlnTask;
 
-typedef u32 (*KwlnTask_Update)(struct KwlnTask* task);
+typedef void* (*KwlnTask_Update)(struct KwlnTask* task);
 typedef void (*KwlnTask_Destroy)(struct KwlnTask* task);
 
 typedef enum

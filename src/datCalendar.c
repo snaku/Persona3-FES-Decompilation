@@ -290,7 +290,7 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
 }
 
 // FUN_0017e680
-u32 Calendar_UpdateTask(KwlnTask* clndTask)
+void* Calendar_UpdateTask(KwlnTask* clndTask)
 {
     // TODO
 
@@ -307,8 +307,6 @@ void Calendar_DestroyTask(KwlnTask* clndTask)
 // FUN_0017fb90
 KwlnTask* Calendar_CreateTask()
 {
-    // Seems like it's way more than just a draw task ?
-
     KwlnTask* clndTask;
     CalendarTaskData* clndTaskData;
 
