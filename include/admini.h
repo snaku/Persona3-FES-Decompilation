@@ -5,6 +5,17 @@
 
 typedef struct KwlnTask KwlnTask;
 
+#define ADMINI_FLAG_CHANGING_TASK (1 << 0)  // 0x1
+#define ADMINI_FLAG_UNK02         (1 << 1)  // 0x2
+#define ADMINI_FLAG_UNK04         (1 << 2)  // 0x4
+#define ADMINI_FLAG_UNK08         (1 << 3)  // 0x8
+#define ADMINI_FLAG_UNK10000      (1 << 16) // 0x10000
+
+#define ADMINI_RESET_FLAGS(admini, flagsToReset) ((admini)->flags &= ~(flagsToReset))
+#define ADMINI_SET_FLAGS(admini, flagsToSet)     ((admini)->flags |= (flagsToSet))
+#define ADMINI_SET_RESET_FLAGS(admini, flagsToReset, flagsToSet) \
+        ((admini)->flags = ((admini)->flags & ~(flagsToReset)) | (flagsToSet))
+
 typedef enum
 {
     ADMINI_TASK_ID_NULL,
