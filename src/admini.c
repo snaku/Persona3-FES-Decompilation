@@ -3,6 +3,30 @@
 #include "admini.h"
 #include "g_data.h"
 
+typedef struct
+{
+    void (*Admini_Call)(Admini* admini, void* taskData);
+    u32 (*Admini_Exit)();
+    u8 (*Admini_Check)();
+} AdminiTaskEntry;
+
+void Admini_TestCall(Admini* admini, void* taskData);
+u32 Admini_TestExit();
+u8 Admini_TestCheck();
+
+// 0068f020
+static const AdminiTaskEntry gAdminiTasksTable[] = 
+{
+    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_NULL
+    {Admini_TestCall, Admini_TestExit, Admini_TestCheck}, // ADMINI_TASK_ID_TEST
+    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FIELD_ROOT. TODO
+    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FIELD_ROOT2. TODO
+    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_MAP. TODO
+    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_DUNGEON. TODO
+    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_BATTLE_BOSS. TODO
+    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FACILITY. TODO
+};
+
 // FUN_0027c650
 KwlnTask_Update Admini_UpdateTask(KwlnTask* adminiTask)
 {
