@@ -24,7 +24,7 @@ typedef enum
 typedef struct Admini
 {
     u32 flags;                         // 0x00
-    u32 timer;                         // 0x04
+    u32 timer;                         // 0x04. Increments every frame while 'taskId' doesn't change
     s8 taskId;                         // 0x08. Current task id. See enum 'AdminiTaskId'
     s8 taskIdToSet;                    // 0x09. See enum 'AdminiTaskId'
     u8 oldTaskIdIdx;                   // 0x0a. Idx to access 'oldTaskIds'
@@ -37,5 +37,7 @@ typedef struct Admini
     u8 unk_22;
     u8 unk_23;
 } Admini;
+
+KwlnTask* Admini_CreateTask();
 
 #endif
