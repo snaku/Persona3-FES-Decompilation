@@ -2,6 +2,7 @@
 #include "rw/rwplcore.h"
 #include "admini.h"
 #include "g_data.h"
+#include "temporary.h"
 
 typedef struct
 {
@@ -26,6 +27,64 @@ static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] =
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_BATTLE_BOSS. TODO
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FACILITY. TODO
 };
+
+// FUN_0027c080
+void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 param_4)
+{
+    KwlnTask* adminiTask;
+    Admini* admini;
+
+    adminiTask = KwlnTask_GetTaskByName("admini");
+    if (adminiTask == NULL)
+    {
+        P3FES_ASSERT("admini.c", 46);
+    }
+
+    admini = KwlnTask_GetTaskData(adminiTask);
+    if (admini == NULL)
+    {
+        P3FES_ASSERT("admini.c", 48);
+    }
+
+    ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
+    ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08, ADMINI_FLAG_CHANGING_TASK);
+    ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08 | ADMINI_FLAG_UNK10000, ADMINI_FLAG_CHANGING_TASK);
+
+    admini->taskIdToSet = taskId;
+    admini->unk_21 = 1;
+
+    if (admini->taskData != NULL)
+    {
+        RW_FREE(admini->taskData);
+        admini->taskData = NULL;
+        admini->taskDataSize = 0;
+    }
+
+    if (taskData == NULL)
+    {
+        admini->taskData = NULL;
+        admini->taskDataSize = ADMINI_TASK_ID_NULL;
+    }
+    else
+    {
+        admini->taskData = RW_MALLOC(taskDataSize, 0x40000);
+        if (admini->taskData == NULL)
+        {
+            P3FES_ASSERT("admini.c", 93);
+        }
+
+        P3FES_Memcpy(admini->taskData, taskData, taskDataSize);
+        admini->taskDataSize = taskDataSize;
+    }
+
+    if (!param_4)
+    {
+        ADMINI_SET_FLAGS(admini, ADMINI_FLAG_UNK04);
+        return;
+    }
+
+    ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK04);
+}
 
 // FUN_0027c3b0
 void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
@@ -107,7 +166,7 @@ KwlnTask* Admini_CreateTask()
     admini->taskData = NULL;
     admini->taskDataSize = 0;
 
-    return KwlnTask_Create(NULL, "admini", 1, (void*)Admini_UpdateTask_Check, Admini_DestroyTask, admini);
+    return KwlnTask_Create(NULL, "admini", 1, Admini_UpdateTask_Check, Admini_DestroyTask, admini);
 }
 
 // FUN_0027c9e0

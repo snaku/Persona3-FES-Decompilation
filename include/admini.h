@@ -49,6 +49,7 @@ typedef struct Admini
     u8 unk_23;
 } Admini;
 
+void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 param_4);
 KwlnTask* Admini_CreateTask();
 
 #endif
