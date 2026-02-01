@@ -15,7 +15,7 @@ u32 Admini_TestExit();
 u8 Admini_TestCheck();
 
 // 0068f020
-static const AdminiTaskEntry gAdminiTasksTable[] = 
+static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] = 
 {
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_NULL
     {Admini_TestCall, Admini_TestExit, Admini_TestCheck}, // ADMINI_TASK_ID_TEST
@@ -27,8 +27,44 @@ static const AdminiTaskEntry gAdminiTasksTable[] =
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FACILITY. TODO
 };
 
+// FUN_0027c3b0
+KwlnTask_Update Admini_UpdateTask_Call(KwlnTask* adminiTask)
+{
+    // TODO
+
+    return NULL;
+}
+
+// FUN_0027c5a0
+KwlnTask_Update Admini_UpdateTask_Exit(KwlnTask* adminiTask)
+{
+    Admini* admini;
+    s32 exitVal;
+
+    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    if (admini == NULL)
+    {
+        P3FES_ASSERT("admini.c", 296);
+    }
+
+    if (admini->taskId >= ADMINI_TASK_ID_NULL &&
+       (gAdminiTasksTable[admini->taskId].Admini_Exit != NULL))
+    {
+        exitVal = gAdminiTasksTable[admini->taskId].Admini_Exit();  
+        if (exitVal < 0)
+        {
+            return NULL;
+        }
+
+        admini->unk_21 = exitVal + 1;
+        admini->taskId = ADMINI_TASK_ID_INVALID;
+    }
+
+    return Admini_UpdateTask_Call;
+}
+
 // FUN_0027c650
-KwlnTask_Update Admini_UpdateTask(KwlnTask* adminiTask)
+KwlnTask_Update Admini_UpdateTask_Check(KwlnTask* adminiTask)
 {
     // TODO
 
@@ -71,5 +107,27 @@ KwlnTask* Admini_CreateTask()
     admini->taskData = NULL;
     admini->taskDataSize = 0;
 
-    return KwlnTask_Create(NULL, "admini", 1, Admini_UpdateTask, Admini_DestroyTask, admini);
+    return KwlnTask_Create(NULL, "admini", 1, Admini_UpdateTask_Check, Admini_DestroyTask, admini);
+}
+
+// FUN_0027c9e0
+void Admini_TestCall(Admini* admini, void* taskData)
+{
+    P3FES_LOG3("+++ call\n");
+}
+
+// FUN_0027ca10
+u32 Admini_TestExit()
+{
+    P3FES_LOG3("+++ exit\n");
+
+    return 0;
+}
+
+// FUN_0027ca40
+u8 Admini_TestCheck()
+{
+    P3FES_LOG3("+++ check\n");
+
+    return true;
 }
