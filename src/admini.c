@@ -63,7 +63,7 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 param_4)
     if (taskData == NULL)
     {
         admini->taskData = NULL;
-        admini->taskDataSize = ADMINI_TASK_ID_NULL;
+        admini->taskDataSize = 0;
     }
     else
     {
@@ -119,15 +119,75 @@ void* Admini_UpdateTask_Exit(KwlnTask* adminiTask)
         admini->taskId = ADMINI_TASK_ID_INVALID;
     }
 
-    return (void*)Admini_UpdateTask_Call;
+    return Admini_UpdateTask_Call;
 }
 
 // FUN_0027c650
 void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
 {
-    // TODO
+    Admini* admini;
 
-    return NULL;
+    admini = KwlnTask_GetTaskData(adminiTask);
+    if (admini == NULL)
+    {
+        P3FES_ASSERT("admini.c", 333);
+    }
+
+    if (!(admini->flags & ADMINI_FLAG_UNK02) &&
+         (admini->taskId >= ADMINI_TASK_ID_NULL))
+    {
+        if (gAdminiTasksTable[admini->taskId].Admini_Check != NULL)
+        {
+            if (gAdminiTasksTable[admini->taskId].Admini_Check())
+            {
+                admini->flags |= ADMINI_FLAG_UNK02;
+            }
+        }
+
+        admini->timer++;
+    }
+
+    if (admini->flags & ADMINI_FLAG_UNK02 &&
+       (admini->taskId >= ADMINI_TASK_ID_NULL))
+    {
+        admini->oldTaskIdIdx = (admini->oldTaskIdIdx + (ADMINI_TASK_ID_MAX - 1)) % ADMINI_TASK_ID_MAX;
+
+        if (admini->oldTaskIds[admini->oldTaskIdIdx] >= ADMINI_TASK_ID_NULL &&
+           (admini->unk_14[admini->oldTaskIdIdx] & ADMINI_FLAG_CHANGING_TASK))
+        {
+            P3FES_LOG3("restore sequence!!\n");
+
+            ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
+            ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_UNK10000);
+
+            admini->taskIdToSet = admini->oldTaskIds[admini->oldTaskIdIdx];
+            admini->unk_21 = true;
+
+            ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK04);
+
+            if (admini->taskData != NULL)
+            {
+                RW_FREE(admini->taskData);
+                admini->taskData = NULL;
+                admini->taskDataSize = 0;
+            }
+        }
+
+        if (!(admini->flags & ADMINI_FLAG_CHANGING_TASK))
+        {
+            Admini_ChangeTask(ADMINI_TASK_ID_NULL, NULL, 0, false);
+        }
+
+        ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK02);
+    }
+
+    if (!(admini->flags & ADMINI_FLAG_CHANGING_TASK) ||
+         (admini->taskIdToSet < ADMINI_TASK_ID_NULL))
+    {
+        return KWLN_TASK_CONTINUE;
+    }
+
+    return Admini_UpdateTask_Exit;
 }
 
 // FUN_0027c840
