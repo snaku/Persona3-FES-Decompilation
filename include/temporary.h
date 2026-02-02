@@ -62,6 +62,7 @@ typedef struct
 
 extern GlobalCtx ctx; // 007cde80
 
+void* P3FES_Memcpy(void* dst, void* src, u32 size);
 void* P3FES_Memset(void* dst, u8 value, u32 size);
 
 #endif
