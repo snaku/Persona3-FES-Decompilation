@@ -150,17 +150,17 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
     if (admini->flags & ADMINI_FLAG_UNK02 &&
        (admini->taskId >= ADMINI_TASK_ID_NULL))
     {
-        admini->oldTaskIdIdx = (admini->oldTaskIdIdx + (ADMINI_TASK_ID_MAX - 1)) % ADMINI_TASK_ID_MAX;
+        admini->oldTaskIdx = (admini->oldTaskIdx + (ADMINI_TASK_ID_MAX - 1)) % ADMINI_TASK_ID_MAX;
 
-        if (admini->oldTaskIds[admini->oldTaskIdIdx] >= ADMINI_TASK_ID_NULL &&
-           (admini->unk_14[admini->oldTaskIdIdx] & ADMINI_FLAG_CHANGING_TASK))
+        if (admini->oldTaskIds[admini->oldTaskIdx] >= ADMINI_TASK_ID_NULL &&
+           (admini->oldTasksFlags[admini->oldTaskIdx] & ADMINI_FLAG_CHANGING_TASK))
         {
             P3FES_LOG3("restore sequence!!\n");
 
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_UNK10000);
 
-            admini->taskIdToSet = admini->oldTaskIds[admini->oldTaskIdIdx];
+            admini->taskIdToSet = admini->oldTaskIds[admini->oldTaskIdx];
             admini->unk_21 = true;
 
             ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK04);
@@ -217,11 +217,11 @@ KwlnTask* Admini_CreateTask()
     admini->timer = 0;
     admini->taskId = ADMINI_TASK_ID_INVALID;
     admini->taskIdToSet = ADMINI_TASK_ID_INVALID;
-    admini->oldTaskIdIdx = 0;
+    admini->oldTaskIdx = 0;
     for (i = 0; i < ADMINI_TASK_ID_MAX; i++)
     {
         admini->oldTaskIds[i] = ADMINI_TASK_ID_INVALID;
-        admini->unk_14[i] = 0;
+        admini->oldTasksFlags[i] = 0;
     }
     admini->taskData = NULL;
     admini->taskDataSize = 0;

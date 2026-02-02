@@ -34,19 +34,19 @@ typedef enum
 // 36 bytes
 typedef struct Admini
 {
-    u32 flags;                         // 0x00
-    u32 timer;                         // 0x04. Increments every frame while 'taskId' doesn't change
-    s8 taskId;                         // 0x08. Current task id. See enum 'AdminiTaskId'
-    s8 taskIdToSet;                    // 0x09. See enum 'AdminiTaskId'
-    u8 oldTaskIdIdx;                   // 0x0a. Idx to access 'oldTaskIds'
-    u8 unk_0b;                         // 0x0b
-    s8 oldTaskIds[ADMINI_TASK_ID_MAX]; // 0x0c
-    s8 unk_14[ADMINI_TASK_ID_MAX];     // 0x14
-    void* taskData;                    // 0x1c. Current task data
-    u8 taskDataSize;                   // 0x20. Current task data size in bytes
-    u8 unk_21;
-    u8 unk_22;
-    u8 unk_23;
+    u32 flags;                            // 0x00
+    u32 timer;                            // 0x04. Increments every frame while 'taskId' doesn't change
+    s8 taskId;                            // 0x08. Current task id. See enum 'AdminiTaskId'
+    s8 taskIdToSet;                       // 0x09. See enum 'AdminiTaskId'
+    u8 oldTaskIdx;                        // 0x0a. Idx to access 'oldTaskIds'
+    u8 unk_0b;                            // 0x0b
+    s8 oldTaskIds[ADMINI_TASK_ID_MAX];    // 0x0c. History of task ids
+    s8 oldTasksFlags[ADMINI_TASK_ID_MAX]; // 0x14. History of admini flags
+    void* taskData;                       // 0x1c. Current task data
+    u8 taskDataSize;                      // 0x20. Current task data size in bytes
+    u8 unk_21;                            // 0x21
+    u8 unk_22;                            // 0x22
+    u8 unk_23;                            // 0x23
 } Admini;
 
 void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 param_4);
