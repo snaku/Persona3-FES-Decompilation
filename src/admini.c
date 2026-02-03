@@ -254,7 +254,23 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
 // FUN_0027c840
 void Admini_DestroyTask(KwlnTask* adminiTask)
 {
-    // TODO
+    Admini* admini;
+
+    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    
+    if (admini->taskId >= ADMINI_TASK_ID_NULL &&
+       (gAdminiTasksTable[admini->taskId].Admini_Exit != NULL))
+    {
+        gAdminiTasksTable[admini->taskId].Admini_Exit();
+    }
+
+    if (admini->taskData != NULL)
+    {
+        RW_FREE(admini->taskData);
+    }
+
+    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    RW_FREE(admini);
 }
 
 // FUN_0027c8f0
