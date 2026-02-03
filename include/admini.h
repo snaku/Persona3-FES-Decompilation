@@ -38,7 +38,7 @@ typedef struct Admini
     u32 timer;                            // 0x04. Increments every frame while 'taskId' doesn't change
     s8 taskId;                            // 0x08. Current task id. See enum 'AdminiTaskId'
     s8 taskIdToSet;                       // 0x09. See enum 'AdminiTaskId'
-    u8 oldTaskIdx;                        // 0x0a. Idx to access 'oldTaskIds'
+    u8 oldTaskIdx;                        // 0x0a. Idx to access 'oldTaskIds' and 'oldTasksFlags'
     u8 unk_0b;                            // 0x0b
     s8 oldTaskIds[ADMINI_TASK_ID_MAX];    // 0x0c. History of task ids
     s8 oldTasksFlags[ADMINI_TASK_ID_MAX]; // 0x14. History of admini flags
