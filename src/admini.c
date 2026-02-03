@@ -50,7 +50,7 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 param_4)
 
     ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
     ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08, ADMINI_FLAG_CHANGING_TASK);
-    ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08 | ADMINI_FLAG_UNK10000, ADMINI_FLAG_CHANGING_TASK);
+    ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08 | ADMINI_FLAG_RESTORE_PREV, ADMINI_FLAG_CHANGING_TASK);
 
     admini->taskIdToSet = taskId;
     admini->unk_21 = 1;
@@ -113,7 +113,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
         admini->taskIdToSet = ADMINI_TASK_ID_INVALID;
 
         ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
-        ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_UNK02);
+        ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_PASSED_CHECK);
 
         if (admini->flags & ADMINI_FLAG_UNK04)
         {
@@ -121,7 +121,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
             ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK04);
         }
 
-        if (!(admini->flags & ADMINI_FLAG_UNK10000))
+        if (!(admini->flags & ADMINI_FLAG_RESTORE_PREV))
         {
             callUnkParam = false;
             if (!(admini->flags & ADMINI_FLAG_UNK08))
@@ -137,7 +137,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
         {
             callUnkParam = true;
             admini->oldTaskIdx = (admini->oldTaskIdx + (ADMINI_TASK_ID_MAX - 1)) % ADMINI_TASK_ID_MAX;
-            ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK10000);
+            ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORE_PREV);
         }
 
         admini->oldTaskIds[admini->oldTaskIdx] = admini->taskId;
@@ -194,21 +194,21 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
         P3FES_ASSERT("admini.c", 333);
     }
 
-    if (!(admini->flags & ADMINI_FLAG_UNK02) &&
+    if (!(admini->flags & ADMINI_FLAG_PASSED_CHECK) &&
          (admini->taskId >= ADMINI_TASK_ID_NULL))
     {
         if (gAdminiTasksTable[admini->taskId].Admini_Check != NULL)
         {
             if (gAdminiTasksTable[admini->taskId].Admini_Check())
             {
-                ADMINI_SET_FLAGS(admini, ADMINI_FLAG_UNK02);
+                ADMINI_SET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);
             }
         }
 
         admini->timer++;
     }
 
-    if (admini->flags & ADMINI_FLAG_UNK02 &&
+    if (admini->flags & ADMINI_FLAG_PASSED_CHECK &&
        (admini->taskId >= ADMINI_TASK_ID_NULL))
     {
         admini->oldTaskIdx = (admini->oldTaskIdx + (ADMINI_TASK_ID_MAX - 1)) % ADMINI_TASK_ID_MAX;
@@ -219,7 +219,7 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
             P3FES_LOG3("restore sequence!!\n");
 
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
-            ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_UNK10000);
+            ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_RESTORE_PREV);
 
             admini->taskIdToSet = admini->oldTaskIds[admini->oldTaskIdx];
             admini->unk_21 = 1;
@@ -239,7 +239,7 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
             Admini_ChangeTask(ADMINI_TASK_ID_NULL, NULL, 0, false);
         }
 
-        ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK02);
+        ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);
     }
 
     if (!(admini->flags & ADMINI_FLAG_CHANGING_TASK) ||
