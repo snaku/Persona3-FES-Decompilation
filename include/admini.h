@@ -7,9 +7,9 @@ typedef struct KwlnTask KwlnTask;
 
 #define ADMINI_FLAG_CHANGING_TASK (1 << 0)  // 0x1
 #define ADMINI_FLAG_PASSED_CHECK  (1 << 1)  // 0x2. Ptr func 'Admini_Check' of current task returned true
-#define ADMINI_FLAG_UNK04         (1 << 2)  // 0x4
+#define ADMINI_FLAG_RESTORABLE    (1 << 2)  // 0x4. Can be restorable
 #define ADMINI_FLAG_UNK08         (1 << 3)  // 0x8
-#define ADMINI_FLAG_RESTORE_PREV  (1 << 16) // 0x10000
+#define ADMINI_FLAG_RESTORE_PREV  (1 << 16) // 0x10000. Restore previous task
 
 #define ADMINI_RESET_FLAGS(admini, flagsToReset) ((admini)->flags &= ~(flagsToReset))
 #define ADMINI_SET_FLAGS(admini, flagsToSet)     ((admini)->flags |= (flagsToSet))
@@ -49,7 +49,7 @@ typedef struct Admini
     u8 unk_23;                            // 0x23
 } Admini;
 
-void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 param_4);
+void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotRestorable);
 KwlnTask* Admini_CreateTask();
 
 #endif

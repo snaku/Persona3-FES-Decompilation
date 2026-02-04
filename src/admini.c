@@ -6,12 +6,12 @@
 
 typedef struct
 {
-    void (*Admini_Call)(u8 param_1, void* taskData);
+    void (*Admini_Call)(u8 isRestored, void* taskData);
     s32 (*Admini_Exit)();
     u8 (*Admini_Check)();
 } AdminiTaskEntry;
 
-void Admini_TestCall(u8 param_1, void* taskData);
+void Admini_TestCall(u8 isRestored, void* taskData);
 s32 Admini_TestExit();
 u8 Admini_TestCheck();
 
@@ -31,7 +31,7 @@ static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] =
 void* Admini_UpdateTask_Check(KwlnTask* adminiTask);
 
 // FUN_0027c080
-void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 param_4)
+void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotRestorable)
 {
     KwlnTask* adminiTask;
     Admini* admini;
@@ -79,20 +79,20 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 param_4)
         admini->taskDataSize = taskDataSize;
     }
 
-    if (!param_4)
+    if (!isNotRestorable)
     {
-        ADMINI_SET_FLAGS(admini, ADMINI_FLAG_UNK04);
+        ADMINI_SET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
         return;
     }
 
-    ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK04);
+    ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
 }
 
 // FUN_0027c3b0
 void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
 {
     Admini* admini;
-    u8 callUnkParam;
+    u8 isRestored;
 
     admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
     if (admini == NULL)
@@ -115,15 +115,15 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
         ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
         ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_PASSED_CHECK);
 
-        if (admini->flags & ADMINI_FLAG_UNK04)
+        if (admini->flags & ADMINI_FLAG_RESTORABLE)
         {
             admini->oldTasksFlags[admini->oldTaskIdx] |= ADMINI_FLAG_CHANGING_TASK;
-            ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK04);
+            ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
         }
 
         if (!(admini->flags & ADMINI_FLAG_RESTORE_PREV))
         {
-            callUnkParam = false;
+            isRestored = false;
             if (!(admini->flags & ADMINI_FLAG_UNK08))
             {
                 admini->oldTaskIdx = (admini->oldTaskIdx + 1) % ADMINI_TASK_ID_MAX;
@@ -135,7 +135,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
         }
         else
         {
-            callUnkParam = true;
+            isRestored = true;
             admini->oldTaskIdx = (admini->oldTaskIdx + (ADMINI_TASK_ID_MAX - 1)) % ADMINI_TASK_ID_MAX;
             ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORE_PREV);
         }
@@ -145,7 +145,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
 
         if (gAdminiTasksTable[admini->taskId].Admini_Call != NULL)
         {
-            gAdminiTasksTable[admini->taskId].Admini_Call(callUnkParam, admini->taskData);
+            gAdminiTasksTable[admini->taskId].Admini_Call(isRestored, admini->taskData);
         }
 
         return Admini_UpdateTask_Check;
@@ -224,7 +224,7 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
             admini->taskIdToSet = admini->oldTaskIds[admini->oldTaskIdx];
             admini->unk_21 = 1;
 
-            ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_UNK04);
+            ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
 
             if (admini->taskData != NULL)
             {
@@ -307,7 +307,7 @@ KwlnTask* Admini_CreateTask()
 }
 
 // FUN_0027c9e0
-void Admini_TestCall(u8 param_1, void* taskData)
+void Admini_TestCall(u8 isRestored, void* taskData)
 {
     P3FES_LOG3("+++ call\n");
 }
