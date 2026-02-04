@@ -88,6 +88,27 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotResto
     ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
 }
 
+// FUN_0027c330
+s8 Admini_GetTaskIdToSet()
+{
+    KwlnTask* adminiTask;
+    Admini* admini;
+
+    adminiTask = KwlnTask_GetTaskByName("admini");
+    if (adminiTask == NULL)
+    {
+        P3FES_ASSERT("admini.c", 46);
+    }
+
+    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    if (admini == NULL)
+    {
+        P3FES_ASSERT("admini.c", 48);
+    }
+
+    return admini->taskIdToSet;
+}
+
 // FUN_0027c3b0
 void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
 {
