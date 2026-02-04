@@ -50,6 +50,7 @@ typedef struct Admini
 } Admini;
 
 void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotRestorable);
+void Admini_ForcePassedCheck();
 s8 Admini_GetTaskId();
 s8 Admini_GetTaskIdToSet();
 KwlnTask* Admini_CreateTask();

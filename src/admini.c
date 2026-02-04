@@ -88,6 +88,27 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotResto
     ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
 }
 
+// FUN_0027c220. Set flag 'ADMINI_FLAG_PASSED_CHECK'
+void Admini_ForcePassedCheck()
+{
+    KwlnTask* adminiTask;
+    Admini* admini;
+
+    adminiTask = KwlnTask_GetTaskByName("admini");
+    if (adminiTask == NULL)
+    {
+        P3FES_ASSERT("admini.c", 46);
+    }
+
+    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    if (admini == NULL)
+    {
+        P3FES_ASSERT("admini.c", 48);
+    }
+
+    ADMINI_SET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);
+}
+
 // FUN_0027c2b0
 s8 Admini_GetTaskId()
 {
