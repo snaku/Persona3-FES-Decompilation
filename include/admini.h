@@ -44,7 +44,7 @@ typedef struct Admini
     s8 oldTasksFlags[ADMINI_TASK_ID_MAX]; // 0x14. History of admini flags
     void* taskData;                       // 0x1c. Current task data
     u8 taskDataSize;                      // 0x20. Current task data size in bytes
-    u8 unk_21;                            // 0x21
+    u8 taskChangeDelay;                   // 0x21. Frames until task transition. Set by 'Admini_Exit' return value + 1
     u8 unk_22;                            // 0x22
     u8 unk_23;                            // 0x23
 } Admini;

@@ -53,7 +53,7 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotResto
     ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08 | ADMINI_FLAG_RESTORE_PREV, ADMINI_FLAG_CHANGING_TASK);
 
     admini->taskIdToSet = taskId;
-    admini->unk_21 = 1;
+    admini->taskChangeDelay = 1;
 
     if (admini->taskData != NULL)
     {
@@ -106,7 +106,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
         return Admini_UpdateTask_Check;
     }
 
-    if (admini->unk_21 == 0)
+    if (admini->taskChangeDelay == 0)
     {
         admini->timer = 0;
         admini->taskId = admini->taskIdToSet;
@@ -151,7 +151,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
         return Admini_UpdateTask_Check;
     }
 
-    admini->unk_21--;
+    admini->taskChangeDelay--;
     return KWLN_TASK_CONTINUE;
 }
 
@@ -159,7 +159,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
 void* Admini_UpdateTask_Exit(KwlnTask* adminiTask)
 {
     Admini* admini;
-    s32 exitVal;
+    s32 taskChangeDelay;
 
     admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
     if (admini == NULL)
@@ -170,13 +170,13 @@ void* Admini_UpdateTask_Exit(KwlnTask* adminiTask)
     if (admini->taskId >= ADMINI_TASK_ID_NULL &&
        (gAdminiTasksTable[admini->taskId].Admini_Exit != NULL))
     {
-        exitVal = gAdminiTasksTable[admini->taskId].Admini_Exit();
-        if (exitVal < 0)
+        taskChangeDelay = gAdminiTasksTable[admini->taskId].Admini_Exit();
+        if (taskChangeDelay < 0)
         {
             return KWLN_TASK_CONTINUE;
         }
 
-        admini->unk_21 = exitVal + 1;
+        admini->taskChangeDelay = taskChangeDelay + 1;
         admini->taskId = ADMINI_TASK_ID_INVALID;
     }
 
@@ -222,7 +222,7 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_RESTORE_PREV);
 
             admini->taskIdToSet = admini->oldTaskIds[admini->oldTaskIdx];
-            admini->unk_21 = 1;
+            admini->taskChangeDelay = 1;
 
             ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
 
