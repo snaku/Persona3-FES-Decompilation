@@ -4,16 +4,18 @@
 #include "Battle/btlState.h"
 #include "cameraStruct.h"
 
-#define BATTLE_FLAG_BTL_ACTIVE (1 << 0) // 0x1. Currently in a battle. Destroy 'battle' task if not set
+#define BATTLE_FLAG_BTL_ACTIVE  (1 << 0)  // 0x1. Currently in a battle. Destroy 'battle' task if not set
+#define BATTLE_FLAG_IS_BOSS_BTL (1 << 15) // 0x8000. Battle is a boss battle
 
 typedef struct BattleActor BattleActor;
 typedef struct KwlnTask KwlnTask;
 
+// 3440 bytes. TODO
 typedef struct BattleCtx
 {
-    // TODO
-    u32 flags;
-    Camera camera;
+    u8 unkData1[0x0c];
+    u32 flags;                     // 0x0c
+    Camera camera;                 
     BattleActor* unkBtlActor_148;  // 0x148
     BattleActor* prevActorCreated; // 0x14c
     // Data inbetween...
