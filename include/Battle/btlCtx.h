@@ -4,6 +4,8 @@
 #include "Battle/btlState.h"
 #include "cameraStruct.h"
 
+#define BATTLE_FLAG_BTL_ACTIVE (1 << 0) // 0x1. Currently in a battle. Destroy 'battle' task if not set
+
 typedef struct BattleActor BattleActor;
 typedef struct KwlnTask KwlnTask;
 
