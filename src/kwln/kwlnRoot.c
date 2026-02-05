@@ -31,6 +31,12 @@ void KwlnRoot_SetClearColor(u8 r, u8 g, u8 b, u8 a)
     ctx.clearColor.a = a;
 }
 
+// FUN_00198610
+void KwlnRoot_FUN_00198610(u32 flags, u8 enabled)
+{
+    // TODO
+}
+
 // FUN_00198650
 void* KwlnRoot_UpdateRootProcTask(KwlnTask* rootProcTask)
 {

@@ -1,4 +1,5 @@
 #include "kwln/kwlnTask.h"
+#include "kwln/kwlnRoot.h"
 #include "Field/k_spipe.h"
 #include "rw/rwcore.h"
 #include "temporary.h"
@@ -15,7 +16,17 @@ void* FldSPipe_Update3DDrwBeginTask(KwlnTask* draw3DBeginTask)
 // FUN_001995f0
 void* FldSPipe_Update3DDrwEndTask(KwlnTask* draw3DEndTask)
 {
-    // TODO
+    RwCamera* camera;
+
+    RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_ENABLE, false);
+    RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_ENABLE, true); // ??
+    RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_COLOR, PACK_RWRGBA(ctx.fogParameter.r, ctx.fogParameter.g, ctx.fogParameter.b, ctx.fogParameter.a));
+    RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_TYPE, RW_FOG_TYPE_1);
+
+    camera = KwlnRoot_GetMainCamera();
+    RwCamera_EndUpdate(camera);
+    
+    KwlnRoot_FUN_00198610(3, 0);
 
     return KWLN_TASK_CONTINUE;
 }
