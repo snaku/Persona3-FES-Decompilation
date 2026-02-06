@@ -2,6 +2,23 @@
 #include "Field/k_shadow.h"
 #include "rw/rwplcore.h"
 
+typedef struct
+{
+    RwRGBA col1;
+    RwRGBA col2;
+    RwRGBA col3;
+    RwRGBA col4;
+} ShadowColors;
+
+// 00678960
+static ShadowColors gShadowColors =
+{
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 255},
+    {0, 0, 0, 255}
+};
+
 // FUN_0019c4b0
 void* FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 {
