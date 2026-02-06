@@ -6,6 +6,7 @@
 
 #define BATTLE_FLAG_BTL_ACTIVE  (1 << 0)  // 0x1. Currently in a battle. Destroy 'battle' task if not set
 #define BATTLE_FLAG_IS_BOSS_BTL (1 << 15) // 0x8000. Battle is a boss battle
+#define BATTLE_FLAG_MULTI_ENEMY (1 << 16) // 0x10000. More than one enemy in the battle
 
 typedef struct BattleActor BattleActor;
 typedef struct KwlnTask KwlnTask;
