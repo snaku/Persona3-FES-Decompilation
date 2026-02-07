@@ -8,8 +8,8 @@ typedef struct FieldDungeonFloorData FieldDungeonFloorData;
 
 typedef enum
 {
-    // TODO
-    DUNGEON_STATE_STOP = 9
+    DUNGEON_STATE_IDLE = 3, // Player is exploring a floor
+    DUNGEON_STATE_STOP = 9, // Destroy dungeon task
 } DungeonState;
 
 // 64 bytes. TODO
