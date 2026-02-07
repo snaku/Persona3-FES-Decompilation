@@ -1,4 +1,5 @@
 #include "Field/k_dungeon.h"
+#include "Field/k_data.h"
 #include "kwln/kwlnTask.h"
 #include "temporary.h"
 
