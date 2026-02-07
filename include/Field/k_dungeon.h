@@ -17,7 +17,8 @@ typedef struct FieldDungeon
 {
     u16 state;                         // 0x00. See enum 'DungeonState'
     u32 currFloor;                     // 0x04
-    u8 unkData1[0x14];
+    u8 unkData1[0x10];
+    KwlnTask* fldRootTask;             // 0x18
     KwlnTask* eplKosakaTask;           // 0x1c
     FieldDungeonFloorData* floorsData; // 0x20. Ptr to 'gFldDngFloorsData'
     u8 unkData2[0x1c];
