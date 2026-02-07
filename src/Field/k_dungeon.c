@@ -2,10 +2,10 @@
 #include "kwln/kwlnTask.h"
 #include "temporary.h"
 
-#define DUNGEON_TASK_DATA ((DungeonData*)ctx.dungeonTask->taskData)
+#define DUNGEON_TASK_DATA ((FieldDungeon*)ctx.dungeonTask->taskData)
 
 // FUN_001bff20
-u32 Dungeon_GetCurrentFloor()
+u32 FldDungeon_GetCurrentFloor()
 {
     if (ctx.dungeonTask == NULL)
     {
@@ -16,7 +16,7 @@ u32 Dungeon_GetCurrentFloor()
 }
 
 // FUN_001bff50
-u8 Dungeon_IsCurrentFloorExplorable()
+u8 FldDungeon_IsCurrentFloorExplorable()
 {
     u32 currFloor;
 
