@@ -11,4 +11,6 @@ typedef struct FieldDungeonFloorData
     u8 unkData[0x0c];
 } FieldDungeonFloorData;
 
+extern FieldDungeonFloorData gFldDngFloorsData[500];
+
 #endif
