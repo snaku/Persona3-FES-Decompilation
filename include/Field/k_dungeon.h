@@ -17,7 +17,9 @@ typedef struct FieldDungeon
 {
     u16 state;                         // 0x00. See enum 'DungeonState'
     u32 currFloor;                     // 0x04
-    u8 unkData1[0x10];
+    s32 unk_08;                        // 0x08
+    u32 shouldShutdown;                // 0x0c. If true, set state to 'DUNGEON_STATE_STOP'
+    u8 unkData1[0x08];
     KwlnTask* fldRootTask;             // 0x18
     KwlnTask* eplKosakaTask;           // 0x1c
     FieldDungeonFloorData* floorsData; // 0x20. Ptr to 'gFldDngFloorsData'
