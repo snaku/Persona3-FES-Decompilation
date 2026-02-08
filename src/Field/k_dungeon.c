@@ -38,3 +38,14 @@ u8 FldDungeon_IsCurrentFloorExplorable()
 
     return true;
 }
+
+// FUN_001bffa0
+u16 FldDungeon_GetCurrentFloorMajorId()
+{
+    if (ctx.dungeonTask == NULL)
+    {
+        return 0;
+    }
+
+    return DUNGEON_TASK_DATA->floorsData[DUNGEON_TASK_DATA->currFloor].majorId;
+}

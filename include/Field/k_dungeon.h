@@ -26,5 +26,6 @@ typedef struct FieldDungeon
 
 u32 FldDungeon_GetCurrentFloor();
 u8 FldDungeon_IsCurrentFloorExplorable();
+u16 FldDungeon_GetCurrentFloorMajorId();
 
 #endif
