@@ -36,7 +36,7 @@ typedef struct KwlnTask
     s32 destroyDelay;           // 0x30. Number of frames until task can be destroyed
     KwlnTask_Update update;     // 0x34. return KWLN_TASK_CONTINUE to continue, return KWLN_TASK_STOP to destroy
     KwlnTask_Destroy destroy;   // 0x38
-    void* taskData;             // 0x3c. Pointer to data specific to the curr task (like a Camera struct)
+    void* taskData;             // 0x3c. Pointer to data specific to the curr task
     struct KwlnTask* next;      // 0x40
     struct KwlnTask* prev;      // 0x44
     struct KwlnTask* unk_48;    // 0x48
@@ -56,8 +56,9 @@ KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priori
 KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, u32 priority, const char* name, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
 KwlnTask* KwlnTask_Init(const char* taskName, u32 priority, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
 KwlnTask* KwlnTask_InitEx(const char* taskName, u32 priority, s32 runningDelay, s32 destroyDelay, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData);
-u8 KwlnTask_Exists(KwlnTask* task);
+u32 KwlnTask_GetTaskState(KwlnTask* task);
 KwlnTask* KwlnTask_GetTaskByName(const char* name);
+u8 KwlnTask_Exists(KwlnTask* task);
 u32 KwlnTask_GetTaskTimer(KwlnTask* task);
 void* KwlnTask_GetTaskData(KwlnTask* task);
 void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask);

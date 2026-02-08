@@ -450,12 +450,12 @@ KwlnTask* KwlnTask_Init(const char* taskName,
 
 // FUN_00194e10. Init a new task with adjustable 'runningDelay' and 'destroyDelay'
 KwlnTask* KwlnTask_InitEx(const char* taskName,
-                                 u32 priority,
-                                 s32 runningDelay,
-                                 s32 destroyDelay,
-                                 KwlnTask_Update update,
-                                 KwlnTask_Destroy destroy,
-                                 void* taskData)
+                          u32 priority,
+                          s32 runningDelay,
+                          s32 destroyDelay,
+                          KwlnTask_Update update,
+                          KwlnTask_Destroy destroy,
+                          void* taskData)
 {
     KwlnTask* task;
     u8 currChar;
@@ -521,38 +521,29 @@ KwlnTask* KwlnTask_InitEx(const char* taskName,
     return task;
 }
 
-// FUN_00195460. Return true if 'task' is in a list
-u8 KwlnTask_Exists(KwlnTask* task)
+// FUN_00195290
+u32 KwlnTask_GetTaskState(KwlnTask* task)
 {
-    // need to rework a little bit
+    u32 state;
 
-    KwlnTask* list;
-    u32 i;
-
-    if (task != NULL)
+    if (!KwlnTask_Exists(task))
     {
-        for (i = 0; i < 3; i++)
-        {
-            switch (i)
-            {
-                case 0: list = ctx.stagedTaskHead;  break;
-                case 1: list = ctx.runningTaskHead; break;
-                case 2: list = ctx.destroyTaskHead; break;
-            }
-
-            while (list != NULL)
-            {
-                if (list == task)
-                {
-                    return true;
-                }
-
-                list = list->next;
-            }
-        }
+        return KWLN_TASK_STATE_NULL;
     }
 
-    return false;
+    state = KWLN_TASK_GET_STATE(task);
+    if (state != KWLN_TASK_STATE_NULL &&
+       (state != KWLN_TASK_STATE_DESTROY) &&
+       (state != KWLN_TASK_STATE_RUNNING) &&
+       (state != KWLN_TASK_STATE_CREATED))
+    {
+        P3FES_LOG3("Process stat Invalid!!\n");
+        P3FES_ASSERT("kwlnTask.c", 1286);
+
+        return KWLN_TASK_STATE_NULL;
+    }
+
+    return state;
 }
 
 // FUN_00195340
@@ -600,6 +591,40 @@ KwlnTask* KwlnTask_GetTaskByName(const char* name)
     }
 
     return NULL;
+}
+
+// FUN_00195460. Return true if 'task' is in a list
+u8 KwlnTask_Exists(KwlnTask* task)
+{
+    // need to rework a little bit
+
+    KwlnTask* list;
+    u32 i;
+
+    if (task != NULL)
+    {
+        for (i = 0; i < 3; i++)
+        {
+            switch (i)
+            {
+                case 0: list = ctx.stagedTaskHead;  break;
+                case 1: list = ctx.runningTaskHead; break;
+                case 2: list = ctx.destroyTaskHead; break;
+            }
+
+            while (list != NULL)
+            {
+                if (list == task)
+                {
+                    return true;
+                }
+
+                list = list->next;
+            }
+        }
+    }
+
+    return false;
 }
 
 // FUN_00195520
