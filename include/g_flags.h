@@ -3,7 +3,7 @@
 
 // !! 'gGlobalFlags' array is in 'g_data.c' file !!
 
-#define G_FLAG_PENDING_DARK_HOUR    2565 // idx 80  (1 << 5). When activated and the time is passing, trigger dark hour and tp hero to tartarus
+#define G_FLAG_PENDING_DUNGEON      2565 // idx 80  (1 << 5). When activated and time is dark hour, tp to tartarus 1F
 #define G_FLAG_DAY_IS_MONDAY        2568 // idx 80  (1 << 8)
 #define G_FLAG_DAY_IS_TUESDAY       2569 // idx 80  (1 << 9)
 #define G_FLAG_DAY_IS_WEDNESDAY     2570 // idx 80  (1 << 10)
