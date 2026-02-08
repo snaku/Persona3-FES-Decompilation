@@ -5,6 +5,15 @@
 
 #define DUNGEON_TASK_DATA ((FieldDungeon*)ctx.dungeonTask->taskData)
 
+// FUN_001bff00
+void FldDungeon_RequestShutdown()
+{
+    if (ctx.dungeonTask != NULL)
+    {
+        DUNGEON_TASK_DATA->shouldShutdown = true;
+    }
+}
+
 // FUN_001bff20
 u32 FldDungeon_GetCurrentFloor()
 {

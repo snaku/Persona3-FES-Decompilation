@@ -26,6 +26,7 @@ typedef struct FieldDungeon
     u8 unkData2[0x1c];
 } FieldDungeon;
 
+void FldDungeon_RequestShutdown();
 u32 FldDungeon_GetCurrentFloor();
 u8 FldDungeon_IsCurrentFloorExplorable();
 u16 FldDungeon_GetCurrentFloorMajorId();
