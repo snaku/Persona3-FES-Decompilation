@@ -5,6 +5,7 @@
 u32 Scr_ExecOpCodePushi(ScrData* scr);
 u32 Scr_ExecOpCodePushf(ScrData* scr);
 u32 Scr_ExecOpCodePushRet(ScrData* scr);
+u32 Scr_ExecOpCodeJmp(ScrData* scr);
 
 typedef u32 (*Scr_ExecOpCode)(ScrData* scr);
 
@@ -12,8 +13,12 @@ typedef u32 (*Scr_ExecOpCode)(ScrData* scr);
 static const Scr_ExecOpCode opCodeFuncTable[] =
 {
     // NULL func are unknown for now
-    Scr_ExecOpCodePushi, Scr_ExecOpCodePushf, NULL, NULL,
-    Scr_ExecOpCodePushRet
+    Scr_ExecOpCodePushi, Scr_ExecOpCodePushf,
+    NULL, NULL,
+    Scr_ExecOpCodePushRet, NULL,
+    NULL, NULL,
+    NULL, NULL,
+    Scr_ExecOpCodeJmp
 };
 
 // FUN_0035c300. Push int 
@@ -75,6 +80,17 @@ u32 Scr_ExecOpCodePushRet(ScrData* scr)
 
     scr->stackIdx++;
     scr->instrIdx++;
+
+    return 1;
+}
+
+// FUN_0035d1d0. Jump to a procedure
+u32 Scr_ExecOpCodeJmp(ScrData* scr)
+{
+    s16 prcdIdx;
+
+    prcdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
+    scr->instrIdx = scr->proceduresContent[prcdIdx].offset;
 
     return 1;
 }
