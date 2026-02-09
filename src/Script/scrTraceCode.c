@@ -6,6 +6,7 @@ u32 Scr_ExecOpCodePushi(ScrData* scr);
 u32 Scr_ExecOpCodePushf(ScrData* scr);
 u32 Scr_ExecOpCodePushRet(ScrData* scr);
 u32 Scr_ExecOpCodeJmp(ScrData* scr);
+u32 Scr_ExecOpCodeGoto(ScrData* scr);
 
 typedef u32 (*Scr_ExecOpCode)(ScrData* scr);
 
@@ -18,7 +19,9 @@ static const Scr_ExecOpCode opCodeFuncTable[] =
     Scr_ExecOpCodePushRet, NULL,
     NULL, NULL,
     NULL, NULL,
-    Scr_ExecOpCodeJmp
+    Scr_ExecOpCodeJmp, NULL,
+    NULL, NULL,
+    Scr_ExecOpCodeGoto, NULL
 };
 
 // FUN_0035c300. Push int 
@@ -91,6 +94,17 @@ u32 Scr_ExecOpCodeJmp(ScrData* scr)
 
     prcdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
     scr->instrIdx = scr->proceduresContent[prcdIdx].offset;
+
+    return 1;
+}
+
+// FUN_0035d310. Jump to a label
+u32 Scr_ExecOpCodeGoto(ScrData* scr)
+{
+    s16 lblIdx;
+
+    lblIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
+    scr->instrIdx = scr->labelsContent[lblIdx].offset;
 
     return 1;
 }
