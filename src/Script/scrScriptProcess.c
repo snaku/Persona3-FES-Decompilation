@@ -3,8 +3,9 @@
 
 // FUN_0035b570
 ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
-                               void* prcd, void* labels, ScrInstruction* instr,
-                               void* msg, void* strings, u32 prcdIdx)
+                         ScrLblPrcd* prcd, ScrLblPrcd* labels, 
+                         ScrInstruction* instr, void* msg, 
+                         void* strings, u32 prcdIdx)
 {
     ScrData* scrData;
 
@@ -13,17 +14,15 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
     return scrData;
 }
 
-// FUN_0035b930
+// FUN_0035b930. (Need to rework a little bit)
 ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
 {
-    // Need to rework a little bit
-
-    u32 i;
     uintptr_t prcdAddr = 0;
     uintptr_t labelsAddr = 0;
     uintptr_t instrAddr = 0;
     uintptr_t msgAddr = 0;
     uintptr_t stringsAddr = 0;
+    u32 i;
 
     if (header == NULL)
     {
@@ -68,7 +67,10 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
             }
         }
 
-        return Scr_StartScript(header, header->entries, (void*)prcdAddr, (void*)labelsAddr, (ScrInstruction*)instrAddr, (void*)msgAddr, (void*)stringsAddr, prcdIdx);
+        return Scr_StartScript(header, header->entries,
+                              (ScrLblPrcd*)prcdAddr, (ScrLblPrcd*)labelsAddr, 
+                              (ScrInstruction*)instrAddr, (void*)msgAddr, 
+                              (void*)stringsAddr, prcdIdx);
     }
 
     // !! LOG !!

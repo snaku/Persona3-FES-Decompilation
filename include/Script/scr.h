@@ -37,6 +37,14 @@ typedef union
     f32 fVal;
 } ScrValues;
 
+// 32 bytes. Label or procedure (this name is horrible)
+typedef struct
+{
+    char name[24]; // 0x00
+    u32 offset;    // 0x18. Offset in bytes from which the label/procedure starts by instructions base address
+    s32 unk_1c;    // 0x1c
+} ScrLblPrcd;
+
 // 4 bytes
 typedef union
 {
@@ -53,7 +61,7 @@ typedef union
 // 252 bytes
 typedef struct ScrData
 {
-    u8 scrName[24];                            // 0x00. Name of the current procedure (same as task->taskName)
+    char scrName[24];                          // 0x00. Name of the current procedure (same as task->taskName)
     u32 instrIdx;                              // 0x18. Index of the curr instruction
     u32 stackIdx;                              // 0x1c
     u8 stackTypes[SCR_MAX_STACK_SIZE];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
@@ -62,8 +70,8 @@ typedef struct ScrData
     ScrValues retValue;                        // 0xa8. Value of the return value
     ScrHeader* scrHeader;                      // 0xac
     ScrContentEntry* entries;                  // 0xb0
-    void* proceduresContent;                   // 0xb4
-    void* labelsContent;                       // 0xb8
+    ScrLblPrcd* proceduresContent;             // 0xb4
+    ScrLblPrcd* labelsContent;                 // 0xb8
     ScrInstruction* instrContent;              // 0xbc
     void* msgContent;                          // 0xc0
     void* stringsContent;                      // 0xc4
