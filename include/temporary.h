@@ -18,6 +18,7 @@ extern const f32 PI; // 007cae58
 
 typedef struct BattleCtx BattleCtx;
 typedef struct KwlnTask KwlnTask;
+typedef struct ScrData ScrData;
 typedef struct RwCamera RwCamera;
 
 typedef struct
@@ -57,6 +58,8 @@ typedef struct
     KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
     KwlnTask* dungeonTask;       // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
+    // data after
+    ScrData* currScr;            // 007ce5a8. Current script being executed
     // data after
 } GlobalCtx;
 
