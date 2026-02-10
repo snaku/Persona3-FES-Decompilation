@@ -3,10 +3,6 @@
 #include "h_malloc.h"
 #include "temporary.h"
 
-// !! TEMPORARY !! MOVE LATER
-void FUN_0019d400(const char* param_1, const char* file, u32 line);
-
-
 void KwlnTask_DetachParent(KwlnTask* task);
 
 // FUN_001939d0. Remove a task from a list by its current state
