@@ -22,7 +22,10 @@ typedef struct SiteibiEvent
     u8 day;              // 0x01
     u8 time;             // 0x02
     u16 scrPrcdIdx;      // 0x04. Procedure index of the event in 'SiteibiEvent.BF' file
-    u8 unkData2[0x10];
+    u8 unkData1[0x05];
+    u8 slID;             // 0x0b. Social link ID. Is equal to 'SOCIAL_LINK_NONE' if event is unrelated to social links
+    u16 slLvlReq;        // 0x0c. Social link level requirement
+    u8 unkData2[0x08];
     u16 gflagToActivate; // 0x16. 'G_FLAG_*' that the event needs to activate
 } SiteibiEvent;
 
