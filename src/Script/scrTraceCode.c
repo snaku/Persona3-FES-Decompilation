@@ -1,6 +1,7 @@
 #include "Script/scr.h"
 #include "Script/scrTraceCode.h"
 #include "g_data.h"
+#include "temporary.h"
 
 u32 Scr_ExecOpCodePushi(ScrData* scr);
 u32 Scr_ExecOpCodePushf(ScrData* scr);
@@ -107,4 +108,18 @@ u32 Scr_ExecOpCodeGoto(ScrData* scr)
     scr->instrIdx = scr->labelsContent[lblIdx].offset;
 
     return 1;
+}
+
+// FUN_0035f060. Set 'retType' of the current script to int and set 'iVal' to 'retVal'
+void Scr_SetCurrScriptIntRetVal(s32 retVal)
+{
+    ctx.currScr->retType = SCR_VALUE_TYPE_INT;
+    ctx.currScr->retValue.iVal = retVal;
+}
+
+// FUN_0035f080. Set 'retType' of the current script to float and set 'fVal' to 'retVal'
+void Scr_SetCurrScriptFloatRetVal(f32 retVal)
+{
+    ctx.currScr->retType = SCR_VALUE_TYPE_FLOAT;
+    ctx.currScr->retValue.fVal = retVal;
 }
