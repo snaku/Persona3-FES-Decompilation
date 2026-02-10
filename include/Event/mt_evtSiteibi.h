@@ -18,11 +18,15 @@ typedef enum
 // 24 bytes
 typedef struct SiteibiEvent
 {
-    u8 month;            // 0x00
-    u8 day;              // 0x01
-    u8 time;             // 0x02
+    u8 startMonth;       // 0x00
+    u8 startDay;         // 0x01
+    u8 startTime;        // 0x02
     u16 scrPrcdIdx;      // 0x04. Procedure index of the event in 'SiteibiEvent.BF' file
-    u8 unkData1[0x05];
+    u8 unk_06;           // 0x06
+    u8 unk_07;           // 0x07
+    u8 endMonth;         // 0x08
+    u8 endDay;           // 0x09
+    u8 endTime;          // 0x0a
     u8 slID;             // 0x0b. Social link ID. Is equal to 'SOCIAL_LINK_NONE' if event is unrelated to social links
     u16 slLvlReq;        // 0x0c. Social link level requirement
     u8 unkData2[0x08];
