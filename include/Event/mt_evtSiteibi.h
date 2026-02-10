@@ -1,5 +1,5 @@
-#ifndef MT_EVTSITEIBIIDX_H
-#define MT_EVTSITEIBIIDX_H
+#ifndef MT_EVTSITEIBI_H
+#define MT_EVTSITEIBI_H
 
 #include "Utils.h"
 
@@ -29,7 +29,10 @@ typedef struct SiteibiEvent
     u8 endTime;          // 0x0a
     u8 slID;             // 0x0b. Social link ID. Is equal to 'SOCIAL_LINK_NONE' if event is unrelated to social links
     u16 slLvlReq;        // 0x0c. Social link level requirement
-    u8 unkData2[0x08];
+    u16 gflagReqOn1;     // 0x0e. first 'G_FLAG_*' that needs to be true
+    u16 gflagReqOn2;     // 0x10. second 'G_FLAG_*' that needs to be true
+    u16 gflagReqOff1;    // 0x12. first 'G_FLAG_*' that needs to be false
+    u16 gflagReqOff2;    // 0x14. second 'G_FLAG_*' that needs to be false
     u16 gflagToActivate; // 0x16. 'G_FLAG_*' that the event needs to activate
 } SiteibiEvent;
 
