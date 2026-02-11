@@ -272,19 +272,20 @@ void KwlnTask_UpdateAll()
 u8 KwlnTask_Main()
 {
     KwlnTask* currTask;
-    KwlnTask* nextTask = ctx.stagedTaskHead;
+    KwlnTask* nextTask;
 
-    while (currTask != NULL)
+    nextTask = ctx.stagedTaskHead;
+
+    while (nextTask != NULL)
     {
-        currTask = nextTask;
-
         if (nextTask->runningDelay > 0)
         {
             nextTask->runningDelay--;
         }
 
-        nextTask = currTask->next;
-        if (nextTask->runningDelay == 0)
+        currTask = nextTask;
+        nextTask = nextTask->next;
+        if (currTask->runningDelay == 0)
         {
             KwlnTask_RemoveTaskFromList(currTask);
             KWLN_TASK_SET_STATE(currTask, KWLN_TASK_STATE_RUNNING);
@@ -298,16 +299,15 @@ u8 KwlnTask_Main()
     KwlnTask_UpdateAll();
 
     nextTask = ctx.destroyTaskHead;
-    while (currTask != NULL)
+    while (nextTask != NULL)
     {
-        currTask = nextTask;
-
-        if (currTask->destroyDelay > 0)
+        if (nextTask->destroyDelay > 0)
         {
-            currTask->destroyDelay--;
+            nextTask->destroyDelay--;
         }
 
-        nextTask = currTask->next;
+        currTask = nextTask;
+        nextTask = nextTask->next;
         if (currTask->destroyDelay == 0)
         {
             KwlnTask_RemoveTaskFromList(currTask);
