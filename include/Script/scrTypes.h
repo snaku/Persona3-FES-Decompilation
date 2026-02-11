@@ -23,6 +23,9 @@ typedef enum
     SCR_OP_CODE_PUSHI,       // push int 
     SCR_OP_CODE_PUSHF,       // push float
     SCR_OP_CODE_PUSHRET = 4, // push return value
+    SCR_OP_CODE_STPRCD = 7,  // start procedure
+    SCR_OP_CODE_JMP = 10,
+    SCR_OP_CODE_GOTO = 14,
     SCR_OP_CODE_MAX = 35
 } ScrOpCode;
 

@@ -8,6 +8,7 @@ u32 Scr_ExecOpCodePushf(ScrData* scr);
 u32 Scr_ExecOpCodePushRet(ScrData* scr);
 u32 Scr_ExecOpCodeJmp(ScrData* scr);
 u32 Scr_ExecOpCodeGoto(ScrData* scr);
+u32 Scr_ExecOpCodeStPrcd(ScrData* scr);
 
 typedef u32 (*Scr_ExecOpCode)(ScrData* scr);
 
@@ -18,7 +19,7 @@ static const Scr_ExecOpCode opCodeFuncTable[] =
     Scr_ExecOpCodePushi, Scr_ExecOpCodePushf,
     NULL, NULL,
     Scr_ExecOpCodePushRet, NULL,
-    NULL, NULL,
+    NULL, Scr_ExecOpCodeStPrcd,
     NULL, NULL,
     Scr_ExecOpCodeJmp, NULL,
     NULL, NULL,
@@ -106,6 +107,14 @@ u32 Scr_ExecOpCodeGoto(ScrData* scr)
 
     lblIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
     scr->instrIdx = scr->labelsContent[lblIdx].offset;
+
+    return 1;
+}
+
+// FUN_0035cf00. Start procedure
+u32 Scr_ExecOpCodeStPrcd(ScrData* scr)
+{
+    scr->instrIdx++;
 
     return 1;
 }
