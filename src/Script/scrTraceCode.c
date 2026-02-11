@@ -6,9 +6,9 @@
 u32 Scr_ExecOpCodePushi(ScrData* scr);
 u32 Scr_ExecOpCodePushf(ScrData* scr);
 u32 Scr_ExecOpCodePushRet(ScrData* scr);
+u32 Scr_ExecOpCodeStPrcd(ScrData* scr);
 u32 Scr_ExecOpCodeJmp(ScrData* scr);
 u32 Scr_ExecOpCodeGoto(ScrData* scr);
-u32 Scr_ExecOpCodeStPrcd(ScrData* scr);
 
 typedef u32 (*Scr_ExecOpCode)(ScrData* scr);
 
@@ -89,6 +89,14 @@ u32 Scr_ExecOpCodePushRet(ScrData* scr)
     return 1;
 }
 
+// FUN_0035cf00. Start procedure
+u32 Scr_ExecOpCodeStPrcd(ScrData* scr)
+{
+    scr->instrIdx++;
+
+    return 1;
+}
+
 // FUN_0035d1d0. Jump to a procedure
 u32 Scr_ExecOpCodeJmp(ScrData* scr)
 {
@@ -111,12 +119,20 @@ u32 Scr_ExecOpCodeGoto(ScrData* scr)
     return 1;
 }
 
-// FUN_0035cf00. Start procedure
-u32 Scr_ExecOpCodeStPrcd(ScrData* scr)
+// FUN_0035ed20
+s32 Scr_GetIntParam(u32 paramIdx)
 {
-    scr->instrIdx++;
+    // TODO
 
-    return 1;
+    return 0;
+}
+
+// FUN_0035ee60
+f32 Scr_GetFloatParam(u32 paramIdx)
+{
+    // TODO
+
+    return 0.0f;
 }
 
 // FUN_0035f060. Set 'retType' of the current script to int and set 'iVal' to 'retVal'
