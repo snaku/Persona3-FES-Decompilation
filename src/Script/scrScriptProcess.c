@@ -1,5 +1,9 @@
 #include "Script/scrScriptProcess.h"
+#include "Script/scrTaskHelper.h"
 #include "g_data.h"
+
+void Scr_DestroyTask(KwlnTask* scrTask);
+void* Scr_UpdateTask(KwlnTask* scrTask);
 
 // FUN_0035b570
 ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
@@ -59,8 +63,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
             {
                 if (currEntry->contentType != SCR_CONTENT_TYPE_PROCEDURE)
                 {
-                    // !! LOG !!
-                    // FUN_0019d400("scrStartScript2(..) Invalid type!!\n","scrScriptProcess.c", 306);
+                    FUN_0019d400("scrStartScript2(..) Invalid type!!\n", "scrScriptProcess.c", 306);
                     return NULL;
                 }
                 prcdAddr = (uintptr_t)header + currEntry->offset;
@@ -73,8 +76,46 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
                               (void*)stringsAddr, prcdIdx);
     }
 
-    // !! LOG !!
-    // FUN_0019d400("invalid script data!!\n", "scrScriptProcess.c", 280);
+    FUN_0019d400("invalid script data!!\n", "scrScriptProcess.c", 280);
 
     return NULL;
+}
+
+// FUN_0035bb40
+KwlnTask* Scr_CreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
+{
+    ScrData* scr;
+    KwlnTask* scrTask;
+
+    scr = Scr_StartScript2(header, prcdIdx);
+    if (scr == NULL)
+    {
+        P3FES_ASSERT("scrScriptProcess.c", 666);
+    }
+
+    scrTask = ScrTask_Init(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
+                           Scr_UpdateTask, Scr_DestroyTask, scr);
+    
+    if (scrTask == NULL)
+    {
+        P3FES_ASSERT("scrScriptProcess.c", 395);
+    }
+
+    scr->task = scrTask;
+
+    return scrTask;
+}
+
+// FUN_0035c200
+void Scr_DestroyTask(KwlnTask* scrTask)
+{
+    // TODO
+}
+
+// FUN_0035c270
+void* Scr_UpdateTask(KwlnTask* scrTask)
+{
+    // TODO
+
+    return KWLN_TASK_CONTINUE;
 }
