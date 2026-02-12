@@ -1,5 +1,6 @@
 #include "kwln/kwlnTask.h"
 #include "rw/rwcore.h"
+#include "Script/scrTraceCode.h"
 #include "g_data.h"
 #include "temporary.h"
 #include "h_sfdply.h"
@@ -342,4 +343,24 @@ u8 Calendar_GetCurrentMoonPhase()
 u8 Calendar_GetMoonPhase(u32 daysSinceApr5)
 {
     return daysMoonPhases[daysSinceApr5];
+}
+
+// FUN_00188510
+u8 Calendar_ScrCmdSetDate()
+{
+    u32 month;
+    u32 day;
+    u8 time;
+    u32 daysSinceApr5;
+
+    month = Scr_GetIntParam(0);
+    day = Scr_GetIntParam(1);
+    time = Scr_GetIntParam(2);
+
+    daysSinceApr5 = Calendar_GetDaysSinceStartFromDate(month, day);
+
+    Calendar_UpdateDateAndDayFlags(daysSinceApr5);
+    Calendar_SetTime(time);
+
+    return 1;
 }

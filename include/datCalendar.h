@@ -92,6 +92,7 @@ typedef struct
 
 typedef enum
 {
+    // TODO
     CALENDAR_TASK_STATE_0,
     CALENDAR_TASK_STATE_DEBUG, // render a debug calendar that lets you select the date and time
 } CalendarTaskState;
@@ -119,5 +120,6 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);
 KwlnTask* Calendar_CreateTask();
 u8 Calendar_GetCurrentMoonPhase();
 u8 Calendar_GetMoonPhase(u32 daysSinceApr5);
+u8 Calendar_ScrCmdSetDate();
 
 #endif
