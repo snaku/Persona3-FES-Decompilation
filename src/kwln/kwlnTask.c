@@ -15,7 +15,6 @@ void KwlnTask_RemoveTaskFromList(KwlnTask* task)
        (taskState != KWLN_TASK_STATE_RUNNING) &&
        (taskState != KWLN_TASK_STATE_CREATED))
     {
-        // !! LOG !!
         FUN_0019d400("Process stat Invalid!!", "kwlnTask.c", 70);
         return;
     }
