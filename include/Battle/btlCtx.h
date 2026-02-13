@@ -30,7 +30,7 @@ typedef struct BattleCtx
     BattleStateCtx btlStateCtx;    // 0x2b4
     // Data inbetween...
     KwlnTask* btlTask;             // 0xd18
-    u8 unkData1[0x10];
+    u8 unkData2[0x10];
     KwlnTask* btlPanelTask;        // 0xd2c
 } BattleCtx;
 
