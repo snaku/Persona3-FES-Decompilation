@@ -3,6 +3,7 @@
 #include "h_malloc.h"
 #include "temporary.h"
 
+void KwlnTask_Destroy(KwlnTask* task);
 void KwlnTask_DetachParent(KwlnTask* task);
 
 // FUN_001939d0. Remove a task from a list by its current state
@@ -263,6 +264,33 @@ void KwlnTask_UpdateAll()
             {
                 currTask = currTask->next;
             }
+        }
+    }
+}
+
+// FUN_001941f0. Destroy every task in the hierarchy
+void KwlnTask_DestroyHierarchy(KwlnTask* task)
+{
+    KwlnTask* currChild;
+
+    if (task != NULL)
+    {
+        while (task != NULL)
+        {
+            currChild = task->child;
+            if (currChild != NULL)
+            {
+                while (currChild != NULL)
+                {
+                    KwlnTask_DestroyHierarchy(currChild->child);
+                    KwlnTask_Destroy(currChild);
+
+                    currChild = currChild->sibling;
+                }
+            }
+
+            KwlnTask_Destroy(task);
+            task = task->sibling;
         }
     }
 }
