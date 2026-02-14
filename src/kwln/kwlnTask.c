@@ -210,7 +210,7 @@ void KwlnTask_AddToList(KwlnTask* task)
 }
 
 // FUN_00193ec0
-u8 KwlnTask_UpdateTask(KwlnTask* task)
+u8 KwlnTask_Update(KwlnTask* task)
 {
     // !! TODO !!
 
@@ -230,7 +230,7 @@ void KwlnTask_UpdateAll()
         while (currTask != NULL)
         {
             prevTask = currTask->prev;
-            updateRes = KwlnTask_UpdateTask(currTask);
+            updateRes = KwlnTask_Update(currTask);
 
             if (!updateRes)
             {
@@ -264,6 +264,44 @@ void KwlnTask_UpdateAll()
                 currTask = currTask->next;
             }
         }
+    }
+}
+
+// FUN_00194280. Change a task state to 'KWLN_TASK_STATE_DESTROY'. If 'destroyTask' is 0, destroy the task immediately
+void KwlnTask_Destroy(KwlnTask* task)
+{
+    u32 state;
+
+    state = KWLN_TASK_GET_STATE(task);
+
+    switch (state)
+    {
+        case KWLN_TASK_STATE_DESTROY: return;
+        case KWLN_TASK_STATE_NULL: 
+            P3FES_LOG3("Process stat Invalid!!\n");
+            P3FES_ASSERT("kwlnTask.c", 574);
+            break;
+        case KWLN_TASK_STATE_CREATED: // fallthrough
+        case KWLN_TASK_STATE_RUNNING:
+            KwlnTask_RemoveTaskFromList(task);
+            KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_DESTROY);
+            KwlnTask_AddToList(task);
+
+            if (task->destroyDelay == 0)
+            {
+                KwlnTask_RemoveTaskFromList(task);
+                if (task->destroy != NULL)
+                {
+                    task->destroy(task);
+                }
+
+                KWLN_TASK_RESET_STATE(task);
+
+                KwlnTask_RemoveParent(task);
+                KwlnTask_DetachParent(task);
+                H_Free((uintptr_t)task);
+            }
+            break;
     }
 }
 

@@ -53,7 +53,6 @@ typedef struct KwlnTask
     s32 unk_64;                   // 0x64
 } KwlnTask;
 
-u8 KwlnTask_UpdateTask(KwlnTask* task);
 void KwlnTask_UpdateAll();
 u8 KwlnTask_Main();
 KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priority, KwlnTask_UpdateFunc update, KwlnTask_DestroyFunc destroy, void* taskData);
