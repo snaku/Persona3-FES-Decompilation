@@ -328,7 +328,7 @@ u8 KwlnTask_Main()
 }
 
 // FUN_00194b20. Create a new task. 'parentTask' can be NULL
-KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priority, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
+KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priority, KwlnTask_UpdateFunc update, KwlnTask_DestroyFunc destroy, void* taskData)
 {
     KwlnTask* task = KwlnTask_Init(taskName, priority, update, destroy, taskData);
     KwlnTask_AddChild(parentTask, task);
@@ -337,7 +337,7 @@ KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priori
 }
 
 // FUN_00194b80. Create a new task and adjust priority by the parent hierarchy. 'parentTask' can be NULL
-KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, u32 priority, const char* name, KwlnTask_Update update, KwlnTask_Destroy destroy, void* taskData)
+KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, u32 priority, const char* name, KwlnTask_UpdateFunc update, KwlnTask_DestroyFunc destroy, void* taskData)
 {
     KwlnTask* task;
     KwlnTask* currParent;
@@ -375,8 +375,8 @@ KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, u32 priority, co
 // FUN_00194c50. Init a new task. See 'KwlnTask_InitEx' for adjustable 'runningDelay' and 'destroyDelay'
 KwlnTask* KwlnTask_Init(const char* taskName,
                         u32 priority,
-                        KwlnTask_Update update,
-                        KwlnTask_Destroy destroy,
+                        KwlnTask_UpdateFunc update,
+                        KwlnTask_DestroyFunc destroy,
                         void* taskData)
 {
     KwlnTask* task;
@@ -448,8 +448,8 @@ KwlnTask* KwlnTask_InitEx(const char* taskName,
                           u32 priority,
                           s32 runningDelay,
                           s32 destroyDelay,
-                          KwlnTask_Update update,
-                          KwlnTask_Destroy destroy,
+                          KwlnTask_UpdateFunc update,
+                          KwlnTask_DestroyFunc destroy,
                           void* taskData)
 {
     KwlnTask* task;
