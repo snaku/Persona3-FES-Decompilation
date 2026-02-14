@@ -582,6 +582,81 @@ KwlnTask* KwlnTask_InitEx(const char* taskName,
     return task;
 }
 
+// FUN_00195020. Destroy a task and its hierarchy
+u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task)
+{
+    u32 state;
+
+    if (task == NULL || task == (KwlnTask*)0xFFFFFFFF)
+    {
+        FUN_0019d400("ProcessID invalid!!\n", "kwlnTask.c", 1181);
+        return false;
+    }
+
+    state = KWLN_TASK_GET_STATE(task);
+    switch (state)
+    {
+        case KWLN_TASK_STATE_CREATED: // fallthrough
+        case KWLN_TASK_STATE_RUNNING: 
+            task->destroyDelay = 2;
+
+            state = KWLN_TASK_GET_STATE(task);
+            switch (state)
+            {
+                case KWLN_TASK_STATE_CREATED: // fallthrough
+                case KWLN_TASK_STATE_RUNNING:
+                    KwlnTask_RemoveTaskFromList(task);
+                    KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_DESTROY);
+                    KwlnTask_AddToList(task);
+
+                    // never true
+                    if (task->destroyDelay == 0)
+                    {
+                        KwlnTask_RemoveTaskFromList(task);
+                        if (task->destroy != NULL)
+                        {
+                            task->destroy(task);
+                        }
+
+                        KWLN_TASK_RESET_STATE(task);
+
+                        KwlnTask_RemoveParent(task);
+                        KwlnTask_DetachParent(task);
+                        H_Free((uintptr_t)task);
+                    }
+                    break;
+                case KWLN_TASK_STATE_DESTROY: break;
+                case KWLN_TASK_STATE_NULL: // fallthrough
+                default: 
+                    P3FES_LOG3("Process stat Invalid!!\n");
+                    P3FES_ASSERT("kwlnTask.c", 574);
+                    break;
+            }
+
+            task = task->child;
+            if (task != NULL)
+            {
+                while (task != NULL)
+                {
+                    KwlnTask_DestroyHierarchy(task->child);
+                    KwlnTask_Destroy(task);
+
+                    task = task->sibling;
+                }
+            }
+            break;
+        case KWLN_TASK_STATE_DESTROY: 
+            task->destroyDelay = 2; 
+            break;
+        case KWLN_TASK_STATE_NULL: // fallthrough
+        default:
+            FUN_0019d400("ProcessID invalid!!\n", "kwlnTask.c", 1204);
+            return false;
+    }
+
+    return true;
+}
+
 // FUN_00195290
 u32 KwlnTask_GetTaskState(KwlnTask* task)
 {

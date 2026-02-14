@@ -59,6 +59,7 @@ KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priori
 KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, u32 priority, const char* name, KwlnTask_UpdateFunc update, KwlnTask_DestroyFunc destroy, void* taskData);
 KwlnTask* KwlnTask_Init(const char* taskName, u32 priority, KwlnTask_UpdateFunc update, KwlnTask_DestroyFunc destroy, void* taskData);
 KwlnTask* KwlnTask_InitEx(const char* taskName, u32 priority, s32 runningDelay, s32 destroyDelay, KwlnTask_UpdateFunc update, KwlnTask_DestroyFunc destroy, void* taskData);
+u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task);
 u32 KwlnTask_GetTaskState(KwlnTask* task);
 KwlnTask* KwlnTask_GetTaskByName(const char* name);
 u8 KwlnTask_Exists(KwlnTask* task);
