@@ -1,5 +1,6 @@
 #include "kwln/kwlnTask.h"
 #include "rw/rwplcore.h"
+#include "Battle/btlMain.h"
 #include "admini.h"
 #include "g_data.h"
 #include "temporary.h"
@@ -14,6 +15,7 @@ typedef struct
 void Admini_TestCall(u8 isRestored, void* taskData);
 s32 Admini_TestExit();
 u8 Admini_TestCheck();
+s32 Admini_BtlBossExit();
 
 // 0068f020
 static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] = 
@@ -24,7 +26,7 @@ static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] =
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FIELD_ROOT2. TODO
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_MAP. TODO
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_DUNGEON. TODO
-    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_BATTLE_BOSS. TODO
+    {NULL, Admini_BtlBossExit, NULL},                     // ADMINI_TASK_ID_BATTLE_BOSS. TODO
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FACILITY. TODO
 };
 
@@ -42,7 +44,7 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotResto
         P3FES_ASSERT("admini.c", 46);
     }
 
-    admini = KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
     if (admini == NULL)
     {
         P3FES_ASSERT("admini.c", 48);
@@ -389,4 +391,18 @@ u8 Admini_TestCheck()
     P3FES_LOG3("+++ check\n");
 
     return true;
+}
+
+// FUN_0027caa0
+s32 Admini_BtlBossExit()
+{
+    KwlnTask* btlTask;
+
+    btlTask = BtlMain_GetBtlTask();
+    if (btlTask != NULL)
+    {
+        KwlnTask_DeleteWithHierarchy(btlTask);
+    }
+
+    return 0;
 }
