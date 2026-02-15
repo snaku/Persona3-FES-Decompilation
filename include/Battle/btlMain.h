@@ -3,6 +3,9 @@
 
 #include "Utils.h"
 
+typedef struct KwlnTask KwlnTask;
+
+KwlnTask* BtlMain_GetBtlTask();
 void BtlMain_SetBossBtlFlag();
 
 #endif
