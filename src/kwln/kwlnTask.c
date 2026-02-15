@@ -582,6 +582,20 @@ KwlnTask* KwlnTask_InitEx(const char* taskName,
     return task;
 }
 
+// FUN_00194fe0
+u8 KwlnTask_DeleteWithHierarchyByName(const char* name)
+{
+    KwlnTask* task;
+
+    task = KwlnTask_GetTaskByName(name);
+    if (task == NULL)
+    {
+        return false;
+    }
+
+    return KwlnTask_DeleteWithHierarchy(task);
+}
+
 // FUN_00195020. Destroy a task and its hierarchy
 u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task)
 {
