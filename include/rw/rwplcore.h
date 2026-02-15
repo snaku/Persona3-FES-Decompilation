@@ -17,6 +17,9 @@ typedef unsigned long RwUInt64;
 typedef float RwReal;
 typedef RwInt32 RwBool;
 
+// persona 3 uses renderware 3.7.0.2
+#define RW_LIB_VERSION 0x37002
+
 // pack RGBA components into an unsigned int
 #define PACK_RWRGBA(r,g,b,a) ((RwUInt32)(((a) << 24) | ((r) << 16) | ((g) << 8) | (b)))
 
@@ -101,6 +104,7 @@ typedef struct
 
 extern RwGlobals rwGlobals; // not sure where to place this
 
+RwUInt32 RwEngine_GetVersion();
 RwBool RwEngine_Init(const RwMemoryFunctions* memFuncs, RwUInt32 flags, RwUInt32 resArenaSize);
 
 #endif
