@@ -19,3 +19,11 @@ RwCamera* RwCamera_Clear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode cle
 
     return camera;
 }
+
+// FUN_004c9f00
+RwCamera* RwCamera_SetProjectionType(RwCamera* camera, RwCameraProjectionType projType)
+{
+    // TODO
+
+    return camera;
+}
