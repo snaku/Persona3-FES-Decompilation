@@ -16,6 +16,7 @@ void Admini_TestCall(u8 isRestored, void* taskData);
 s32 Admini_TestExit();
 u8 Admini_TestCheck();
 s32 Admini_BtlBossExit();
+u8 Admini_BtlBossCheck();
 
 // 0068f020
 static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] = 
@@ -26,7 +27,7 @@ static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] =
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FIELD_ROOT2. TODO
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_MAP. TODO
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_DUNGEON. TODO
-    {NULL, Admini_BtlBossExit, NULL},                     // ADMINI_TASK_ID_BATTLE_BOSS. TODO
+    {NULL, Admini_BtlBossExit, Admini_BtlBossCheck},      // ADMINI_TASK_ID_BATTLE_BOSS. TODO
     {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FACILITY. TODO
 };
 
@@ -405,4 +406,10 @@ s32 Admini_BtlBossExit()
     }
 
     return 0;
+}
+
+// FUN_0027cae0
+u8 Admini_BtlBossCheck()
+{
+    return BtlMain_GetBtlTask() == NULL;
 }
