@@ -15,9 +15,15 @@ RwCamera* RwCamera_BeginUpdate(RwCamera* camera)
 // FUN_004c9e90
 RwCamera* RwCamera_Clear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode)
 {
-    // TODO
+    RwStandardFunc cameraClearFunc;
 
-    return camera;
+    cameraClearFunc = RWSTDFUNC(RW_STD_FUNC_CAMERA_CLEAR);
+    if (cameraClearFunc(camera, colors, clearMode))
+    {
+        return camera;
+    }
+
+    return NULL;
 }
 
 // FUN_004c9f00
