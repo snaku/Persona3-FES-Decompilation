@@ -20,7 +20,7 @@ typedef RwInt32 RwBool;
 // persona 3 uses renderware 3.7.0.2
 #define RW_LIB_VERSION 0x37002
 
-// pack RGBA components into an unsigned int
+// pack RGBA components into an unsigned int (ARGB)
 #define PACK_RWRGBA(r,g,b,a) ((RwUInt32)(((a) << 24) | ((r) << 16) | ((g) << 8) | (b)))
 
 // macros to call 'RwGlobals' func ptr
@@ -34,6 +34,8 @@ typedef RwInt32 RwBool;
 #define RWRENDERSTATE_SET(state, val) rwGlobals.device.setRenderState((state), (void*)(val))
 #define RWRENDERSTATE_GET(state, val) rwGlobals.device.getRenderState((state), (void*)(val))
 
+// std func
+#define RWSTDFUNC(type) (rwGlobals.stdFunc[(type)])
 
 // 4 bytes. Values from 0 to 255
 typedef struct RwRGBA
@@ -69,6 +71,14 @@ typedef enum
     RW_FOG_TYPE_1
 } RwFogType;
 
+typedef enum
+{
+    RW_STD_FUNC_CAMERA_CLEAR = 21,
+    RW_STD_FUNC_MAX = 29
+} RwStdFunc;
+
+typedef RwBool (*RwStandardFunc)(void* out, void* inOut, RwInt32 nI);
+
 // See enmu 'RwRenderState'
 typedef RwBool (*RwRenderState_SetFunc)(RwRenderState renderState, void* val);
 typedef RwBool (*RwRenderState_GetFunc)(RwRenderState renderState, void* val);
@@ -94,14 +104,15 @@ typedef struct RwMemoryFunctions
 // 300 bytes
 typedef struct
 {
-    void* currCamera;           // 0x00
-    void* currWorld;            // 0x04
+    void* currCamera;                        // 0x00
+    void* currWorld;                         // 0x04
     u8 unkData1[0x08];
-    RwDevice device;            // 0x10
-    u8 unkData2[0xc0];
-    RwMemoryFunctions memFuncs; // 0x108
+    RwDevice device;                         // 0x10
+    RwStandardFunc stdFunc[RW_STD_FUNC_MAX]; // 0x48
+    u8 unkData2[0x4c];
+    RwMemoryFunctions memFuncs;              // 0x108
     u8 unkData3[0x10];
-    RwUInt32 resArenaSize;      // 0x128
+    RwUInt32 resArenaSize;                   // 0x128
 } RwGlobals;
 
 extern RwGlobals rwGlobals; // not sure where to place this
