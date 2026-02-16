@@ -91,15 +91,17 @@ typedef struct RwMemoryFunctions
     void* (*Rw_Calloc)(RwUInt32 elemCount, RwUInt32 elemSize, RwUInt32 param_3);
 } RwMemoryFunctions;
 
-// 308 bytes
+// 300 bytes
 typedef struct
 {
-    u8 unkData1[0x10];
+    void* currCamera;           // 0x00
+    void* currWorld;            // 0x04
+    u8 unkData1[0x08];
     RwDevice device;            // 0x10
-    u8 unkData2[0xec];
-    RwMemoryFunctions memFuncs; // 0x134
+    u8 unkData2[0xc0];
+    RwMemoryFunctions memFuncs; // 0x108
     u8 unkData3[0x10];
-    RwUInt32 resArenaSize;      // 0x154
+    RwUInt32 resArenaSize;      // 0x128
 } RwGlobals;
 
 extern RwGlobals rwGlobals; // not sure where to place this
