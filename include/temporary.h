@@ -43,15 +43,6 @@ typedef struct
     u32 scenarioMode;            // 007cdfa4. See enum GameScenario
     KwlnTask* clndTask;          // 007cdfec. Task name = "CalenderDraw"
     // data after
-    KwlnTask* stagedTaskHead;    // 007ce064. Head of tasks in 'KWLN_TASK_STATE_CREATED' state
-    KwlnTask* stagedTaskTail;    // 007ce068. Tail of tasks in 'KWLN_TASK_STATE_CREATED' state
-    u32 numTaskStaged;           // 007ce06c. Total number of task in 'KWLN_TASK_STATE_CREATED' state
-    KwlnTask* destroyTaskHead;   // 007ce070. Head of tasks in 'KWLN_TASK_STATE_DESTROY' state
-    KwlnTask* destroyTaskTail;   // 007ce074. Tail of tasks in 'KWLN_TASK_STATE_DESTROY' state
-    u32 numTaskDestroy;          // 007ce078. Total number of task in 'KWLN_TASK_STATE_DESTROY' state
-    KwlnTask* runningTaskHead;   // 007ce07c. Head of tasks in 'KWLN_TASK_STATE_RUNNING' state
-    KwlnTask* runningTaskTail;   // 007ce080. Tail of tasks in 'KWLN_TASK_STATE_RUNNING' state
-    u32 numTaskRunning;          // 007ce084. Total number of task in 'KWLN_TASK_STATE_RUNNING' state
     RwCamera* mainCamera;        // 007ce0c0
     KwlnTask* rootProcTask;      // 007ce0d0. Task name = "rootProc"
     FogParameter fogParameter;   // 007ce0d4

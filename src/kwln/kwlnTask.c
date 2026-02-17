@@ -3,6 +3,18 @@
 #include "h_malloc.h"
 #include "temporary.h"
 
+static KwlnTask* sStagedTaskHead;    // 007ce064. Head of tasks in 'KWLN_TASK_STATE_CREATED' state
+static KwlnTask* sStagedTaskTail;    // 007ce068. Tail of tasks in 'KWLN_TASK_STATE_CREATED' state
+static u32 sNumTaskStaged;           // 007ce06c. Total number of task in 'KWLN_TASK_STATE_CREATED' state
+
+static KwlnTask* sDestroyTaskHead;   // 007ce070. Head of tasks in 'KWLN_TASK_STATE_DESTROY' state
+static KwlnTask* sDestroyTaskTail;   // 007ce074. Tail of tasks in 'KWLN_TASK_STATE_DESTROY' state
+static u32 sNumTaskDestroy;          // 007ce078. Total number of task in 'KWLN_TASK_STATE_DESTROY' state
+
+static KwlnTask* sRunningTaskHead;   // 007ce07c. Head of tasks in 'KWLN_TASK_STATE_RUNNING' state
+static KwlnTask* sRunningTaskTail;   // 007ce080. Tail of tasks in 'KWLN_TASK_STATE_RUNNING' state
+static u32 sNumTaskRunning;          // 007ce084. Total number of task in 'KWLN_TASK_STATE_RUNNING' state
+
 void KwlnTask_Destroy(KwlnTask* task);
 void KwlnTask_DetachParent(KwlnTask* task);
 
@@ -24,15 +36,15 @@ void KwlnTask_RemoveTaskFromList(KwlnTask* task)
     {
         if (taskState == KWLN_TASK_STATE_DESTROY)
         {
-            ctx.destroyTaskHead = task->next;
+            sDestroyTaskHead = task->next;
         }
         else if (taskState == KWLN_TASK_STATE_RUNNING)
         {
-            ctx.runningTaskHead = task->next;
+            sRunningTaskHead = task->next;
         }
         else if (taskState == KWLN_TASK_STATE_CREATED)
         {
-            ctx.stagedTaskHead = task->next;
+            sStagedTaskHead = task->next;
         }
     }
     else 
@@ -46,15 +58,15 @@ void KwlnTask_RemoveTaskFromList(KwlnTask* task)
 
         if (taskState == KWLN_TASK_STATE_DESTROY)
         {
-            ctx.destroyTaskTail = task->prev;
+            sDestroyTaskTail = task->prev;
         }
         else if (taskState == KWLN_TASK_STATE_RUNNING)
         {
-            ctx.runningTaskTail = task->prev;
+            sRunningTaskTail = task->prev;
         }
         else if (taskState == KWLN_TASK_STATE_CREATED)
         {
-            ctx.stagedTaskTail = task->prev;
+            sStagedTaskTail = task->prev;
         }
     }
     else
@@ -69,15 +81,15 @@ void KwlnTask_RemoveTaskFromList(KwlnTask* task)
     taskState = KWLN_TASK_GET_STATE(task);
     if (taskState == KWLN_TASK_STATE_DESTROY)
     {
-        ctx.numTaskDestroy--;
+        sNumTaskDestroy--;
     }
     else if (taskState == KWLN_TASK_STATE_RUNNING)
     {
-        ctx.numTaskRunning--;
+        sNumTaskRunning--;
     }
     else if (taskState == KWLN_TASK_STATE_CREATED)
     {
-        ctx.numTaskStaged--;
+        sNumTaskStaged--;
     }
 }
 
@@ -89,9 +101,9 @@ void KwlnTask_AddToList(KwlnTask* task)
 
     switch (taskState)
     {
-        case KWLN_TASK_STATE_CREATED: list = ctx.stagedTaskHead;  break;
-        case KWLN_TASK_STATE_RUNNING: list = ctx.runningTaskHead; break;
-        case KWLN_TASK_STATE_DESTROY: list = ctx.destroyTaskHead; break;
+        case KWLN_TASK_STATE_CREATED: list = sStagedTaskHead;  break;
+        case KWLN_TASK_STATE_RUNNING: list = sRunningTaskHead; break;
+        case KWLN_TASK_STATE_DESTROY: list = sDestroyTaskHead; break;
         case KWLN_TASK_STATE_NULL: // fallthrough
         default: FUN_0019d400("Process stat Invalid!!", "kwlnTask.c", 143); return;
     }
@@ -101,16 +113,16 @@ void KwlnTask_AddToList(KwlnTask* task)
         switch (taskState)
         {
             case KWLN_TASK_STATE_CREATED:
-                ctx.stagedTaskHead = task;
-                ctx.stagedTaskTail = task;
+                sStagedTaskHead = task;
+                sStagedTaskTail = task;
                 break;
             case KWLN_TASK_STATE_RUNNING:
-                ctx.runningTaskHead = task;
-                ctx.runningTaskTail = task;
+                sRunningTaskHead = task;
+                sRunningTaskTail = task;
                 break;
             case KWLN_TASK_STATE_DESTROY:
-                ctx.destroyTaskHead = task;
-                ctx.destroyTaskTail = task;
+                sDestroyTaskHead = task;
+                sDestroyTaskTail = task;
                 break;
         }
 
@@ -128,9 +140,9 @@ void KwlnTask_AddToList(KwlnTask* task)
                 {
                     switch (taskState)
                     {
-                        case KWLN_TASK_STATE_CREATED: ctx.stagedTaskHead = task;  break;
-                        case KWLN_TASK_STATE_RUNNING: ctx.runningTaskHead = task; break;
-                        case KWLN_TASK_STATE_DESTROY: ctx.destroyTaskHead = task; break;
+                        case KWLN_TASK_STATE_CREATED: sStagedTaskHead = task;  break;
+                        case KWLN_TASK_STATE_RUNNING: sRunningTaskHead = task; break;
+                        case KWLN_TASK_STATE_DESTROY: sDestroyTaskHead = task; break;
                     }
 
                     task->prev = NULL;
@@ -160,22 +172,22 @@ void KwlnTask_AddToList(KwlnTask* task)
             switch (taskState)
             {
                 case KWLN_TASK_STATE_CREATED: 
-                    ctx.stagedTaskTail->next = task;
-                    task->unk_48 = ctx.stagedTaskTail;
-                    task->prev = ctx.stagedTaskTail;
-                    ctx.stagedTaskTail = task;
+                    sStagedTaskTail->next = task;
+                    task->unk_48 = sStagedTaskTail;
+                    task->prev = sStagedTaskTail;
+                    sStagedTaskTail = task;
                     break;
                 case KWLN_TASK_STATE_RUNNING: 
-                    ctx.runningTaskTail->next = task;
-                    task->unk_48 = ctx.runningTaskTail;
-                    task->prev = ctx.runningTaskTail;
-                    ctx.runningTaskTail = task;
+                    sRunningTaskTail->next = task;
+                    task->unk_48 = sRunningTaskTail;
+                    task->prev = sRunningTaskTail;
+                    sRunningTaskTail = task;
                     break;
                 case KWLN_TASK_STATE_DESTROY: 
-                    ctx.destroyTaskTail->next = task;
-                    task->unk_48 = ctx.destroyTaskTail;
-                    task->prev = ctx.destroyTaskTail;
-                    ctx.destroyTaskTail = task;
+                    sDestroyTaskTail->next = task;
+                    task->unk_48 = sDestroyTaskTail;
+                    task->prev = sDestroyTaskTail;
+                    sDestroyTaskTail = task;
                     break;
             }
 
@@ -187,22 +199,22 @@ void KwlnTask_AddToList(KwlnTask* task)
     switch (taskState)
     {
         case KWLN_TASK_STATE_CREATED:
-            ctx.numTaskStaged++;
-            if (ctx.numTaskStaged > 10000)
+            sNumTaskStaged++;
+            if (sNumTaskStaged > 10000)
             {
                 P3FES_ASSERT("kwlnTask.c", 226);
             }
             break;
         case KWLN_TASK_STATE_RUNNING:
-            ctx.numTaskRunning++;
-            if (ctx.numTaskRunning > 10000)
+            sNumTaskRunning++;
+            if (sNumTaskRunning > 10000)
             {
                 P3FES_ASSERT("kwlnTask.c", 230);
             }
             break;
         case KWLN_TASK_STATE_DESTROY:
-            ctx.numTaskDestroy++;
-            if (ctx.numTaskDestroy > 10000)
+            sNumTaskDestroy++;
+            if (sNumTaskDestroy > 10000)
             {
                 P3FES_ASSERT("kwlnTask.c", 234);
             }
@@ -221,12 +233,12 @@ u8 KwlnTask_Update(KwlnTask* task)
 // FUN_00194100
 void KwlnTask_UpdateAll()
 {
-    KwlnTask* currTask = ctx.runningTaskHead;
+    KwlnTask* currTask = sRunningTaskHead;
     KwlnTask* cursor;
     KwlnTask* prevTask;
     u8 updateRes;
 
-    if (ctx.runningTaskHead != NULL)
+    if (sRunningTaskHead != NULL)
     {
         while (currTask != NULL)
         {
@@ -235,7 +247,7 @@ void KwlnTask_UpdateAll()
 
             if (!updateRes)
             {
-                currTask = ctx.runningTaskHead;
+                currTask = sRunningTaskHead;
 
                 if (prevTask != NULL)
                 {
@@ -339,7 +351,7 @@ u8 KwlnTask_Main()
     KwlnTask* currTask;
     KwlnTask* nextTask;
 
-    nextTask = ctx.stagedTaskHead;
+    nextTask = sStagedTaskHead;
 
     while (nextTask != NULL)
     {
@@ -363,7 +375,7 @@ u8 KwlnTask_Main()
 
     KwlnTask_UpdateAll();
 
-    nextTask = ctx.destroyTaskHead;
+    nextTask = sDestroyTaskHead;
     while (nextTask != NULL)
     {
         if (nextTask->destroyDelay > 0)
@@ -714,9 +726,9 @@ KwlnTask* KwlnTask_GetTaskByName(const char* name)
     {
         switch (j)
         {
-            case 0: list = ctx.stagedTaskHead;  break;
-            case 1: list = ctx.runningTaskHead; break;
-            case 2: list = ctx.destroyTaskHead; break;
+            case 0: list = sStagedTaskHead;  break;
+            case 1: list = sRunningTaskHead; break;
+            case 2: list = sDestroyTaskHead; break;
         }
 
         while (list != NULL)
@@ -757,9 +769,9 @@ u8 KwlnTask_Exists(KwlnTask* task)
         {
             switch (i)
             {
-                case 0: list = ctx.stagedTaskHead;  break;
-                case 1: list = ctx.runningTaskHead; break;
-                case 2: list = ctx.destroyTaskHead; break;
+                case 0: list = sStagedTaskHead;  break;
+                case 1: list = sRunningTaskHead; break;
+                case 2: list = sDestroyTaskHead; break;
             }
 
             while (list != NULL)
