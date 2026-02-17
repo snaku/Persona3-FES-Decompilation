@@ -45,7 +45,6 @@ typedef struct
     // data after
     FogParameter fogParameter;   // 007ce0d4
     KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
-    KwlnTask* dungeonTask;       // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
     // data after
     ScrData* currScr;            // 007ce5a8. Current script being executed

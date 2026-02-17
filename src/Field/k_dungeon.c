@@ -1,14 +1,15 @@
 #include "Field/k_dungeon.h"
 #include "Field/k_data.h"
 #include "kwln/kwlnTask.h"
-#include "temporary.h"
 
-#define DUNGEON_TASK_DATA ((FieldDungeon*)ctx.dungeonTask->taskData)
+static KwlnTask* sDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
+
+#define DUNGEON_TASK_DATA ((FieldDungeon*)sDungeonTask->taskData)
 
 // FUN_001bff00
 void FldDungeon_RequestShutdown()
 {
-    if (ctx.dungeonTask != NULL)
+    if (sDungeonTask != NULL)
     {
         DUNGEON_TASK_DATA->shouldShutdown = true;
     }
@@ -17,7 +18,7 @@ void FldDungeon_RequestShutdown()
 // FUN_001bff20
 u32 FldDungeon_GetCurrentFloor()
 {
-    if (ctx.dungeonTask == NULL)
+    if (sDungeonTask == NULL)
     {
         return 0;
     }
@@ -30,7 +31,7 @@ u8 FldDungeon_IsCurrentFloorExplorable()
 {
     u32 currFloor;
 
-    if (ctx.dungeonTask == NULL)
+    if (sDungeonTask == NULL)
     {
         currFloor = 0;
     }
@@ -39,7 +40,6 @@ u8 FldDungeon_IsCurrentFloorExplorable()
         currFloor = DUNGEON_TASK_DATA->currFloor;
     }
 
-    // seems like tartarus was supposed to have 399 floors
     if (currFloor < 2 || currFloor >= 400)
     {
         return false;
@@ -51,7 +51,7 @@ u8 FldDungeon_IsCurrentFloorExplorable()
 // FUN_001bffa0
 u16 FldDungeon_GetCurrentFloorMajorId()
 {
-    if (ctx.dungeonTask == NULL)
+    if (sDungeonTask == NULL)
     {
         return 0;
     }
