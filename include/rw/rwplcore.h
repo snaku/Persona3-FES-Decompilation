@@ -23,6 +23,10 @@ typedef RwInt32 RwBool;
 // pack RGBA components into an unsigned int (ARGB)
 #define PACK_RWRGBA(r,g,b,a) ((RwUInt32)(((a) << 24) | ((r) << 16) | ((g) << 8) | (b)))
 
+// current camera and world
+#define RW_CURRCAMERA rwGlobals.currCamera
+#define RW_CURRWORLD  rwGlobals.currWorld
+
 // macros to call 'RwGlobals' func ptr
 // memFuncs
 #define RW_MALLOC(size, param_3)          rwGlobals.memFuncs.Rw_Malloc((size), (param_3))
@@ -73,6 +77,7 @@ typedef enum
 
 typedef enum
 {
+    RW_STD_FUNC_CAMERA_END_UPDATE = 10,
     RW_STD_FUNC_CAMERA_CLEAR = 21,
     RW_STD_FUNC_MAX = 29
 } RwStdFunc;
