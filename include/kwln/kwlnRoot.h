@@ -14,9 +14,6 @@ typedef struct KwlnRoot
     u32 unk_04;
 } KwlnRoot;
 
-RwCamera* KwlnRoot_GetMainCamera();
-RwRGBA* KwlnRoot_GetClearColor();
-void KwlnRoot_SetClearColor(u8 r, u8 g, u8 b, u8 a);
 void KwlnRoot_FUN_00198610(u32 flags, u8 enabled);
 KwlnTask* KwlnRoot_CreateRootProcTask();
 

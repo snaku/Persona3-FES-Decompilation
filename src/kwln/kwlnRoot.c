@@ -1,5 +1,6 @@
 #include "kwln/kwlnRoot.h"
 #include "kwln/kwlnTask.h"
+#include "kwln/kwln.h"
 #include "rw/rwcore.h"
 #include "temporary.h"
 #include "h_snd.h"
@@ -9,27 +10,6 @@ KwlnTask* KwlnRoot_Create2DDrawBeginPreEndTask();
 KwlnTask* KwlnRoot_Create2DDrawEndTask();
 KwlnTask* KwlnRoot_Create3DOn2DZClearTask();
 KwlnTask* KwlnRoot_Create3DOn2DDrawEndTask();
-
-// FUN_00198590. Not sure if it's in this file or in 'kwln.c' ?
-RwCamera* KwlnRoot_GetMainCamera()
-{
-    return ctx.mainCamera;
-}
-
-// FUN_001985a0. Not sure if it's in this file or in 'kwln.c' ?
-RwRGBA* KwlnRoot_GetClearColor()
-{
-    return &ctx.clearColor;
-}
-
-// FUN_001985b0. Not sure if it's in this file or in 'kwln.c' ?
-void KwlnRoot_SetClearColor(u8 r, u8 g, u8 b, u8 a)
-{
-    ctx.clearColor.r = r;
-    ctx.clearColor.g = g;
-    ctx.clearColor.b = b;
-    ctx.clearColor.a = a;
-}
 
 // FUN_00198610
 void KwlnRoot_FUN_00198610(u32 flags, u8 enabled)
@@ -89,7 +69,7 @@ void* KwlnRoot_Update2DDrawPreEndTask(KwlnTask* drawBegin2dPETask)
 // FUN_00198b20
 void* KwlnRoot_Update2DDrawEndTask(KwlnTask* drawEnd2dTask)
 {
-    RwCamera* camera = KwlnRoot_GetMainCamera();
+    RwCamera* camera = Kwln_GetMainCamera();
     RwCamera_EndUpdate(camera);
 
     return KWLN_TASK_CONTINUE;
@@ -116,8 +96,8 @@ KwlnTask* KwlnRoot_Create2DDrawEndTask()
 // FUN_00198c10
 void* KwlnRoot_Update3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
 {
-    RwCamera* camera = KwlnRoot_GetMainCamera();
-    RwRGBA* clearColor = KwlnRoot_GetClearColor();
+    RwCamera* camera = Kwln_GetMainCamera();
+    RwRGBA* clearColor = Kwln_GetClearColor();
 
     RwCamera_Clear(camera, clearColor, RW_CAMERA_CLEAR_MODE_ZBUFFER);
 
@@ -136,7 +116,7 @@ void* KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
         RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_TYPE, RW_FOG_TYPE_1);
     }
 
-    camera = KwlnRoot_GetMainCamera();
+    camera = Kwln_GetMainCamera();
     RwCamera_EndUpdate(camera);
 
     return KWLN_TASK_CONTINUE;

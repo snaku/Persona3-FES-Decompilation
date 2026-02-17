@@ -43,10 +43,7 @@ typedef struct
     u32 scenarioMode;            // 007cdfa4. See enum GameScenario
     KwlnTask* clndTask;          // 007cdfec. Task name = "CalenderDraw"
     // data after
-    RwCamera* mainCamera;        // 007ce0c0
-    KwlnTask* rootProcTask;      // 007ce0d0. Task name = "rootProc"
     FogParameter fogParameter;   // 007ce0d4
-    RwRGBA clearColor;           // 007ce128
     KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
     KwlnTask* dungeonTask;       // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
