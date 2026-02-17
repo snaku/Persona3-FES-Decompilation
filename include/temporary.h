@@ -33,7 +33,8 @@ typedef struct
     u8 a;              // alpha component
 } FogParameter;
 
-// TODO
+// FAKE STRUCT. These are just .sbss variables,
+// but i just put them here until i know where they are supposed to be
 typedef struct
 {
     // data before
