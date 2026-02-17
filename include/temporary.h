@@ -21,18 +21,6 @@ typedef struct KwlnTask KwlnTask;
 typedef struct ScrData ScrData;
 typedef struct RwCamera RwCamera;
 
-typedef struct
-{
-    u32 fogEnabled;
-    u8 r;              // red component
-    u8 unkData1[0x03];
-    u8 g;              // green component
-    u8 unkData2[0x03];
-    u8 b;              // blue component
-    u8 unkData3[0x03];
-    u8 a;              // alpha component
-} FogParameter;
-
 // FAKE STRUCT. These are just .sbss variables,
 // but i just put them here until i know where they are supposed to be
 typedef struct
@@ -43,7 +31,6 @@ typedef struct
     u32 scenarioMode;            // 007cdfa4. See enum GameScenario
     KwlnTask* clndTask;          // 007cdfec. Task name = "CalenderDraw"
     // data after
-    FogParameter fogParameter;   // 007ce0d4
     KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
     // data after

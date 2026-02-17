@@ -7,6 +7,12 @@ typedef struct KwlnTask KwlnTask;
 typedef struct RwCamera RwCamera;
 typedef struct RwRGBA RwRGBA;
 
+extern u32 gFogEnabled;
+extern u8 gFogRed;
+extern u8 gFogBlue;
+extern u8 gFogGreen;
+extern u8 gFogAlpha;
+
 RwCamera* Kwln_GetMainCamera();
 RwRGBA* Kwln_GetClearColor();
 void Kwln_SetClearColor(u8 r, u8 g, u8 b, u8 a);

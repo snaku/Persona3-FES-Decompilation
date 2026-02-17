@@ -20,7 +20,7 @@ void* FldSPipe_Update3DDrwEndTask(KwlnTask* draw3DEndTask)
 
     RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_ENABLE, false);
     RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_ENABLE, true); // ??
-    RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_COLOR, PACK_RWRGBA(ctx.fogParameter.r, ctx.fogParameter.g, ctx.fogParameter.b, ctx.fogParameter.a));
+    RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_COLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
     RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_TYPE, RW_FOG_TYPE_1);
 
     camera = Kwln_GetMainCamera();
