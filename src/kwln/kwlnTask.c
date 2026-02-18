@@ -16,7 +16,7 @@ static KwlnTask* sRunningTaskTail;   // 007ce080. Tail of tasks in 'KWLN_TASK_ST
 static u32 sNumTaskRunning;          // 007ce084. Total number of task in 'KWLN_TASK_STATE_RUNNING' state
 
 void KwlnTask_Destroy(KwlnTask* task);
-void KwlnTask_DetachParent(KwlnTask* task);
+void KwlnTask_DetachAllChildren(KwlnTask* task);
 
 // FUN_001939d0. Remove a task from a list by its current state
 void KwlnTask_RemoveTaskFromList(KwlnTask* task)
@@ -338,7 +338,7 @@ void KwlnTask_Destroy(KwlnTask* task)
                 KWLN_TASK_RESET_STATE(task);
 
                 KwlnTask_RemoveParent(task);
-                KwlnTask_DetachParent(task);
+                KwlnTask_DetachAllChildren(task);
                 H_Free((uintptr_t)task);
             }
             break;
@@ -352,7 +352,6 @@ u8 KwlnTask_Main()
     KwlnTask* nextTask;
 
     nextTask = sStagedTaskHead;
-
     while (nextTask != NULL)
     {
         if (nextTask->runningDelay > 0)
@@ -396,7 +395,7 @@ u8 KwlnTask_Main()
 
             KWLN_TASK_RESET_STATE(currTask);
             KwlnTask_RemoveParent(currTask);
-            KwlnTask_DetachParent(currTask);
+            KwlnTask_DetachAllChildren(currTask);
 
             H_Free((uintptr_t)currTask);
         }
@@ -406,7 +405,12 @@ u8 KwlnTask_Main()
 }
 
 // FUN_00194b20. Create a new task. 'parentTask' can be NULL
-KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priority, KwlnTask_UpdateFunc update, KwlnTask_DestroyFunc destroy, void* taskData)
+KwlnTask* KwlnTask_Create(KwlnTask* parentTask,
+                          const char* taskName,
+                          u32 priority,
+                          KwlnTask_UpdateFunc update,
+                          KwlnTask_DestroyFunc destroy,
+                          void* taskData)
 {
     KwlnTask* task = KwlnTask_Init(taskName, priority, update, destroy, taskData);
     KwlnTask_AddChild(parentTask, task);
@@ -415,7 +419,12 @@ KwlnTask* KwlnTask_Create(KwlnTask* parentTask, const char* taskName, u32 priori
 }
 
 // FUN_00194b80. Create a new task and adjust priority by the parent hierarchy. 'parentTask' can be NULL
-KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, u32 priority, const char* name, KwlnTask_UpdateFunc update, KwlnTask_DestroyFunc destroy, void* taskData)
+KwlnTask* KwlnTask_CreateWithAutoPriority(KwlnTask* parentTask, 
+                                          u32 priority, 
+                                          const char* name, 
+                                          KwlnTask_UpdateFunc update, 
+                                          KwlnTask_DestroyFunc destroy, 
+                                          void* taskData)
 {
     KwlnTask* task;
     KwlnTask* currParent;
@@ -647,7 +656,7 @@ u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task)
                         KWLN_TASK_RESET_STATE(task);
 
                         KwlnTask_RemoveParent(task);
-                        KwlnTask_DetachParent(task);
+                        KwlnTask_DetachAllChildren(task);
                         H_Free((uintptr_t)task);
                     }
                     break;
@@ -877,14 +886,15 @@ void KwlnTask_RemoveParent(KwlnTask* childTask)
 }
 
 // FUN_00195690
-void KwlnTask_DetachParent(KwlnTask* task)
+void KwlnTask_DetachAllChildren(KwlnTask* parentTask)
 {
     KwlnTask* currTask;
-    KwlnTask* next = task->child;
+    KwlnTask* next;
 
+    next = parentTask->child;
     while (next != NULL)
     {
-        if (next->parent == task)
+        if (next->parent == parentTask)
         {
             currTask = next;
         }
