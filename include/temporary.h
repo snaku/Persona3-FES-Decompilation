@@ -29,7 +29,6 @@ typedef struct
     KwlnTask* sfdPlayTask;       // 007cdf14. Task name = "H_SfdPlay"
     // data after
     u32 scenarioMode;            // 007cdfa4. See enum GameScenario
-    KwlnTask* clndTask;          // 007cdfec. Task name = "CalenderDraw"
     // data after
     KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle

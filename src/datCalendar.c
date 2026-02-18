@@ -84,6 +84,8 @@ static const u8 daysMoonPhases[] =
     // TODO: Other cycles
 };
 
+static KwlnTask* sClndTask; // 007cdfec. Task name = "CalenderDraw"
+
 // FUN_0017d830
 u32 Calendar_GetMonthFromDaysSinceApr5(u16 daysSinceApr5)
 {
@@ -202,7 +204,7 @@ u32 Calendar_GetCurrentWeekDay()
 {
     u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
 
-    return Calendar_GetWeekDay(daysSinceApr5); // was inlined
+    return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
 }
 
 // FUN_0017dcf0
@@ -211,6 +213,7 @@ u8 Calendar_IsHolidayOrSunday()
     u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
     u32 currDayOfMonth;
     u32 currMonth;
+    u16 i;
 
     // was inlined
     if (Calendar_GetWeekDay(daysSinceApr5) == CALENDAR_DAY_SUNDAY)
@@ -221,7 +224,7 @@ u8 Calendar_IsHolidayOrSunday()
     currMonth = Calendar_GetMonthFromDaysSinceApr5(daysSinceApr5);
     currDayOfMonth = Calendar_GetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
 
-    for (u16 i = 0; i < 0x164; i++)
+    for (i = 0; i < 0x164; i++)
     {
         if (holidays[i].month == -1) break;
         if (currMonth == holidays[i].month && currDayOfMonth == holidays[i].day)
@@ -302,7 +305,7 @@ void* Calendar_UpdateTask(KwlnTask* clndTask)
 void Calendar_DestroyTask(KwlnTask* clndTask)
 {
     RW_FREE(clndTask->taskData);
-    ctx.clndTask = NULL;
+    sClndTask = NULL;
 }
 
 // FUN_0017fb90
@@ -323,7 +326,7 @@ KwlnTask* Calendar_CreateTask()
         return NULL;
     }
 
-    ctx.clndTask = clndTask;
+    sClndTask = clndTask;
 
     clndTaskData->state = 3;
     H_SfdPlay_CreateTask(clndTask);
