@@ -67,6 +67,6 @@ u8 KwlnTask_Exists(KwlnTask* task);
 u32 KwlnTask_GetTaskTimer(KwlnTask* task);
 void* KwlnTask_GetTaskData(KwlnTask* task);
 void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask);
-void KwlnTask_RemoveParent(KwlnTask* childTask);
+void KwlnTask_DetachParent(KwlnTask* childTask);
 
 #endif

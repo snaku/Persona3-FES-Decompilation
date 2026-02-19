@@ -337,7 +337,7 @@ void KwlnTask_Destroy(KwlnTask* task)
 
                 KWLN_TASK_RESET_STATE(task);
 
-                KwlnTask_RemoveParent(task);
+                KwlnTask_DetachParent(task);
                 KwlnTask_DetachAllChildren(task);
                 H_Free((uintptr_t)task);
             }
@@ -394,7 +394,7 @@ u8 KwlnTask_Main()
             }
 
             KWLN_TASK_RESET_STATE(currTask);
-            KwlnTask_RemoveParent(currTask);
+            KwlnTask_DetachParent(currTask);
             KwlnTask_DetachAllChildren(currTask);
 
             H_Free((uintptr_t)currTask);
@@ -655,7 +655,7 @@ u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task)
 
                         KWLN_TASK_RESET_STATE(task);
 
-                        KwlnTask_RemoveParent(task);
+                        KwlnTask_DetachParent(task);
                         KwlnTask_DetachAllChildren(task);
                         H_Free((uintptr_t)task);
                     }
@@ -818,7 +818,7 @@ void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask)
     {
         if (childTask->parent != NULL)
         {
-            KwlnTask_RemoveParent(childTask);
+            KwlnTask_DetachParent(childTask);
         }
 
         lastChild = parentTask->child;
@@ -842,36 +842,39 @@ void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask)
 }
 
 // FUN_001955f0
-void KwlnTask_RemoveParent(KwlnTask* childTask)
+void KwlnTask_DetachParent(KwlnTask* childTask) 
 {
-    KwlnTask* parent = childTask->parent;
-    KwlnTask* currChild;
-    KwlnTask* lastChild;
+    KwlnTask* parentTask;
+    KwlnTask* currSibling;
+    KwlnTask* prevSibling;
+    KwlnTask** childPtr;
 
-    if (parent == NULL)
+    parentTask = childTask->parent;
+    if (parentTask == NULL) 
     {
-        if (childTask->sibling != NULL)
+        if (childTask->sibling != NULL) 
         {
             P3FES_ASSERT("kwlnTask.c", 1519);
         }
 
         return;
-    }
+    } 
 
-    currChild = parent->child;
-    if (parent->child == childTask)
+    childPtr = &parentTask->child;
+    currSibling = *childPtr;
+    if (currSibling == childTask) 
     {
-        parent->child = childTask->sibling;
-    }
-    else
+        *childPtr = childTask->sibling;
+    } 
+    else 
     {
-        while (currChild != childTask)
+        while (currSibling != childTask)
         {
-            lastChild = currChild;
-            currChild = lastChild->sibling;
+            prevSibling = currSibling;
+            currSibling = prevSibling->sibling;
         }
 
-        lastChild->sibling = childTask->sibling;
+        prevSibling->sibling = childTask->sibling;
     }
 
     childTask->parent = NULL;
