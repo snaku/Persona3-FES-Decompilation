@@ -703,18 +703,17 @@ u32 KwlnTask_GetTaskState(KwlnTask* task)
     }
 
     state = KWLN_TASK_GET_STATE(task);
-    if (state != KWLN_TASK_STATE_NULL &&
-       (state != KWLN_TASK_STATE_DESTROY) &&
-       (state != KWLN_TASK_STATE_RUNNING) &&
-       (state != KWLN_TASK_STATE_CREATED))
+    switch (state)
     {
-        P3FES_LOG3("Process stat Invalid!!\n");
-        P3FES_ASSERT("kwlnTask.c", 1286);
-
-        return KWLN_TASK_STATE_NULL;
+        case KWLN_TASK_STATE_CREATED: // fallthrough
+        case KWLN_TASK_STATE_RUNNING: // fallthrough
+        case KWLN_TASK_STATE_DESTROY: // fallthrough
+        case KWLN_TASK_STATE_NULL:    return state;
     }
 
-    return state;
+    P3FES_LOG3("Process stat Invalid!!\n");
+    P3FES_ASSERT("kwlnTask.c", 1286);
+    return KWLN_TASK_STATE_NULL;
 }
 
 // FUN_00195340
