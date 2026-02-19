@@ -348,8 +348,8 @@ void KwlnTask_Destroy(KwlnTask* task)
 // FUN_001949e0. Called every frame in the game main loop
 u8 KwlnTask_Main()
 {
-    KwlnTask* currTask;
     KwlnTask* nextTask;
+    KwlnTask* currTask;
 
     nextTask = sStagedTaskHead;
     while (nextTask != NULL)
@@ -882,8 +882,8 @@ void KwlnTask_RemoveParent(KwlnTask* childTask)
 // FUN_00195690
 void KwlnTask_DetachAllChildren(KwlnTask* parentTask)
 {
-    KwlnTask* currTask;
     KwlnTask* next;
+    KwlnTask* currTask;
 
     next = parentTask->child;
     while (next != NULL)
@@ -896,5 +896,5 @@ void KwlnTask_DetachAllChildren(KwlnTask* parentTask)
         next = next->sibling;
         currTask->parent = NULL;
         currTask->sibling = NULL;
-    } 
+    }
 }
