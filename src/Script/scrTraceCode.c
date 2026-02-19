@@ -31,9 +31,7 @@ u32 Scr_ExecOpCodePushi(ScrData* scr)
 {
     s32 operand;
 
-    scr->instrIdx++;
-
-    operand = scr->instrContent[scr->instrIdx].iOperand;
+    operand = scr->instrContent[++scr->instrIdx].iOperand;
 
     if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
     {
@@ -54,9 +52,7 @@ u32 Scr_ExecOpCodePushf(ScrData* scr)
 {
     f32 operand;
 
-    scr->instrIdx++;
-
-    operand = scr->instrContent[scr->instrIdx].fOperand;
+    operand = scr->instrContent[++scr->instrIdx].fOperand;
 
     if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
     {
