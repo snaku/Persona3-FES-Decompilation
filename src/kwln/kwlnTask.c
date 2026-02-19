@@ -813,38 +813,32 @@ void* KwlnTask_GetTaskData(KwlnTask* task)
 // FUN_00195550
 void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask)
 {
-    KwlnTask* parent;
-    KwlnTask* child;
-    KwlnTask* currChild; // current child of the parent
-    KwlnTask* lastChild; // last child of the parent
+    KwlnTask* lastChild;
 
     if (parentTask != NULL)
     {
-        child = childTask;
-        if (child->parent != NULL)
+        if (childTask->parent != NULL)
         {
             KwlnTask_RemoveParent(childTask);
         }
 
-        parent = parentTask;
-        currChild = parent->child;
-
-        if (parent->child == NULL)
+        lastChild = parentTask->child;
+        if (parentTask->child != NULL)
         {
-            parent->child = child;
+            while (lastChild->sibling != NULL)
+            {
+                lastChild = lastChild->sibling;
+            }
+
+            lastChild->sibling = childTask;
+            
         }
         else
         {
-            while (currChild != NULL)
-            {
-                lastChild = currChild;
-                currChild = lastChild->sibling;
-            }
-
-            lastChild->sibling = child;
+            parentTask->child = childTask;
         }
 
-        child->parent = parent;
+        childTask->parent = parentTask;
     }
 }
 
