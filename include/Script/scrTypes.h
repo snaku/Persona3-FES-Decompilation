@@ -4,7 +4,8 @@
 typedef enum
 {
     SCR_VALUE_TYPE_INT,
-    SCR_VALUE_TYPE_FLOAT
+    SCR_VALUE_TYPE_FLOAT,
+    SCR_VALUE_TYPE_STRING = 5
 } ScrValueType;
 
 typedef enum

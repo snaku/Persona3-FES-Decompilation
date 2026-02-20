@@ -33,8 +33,6 @@ typedef struct
     KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
     BattleCtx* btlCtx;           // 007ce3ec. NULL when not in a battle
     // data after
-    ScrData* currScr;            // 007ce5a8. Current script being executed
-    // data after
 } GlobalCtx;
 
 extern GlobalCtx ctx; // 007cde80
