@@ -283,13 +283,15 @@ void KwlnTask_UpdateAll()
 // FUN_001941f0. Destroy every task in the hierarchy
 void KwlnTask_DestroyHierarchy(KwlnTask* task)
 {
+    KwlnTask* currTask;
     KwlnTask* currChild;
-
+    
     if (task != NULL)
     {
-        while (task != NULL)
+        currTask = task;
+        while (currTask != NULL)
         {
-            currChild = task->child;
+            currChild = currTask->child;
             if (currChild != NULL)
             {
                 while (currChild != NULL)
@@ -301,8 +303,8 @@ void KwlnTask_DestroyHierarchy(KwlnTask* task)
                 }
             }
 
-            KwlnTask_Destroy(task);
-            task = task->sibling;
+            KwlnTask_Destroy(currTask);
+            currTask = currTask->sibling;
         }
     }
 }
