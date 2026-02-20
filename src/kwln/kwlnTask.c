@@ -479,20 +479,30 @@ KwlnTask* KwlnTask_Init(const char* taskName,
     if (task == NULL)
     {
         P3FES_ASSERT("kwlnTask.c", 1032);
+    }
+    if (task == NULL)
+    {
         return NULL;
     }
 
     task->nameChkSum = 0;
     i = 0;
-    do
-    {
-        currChar = taskName[i];
-        task->taskName[i] = currChar;
-        task->nameChkSum += taskName[i];
+    goto nameLoop;
 
-        i++;
-    } while (currChar != '\0' && i < 23);
+copyName:
+    currChar = taskName[i];
+    task->nameChkSum += currChar;
+    i++;
 
+nameLoop:
+    currChar = taskName[i];
+    task->taskName[i] = currChar;
+    if (currChar == '\0')
+        goto continueInit;
+    if (i < 24)
+        goto copyName;
+    
+continueInit:
     task->taskName[23] = '\0';
     task->stateAndFlags = KWLN_TASK_STATE_NULL;
     task->stateAndFlags = KWLN_TASK_STATE_CREATED;
@@ -552,20 +562,30 @@ KwlnTask* KwlnTask_InitEx(const char* taskName,
     if (task == NULL)
     {
         P3FES_ASSERT("kwlnTask.c", 1109);
+    }
+    if (task == NULL)
+    {
         return NULL;
     }
 
     task->nameChkSum = 0;
     i = 0;
-    do
-    {
-        currChar = taskName[i];
-        task->taskName[i] = currChar;
-        task->nameChkSum += taskName[i];
+    goto nameLoop;
 
-        i++;
-    } while (currChar != '\0' && i < 23);
-
+copyName:
+    currChar = taskName[i];
+    task->nameChkSum += currChar;
+    i++;
+    
+nameLoop:
+    currChar = taskName[i];
+    task->taskName[i] = currChar;
+    if (currChar == '\0')
+        goto continueInit;
+    if (i < 24)
+        goto copyName;
+    
+continueInit:
     task->taskName[23] = '\0';
     task->stateAndFlags = KWLN_TASK_STATE_NULL;
     task->stateAndFlags = KWLN_TASK_STATE_CREATED;
