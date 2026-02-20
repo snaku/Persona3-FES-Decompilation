@@ -1,4 +1,5 @@
 #include "Battle/btlCtx.h"
+#include "Battle/btlMain.h"
 #include "Battle/btlState.h"
 #include "temporary.h"
 
@@ -316,10 +317,10 @@ u32 BtlState_UpdateStateMcNop(BattleStateCtx* btlStateCtx)
 // FUN_0029de20
 void BtlState_SetStateAndInit(u32 btlState)
 {
-    ctx.btlCtx->btlStateCtx.currState = btlState;
-    ctx.btlCtx->btlStateCtx.stateTimer = 0;
+    gBtlCtx->btlStateCtx.currState = btlState;
+    gBtlCtx->btlStateCtx.stateTimer = 0;
     
-    gBattleStateTable[ctx.btlCtx->btlStateCtx.currState].BtlState_InitState(&ctx.btlCtx->btlStateCtx);
+    gBattleStateTable[gBtlCtx->btlStateCtx.currState].BtlState_InitState(&gBtlCtx->btlStateCtx);
 }
 
 // FUN_0029de80
@@ -327,21 +328,21 @@ void BtlState_ProcessBattleState()
 {
     u32 newState;
 
-    if (ctx.btlCtx->btlStateCtx.stateToSet != BTL_STATE_NULL)
+    if (gBtlCtx->btlStateCtx.stateToSet != BTL_STATE_NULL)
     {
-        BtlState_SetStateAndInit(ctx.btlCtx->btlStateCtx.stateToSet); // was inlined
+        BtlState_SetStateAndInit(gBtlCtx->btlStateCtx.stateToSet); // was inlined
 
-        ctx.btlCtx->btlStateCtx.stateToSet = BTL_STATE_NULL;
+        gBtlCtx->btlStateCtx.stateToSet = BTL_STATE_NULL;
     }
 
-    newState = gBattleStateTable[ctx.btlCtx->btlStateCtx.currState].BtlState_UpdateState(&ctx.btlCtx->btlStateCtx);
+    newState = gBattleStateTable[gBtlCtx->btlStateCtx.currState].BtlState_UpdateState(&gBtlCtx->btlStateCtx);
 
     if (newState != BTL_STATE_NULL)
     {
-        ctx.btlCtx->btlStateCtx.stateToSet = newState;
+        gBtlCtx->btlStateCtx.stateToSet = newState;
     }
 
-    ctx.btlCtx->btlStateCtx.stateTimer++;
+    gBtlCtx->btlStateCtx.stateTimer++;
 }
 
 // FUN_0029df40. Called when 'btlCtx' is allocated
@@ -349,5 +350,5 @@ void BtlState_SetStateNon()
 {
     BtlState_SetStateAndInit(BTL_STATE_NON); // was inlined
 
-    ctx.btlCtx->btlStateCtx.stateToSet = BTL_STATE_NULL;
+    gBtlCtx->btlStateCtx.stateToSet = BTL_STATE_NULL;
 }

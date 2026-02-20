@@ -1,4 +1,5 @@
 #include "Battle/btlCtx.h"
+#include "Battle/btlMain.h"
 #include "Battle/btlActor.h"
 #include "Battle/btlAction.h"
 #include "Battle/btlRoot.h"
@@ -35,17 +36,17 @@ BattleActor* BtlRoot_CreateActor()
     // btlActor->unk_36 = uVar1;
     btlActor->next = NULL;
     
-    if (ctx.btlCtx->prevActorCreated == NULL)
+    if (gBtlCtx->prevActorCreated == NULL)
     {
         btlActor->prev = NULL;
     }
     else 
     {
-        ctx.btlCtx->prevActorCreated->next = btlActor;
-        btlActor->prev = ctx.btlCtx->prevActorCreated;
+        gBtlCtx->prevActorCreated->next = btlActor;
+        btlActor->prev = gBtlCtx->prevActorCreated;
     }
     
-    ctx.btlCtx->prevActorCreated = btlActor;
+    gBtlCtx->prevActorCreated = btlActor;
 
     BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_NON); // was inlined
 
@@ -55,7 +56,7 @@ BattleActor* BtlRoot_CreateActor()
 // FUN_00299fb0
 void BtlRoot_UpdateActors()
 {
-    BattleActor* currActor = ctx.btlCtx->prevActorCreated;
+    BattleActor* currActor = gBtlCtx->prevActorCreated;
     BattleActor* actorToUpdate = currActor;
     u8 canUpdateActor;
 
@@ -92,7 +93,7 @@ void BtlRoot_UpdateActors()
 
                 if (actorToUpdate->next == NULL)
                 {
-                    ctx.btlCtx->prevActorCreated = actorToUpdate->prev;
+                    gBtlCtx->prevActorCreated = actorToUpdate->prev;
                 }
                 else 
                 {
@@ -113,7 +114,7 @@ void BtlRoot_UpdateActors()
 // FUN_0029a140
 void BtlRoot_DestroyAllActors()
 {
-    BattleActor* currActor = ctx.btlCtx->prevActorCreated;
+    BattleActor* currActor = gBtlCtx->prevActorCreated;
     BattleActor* prevActor;
 
     while (currActor != NULL)
@@ -126,7 +127,7 @@ void BtlRoot_DestroyAllActors()
 
         if (currActor->next == NULL)
         {
-            ctx.btlCtx->prevActorCreated = currActor->prev;
+            gBtlCtx->prevActorCreated = currActor->prev;
         }
         else
         {
@@ -142,7 +143,7 @@ void BtlRoot_DestroyAllActors()
 // FUN_0029a1d0
 BattleActor* BtlRoot_GetActorByActorCore(BattleActorCore* btlActorCore)
 {
-    BattleActor* btlActor = ctx.btlCtx->prevActorCreated;
+    BattleActor* btlActor = gBtlCtx->prevActorCreated;
 
     while (btlActor != NULL)
     {
@@ -160,7 +161,7 @@ BattleActor* BtlRoot_GetActorByActorCore(BattleActorCore* btlActorCore)
 // FUN_0029a210
 BattleActor* BtlRoot_GetActorByActorId(u32 actorId)
 {
-    BattleActor* btlActor = ctx.btlCtx->prevActorCreated;
+    BattleActor* btlActor = gBtlCtx->prevActorCreated;
 
     while (btlActor != NULL)
     {
@@ -178,11 +179,11 @@ BattleActor* BtlRoot_GetActorByActorId(u32 actorId)
 // FUN_0029ad20
 BattleActor* BtlRoot_GetCurrActorPlaying()
 {
-    BattleActor* currActorPlaying = ctx.btlCtx->unkBtlActor_284;
+    BattleActor* currActorPlaying = gBtlCtx->unkBtlActor_284;
     
     if (currActorPlaying == NULL)
     {
-        currActorPlaying = ctx.btlCtx->currActorPlaying;
+        currActorPlaying = gBtlCtx->currActorPlaying;
     }
 
     return currActorPlaying;

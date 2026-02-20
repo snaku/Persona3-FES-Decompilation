@@ -3,19 +3,21 @@
 #include "kwln/kwlnTask.h"
 #include "temporary.h"
 
+BattleCtx* gBtlCtx; // 007ce3ec. NULL when not in a battle
+
 // FUN_0027d880
 KwlnTask* BtlMain_GetBtlTask()
 {
-    if (ctx.btlCtx == NULL)
+    if (gBtlCtx == NULL)
     {
         return NULL;
     }
 
-    return ctx.btlCtx->btlTask;
+    return gBtlCtx->btlTask;
 }
 
 // FUN_0027d8b0
 void BtlMain_SetBossBtlFlag()
 {
-    ctx.btlCtx->flags |= BATTLE_FLAG_IS_BOSS_BTL;
+    gBtlCtx->flags |= BATTLE_FLAG_IS_BOSS_BTL;
 }
