@@ -32,7 +32,6 @@ typedef struct ScrHeader
 // 4 bytes
 typedef union 
 {
-    s16 sVal;
     s32 iVal;
     f32 fVal;
     char* strVal;

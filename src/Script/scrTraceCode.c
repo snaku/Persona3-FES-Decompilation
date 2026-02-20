@@ -5,6 +5,7 @@
 #include "temporary.h"
 
 u32 Scr_ExecOpCodePushi(ScrData* scr);
+u32 Scr_ExecOpCodePushs(ScrData* scr);
 u32 Scr_ExecOpCodePushf(ScrData* scr);
 u32 Scr_ExecOpCodePushRet(ScrData* scr);
 u32 Scr_ExecOpCodeStPrcd(ScrData* scr);
@@ -24,7 +25,14 @@ static const Scr_ExecOpCode opCodeFuncTable[] =
     NULL, NULL,
     Scr_ExecOpCodeJmp, NULL,
     NULL, NULL,
-    Scr_ExecOpCodeGoto, NULL
+    Scr_ExecOpCodeGoto, NULL,
+    NULL, NULL,
+    NULL, NULL,
+    NULL, NULL,
+    NULL, NULL,
+    NULL, NULL,
+    NULL, NULL,
+    Scr_ExecOpCodePushs, NULL
 };
 
 // FUN_0035c300. Push int 
@@ -39,12 +47,33 @@ u32 Scr_ExecOpCodePushi(ScrData* scr)
         P3FES_ASSERT("scrTraceCode.c", 43);
     }
 
-    scr->stackTypes[scr->stackIdx] = SCR_VALUE_TYPE_INT;
+    scr->stackTypes[scr->stackIdx] = SCR_VALUE_TYPE_INTEGER;
     scr->stackValues[scr->stackIdx].iVal = operand;
 
     scr->stackIdx++;
     scr->instrIdx++;
 
+    return 1;
+}
+
+// FUN_0035c3b0. Push short
+u32 Scr_ExecOpCodePushs(ScrData* scr)
+{
+    s32 operand;
+
+    operand = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
+
+    if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
+    {
+        P3FES_ASSERT("scrTraceCode.c", 43);
+    }
+
+    scr->stackTypes[scr->stackIdx] = SCR_VALUE_TYPE_INTEGER;
+    scr->stackValues[scr->stackIdx].iVal = operand;
+    
+    scr->stackIdx++;
+    scr->instrIdx++;
+    
     return 1;
 }
 
@@ -147,12 +176,12 @@ char* Scr_GetStrParam(s32 paramIdx)
     {
         case SCR_VALUE_TYPE_STRING:
             return gCurrScript->stackValues[paramStackIdx].strVal;
-            
-        case SCR_VALUE_TYPE_INT:   // fallthrough
-        case SCR_VALUE_TYPE_FLOAT: // fallthrough
-        case 2:                    // fallthrough
-        case 3:                    // fallthrough
-        case 4:                    // fallthrough
+
+        case SCR_VALUE_TYPE_INTEGER: // fallthrough
+        case SCR_VALUE_TYPE_FLOAT:   // fallthrough
+        case 2:                      // fallthrough
+        case 3:                      // fallthrough
+        case 4:                      // fallthrough
         default:
             FUN_0019d400("scrGetStrPara(..) invalid stack type!!\n", "scrTraceCode.c", 1016);
             return NULL;
@@ -162,7 +191,7 @@ char* Scr_GetStrParam(s32 paramIdx)
 // FUN_0035f060. Set 'retType' of the current script to int and set 'iVal' to 'retVal'
 void Scr_SetCurrScriptIntRetVal(s32 retVal)
 {
-    gCurrScript->retType = SCR_VALUE_TYPE_INT;
+    gCurrScript->retType = SCR_VALUE_TYPE_INTEGER;
     gCurrScript->retValue.iVal = retVal;
 }
 

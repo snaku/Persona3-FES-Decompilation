@@ -3,7 +3,7 @@
 
 typedef enum
 {
-    SCR_VALUE_TYPE_INT,
+    SCR_VALUE_TYPE_INTEGER,   // signed short or int
     SCR_VALUE_TYPE_FLOAT,
     SCR_VALUE_TYPE_STRING = 5
 } ScrValueType;
@@ -27,6 +27,7 @@ typedef enum
     SCR_OP_CODE_STPRCD = 7,  // start procedure
     SCR_OP_CODE_JMP = 10,
     SCR_OP_CODE_GOTO = 14,
+    SCR_OP_CODE_PUSHS = 29,  // push short
     SCR_OP_CODE_MAX = 35
 } ScrOpCode;
 
