@@ -1,5 +1,6 @@
 #include "Script/scr.h"
 #include "Script/scrTraceCode.h"
+#include "Script/scrScriptProcess.h"
 #include "g_data.h"
 #include "temporary.h"
 
@@ -116,7 +117,7 @@ u32 Scr_ExecOpCodeGoto(ScrData* scr)
 }
 
 // FUN_0035ed20
-s32 Scr_GetIntParam(u32 paramIdx)
+s32 Scr_GetIntParam(s32 paramIdx)
 {
     // TODO
 
@@ -124,23 +125,50 @@ s32 Scr_GetIntParam(u32 paramIdx)
 }
 
 // FUN_0035ee60
-f32 Scr_GetFloatParam(u32 paramIdx)
+f32 Scr_GetFloatParam(s32 paramIdx)
 {
     // TODO
 
     return 0.0f;
 }
 
+// FUN_0035efa0
+char* Scr_GetStrParam(s32 paramIdx)
+{
+    s32 paramStackIdx;
+
+    paramStackIdx = gCurrScript->stackIdx - (paramIdx + 1);
+    if (gCurrScript->stackIdx < (paramIdx + 1))
+    {
+        P3FES_ASSERT("scrTraceCode.c", 1005);
+    }
+
+    switch (gCurrScript->stackTypes[paramStackIdx])
+    {
+        case SCR_VALUE_TYPE_STRING:
+            return gCurrScript->stackValues[paramStackIdx].strVal;
+            
+        case SCR_VALUE_TYPE_INT:   // fallthrough
+        case SCR_VALUE_TYPE_FLOAT: // fallthrough
+        case 2:                    // fallthrough
+        case 3:                    // fallthrough
+        case 4:                    // fallthrough
+        default:
+            FUN_0019d400("scrGetStrPara(..) invalid stack type!!\n", "scrTraceCode.c", 1016);
+            return NULL;
+    }
+}
+
 // FUN_0035f060. Set 'retType' of the current script to int and set 'iVal' to 'retVal'
 void Scr_SetCurrScriptIntRetVal(s32 retVal)
 {
-    ctx.currScr->retType = SCR_VALUE_TYPE_INT;
-    ctx.currScr->retValue.iVal = retVal;
+    gCurrScript->retType = SCR_VALUE_TYPE_INT;
+    gCurrScript->retValue.iVal = retVal;
 }
 
 // FUN_0035f080. Set 'retType' of the current script to float and set 'fVal' to 'retVal'
 void Scr_SetCurrScriptFloatRetVal(f32 retVal)
 {
-    ctx.currScr->retType = SCR_VALUE_TYPE_FLOAT;
-    ctx.currScr->retValue.fVal = retVal;
+    gCurrScript->retType = SCR_VALUE_TYPE_FLOAT;
+    gCurrScript->retValue.fVal = retVal;
 }

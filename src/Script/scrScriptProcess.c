@@ -2,6 +2,8 @@
 #include "Script/scrTaskHelper.h"
 #include "g_data.h"
 
+ScrData* gCurrScript; // 007ce5a8. Current script being executed
+
 void Scr_DestroyTask(KwlnTask* scrTask);
 void* Scr_UpdateTask(KwlnTask* scrTask);
 
