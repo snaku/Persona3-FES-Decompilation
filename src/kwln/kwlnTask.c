@@ -19,7 +19,7 @@ void KwlnTask_Destroy(KwlnTask* task);
 void KwlnTask_DetachAllChildren(KwlnTask* task);
 
 // FUN_001939d0. Remove a task from a list by its current state
-void KwlnTask_RemoveTaskFromList(KwlnTask* task)
+void KwlnTask_RemoveFromList(KwlnTask* task)
 {
     u32 taskState = KWLN_TASK_GET_STATE(task);
 
@@ -325,13 +325,13 @@ void KwlnTask_Destroy(KwlnTask* task)
             break;
         case KWLN_TASK_STATE_CREATED: // fallthrough
         case KWLN_TASK_STATE_RUNNING:
-            KwlnTask_RemoveTaskFromList(task);
+            KwlnTask_RemoveFromList(task);
             KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_DESTROY);
             KwlnTask_AddToList(task);
 
             if (task->destroyDelay == 0)
             {
-                KwlnTask_RemoveTaskFromList(task);
+                KwlnTask_RemoveFromList(task);
                 if (task->destroy != NULL)
                 {
                     task->destroy(task);
@@ -365,7 +365,7 @@ u8 KwlnTask_Main()
         nextTask = nextTask->next;
         if (currTask->runningDelay == 0)
         {
-            KwlnTask_RemoveTaskFromList(currTask);
+            KwlnTask_RemoveFromList(currTask);
             KWLN_TASK_SET_STATE(currTask, KWLN_TASK_STATE_RUNNING);
             KwlnTask_AddToList(currTask);
 
@@ -388,7 +388,7 @@ u8 KwlnTask_Main()
         nextTask = nextTask->next;
         if (currTask->destroyDelay == 0)
         {
-            KwlnTask_RemoveTaskFromList(currTask);
+            KwlnTask_RemoveFromList(currTask);
             
             if (currTask->destroy != NULL)
             {
@@ -531,7 +531,7 @@ continueInit:
 
     if (task->runningDelay == 0)
     {
-        KwlnTask_RemoveTaskFromList(task);
+        KwlnTask_RemoveFromList(task);
         KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_RUNNING);
         KwlnTask_AddToList(task);
 
@@ -615,7 +615,7 @@ continueInit:
 
     if (task->runningDelay == 0)
     {
-        KwlnTask_RemoveTaskFromList(task);
+        KwlnTask_RemoveFromList(task);
         KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_RUNNING);
         KwlnTask_AddToList(task);
 
@@ -663,14 +663,14 @@ u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task)
             {
                 case KWLN_TASK_STATE_CREATED: // fallthrough
                 case KWLN_TASK_STATE_RUNNING:
-                    KwlnTask_RemoveTaskFromList(task);
+                    KwlnTask_RemoveFromList(task);
                     KWLN_TASK_SET_STATE(task, KWLN_TASK_STATE_DESTROY);
                     KwlnTask_AddToList(task);
 
                     // never true
                     if (task->destroyDelay == 0)
                     {
-                        KwlnTask_RemoveTaskFromList(task);
+                        KwlnTask_RemoveFromList(task);
                         if (task->destroy != NULL)
                         {
                             task->destroy(task);
