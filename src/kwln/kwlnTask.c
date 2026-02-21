@@ -21,8 +21,13 @@ void KwlnTask_DetachAllChildren(KwlnTask* task);
 // FUN_001939d0. Remove a task from a list by its current state
 void KwlnTask_RemoveFromList(KwlnTask* task)
 {
-    u32 taskState = KWLN_TASK_GET_STATE(task);
-
+    KwlnTask* next;
+    KwlnTask* prev;
+    u32 taskState;
+    u32 taskState2;
+    u32 taskState3;
+    
+    taskState = KWLN_TASK_GET_STATE(task);
     if (taskState == KWLN_TASK_STATE_NULL ||
        (taskState != KWLN_TASK_STATE_DESTROY) &&
        (taskState != KWLN_TASK_STATE_RUNNING) &&
@@ -32,64 +37,48 @@ void KwlnTask_RemoveFromList(KwlnTask* task)
         return;
     }
 
-    if (task->prev == NULL)
-    {
-        if (taskState == KWLN_TASK_STATE_DESTROY)
-        {
-            sDestroyTaskHead = task->next;
-        }
-        else if (taskState == KWLN_TASK_STATE_RUNNING)
-        {
-            sRunningTaskHead = task->next;
-        }
-        else if (taskState == KWLN_TASK_STATE_CREATED)
-        {
-            sStagedTaskHead = task->next;
-        }
-    }
-    else 
+    if (task->prev != NULL)
     {
         task->prev->next = task->next;
     }
-
-    if (task->next == NULL)
+    else 
     {
-        taskState = KWLN_TASK_GET_STATE(task);
+        switch (taskState)
+        {
+            case KWLN_TASK_STATE_CREATED: sStagedTaskHead  = task->next; break;
+            case KWLN_TASK_STATE_RUNNING: sRunningTaskHead = task->next; break;
+            case KWLN_TASK_STATE_DESTROY: sDestroyTaskHead = task->next; break;
+        }
+    }
 
-        if (taskState == KWLN_TASK_STATE_DESTROY)
-        {
-            sDestroyTaskTail = task->prev;
-        }
-        else if (taskState == KWLN_TASK_STATE_RUNNING)
-        {
-            sRunningTaskTail = task->prev;
-        }
-        else if (taskState == KWLN_TASK_STATE_CREATED)
-        {
-            sStagedTaskTail = task->prev;
-        }
+    if (task->next != NULL)
+    {
+        prev = task->prev;
+        task->next->unk_48 = prev;
+        
+        next = task->next;
+        next->prev = prev;
     }
     else
     {
-        task->next->unk_48 = task->prev;
-        task->next->prev = task->prev;
+        taskState2 = KWLN_TASK_GET_STATE(task);
+        switch (taskState2)
+        {
+            case KWLN_TASK_STATE_CREATED: sStagedTaskTail  = task->prev; break;
+            case KWLN_TASK_STATE_RUNNING: sRunningTaskTail = task->prev; break;
+            case KWLN_TASK_STATE_DESTROY: sDestroyTaskTail = task->prev; break;
+        }
     }
 
     task->next = NULL;
     task->prev = NULL;
-
-    taskState = KWLN_TASK_GET_STATE(task);
-    if (taskState == KWLN_TASK_STATE_DESTROY)
+    
+    taskState3 = KWLN_TASK_GET_STATE(task);
+    switch (taskState3)
     {
-        sNumTaskDestroy--;
-    }
-    else if (taskState == KWLN_TASK_STATE_RUNNING)
-    {
-        sNumTaskRunning--;
-    }
-    else if (taskState == KWLN_TASK_STATE_CREATED)
-    {
-        sNumTaskStaged--;
+        case KWLN_TASK_STATE_CREATED: sNumTaskStaged--;  break;
+        case KWLN_TASK_STATE_RUNNING: sNumTaskRunning--; break;
+        case KWLN_TASK_STATE_DESTROY: sNumTaskDestroy--; break;
     }
 }
 
