@@ -135,7 +135,7 @@ u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
 // FUN_0017d920
 u32 Calendar_GetCurrentMonth()
 {
-    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5() + 4;
+    u16 daysSinceApr5 = CalendarData_GetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
 
     while (numOfDaysInMonths[month] <= daysSinceApr5)
@@ -176,7 +176,7 @@ u32 Calendar_GetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
 // FUN_0017da40. Return the current day of the month
 u32 Calendar_GetCurrentDay()
 {
-    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5() + 4;
+    u16 daysSinceApr5 = CalendarData_GetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
 
     while (numOfDaysInMonths[month] <= daysSinceApr5)
@@ -202,7 +202,7 @@ u32 Calendar_GetWeekDay(u32 daysSinceApr5)
 // FUN_0017db00
 u32 Calendar_GetCurrentWeekDay()
 {
-    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
+    u16 daysSinceApr5 = CalendarData_GetDaysSinceApr5();
 
     return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
 }
@@ -210,7 +210,7 @@ u32 Calendar_GetCurrentWeekDay()
 // FUN_0017dcf0
 u8 Calendar_IsHolidayOrSunday()
 {
-    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
+    u16 daysSinceApr5 = CalendarData_GetDaysSinceApr5();
     u32 currDayOfMonth;
     u32 currMonth;
     u16 i;
@@ -241,7 +241,7 @@ u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay
 {
     u32 startDate = Calendar_GetDaysSinceStartFromDate(startMonth, startDay);
     u32 endDate = Calendar_GetDaysSinceStartFromDate(endMonth, endDay);
-    u16 currDaysSinceApr5 = Calendar_GetDaysSinceApr5();
+    u16 currDaysSinceApr5 = CalendarData_GetDaysSinceApr5();
 
     if (currDaysSinceApr5 < startDate || endDate < currDaysSinceApr5)
     {
@@ -283,7 +283,7 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
 
     startDate = Calendar_GetDaysSinceStartFromDate(month, day);
     endDate = startDate + range - 1;
-    daysSinceApr5 = Calendar_GetDaysSinceApr5();
+    daysSinceApr5 = CalendarData_GetDaysSinceApr5();
 
     if (daysSinceApr5 < startDate || endDate < daysSinceApr5)
     {
@@ -337,7 +337,7 @@ KwlnTask* Calendar_CreateTask()
 // FUN_00181b10
 u8 Calendar_GetCurrentMoonPhase()
 {
-    u16 daysSinceApr5 = Calendar_GetDaysSinceApr5();
+    u16 daysSinceApr5 = CalendarData_GetDaysSinceApr5();
 
     return daysMoonPhases[daysSinceApr5];
 }
@@ -362,8 +362,8 @@ u8 Calendar_ScrCmdSetDate()
 
     daysSinceApr5 = Calendar_GetDaysSinceStartFromDate(month, day);
 
-    Calendar_UpdateDateAndDayFlags(daysSinceApr5);
-    Calendar_SetTime(time);
+    CalendarData_SetDaysSinceApr5(daysSinceApr5);
+    CalendarData_SetTime(time);
 
     return 1;
 }

@@ -83,7 +83,7 @@ typedef enum
 
 typedef struct
 {
-    u16 daysSinceApr5;  // 0083679c
+    u16 daysSinceApr5;  // days since start of the game
     u8 time;
     u32 skipToTarget;   // 0 no skip, 1 skip
     u16 daysSkipTarget; // in days since april 5th (for example: daysSkipTarget = 40 -> will skip to may 15th)

@@ -19,9 +19,9 @@
 
 typedef enum
 {
-    GAME_SCENARIO_JOURNEY,
-    GAME_SCENARIO_ANSWER
-} GameScenario; 
+    SCENARIO_MODE_JOURNEY,
+    SCENARIO_MODE_ANSWER
+} ScenarioMode; 
 
 typedef enum
 {
@@ -220,7 +220,6 @@ typedef struct
 } CharacterData;
 
 extern PlayerData gPlayerData;
-extern CalendarData calendar;
 extern CharacterData gCharacters[MAX_CHARACTERS];
 
 void GlobalCtx_SetScenarioMode(u32 scenario);
@@ -244,11 +243,11 @@ void Character_SetPhysicalCondition(u16 characterId, u16 physicalCondition);
 void Character_SetFatigueCounter(u16 characterId, u16 fatigueCounter);
 void Character_SetHealth(u16 characterId, u16 health);
 void Character_SetActiveSocialLink(u16 activeSocialLink);
-u16 Calendar_GetDaysSinceApr5();
-u8 Calendar_GetTime();
-u16 Calendar_GetDaysSkipTarget();
-u8 Calendar_GetTimeSkipTarget();
-u32 Calendar_GetSkipToTarget();
+u16 CalendarData_GetDaysSinceApr5();
+u8 CalendarData_GetTime();
+u16 CalendarData_GetDaysSkipTarget();
+u8 CalendarData_GetTimeSkipTarget();
+u32 CalendarData_GetSkipToTarget();
 void Character_SetAcademicPoint(u16 characterId, u16 academicPoint);
 void Character_SetCharmPoint(u16 characterId, u16 charmPoint);
 void Character_SetCouragePoint(u16 characterId, u16 couragePoint);
@@ -261,11 +260,11 @@ u16 Character_GetCourageLevel(u16 couragePoint);
 u32 Character_GetNextExp(u16 characterId);
 u16 Character_GetPhysicalCondition(u16 characterId);
 u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType);
-void Calendar_UpdateDateAndDayFlags(u16 daysSinceApr5);
-void Calendar_SetTime(u8 time);
-void Calendar_SetDaysSkipTarget(u16 days);
-void Calendar_SetTimeSkipTarget(u8 time);
-void Calendar_SetSkipToTarget(u32 val);
+void CalendarData_SetDaysSinceApr5(u16 daysSinceApr5);
+void CalendarData_SetTime(u8 time);
+void CalendarData_SetDaysSkipTarget(u16 days);
+void CalendarData_SetTimeSkipTarget(u8 time);
+void CalendarData_SetSkipToTarget(u32 val);
 void Global_SetGlobalFlag(u32 bit, u8 enabled);
 void Global_ResetGlobalFlags();
 u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx);

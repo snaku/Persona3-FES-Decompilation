@@ -45,14 +45,17 @@ static const char* physicalConditionsString[13] =
     "The medicine cured your illness."
 };
 
+PlayerData gPlayerData;
+CharacterData gCharacters[MAX_CHARACTERS];
+static CalendarData sCalendarData;         // 0083679c
+
 static u32 gGlobalFlags[176]; // 0083a21c. See 'g_flags.h' !!!
 static u32 gIUnkArr[128];     // 0083a4dc
 
-PlayerData gPlayerData;
-CalendarData calendar;
-CharacterData gCharacters[MAX_CHARACTERS];
-
 static u32 sScenarioMode; // 007cdfa4. See enum 'ScenarioMode'
+
+void FUN_00172890();
+void FUN_00172e10();
 
 // TODO
 void FUN_0016f3e0(u32 idx, u32 value)
@@ -98,18 +101,6 @@ void FUN_0016cdf0(u16 characterId)
         gCharacters[characterId].unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
         gCharacters[characterId].unit.flags = UNIT_FLAG_ACTIVE;
     }
-}
-
-// FUN_0017d7f0
-void Global_SetScenarioMode(u32 scenario)
-{
-    sScenarioMode = scenario;
-}
-
-// FUN_0017d800
-u32 Global_GetScenarioMode()
-{
-    return sScenarioMode;
 }
 
 // FUN_0016cd60
@@ -374,33 +365,33 @@ void Character_SetActiveSocialLink(u16 activeSocialLink)
 }
 
 // FUN_0016ef20
-u16 Calendar_GetDaysSinceApr5()
+u16 CalendarData_GetDaysSinceApr5()
 {
-    return calendar.daysSinceApr5;
+    return sCalendarData.daysSinceApr5;
 }
 
 // FUN_0016ef30
-u8 Calendar_GetTime()
+u8 CalendarData_GetTime()
 {
-    return calendar.time;
+    return sCalendarData.time;
 }
 
 // FUN_0016ef40
-u16 Calendar_GetDaysSkipTarget()
+u16 CalendarData_GetDaysSkipTarget()
 {
-    return calendar.daysSkipTarget;
+    return sCalendarData.daysSkipTarget;
 }
 
 // FUN_0016ef50
-u8 Calendar_GetTimeSkipTarget()
+u8 CalendarData_GetTimeSkipTarget()
 {
-    return calendar.timeSkipTarget;
+    return sCalendarData.timeSkipTarget;
 }
 
 // FUN_0016ef60
-u32 Calendar_GetSkipToTarget()
+u32 CalendarData_GetSkipToTarget()
 {
-    return calendar.skipToTarget;
+    return sCalendarData.skipToTarget;
 }
 
 // FUN_0016cfe0
@@ -523,6 +514,59 @@ void FUN_0016ca90(u16 characterId, u16 param_2)
     Character_SetFatigueCounter(characterId, uVar3);
 }
 
+// FUN_0016c7e0
+u32 Character_GetNextExp(u16 characterId)
+{
+    PersonaData* persona;
+
+    if (IS_HERO(characterId))
+    {
+        return gPlayerData.nextExp;
+    }
+
+    persona = Persona_GetPersonaByCharacterId(characterId);
+    if (persona == NULL)
+    {
+        P3FES_ASSERT("g_data.c", 622);
+    }
+
+    return Persona_GetPersonaNextExp(persona);
+}
+
+// FUN_0016c920
+u16 Character_GetPhysicalCondition(u16 characterId)
+{
+    if (IS_HERO(characterId))
+    {
+        return gPlayerData.physicalState.physicalCondition;
+    }
+
+    return gCharacters[characterId].physicalState.physicalCondition;
+}
+
+// FUN_0016dd40
+u16 Player_GetActiveSocialLink()
+{
+    return gPlayerData.activeSocialLink;
+}
+
+// FUN_0016dba0
+u8 Player_GetSocialLinkLevel(u16 socialLink)
+{
+    return gPlayerData.socialLinkStat[socialLink];
+}
+
+// FUN_0016e100
+u8 Player_SocialLinkLevelIsNotZero(u16 socialLink)
+{
+    if (socialLink < SOCIAL_LINK_SEES || socialLink > SOCIAL_LINK_NYX_TEAM)
+    {
+        P3FES_ASSERT("g_data.c", 1429);
+    }
+
+    return gPlayerData.socialLinkStat[socialLink] > 0;
+}
+
 // FUN_0016cb80
 u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType)
 {
@@ -534,8 +578,8 @@ u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType)
     return gCharacters[characterId].equipmentsIdx[equipmentType];
 }
 
-// FUN_0016ef70. Updates 'calendar.daysSinceApr5' and sets the correct 'G_FLAG_DAY_*' flags
-void Calendar_UpdateDateAndDayFlags(u16 daysSinceApr5)
+// FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'G_FLAG_DAY_*' flags
+void CalendarData_SetDaysSinceApr5(u16 daysSinceApr5)
 {
     u32 currentWeekDay;
     u8 holidayOrSunday;
@@ -549,14 +593,14 @@ void Calendar_UpdateDateAndDayFlags(u16 daysSinceApr5)
     Global_SetGlobalFlag(G_FLAG_DAY_IS_SUNDAY, false);
     Global_SetGlobalFlag(G_FLAG_DAY_IS_DAYOFF, false);
 
-    if (daysSinceApr5 != calendar.daysSinceApr5)
+    if (daysSinceApr5 != sCalendarData.daysSinceApr5)
     {
-        // FUN_00172890(); TODO
-        // FUN_00172e10(); TODO
+        FUN_00172890(); 
+        FUN_00172e10();
         Global_SetGlobalFlag(2444, false);
     }
 
-    calendar.daysSinceApr5 = daysSinceApr5;
+    sCalendarData.daysSinceApr5 = daysSinceApr5;
 
     currentWeekDay = Calendar_GetCurrentWeekDay();
     switch (currentWeekDay)
@@ -578,27 +622,27 @@ void Calendar_UpdateDateAndDayFlags(u16 daysSinceApr5)
 }
 
 // FUN_0016f150
-void Calendar_SetTime(u8 time)
+void CalendarData_SetTime(u8 time)
 {
-    calendar.time = time;
+    sCalendarData.time = time;
 }
 
 // FUN_0016f160
-void Calendar_SetDaysSkipTarget(u16 days)
+void CalendarData_SetDaysSkipTarget(u16 days)
 {
-    calendar.daysSkipTarget = days;
+    sCalendarData.daysSkipTarget = days;
 }
 
 // FUN_0016f170
-void Calendar_SetTimeSkipTarget(u8 time)
+void CalendarData_SetTimeSkipTarget(u8 time)
 {
-    calendar.timeSkipTarget = time;
+    sCalendarData.timeSkipTarget = time;
 }
 
 // FUN_0016f180
-void Calendar_SetSkipToTarget(u32 val)
+void CalendarData_SetSkipToTarget(u32 val)
 {
-    calendar.skipToTarget = val;
+    sCalendarData.skipToTarget = val;
 }
 
 // FUN_0016f1f0. See 'g_flags.h' !!!
@@ -690,6 +734,34 @@ u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx)
     // return (equpementIdx * 0x14 + characterId * 0x364 + 0x7fd6d1);
 }
 
+// FUN_0017c8c0
+PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
+{
+    if (idx < 0 || idx > 255)
+    {
+        P3FES_ASSERT("g_data.c", 6177);
+    }
+
+    if (!(gPlayerData.compendium[idx].flags & PERSONA_FLAG_VALID))
+    {
+        return NULL;
+    }
+
+    return &gPlayerData.compendium[idx];
+}
+
+// FUN_00172890
+void FUN_00172890()
+{
+    // TODO
+}
+
+// FUN_00172e10
+void FUN_00172e10()
+{
+    // TODO
+}
+
 static inline u16 Inl_Character_GetSocialStatLevel(u16 point, const u16* threshold, u32 size)
 {
     u16 idx = size - 1;
@@ -718,91 +790,21 @@ u16 Character_GetCourageLevel(u16 couragePoint)
     return Inl_Character_GetSocialStatLevel(couragePoint, courageLevelThreshold, 6);
 }
 
-// FUN_0016c7e0
-u32 Character_GetNextExp(u16 characterId)
+// FUN_0017d7f0
+void Global_SetScenarioMode(u32 scenario)
 {
-    PersonaData* persona;
-
-    if (IS_HERO(characterId))
-    {
-        return gPlayerData.nextExp;
-    }
-
-    persona = Persona_GetPersonaByCharacterId(characterId);
-    if (persona == NULL)
-    {
-        P3FES_ASSERT("g_data.c", 622);
-    }
-
-    return Persona_GetPersonaNextExp(persona);
+    sScenarioMode = scenario;
 }
 
-// FUN_0016c920
-u16 Character_GetPhysicalCondition(u16 characterId)
+// FUN_0017d800
+u32 Global_GetScenarioMode()
 {
-    if (IS_HERO(characterId))
-    {
-        return gPlayerData.physicalState.physicalCondition;
-    }
-
-    return gCharacters[characterId].physicalState.physicalCondition;
+    return sScenarioMode;
 }
 
-// FUN_0016dd40
-u16 Player_GetActiveSocialLink()
-{
-    return gPlayerData.activeSocialLink;
-}
 
-// FUN_0016dba0
-u8 Player_GetSocialLinkLevel(u16 socialLink)
-{
-    return gPlayerData.socialLinkStat[socialLink];
-}
 
-// FUN_0016e100
-u8 Player_SocialLinkLevelIsNotZero(u16 socialLink)
-{
-    if (socialLink < SOCIAL_LINK_SEES || socialLink > SOCIAL_LINK_NYX_TEAM)
-    {
-        P3FES_ASSERT("g_data.c", 1429);
-    }
-
-    return gPlayerData.socialLinkStat[socialLink] > 0;
-}
-
-// TODO
-void FUN_0016e670(u16 socialLink)
-{
-    if (socialLink < SOCIAL_LINK_SEES || socialLink > SOCIAL_LINK_NYX_TEAM)
-    {
-    }
-
-    if (Player_GetSocialLinkLevel(socialLink) < 1)
-    {
-        //printf("no exist comu %s %d", "g_data.c", 1568);
-    }
-    else
-    {
-        
-    }
-}
-
-// FUN_0017c8c0
-PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
-{
-    if (idx < 0 || idx > 255)
-    {
-        P3FES_ASSERT("g_data.c", 6177);
-    }
-
-    if (!(gPlayerData.compendium[idx].flags & PERSONA_FLAG_VALID))
-    {
-        return NULL;
-    }
-
-    return &gPlayerData.compendium[idx];
-}
+// !! FUNCTIONS TO MOVE LATER !!
 
 void P3FES_ASSERT(const char* file, const u32 line)
 {
