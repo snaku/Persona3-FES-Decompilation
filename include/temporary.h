@@ -30,8 +30,6 @@ typedef struct
     // data after
     u32 scenarioMode;            // 007cdfa4. See enum GameScenario
     // data after
-    KwlnTask* draw3DTask;        // 007ce134. Task name = "3D Draw"
-    // data after
 } GlobalCtx;
 
 extern GlobalCtx ctx; // 007cde80
