@@ -58,3 +58,25 @@ u16 FldDungeon_GetCurrentFloorMajorId()
 
     return DUNGEON_TASK_DATA->floorsData[DUNGEON_TASK_DATA->currFloor].majorId;
 }
+
+// FUN_001bffe0
+ScrHeader* FldDungeon_GetScrHeader()
+{
+    if (sDungeonTask == NULL)
+    {
+        return NULL;
+    }
+
+    return DUNGEON_TASK_DATA->scrHeader;
+}
+
+// FUN_001c0010
+u32 FldDungeon_GetScrSize()
+{
+    if (sDungeonTask == NULL)
+    {
+        return NULL;
+    }
+
+    return DUNGEON_TASK_DATA->scrSize;
+}

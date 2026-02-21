@@ -34,5 +34,7 @@ void FldDungeon_RequestShutdown();
 u32 FldDungeon_GetCurrentFloor();
 u8 FldDungeon_IsCurrentFloorExplorable();
 u16 FldDungeon_GetCurrentFloorMajorId();
+ScrHeader* FldDungeon_GetScrHeader();
+u32 FldDungeon_GetScrSize();
 
 #endif
