@@ -4,6 +4,7 @@
 #include "Utils.h"
 
 typedef struct KwlnTask KwlnTask;
+typedef struct ScrHeader ScrHeader;
 typedef struct FieldDungeonFloorData FieldDungeonFloorData;
 
 typedef enum
@@ -12,7 +13,7 @@ typedef enum
     DUNGEON_STATE_STOP = 9, // Destroy dungeon task
 } DungeonState;
 
-// 64 bytes. TODO
+// 64 bytes
 typedef struct FieldDungeon
 {
     u16 state;                         // 0x00. See enum 'DungeonState'
@@ -23,7 +24,10 @@ typedef struct FieldDungeon
     KwlnTask* fldRootTask;             // 0x18
     KwlnTask* eplKosakaTask;           // 0x1c
     FieldDungeonFloorData* floorsData; // 0x20. Ptr to 'gFldDngFloorsData'
-    u8 unkData2[0x1c];
+    u8 unkData2[0x10];
+    ScrHeader* scrHeader;              // 0x34. script header of 'DUNGEONAT.BF' or 'DUNGEONAT_AEGIS.BF' 
+    u32 scrSize;                       // 0x38. Size in bytes of 'DUNGEONAT.BF' or 'DUNGEONAT_AEGIS.BF'
+    s32 unk_3c;                        // 0x3c
 } FieldDungeon;
 
 void FldDungeon_RequestShutdown();
