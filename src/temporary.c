@@ -1,7 +1,6 @@
 #include "temporary.h"
 
 const f32 PI = 3.141592f;
-GlobalCtx ctx;
 
 // FUN_00521250
 void* P3FES_Memcpy(void* dst, void* src, u32 size)

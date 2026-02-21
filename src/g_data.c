@@ -45,15 +45,14 @@ static const char* physicalConditionsString[13] =
     "The medicine cured your illness."
 };
 
-// 0083a21c. See 'g_flags.h' !!!
-static u32 gGlobalFlags[176];
-
-// 0083a4dc
-static u32 gIUnkArr[128]; // TODO
+static u32 gGlobalFlags[176]; // 0083a21c. See 'g_flags.h' !!!
+static u32 gIUnkArr[128];     // 0083a4dc
 
 PlayerData gPlayerData;
 CalendarData calendar;
 CharacterData gCharacters[MAX_CHARACTERS];
+
+static u32 sScenarioMode; // 007cdfa4. See enum 'ScenarioMode'
 
 // TODO
 void FUN_0016f3e0(u32 idx, u32 value)
@@ -102,15 +101,15 @@ void FUN_0016cdf0(u16 characterId)
 }
 
 // FUN_0017d7f0
-void GlobalCtx_SetScenarioMode(u32 scenario)
+void Global_SetScenarioMode(u32 scenario)
 {
-    ctx.scenarioMode = scenario;
+    sScenarioMode = scenario;
 }
 
 // FUN_0017d800
-u32 GlobalCtx_GetScenarioMode()
+u32 Global_GetScenarioMode()
 {
-    return ctx.scenarioMode;
+    return sScenarioMode;
 }
 
 // FUN_0016cd60

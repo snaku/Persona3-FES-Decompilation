@@ -21,19 +21,6 @@ typedef struct KwlnTask KwlnTask;
 typedef struct ScrData ScrData;
 typedef struct RwCamera RwCamera;
 
-// FAKE STRUCT. These are just .sbss variables,
-// but i just put them here until i know where they are supposed to be
-typedef struct
-{
-    // data before
-    KwlnTask* sfdPlayTask;       // 007cdf14. Task name = "H_SfdPlay"
-    // data after
-    u32 scenarioMode;            // 007cdfa4. See enum GameScenario
-    // data after
-} GlobalCtx;
-
-extern GlobalCtx ctx; // 007cde80
-
 void FUN_0019d400(const char* param_1, const char* file, u32 line);
 void* P3FES_Memcpy(void* dst, void* src, u32 size);
 void* P3FES_Memset(void* dst, u8 value, u32 size);

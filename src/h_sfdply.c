@@ -3,6 +3,8 @@
 #include "h_sfdply.h"
 #include "temporary.h"
 
+static KwlnTask* sSfdPlayTask; // 007cdf14. Task name = "H_SfdPlay"
+
 // FUN_0010a860
 void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
 {
@@ -39,7 +41,7 @@ KwlnTask* H_SfdPlay_CreateTask(KwlnTask* calendarTask)
     sfdPlay->unk_1f4 = 0;
     sfdPlay->unk_1fc = 0;
 
-    ctx.sfdPlayTask = sfdPlayTask;
+    sSfdPlayTask = sfdPlayTask;
 
     return sfdPlayTask;
 }
