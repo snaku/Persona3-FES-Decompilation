@@ -1,11 +1,9 @@
 #include "Script/scrScriptProcess.h"
 #include "Script/scrTaskHelper.h"
+#include "Script/scrTraceCode.h"
 #include "g_data.h"
 
 ScrData* gCurrScript; // 007ce5a8. Current script being executed
-
-void Scr_DestroyTask(KwlnTask* scrTask);
-void* Scr_UpdateTask(KwlnTask* scrTask);
 
 // FUN_0035b570
 ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
@@ -106,18 +104,4 @@ KwlnTask* Scr_CreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
     scr->task = scrTask;
 
     return scrTask;
-}
-
-// FUN_0035c200
-void Scr_DestroyTask(KwlnTask* scrTask)
-{
-    // TODO
-}
-
-// FUN_0035c270
-void* Scr_UpdateTask(KwlnTask* scrTask)
-{
-    // TODO
-
-    return KWLN_TASK_CONTINUE;
 }

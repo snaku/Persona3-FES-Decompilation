@@ -3,6 +3,8 @@
 
 #include "Utils.h"
 
+void Scr_DestroyTask(KwlnTask* scrTask);
+void* Scr_UpdateTask(KwlnTask* scrTask);
 s32 Scr_GetIntParam(s32 paramIdx);
 f32 Scr_GetFloatParam(s32 paramIdx);
 char* Scr_GetStrParam(s32 paramIdx);
