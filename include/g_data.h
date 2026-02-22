@@ -7,10 +7,7 @@
 #include "datPersona.h"
 #include "datCalendar.h"
 
-#define MAX_CHARACTERS CHARACTER_MAX - 1 // there's 10 characters in persona 3, but the player has its own struct
 #define MAX_CHARACTER_LEVEL 99
-
-#define MAX_AI_TACTIC_ID AI_TACTIC_MAX - 1
 
 #define IS_HERO(characterId) ((characterId) == CHARACTER_HERO)
 
@@ -75,6 +72,7 @@ typedef enum
 
 typedef enum
 {
+    SOCIAL_LINK_NONE = -1,
     SOCIAL_LINK_SEES,
     SOCIAL_LINK_KENJI,
     SOCIAL_LINK_HIDETOSHI = 4,
@@ -100,8 +98,7 @@ typedef enum
     SOCIAL_LINK_MAMORU,
     SOCIAL_LINK_NOZOMI,
     SOCIAL_LINK_AKINARI,
-    SOCIAL_LINK_NYX_TEAM, 
-    SOCIAL_LINK_NONE = 255 // value when player sleeps, 0xFF
+    SOCIAL_LINK_NYX_TEAM,
 } PlayerSocialLink;
 
 typedef enum
@@ -181,29 +178,30 @@ typedef struct
 // 16 bytes
 typedef struct
 {
-    u16 equipmentsIdx[4];       // See enum EquipmentTypes to access each idx
+    u16 equipmentsIdx[4];      // See enum EquipmentTypes to access each idx
     EquipmentData* equipments; // 00836794 -> 010c15f0
-    void* unkPtr;                // 00836798 -> 010c2d90
+    void* unkPtr;              // 00836798 -> 010c2d90
 } PlayerEquipmentData;
 
-// start: 00836224. 
+// start: . 
 typedef struct
 {
-    /*0x00*/ UnitData unit;
-    /*0x10*/ u8 pad1[0x2B];
-    /*0x3B*/ SocialStats socialStats;
-    /*0x41*/ u32 nextExp;
-    /*0x45*/ PhysicalState physicalState;
-    /*0x4B*/ u16 activeSocialLink;
-    /*0x4D*/ u8 socialLinkStat[0x1D];
-             u8 unkData[0x982];
-             u16 equippedPersona;      // 0 to 11
-             PersonaData personas[12]; // start: 00836ba8
-             u8 unkData2[0x292];
-             PlayerEquipmentData equipmentsData; // 0083678c
-             PersonaData compendium[188]; // 00836E52. Not in this struct (will move it later). Not sure of the size
-    // TODO: The rest of the struct
 } PlayerData;
+
+typedef struct
+{
+    u16 equippedPersona;      // 0 to 11
+    PersonaData personas[12]; // start: 00836ba8
+} PlayerPersonaData;
+
+typedef struct
+{
+    SocialStats socialStats;
+    u32 nextExp;
+    PhysicalState physicalState;
+    u16 activeSocialLink;
+    u8 socialLinkStat[29];
+} PlayerStatusData;
 
 // 868 bytes
 typedef struct
@@ -219,14 +217,14 @@ typedef struct
     u8 unkData3[0x297]; // TODO
 } CharacterData;
 
-extern PlayerData gPlayerData;
-extern CharacterData gCharacters[MAX_CHARACTERS];
+extern CharacterData gCharacters[CHARACTER_MAX - 1];
 
-void GlobalCtx_SetScenarioMode(u32 scenario);
-u32 GlobalCtx_GetScenarioMode();
+extern PlayerPersonaData gPlayerPersonaData;
+
+void Global_SetScenarioMode(u32 scenario);
+u32 Global_GetScenarioMode();
 
 void FUN_0016f3e0(u32 idx, u32 value);
-void FUN_0016cdf0(u16 characterId);
 
 UnitData* Character_GetUnit(u16 characterId);
 u8 Character_GetLevel(u16 characterId);

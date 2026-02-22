@@ -149,11 +149,11 @@ PersonaData* Persona_GetPersonaByCharacterId(u16 characterId)
 
     if (IS_HERO(characterId))
     {
-        persona = Persona_GetHeroPersona(gPlayerData.equippedPersona);
+        persona = Persona_GetHeroPersona(gPlayerPersonaData.equippedPersona);
     }
     else 
     {
-        if (characterId > MAX_CHARACTERS)
+        if (characterId >= CHARACTER_MAX)
         {
             P3FES_ASSERT("datPersona.c", 779);
         }
@@ -172,7 +172,7 @@ PersonaData* Persona_GetPersonaByCharacterId(u16 characterId)
 // FUN_00174960
 u8 Persona_IsHeroPersonaValid(u16 heroPersonaIdx)
 {
-    return (gPlayerData.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
+    return (gPlayerPersonaData.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
 }
 
 // FUN_00174a90
@@ -192,7 +192,7 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
     }
     else 
     {
-        persona = &gPlayerData.personas[heroPersonaIdx];
+        persona = &gPlayerPersonaData.personas[heroPersonaIdx];
     }
     
     return persona;

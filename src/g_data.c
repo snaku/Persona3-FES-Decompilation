@@ -17,16 +17,6 @@ const u16 charmLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };
 // 0x5e3088
 const u16 courageLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };
 
-// 005e35ec. TODO
-static const char* nameTable[] =
-{
-    "Metis", "Aigis", "Mitsuru Kirijo", "Junpei Iori", "Fuuka Yamagishi", "Akihiko Sanada",
-    "Ken Amada", "Shinjiro Aragaki", "Koromaru", "Shuji Ikutsuki", "Pharos", 
-    "Ryoji Mochizuki", "Takeharu Kirijo", "Takaya", " ", "Chidori", "Natsuki Moriyama",
-    "Bully Girl", "Bully Girl", "Bully Girl", "Punk", "Punk", "Punk", "Punk", 
-    "Kazushi Miyamoto", "Yuko Nishiwaki", "Track Team"
-};
-
 // 005e4150
 static const char* physicalConditionsString[13] = 
 {
@@ -45,9 +35,14 @@ static const char* physicalConditionsString[13] =
     "The medicine cured your illness."
 };
 
-PlayerData gPlayerData;
-CharacterData gCharacters[MAX_CHARACTERS];
-static CalendarData sCalendarData;         // 0083679c
+CharacterData gCharacters[CHARACTER_MAX - 1];
+
+static UnitData sPlayerUnit;                 // 00836224
+static PlayerStatusData sPlayerStatusData;   // 00936260
+static PlayerEquipmentData sPlayerEquipData; // 0083678c
+static CalendarData sCalendarData;           // 0083679c
+PlayerPersonaData gPlayerPersonaData;        // 00836ba8
+static PersonaData sCompendium[188];         // 00836e52. Not sure of the size
 
 static u32 gGlobalFlags[176]; // 0083a21c. See 'g_flags.h' !!!
 static u32 gIUnkArr[128];     // 0083a4dc
@@ -73,9 +68,9 @@ u16 Persona_GetPersonaId(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        if (gPlayerData.equippedPersona < ARRAY_SIZE(gPlayerData.personas))
+        if (gPlayerPersonaData.equippedPersona < ARRAY_SIZE(gPlayerPersonaData.personas))
         {
-            return gPlayerData.personas[gPlayerData.equippedPersona].id;
+            return gPlayerPersonaData.personas[gPlayerPersonaData.equippedPersona].id;
         }
 
         P3FES_ASSERT("g_data.c", 633);
@@ -84,34 +79,15 @@ u16 Persona_GetPersonaId(u16 characterId)
     return gCharacters[characterId].persona.id;
 }
 
-// FUN_0016cdf0
-void FUN_0016cdf0(u16 characterId)
-{
-    if (IS_HERO(characterId))
-    {
-        P3FES_Memset(&gPlayerData, 0, 60);
-        gPlayerData.unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
-        gPlayerData.unit.id = CHARACTER_HERO;
-        gPlayerData.unit.flags = UNIT_FLAG_ACTIVE;
-    }
-    else 
-    {
-        P3FES_Memset(&gCharacters[characterId], 0, 60);
-        gCharacters[characterId].unit.id = characterId;
-        gCharacters[characterId].unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
-        gCharacters[characterId].unit.flags = UNIT_FLAG_ACTIVE;
-    }
-}
-
 // FUN_0016cd60
 UnitData* Character_GetUnit(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return &gPlayerData.unit;
+        return &sPlayerUnit;
     }
 
-    if (characterId < MAX_CHARACTERS)
+    if (characterId >= CHARACTER_MAX)
     {
         return &gCharacters[characterId].unit;
     }
@@ -124,7 +100,7 @@ u8 Character_GetLevel(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return Unit_GetLevel(&gPlayerData.unit);
+        return Unit_GetLevel(&sPlayerUnit);
     }
 
     return Unit_GetLevel(&gCharacters[characterId].unit);
@@ -135,7 +111,7 @@ u32 Character_GetBattleFlagsNoDown(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return Unit_GetBattleFlagsNoDown(&gPlayerData.unit);
+        return Unit_GetBattleFlagsNoDown(&sPlayerUnit);
     }
 
     return Unit_GetBattleFlagsNoDown(&gCharacters[characterId].unit);
@@ -146,7 +122,7 @@ void Character_AddBattleFlags(u16 characterId, u32 flags)
 {
     if (IS_HERO(characterId))
     {
-        Unit_AddBattleFlags(&gPlayerData.unit, flags);
+        Unit_AddBattleFlags(&sPlayerUnit, flags);
         return;
     }
 
@@ -158,7 +134,7 @@ void Character_SetOldFatigueCounter(u16 characterId, u16 oldFatigueCounter)
 {
     if (IS_HERO(characterId))
     {
-        gPlayerData.physicalState.oldFatigueCounter = oldFatigueCounter;
+        sPlayerStatusData.physicalState.oldFatigueCounter = oldFatigueCounter;
         return;
     }
 
@@ -170,7 +146,7 @@ void Character_RemoveBattleFlags(u16 characterId, u32 flags)
 {
     if (IS_HERO(characterId))
     {
-        Unit_RemoveBattleFlags(&gPlayerData.unit, flags);
+        Unit_RemoveBattleFlags(&sPlayerUnit, flags);
     }
 
     Unit_RemoveBattleFlags(&gCharacters[characterId].unit, flags);
@@ -180,7 +156,7 @@ void Character_RemoveBattleFlags(u16 characterId, u32 flags)
 u32 Character_GetExpUntilNextLevel(u16 characterId)
 {
     u32 nextExpTmp;
-    u32 nextExp = gPlayerData.nextExp;
+    u32 nextExp = sPlayerStatusData.nextExp;
     PersonaData* persona;
     u8 i;
 
@@ -211,7 +187,7 @@ u32 Character_GetExpUntilNextLevel(u16 characterId)
     }
 
     nextExp = playerNextExpThreshold[i];
-    nextExpTmp = gPlayerData.nextExp;
+    nextExpTmp = sPlayerStatusData.nextExp;
 
     nextExp -= nextExpTmp;
 
@@ -227,12 +203,12 @@ u8 Character_DidCharacterLevelUp(u16 characterId, u32 expGain)
 
     if (IS_HERO(characterId))
     {
-        gPlayerData.nextExp += expGain;
+        sPlayerStatusData.nextExp += expGain;
         count = 0;
 
         for (i = 0; i < ARRAY_SIZE(playerNextExpThreshold); i++)
         {
-            if (gPlayerData.nextExp < playerNextExpThreshold[i]) break;
+            if (sPlayerStatusData.nextExp < playerNextExpThreshold[i]) break;
             
             count++;
         }
@@ -253,14 +229,14 @@ u8 Character_DidCharacterLevelUp(u16 characterId, u32 expGain)
 // FUN_0016dad0
 void Character_SetAiTactic(u16 characterId, u8 aiTacticId)
 {
-    if (aiTacticId > MAX_AI_TACTIC_ID)
+    if (aiTacticId >= AI_TACTIC_MAX)
     {
         P3FES_ASSERT("g_data.c", 999);
     }
 
     if (IS_HERO(characterId))
     {
-        gPlayerData.unit.status.aiTactic = aiTacticId;
+        sPlayerUnit.status.aiTactic = aiTacticId;
         return;
     }
 
@@ -272,7 +248,7 @@ u8 Character_GetAiTactic(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return gPlayerData.unit.status.aiTactic;
+        return sPlayerUnit.status.aiTactic;
     }
 
     return gCharacters[characterId].unit.status.aiTactic;
@@ -281,7 +257,7 @@ u8 Character_GetAiTactic(u16 characterId)
 // FUN_0016d6b0
 void Character_SetPhysicalCondition(u16 characterId, u16 physicalCondition)
 {
-    u16 currentPhysicalCondition = gPlayerData.physicalState.physicalCondition;
+    u16 currentPhysicalCondition = sPlayerStatusData.physicalState.physicalCondition;
     u16 oldFatigueCounter;
 
     if (!IS_HERO(characterId))
@@ -312,7 +288,7 @@ void Character_SetPhysicalCondition(u16 characterId, u16 physicalCondition)
     if (currentPhysicalCondition == PHYSICAL_CONDITION_TIRED && 
         physicalCondition != PHYSICAL_CONDITION_TIRED)
     {
-        oldFatigueCounter = gPlayerData.physicalState.oldFatigueCounter;
+        oldFatigueCounter = sPlayerStatusData.physicalState.oldFatigueCounter;
 
         if (!IS_HERO(characterId))
         {
@@ -327,10 +303,10 @@ void Character_SetPhysicalCondition(u16 characterId, u16 physicalCondition)
     if (!IS_HERO(characterId))
     {
         gCharacters[characterId].physicalState.physicalCondition = physicalCondition;
-        currentPhysicalCondition = gPlayerData.physicalState.physicalCondition;
+        currentPhysicalCondition = sPlayerStatusData.physicalState.physicalCondition;
     }
 
-    gPlayerData.physicalState.physicalCondition = currentPhysicalCondition;
+    sPlayerStatusData.physicalState.physicalCondition = currentPhysicalCondition;
 }
 
 // FUN_0016d930
@@ -338,7 +314,7 @@ void Character_SetFatigueCounter(u16 characterId, u16 fatigueCounter)
 {
     if (IS_HERO(characterId))
     {
-        gPlayerData.physicalState.fatigueCounter = fatigueCounter;
+        sPlayerStatusData.physicalState.fatigueCounter = fatigueCounter;
         return;
     }
 
@@ -352,16 +328,16 @@ void Character_SetHealth(u16 characterId, u16 health)
     if (!IS_HERO(characterId))
     {
         gCharacters[characterId].unit.status.health = health;
-        tmp = gPlayerData.unit.status.health;
+        tmp = sPlayerUnit.status.health;
     }
 
-    gPlayerData.unit.status.health = tmp;
+    sPlayerUnit.status.health = tmp;
 }
 
 // FUN_0016e920
 void Character_SetActiveSocialLink(u16 activeSocialLink)
 {
-    gPlayerData.activeSocialLink = activeSocialLink;
+    sPlayerStatusData.activeSocialLink = activeSocialLink;
 }
 
 // FUN_0016ef20
@@ -404,7 +380,7 @@ void Character_SetAcademicPoint(u16 characterId, u16 academicPoint)
 
     if (IS_HERO(characterId))
     {
-        gPlayerData.socialStats.academicPoint = academicPoint;
+        sPlayerStatusData.socialStats.academicPoint = academicPoint;
         return;
     }
 
@@ -421,8 +397,8 @@ void Character_SetCharmPoint(u16 characterId, u16 charmPoint)
 
     if (IS_HERO(characterId))
     {
-        Character_GetCharmLevel(gPlayerData.socialStats.charmPoint); // ??
-        gPlayerData.socialStats.charmPoint = charmPoint;
+        Character_GetCharmLevel(sPlayerStatusData.socialStats.charmPoint); // ??
+        sPlayerStatusData.socialStats.charmPoint = charmPoint;
         Character_GetCharmLevel(charmPoint); // ??
         return;
     }
@@ -440,8 +416,8 @@ void Character_SetCouragePoint(u16 characterId, u16 couragePoint)
 
     if (IS_HERO(characterId))
     {
-        Character_GetCourageLevel(gPlayerData.socialStats.couragePoint); // ??
-        gPlayerData.socialStats.couragePoint = couragePoint;
+        Character_GetCourageLevel(sPlayerStatusData.socialStats.couragePoint); // ??
+        sPlayerStatusData.socialStats.couragePoint = couragePoint;
         Character_GetCourageLevel(couragePoint); // ??
         return;
     }
@@ -466,7 +442,7 @@ u16 Character_GetAcademicPoint(u16 characterId)
 {
     return Inl_Character_GetSocialStatPoint(
         characterId,
-        gPlayerData.socialStats.academicPoint,
+        sPlayerStatusData.socialStats.academicPoint,
         gCharacters[characterId].socialStats.academicPoint);
 }
 
@@ -475,7 +451,7 @@ u16 Character_GetCharmPoint(u16 characterId)
 {
     return Inl_Character_GetSocialStatPoint(
         characterId,
-        gPlayerData.socialStats.charmPoint,
+        sPlayerStatusData.socialStats.charmPoint,
         gCharacters[characterId].socialStats.charmPoint);
 }
 
@@ -483,15 +459,15 @@ u16 Character_GetCouragePoint(u16 characterId)
 {
     return Inl_Character_GetSocialStatPoint(
         characterId,
-        gPlayerData.socialStats.couragePoint,
+        sPlayerStatusData.socialStats.couragePoint,
         gCharacters[characterId].socialStats.couragePoint);
 }
 
 // TODO
 void FUN_0016ca90(u16 characterId, u16 param_2)
 {
-    u16 oldFatigueCounter = gPlayerData.physicalState.oldFatigueCounter;
-    u16 fatigueCounter = gPlayerData.physicalState.fatigueCounter;
+    u16 oldFatigueCounter = sPlayerStatusData.physicalState.oldFatigueCounter;
+    u16 fatigueCounter = sPlayerStatusData.physicalState.fatigueCounter;
     s32 uVar3;
 
     if (!IS_HERO(characterId))
@@ -521,7 +497,7 @@ u32 Character_GetNextExp(u16 characterId)
 
     if (IS_HERO(characterId))
     {
-        return gPlayerData.nextExp;
+        return sPlayerStatusData.nextExp;
     }
 
     persona = Persona_GetPersonaByCharacterId(characterId);
@@ -538,7 +514,7 @@ u16 Character_GetPhysicalCondition(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return gPlayerData.physicalState.physicalCondition;
+        return sPlayerStatusData.physicalState.physicalCondition;
     }
 
     return gCharacters[characterId].physicalState.physicalCondition;
@@ -547,13 +523,13 @@ u16 Character_GetPhysicalCondition(u16 characterId)
 // FUN_0016dd40
 u16 Player_GetActiveSocialLink()
 {
-    return gPlayerData.activeSocialLink;
+    return sPlayerStatusData.activeSocialLink;
 }
 
 // FUN_0016dba0
 u8 Player_GetSocialLinkLevel(u16 socialLink)
 {
-    return gPlayerData.socialLinkStat[socialLink];
+    return sPlayerStatusData.socialLinkStat[socialLink];
 }
 
 // FUN_0016e100
@@ -564,7 +540,7 @@ u8 Player_SocialLinkLevelIsNotZero(u16 socialLink)
         P3FES_ASSERT("g_data.c", 1429);
     }
 
-    return gPlayerData.socialLinkStat[socialLink] > 0;
+    return sPlayerStatusData.socialLinkStat[socialLink] > 0;
 }
 
 // FUN_0016cb80
@@ -572,7 +548,7 @@ u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType)
 {
     if (IS_HERO(characterId))
     {
-        return gPlayerData.equipmentsData.equipmentsIdx[equipmentType];
+        return sPlayerEquipData.equipmentsIdx[equipmentType];
     }
 
     return gCharacters[characterId].equipmentsIdx[equipmentType];
@@ -705,7 +681,7 @@ u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx)
     }
     else if (IS_HERO(characterId))
     {
-        return gPlayerData.equipmentsData.equipments[equipmentIdx].id;
+        return sPlayerEquipData.equipments[equipmentIdx].id;
     }
     else if (characterId <= 255)
     {
@@ -724,7 +700,7 @@ u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx)
     }
     else if (IS_HERO(characterId))
     {
-        return gPlayerData.equipmentsData.equipments[equipmentIdx].effect;
+        return sPlayerEquipData.equipments[equipmentIdx].effect;
     }
     else if (characterId <= 255)
     {
@@ -742,12 +718,12 @@ PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
         P3FES_ASSERT("g_data.c", 6177);
     }
 
-    if (!(gPlayerData.compendium[idx].flags & PERSONA_FLAG_VALID))
+    if (!(sCompendium[idx].flags & PERSONA_FLAG_VALID))
     {
         return NULL;
     }
 
-    return &gPlayerData.compendium[idx];
+    return &sCompendium[idx];
 }
 
 // FUN_00172890
