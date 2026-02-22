@@ -54,7 +54,7 @@ u16 Persona_GetTotalStat(PersonaData* persona, u16 statId)
 // was probably inlined
 u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
 {
-    if (statId > PERSONA_STAT_LUCK)
+    if (statId >= PERSONA_STAT_MAX)
     {
         P3FES_ASSERT("datPersona.c", 316);
     }
@@ -65,7 +65,7 @@ u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
 // FUN_00173b00
 u8 Persona_GetBonusStat(PersonaData* persona, u16 statId)
 {
-    if (statId > PERSONA_STAT_LUCK)
+    if (statId >= PERSONA_STAT_MAX)
     {
         P3FES_ASSERT("datPersona.c", 454);
     }
@@ -246,18 +246,20 @@ void Persona_MoveValidSkillsOnTop(PersonaData* persona)
 // FUN_00176840
 u8 Persona_SetSkill(PersonaData* persona, u16 skillId)
 {
-    u32 skillIdx;
+    s32 skillIdx;
+    u16* skillSlot;
 
     if (persona == NULL || skillId == PERSONA_SKILL_SLASH_ATTACK)
     {
         P3FES_ASSERT("datPersona.c", 1546);
     }
 
-    for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
+    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
     {
-        if (persona->skills[skillIdx] == PERSONA_SKILL_SLASH_ATTACK)
+        skillSlot = &persona->skills[skillIdx];
+        if (*skillSlot == PERSONA_SKILL_SLASH_ATTACK)
         {
-            persona->skills[skillIdx] = skillId;
+            *skillSlot = skillId;
             return true;
         }
     }

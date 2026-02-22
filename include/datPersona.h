@@ -6,6 +6,8 @@
 #define PERSONA_FLAG_VALID      (1 << 0) // not sure of this name
 #define PERSONA_FLAG_HEART_ITEM (1 << 2)
 
+#define PERSONA_MAX_SKILLS 8
+
 // Found in BATTLE/MSG.TBL
 typedef enum
 {
@@ -54,7 +56,8 @@ typedef enum
     PERSONA_STAT_MAGIC,
     PERSONA_STAT_ENDURANCE,
     PERSONA_STAT_AGILITY,
-    PERSONA_STAT_LUCK
+    PERSONA_STAT_LUCK,
+    PERSONA_STAT_MAX
 } PersonaStats;
 
 // 52 bytes, not sure of the real size
@@ -63,11 +66,11 @@ typedef struct
     u16 flags;
     u16 id;
     u8 level;
-    u32 nextExp;        // For characters other than HERO, their exp is linked to their persona
-    u16 skills[8];      // See enum PersonaSkills
-    u8 naturalStats[5]; // stats gained naturally. See enum PersonaStats
-    u8 bonusStats[5];   // stats gained through incense cards. See enum PersonaStats
-    u8 stats3[5];       // ??
+    u32 nextExp;                       // For characters other than HERO, their exp is linked to their persona
+    u16 skills[PERSONA_MAX_SKILLS];    // See enum PersonaSkills
+    u8 naturalStats[PERSONA_STAT_MAX]; // stats gained naturally. See enum PersonaStats
+    u8 bonusStats[PERSONA_STAT_MAX];   // stats gained through incense cards. See enum PersonaStats
+    u8 stats3[PERSONA_STAT_MAX];       // ??
     // other data ?
 } PersonaData; // For reference: Yukari = 008340ec
 
