@@ -227,6 +227,7 @@ u32 Global_GetScenarioMode();
 void FUN_0016f3e0(u32 idx, u32 value);
 
 UnitData* Character_GetUnit(u16 characterId);
+void Character_InitUnitData(u16 characterId);
 u8 Character_GetLevel(u16 characterId);
 u16 Persona_GetPersonaId(u16 characterId);
 u32 Character_GetBattleFlagsNoDown(u16 characterId);

@@ -10,12 +10,9 @@ const u32 playerNextExpThreshold[MAX_CHARACTER_LEVEL] =
     0x14, 0x2f, 0x63, 0xb9, 0x0138, 0x01EA, 0x02D6, 0x0406
 };
 
-// 0x5e3068
-const u16 academicLevelThreshold[6] = { 0, 20, 80, 140, 200, 260 };
-// 0x5e3078
-const u16 charmLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };
-// 0x5e3088
-const u16 courageLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };
+static const u16 academicLevelThreshold[6] = { 0, 20, 80, 140, 200, 260 }; // 005e3068
+static const u16 charmLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };       // 005e3078
+static const u16 courageLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };     // 005e3088
 
 // 005e4150
 static const char* physicalConditionsString[13] = 
@@ -35,10 +32,12 @@ static const char* physicalConditionsString[13] =
     "The medicine cured your illness."
 };
 
+static u32 sScenarioMode; // 007cdfa4. See enum 'ScenarioMode'
+
 CharacterData gCharacters[CHARACTER_MAX - 1];
 
 static UnitData sPlayerUnit;                 // 00836224
-static PlayerStatusData sPlayerStatusData;   // 00936260
+static PlayerStatusData sPlayerStatusData;   // 00836260
 static PlayerEquipmentData sPlayerEquipData; // 0083678c
 static CalendarData sCalendarData;           // 0083679c
 PlayerPersonaData gPlayerPersonaData;        // 00836ba8
@@ -47,7 +46,6 @@ static PersonaData sCompendium[188];         // 00836e52. Not sure of the size
 static u32 gGlobalFlags[176]; // 0083a21c. See 'g_flags.h' !!!
 static u32 gIUnkArr[128];     // 0083a4dc
 
-static u32 sScenarioMode; // 007cdfa4. See enum 'ScenarioMode'
 
 void FUN_00172890();
 void FUN_00172e10();
@@ -63,7 +61,7 @@ void FUN_0016f3e0(u32 idx, u32 value)
     gIUnkArr[idx] = value;
 }
 
-// FUN_0016c860 (idk why it's in g_data.c and not in datPersona.c)
+// FUN_0016c860
 u16 Persona_GetPersonaId(u16 characterId)
 {
     if (IS_HERO(characterId))
@@ -93,6 +91,27 @@ UnitData* Character_GetUnit(u16 characterId)
     }
 
     P3FES_ASSERT("g_data.c", 737);
+}
+
+// FUN_0016cdf0
+void Character_InitUnitData(u16 characterId)
+{
+    if (IS_HERO(characterId))
+    {
+        P3FES_Memset(&sPlayerUnit, 0, sizeof(UnitData));
+
+        sPlayerUnit.status.aiTactic = AI_TACTIC_ACT_FREELY;
+        sPlayerUnit.id = CHARACTER_HERO;
+        sPlayerUnit.flags = UNIT_FLAG_ACTIVE;
+
+        return;
+    }
+
+    P3FES_Memset(&gCharacters[characterId], 0, sizeof(UnitData));
+
+    gCharacters[characterId].unit.id = characterId;
+    gCharacters[characterId].unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
+    gCharacters[characterId].unit.flags = UNIT_FLAG_ACTIVE;
 }
 
 // FUN_0016c470
@@ -664,7 +683,9 @@ void Global_SetGlobalFlag(u32 bit, u8 enabled)
 // FUN_0016f2e0
 void Global_ResetGlobalFlags()
 {
-    for (u32 i = 0; i < ARRAY_SIZE(gGlobalFlags); i++)
+    u32 i;
+
+    for (i = 0; i < ARRAY_SIZE(gGlobalFlags); i++)
     {
         gGlobalFlags[i] = 0;
     }

@@ -19,7 +19,7 @@
 #define UNIT_STATUS_FLAG_DEAD     (1 << 19) // 0x80000
 #define UNIT_STATUS_FLAG_DOWN     (1 << 20) // 0x100000
 
-// 10 bytes
+// 16 bytes
 typedef struct
 {
     u8 level;
@@ -29,13 +29,14 @@ typedef struct
     u8 aiTactic; // See enum AiTactic
 } UnitStatus;
 
-// 15 bytes
+// 60 bytes
 typedef struct UnitData
 {
     u16 flags; // See 'UNIT_FLAG_*'
     u16 id;
     u16 id2;
     UnitStatus status;
+    u8 unkData1[0x28];
 } UnitData; 
 
 #endif
