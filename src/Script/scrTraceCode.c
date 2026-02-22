@@ -1,7 +1,6 @@
 #include "Script/scr.h"
 #include "Script/scrTraceCode.h"
 #include "Script/scrScriptProcess.h"
-#include "Script/scrTaskHelper.h"
 #include "g_data.h"
 #include "temporary.h"
 
@@ -35,36 +34,6 @@ static const Scr_ExecOpCodeFunc opCodeFuncTable[] =
     NULL, NULL,
     Scr_ExecOpCodePushs, NULL
 };
-
-u32 Scr_ExecOpCode(ScrData* scr);
-
-// FUN_0035c200
-void Scr_DestroyTask(KwlnTask* scrTask)
-{
-    // TODO
-}
-
-// FUN_0035c270
-void* Scr_UpdateTask(KwlnTask* scrTask)
-{
-    ScrData* scr;
-    u32 execOpCodeRes;
-
-    scr = ScrTask_GetData(scrTask);
-    execOpCodeRes = Scr_ExecOpCode(scr);
-
-    switch (execOpCodeRes)
-    {
-        case 0:
-            FUN_0019d400("scrScriptProcess(..) error script!\n", "scrScriptProcess.c", 1120);
-            return KWLN_TASK_STOP;
-        case 1:  // fallthrough
-        default: break;
-        case 2:  return KWLN_TASK_STOP;
-    }
-
-    return KWLN_TASK_CONTINUE;
-}
 
 // FUN_0035c300. Push int 
 u32 Scr_ExecOpCodePushi(ScrData* scr)

@@ -5,6 +5,9 @@
 
 ScrData* gCurrScript; // 007ce5a8. Current script being executed
 
+void Scr_DestroyTask(KwlnTask* scrTask);
+void* Scr_UpdateTask(KwlnTask* scrTask);
+
 // FUN_0035b570
 ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
                          ScrLblPrcd* prcd, ScrLblPrcd* labels, 
@@ -104,4 +107,32 @@ KwlnTask* Scr_CreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
     scr->task = scrTask;
 
     return scrTask;
+}
+
+// FUN_0035c200
+void Scr_DestroyTask(KwlnTask* scrTask)
+{
+    // TODO
+}
+
+// FUN_0035c270
+void* Scr_UpdateTask(KwlnTask* scrTask)
+{
+    ScrData* scr;
+    u32 execOpCodeRes;
+
+    scr = ScrTask_GetData(scrTask);
+    execOpCodeRes = Scr_ExecOpCode(scr);
+
+    switch (execOpCodeRes)
+    {
+        case 0:
+            FUN_0019d400("scrScriptProcess(..) error script!\n", "scrScriptProcess.c", 1120);
+            return KWLN_TASK_STOP;
+        case 1:  // fallthrough
+        default: break;
+        case 2:  return KWLN_TASK_STOP;
+    }
+
+    return KWLN_TASK_CONTINUE;
 }
