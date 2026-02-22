@@ -7,3 +7,9 @@ KwlnTask* ScrTask_Init(const char* name, u32 priority, s32 unused1, s32 unused2,
 {
     return KwlnTask_Init(name, priority, update, destroy, (void*)scr);
 }
+
+// FUN_0035ae10
+ScrData* ScrTask_GetData(KwlnTask* scrTask)
+{
+    return (ScrData*)KwlnTask_GetTaskData(scrTask);
+}
