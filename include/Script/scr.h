@@ -6,7 +6,11 @@
 
 #define SCR_MAX_STACK_SIZE 27
 
+#define SCR_MSG_HEADER_MAGIC0 0x3047534d // in little endian: "MSG0"
+#define SCR_MSG_HEADER_MAGIC1 0x3147534d // in little endian: "MSG1"
+
 typedef struct KwlnTask KwlnTask;
+typedef struct ItfMes ItfMes;
 
 // 16 bytes
 typedef struct
@@ -62,7 +66,7 @@ typedef union
 typedef struct ScrMsgHeader
 {
     u8 unkData1[0x08];
-    u32 magic;         // in little endian: 0x4d534730 ("MSG0") or 0x4d534731 ("MSG1")
+    u32 magic;         // See 'SCR_MSG_HEADER_MAGIC0' and 'SCR_MSG_HEADER_MAGIC1'
 } ScrMsgHeader;
 
 // 252 bytes
@@ -83,7 +87,8 @@ typedef struct ScrData
     ScrMsgHeader* msgContentHeader;            // 0xc0
     void* stringsContent;                      // 0xc4
     u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
-    u8 unkData1[0x18];
+    ItfMes* itfMes;                            // 0xcc
+    u8 unkData1[0x14];
     KwlnTask* task;                            // 0xe4
     struct ScrData* prev;                      // 0xe8
     struct ScrData* next;                      // 0xec
