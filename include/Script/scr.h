@@ -22,13 +22,16 @@ typedef struct
 // 112 bytes
 typedef struct ScrHeader
 {
-    u8 unkData1[0x04];
-    u32 scrSize;       // 0x04. size of the .BF file (in bytes)
-    u8 magic[4];       // 0x08. "FLW0"
+    s32 unk_00;                                    // 0x00
+    u32 scrSize;                                   // 0x04. size of the .BF file (in bytes)
+    u8 magic[4];                                   // 0x08. "FLW0"
     u32 unk_0c;
-    u32 totalEntries;  // 0x10
-    u8 unkData2[0x0c];
-    ScrContentEntry entries[SCR_CONTENT_TYPE_MAX];
+    u32 totalEntries;                              // 0x10
+    u16 localIntNum;                               // 0x14
+    u16 localFloatNum;                             // 0x16
+    s32 unk_18;                                    // 0x18
+    s32 unk_1c;                                    // 0x1c
+    ScrContentEntry entries[SCR_CONTENT_TYPE_MAX]; // 0x20
 } ScrHeader;
 
 // 4 bytes
@@ -79,11 +82,14 @@ typedef struct ScrData
     void* stringsContent;                      // 0xc4
     u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
     ItfMes* itfMes;                            // 0xcc
-    u8 unkData1[0x14];
+    u8 unkData1[0x0c];
+    s32* localInt;                             // 0xdc
+    f32* localFloat;                           // 0xe0
     KwlnTask* task;                            // 0xe4
     struct ScrData* prev;                      // 0xe8
     struct ScrData* next;                      // 0xec
-    u8 unkData2[0x0c];
+    s32 unk_f0;                                // 0xf0
+    u8 unkData2[0x08];
 } ScrData;
 
 #endif
