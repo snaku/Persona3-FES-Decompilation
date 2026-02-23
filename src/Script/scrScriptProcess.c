@@ -11,7 +11,7 @@ void* Scr_UpdateTask(KwlnTask* scrTask);
 // FUN_0035b570
 ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
                          ScrLblPrcd* prcd, ScrLblPrcd* labels, 
-                         ScrInstruction* instr, void* msg, 
+                         ScrInstruction* instr, ScrMsgHeader* msg, 
                          void* strings, u32 prcdIdx)
 {
     ScrData* scrData;
@@ -75,7 +75,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
 
         return Scr_StartScript(header, header->entries,
                               (ScrLblPrcd*)prcdAddr, (ScrLblPrcd*)labelsAddr, 
-                              (ScrInstruction*)instrAddr, (void*)msgAddr, 
+                              (ScrInstruction*)instrAddr, (ScrMsgHeader*)msgAddr,
                               (void*)stringsAddr, prcdIdx);
     }
 

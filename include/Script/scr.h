@@ -58,6 +58,13 @@ typedef union
     f32 fOperand;
 } ScrInstruction;
 
+// ?? bytes
+typedef struct ScrMsgHeader
+{
+    u8 unkData1[0x08];
+    u32 magic;         // in little endian: 0x4d534730 ("MSG0") or 0x4d534731 ("MSG1")
+} ScrMsgHeader;
+
 // 252 bytes
 typedef struct ScrData
 {
@@ -73,7 +80,7 @@ typedef struct ScrData
     ScrLblPrcd* proceduresContent;             // 0xb4
     ScrLblPrcd* labelsContent;                 // 0xb8
     ScrInstruction* instrContent;              // 0xbc
-    void* msgContent;                          // 0xc0
+    ScrMsgHeader* msgContentHeader;            // 0xc0
     void* stringsContent;                      // 0xc4
     u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
     u8 unkData1[0x18];
