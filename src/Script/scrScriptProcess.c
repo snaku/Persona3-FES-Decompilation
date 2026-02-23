@@ -1,6 +1,7 @@
 #include "Script/scrScriptProcess.h"
 #include "Script/scrTaskHelper.h"
 #include "Script/scrTraceCode.h"
+#include "itfMesManager.h"
 #include "g_data.h"
 
 ScrData* gCurrScript; // 007ce5a8. Current script being executed
@@ -11,7 +12,7 @@ void* Scr_UpdateTask(KwlnTask* scrTask);
 // FUN_0035b570
 ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
                          ScrLblPrcd* prcd, ScrLblPrcd* labels, 
-                         ScrInstruction* instr, ScrMsgHeader* msg, 
+                         ScrInstruction* instr, BmdHeader* msg, 
                          void* strings, u32 prcdIdx)
 {
     ScrData* scrData;
@@ -75,7 +76,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
 
         return Scr_StartScript(header, header->entries,
                               (ScrLblPrcd*)prcdAddr, (ScrLblPrcd*)labelsAddr, 
-                              (ScrInstruction*)instrAddr, (ScrMsgHeader*)msgAddr,
+                              (ScrInstruction*)instrAddr, (BmdHeader*)msgAddr,
                               (void*)stringsAddr, prcdIdx);
     }
 
