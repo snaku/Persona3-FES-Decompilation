@@ -60,7 +60,7 @@ typedef enum
     PERSONA_STAT_MAX
 } PersonaStats;
 
-// 52 bytes, not sure of the real size
+// 52 bytes
 typedef struct
 {
     u16 flags;
@@ -71,8 +71,7 @@ typedef struct
     u8 naturalStats[PERSONA_STAT_MAX]; // stats gained naturally. See enum PersonaStats
     u8 bonusStats[PERSONA_STAT_MAX];   // stats gained through incense cards. See enum PersonaStats
     u8 stats3[PERSONA_STAT_MAX];       // ??
-    // other data ?
-} PersonaData; // For reference: Yukari = 008340ec
+} PersonaData;
 
 u8 Persona_GetPersonaLevel(PersonaData* persona);
 u8 Persona_GetPersonaLevelCharacterId(u16 characterId);
@@ -91,9 +90,9 @@ u16 Persona_AddToNaturalStatHeroPersonaIdx(u16 heroPersonaIdx, u16 statId, s8 am
 PersonaData* Persona_GetPersonaByCharacterId(u16 characterId);
 u8 Persona_IsHeroPersonaValid(u16 heroPersonaIdx);
 PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx);
+void Persona_ClearHeroPersonas();
 
 void Persona_AddExp(PersonaData* persona, u32 exp);
-
 void Persona_MoveValidSkillsOnTop(PersonaData* persona);
 u8 Persona_SetSkill(PersonaData* persona, u16 skillId);
 u8 Persona_ResetSkill(PersonaData* persona, u16 skillId);

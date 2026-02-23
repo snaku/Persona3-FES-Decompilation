@@ -1,5 +1,6 @@
 #include "datPersona.h"
 #include "g_data.h"
+#include "temporary.h"
 
 // FUN_001732f0
 u8 Persona_GetPersonaLevel(PersonaData* persona)
@@ -196,6 +197,12 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
     }
     
     return persona;
+}
+
+// FUN_001757f0
+void Persona_ClearHeroPersonas()
+{
+    P3FES_Memset(gPlayerPersonaData.personas, 0, sizeof(gPlayerPersonaData.personas));
 }
 
 // FUN_001764b0
