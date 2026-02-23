@@ -78,7 +78,9 @@ typedef struct ScrData
     u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
     u8 unkData1[0x18];
     KwlnTask* task;                            // 0xe4
-    u8 unkData2[0x14];
+    struct ScrData* prev;                      // 0xe8
+    struct ScrData* next;                      // 0xec
+    u8 unkData2[0x0c];
 } ScrData;
 
 #endif
