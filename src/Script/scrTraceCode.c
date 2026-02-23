@@ -1,6 +1,7 @@
 #include "Script/scr.h"
 #include "Script/scrTraceCode.h"
 #include "Script/scrScriptProcess.h"
+#include "Script/scrCommonCommand.h"
 #include "g_data.h"
 #include "temporary.h"
 
@@ -9,6 +10,7 @@ u32 Scr_ExecOpCodePushs(ScrData* scr);
 u32 Scr_ExecOpCodePushf(ScrData* scr);
 u32 Scr_ExecOpCodePushRet(ScrData* scr);
 u32 Scr_ExecOpCodeStPrcd(ScrData* scr);
+u32 Scr_ExecOpCodeCmnCmd(ScrData* scr);
 u32 Scr_ExecOpCodeJmp(ScrData* scr);
 u32 Scr_ExecOpCodeGoto(ScrData* scr);
 
@@ -22,7 +24,7 @@ static const Scr_ExecOpCodeFunc opCodeFuncTable[] =
     NULL, NULL,
     Scr_ExecOpCodePushRet, NULL,
     NULL, Scr_ExecOpCodeStPrcd,
-    NULL, NULL,
+    Scr_ExecOpCodeCmnCmd, NULL,
     Scr_ExecOpCodeJmp, NULL,
     NULL, NULL,
     Scr_ExecOpCodeGoto, NULL,
@@ -34,6 +36,8 @@ static const Scr_ExecOpCodeFunc opCodeFuncTable[] =
     NULL, NULL,
     Scr_ExecOpCodePushs, NULL
 };
+
+u32 Scr_ExecOpCode1(ScrData* scr);
 
 // FUN_0035c300. Push int 
 u32 Scr_ExecOpCodePushi(ScrData* scr)
@@ -119,6 +123,48 @@ u32 Scr_ExecOpCodePushRet(ScrData* scr)
 u32 Scr_ExecOpCodeStPrcd(ScrData* scr)
 {
     scr->instrIdx++;
+
+    return 1;
+}
+
+// FUN_0035cf20. Call a common command (functions that are in the game executable) by index
+u32 Scr_ExecOpCodeCmnCmd(ScrData* scr)
+{
+    Scr_CmdFunc cmdFunc;
+    u32 savedInstrIdx;
+    u32 cmdFuncRes;
+    s32 cmdIdx;
+
+    cmdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
+    if (cmdIdx < 0)
+    {
+        P3FES_ASSERT("scrTraceCode.c", 342);
+    }
+    if (gScrCmdData.total <= cmdIdx)
+    {
+        P3FES_ASSERT("scrTraceCode.c", 343);
+    }
+
+    cmdFunc = gScrCmdData.table[cmdIdx].cmdFunc;
+    if (cmdFunc == NULL)
+    {
+        P3FES_ASSERT("scrTraceCode.c", 344);
+    }
+
+    savedInstrIdx = scr->instrIdx;
+    gCurrScript = scr;
+
+    if (!cmdFunc())
+    {
+        return 2;
+    }
+
+    scr->stackIdx -= gScrCmdData.table[cmdIdx].totalParam;
+
+    if (savedInstrIdx  == scr->instrIdx)
+    {
+        scr->instrIdx++;
+    }
 
     return 1;
 }
