@@ -2,24 +2,146 @@
 #include "Script/scrTaskHelper.h"
 #include "Script/scrTraceCode.h"
 #include "itfMesManager.h"
+#include "h_malloc.h"
 #include "g_data.h"
+#include "temporary.h"
 
-ScrData* gCurrScript; // 007ce5a8. Current script being executed
+static u32 sScrNum;       // 007ce57c
+static ScrData* sScrHead; // 007ce580
+static ScrData* sScrTail; // 007ce584
+ScrData* gCurrScript;     // 007ce5a8. Current script being executed
 
 void Scr_DestroyTask(KwlnTask* scrTask);
 void* Scr_UpdateTask(KwlnTask* scrTask);
 
 // FUN_0035b570
-ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
+ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
                          ScrLblPrcd* prcd, ScrLblPrcd* labels, 
                          ScrInstruction* instr, BmdHeader* msg, 
-                         void* strings, u32 prcdIdx)
+                         void* strings, s32 prcdIdx)
 {
-    ScrData* scrData;
+    ScrData* scr;
+    ItfMes* itfMes;
+    s32 i;
+    char* prcdName;
 
-    // !!! TODO !!!
+    if (header == NULL || prcdEntry == NULL || prcd == NULL || instr == NULL)
+    {
+        FUN_0019d400("scrStartScript(..) invalid script!!\n", "scrScriptProcess.c", 155);
+        return NULL;
+    }
 
-    return scrData;
+    if (prcdIdx < 0 || prcdEntry->elementCount <= prcdIdx)
+    {
+        FUN_0019d400("scrStartScript(..) invalid start procedure!!\n", "scrScriptProcess.c", 159);
+        return NULL;
+    }
+
+    scr = (ScrData*)H_Malloc(sizeof(ScrData));
+    if (scr == NULL)
+    {
+        FUN_0019d400("scrStartScript(..) chip memory allock error!\n", "scrScriptProcess.c", 169);
+        return NULL;
+    }
+
+    for (i = 0; prcd->name[i] != '\0'; i++)
+    {
+        scr->scrName[i] = prcd->name[i];
+    }
+
+    scr->instrIdx = prcdIdx;
+    scr->stackIdx = 0;
+    for (i = 0; i < SCR_MAX_STACK_SIZE; i++)
+    {
+        scr->stackTypes[i] = 0;
+        scr->stackValues[i].iVal = 0;
+    }
+
+    scr->scrHeader = header;
+    scr->prcdEntry = prcdEntry;
+    scr->proceduresContent = prcd;
+    scr->labelsContent = labels;
+    scr->instrContent = instr;
+    scr->msgContentHeader = msg;
+    scr->stringsContent = strings;
+    scr->prcdIdx = prcdIdx;
+    scr->itfMes = (ItfMes*)-1;
+    scr->unk_d0 = 0;
+    scr->unk_d4 = 0;
+    scr->unk_d8 = 0;
+    scr->localInt = NULL;
+    scr->localFloat = NULL;
+    scr->task = NULL;
+    scr->prev = NULL;
+    scr->next = NULL;
+    scr->unk_f0 = 0;
+
+    if (header->localIntNum > 0)
+    {
+        if (header->localIntNum >= 256)
+        {
+            P3FES_ASSERT("scrScriptProcess.c", 202);
+        }
+
+        scr->localInt = (s32*)H_Malloc(header->localIntNum * sizeof(s32));
+        for (i = 0; i < header->localIntNum; i++)
+        {
+            scr->localInt[i] = 0;
+        }
+    }
+    else
+    {
+        scr->localInt = NULL;
+    }
+
+    if (header->localFloatNum > 0)
+    {
+        if (header->localFloatNum >= 128)
+        {
+            P3FES_ASSERT("scrScriptProcess.c", 214);
+        }
+
+        scr->localFloat = (f32*)H_Malloc(header->localFloatNum * sizeof(f32));
+        for (i = 0; i < header->localFloatNum; i++)
+        {
+            scr->localFloat[i] = 0.0f;
+        }
+    }
+    else
+    {
+        scr->localFloat = NULL;
+    }
+
+    if (msg != NULL)
+    {
+        itfMes = ItfMesMng_Initialize(msg);
+        scr->itfMes = itfMes;
+
+        ItfMesMng_ChangeWindowType(itfMes, 4, 0);
+    }
+
+    if (sScrHead == NULL)
+    {
+        sScrHead = scr;
+        sScrTail = scr;
+        scr->prev = NULL;
+        scr->next = NULL;
+    }
+    else
+    {
+        scr->prev = sScrTail;
+        sScrTail->next = scr;
+        scr->next = NULL;
+        sScrTail = scr;
+    }
+    sScrNum++;
+
+    prcdName = prcd->name;
+    P3FES_LOG3("procedure start <%s>\n", prcdName);
+    P3FES_LOG3("start <%s>\n", prcdName);
+    P3FES_LOG1("procedure start <%s>\n", prcdName);
+
+    return scr;
 }
 
 // FUN_0035b930. (Need to rework a little bit)
@@ -74,7 +196,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
             }
         }
 
-        return Scr_StartScript(header, header->entries,
+        return Scr_StartScript(header, &header->entries[SCR_CONTENT_TYPE_PROCEDURE],
                               (ScrLblPrcd*)prcdAddr, (ScrLblPrcd*)labelsAddr, 
                               (ScrInstruction*)instrAddr, (BmdHeader*)msgAddr,
                               (void*)stringsAddr, prcdIdx);

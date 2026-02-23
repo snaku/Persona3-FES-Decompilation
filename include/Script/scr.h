@@ -4,7 +4,8 @@
 #include "Utils.h"
 #include "Script/scrTypes.h"
 
-#define SCR_MAX_STACK_SIZE 27
+#define SCR_MAX_STACK_SIZE 28 // idx 27 is reserved for return value !!
+#define SCR_STACK_RET_IDX  27
 
 typedef struct KwlnTask KwlnTask;
 typedef struct BmdHeader BmdHeader;
@@ -70,11 +71,9 @@ typedef struct ScrData
     u32 instrIdx;                              // 0x18. Index of the curr instruction
     s32 stackIdx;                              // 0x1c
     s8 stackTypes[SCR_MAX_STACK_SIZE];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
-    u8 retType;                                // 0x3b. Type of the return value
     ScrValues stackValues[SCR_MAX_STACK_SIZE]; // 0x3c. Values of each variables in the stack
-    ScrValues retValue;                        // 0xa8. Value of the return value
     ScrHeader* scrHeader;                      // 0xac
-    ScrContentEntry* entries;                  // 0xb0
+    ScrContentEntry* prcdEntry;                // 0xb0
     ScrLblPrcd* proceduresContent;             // 0xb4
     ScrLblPrcd* labelsContent;                 // 0xb8
     ScrInstruction* instrContent;              // 0xbc
@@ -82,14 +81,16 @@ typedef struct ScrData
     void* stringsContent;                      // 0xc4
     u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
     ItfMes* itfMes;                            // 0xcc
-    u8 unkData1[0x0c];
+    s32 unk_d0;                                // 0xd0
+    s32 unk_d4;                                // 0xd4
+    s32 unk_d8;                                // 0xd8
     s32* localInt;                             // 0xdc
     f32* localFloat;                           // 0xe0
     KwlnTask* task;                            // 0xe4
     struct ScrData* prev;                      // 0xe8
     struct ScrData* next;                      // 0xec
     s32 unk_f0;                                // 0xf0
-    u8 unkData2[0x08];
+    u8 unkData1[0x08];
 } ScrData;
 
 #endif

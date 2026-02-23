@@ -46,7 +46,7 @@ u32 Scr_ExecOpCodePushi(ScrData* scr)
 
     operand = scr->instrContent[++scr->instrIdx].iOperand;
 
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
+    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
     {
         P3FES_ASSERT("scrTraceCode.c", 43);
     }
@@ -67,7 +67,7 @@ u32 Scr_ExecOpCodePushs(ScrData* scr)
 
     operand = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
 
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
+    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
     {
         P3FES_ASSERT("scrTraceCode.c", 43);
     }
@@ -88,7 +88,7 @@ u32 Scr_ExecOpCodePushf(ScrData* scr)
 
     operand = scr->instrContent[++scr->instrIdx].fOperand;
 
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
+    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
     {
         P3FES_ASSERT("scrTraceCode.c", 55);
     }
@@ -105,13 +105,13 @@ u32 Scr_ExecOpCodePushf(ScrData* scr)
 // FUN_0035c870. Push return value
 u32 Scr_ExecOpCodePushRet(ScrData* scr)
 {
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE)
+    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
     {
         P3FES_ASSERT("scrTraceCode.c", 268);
     }
 
-    scr->stackTypes[scr->stackIdx] = scr->retType;
-    scr->stackValues[scr->stackIdx].fVal = scr->retValue.fVal;
+    scr->stackTypes[scr->stackIdx] = scr->stackTypes[SCR_STACK_RET_IDX];
+    scr->stackValues[scr->stackIdx].fVal = scr->stackValues[SCR_STACK_RET_IDX].fVal;
 
     scr->stackIdx++;
     scr->instrIdx++;
@@ -245,13 +245,13 @@ char* Scr_GetStrParam(s32 paramIdx)
 // FUN_0035f060. Set 'retType' of the current script to int and set 'iVal' to 'retVal'
 void Scr_SetCurrScriptIntRetVal(s32 retVal)
 {
-    gCurrScript->retType = SCR_VALUE_TYPE_INTEGER;
-    gCurrScript->retValue.iVal = retVal;
+    gCurrScript->stackTypes[SCR_STACK_RET_IDX] = SCR_VALUE_TYPE_INTEGER;
+    gCurrScript->stackValues[SCR_STACK_RET_IDX].iVal = retVal;
 }
 
 // FUN_0035f080. Set 'retType' of the current script to float and set 'fVal' to 'retVal'
 void Scr_SetCurrScriptFloatRetVal(f32 retVal)
 {
-    gCurrScript->retType = SCR_VALUE_TYPE_FLOAT;
-    gCurrScript->retValue.fVal = retVal;
+    gCurrScript->stackTypes[SCR_STACK_RET_IDX] = SCR_VALUE_TYPE_FLOAT;
+    gCurrScript->stackValues[SCR_STACK_RET_IDX].fVal = retVal;
 }
