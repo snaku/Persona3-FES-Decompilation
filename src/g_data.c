@@ -4,15 +4,20 @@
 #include "datCalc.h"
 #include "temporary.h"
 
-// 005dc050, TODO
-const u32 playerNextExpThreshold[MAX_CHARACTER_LEVEL] = 
+// 005dc050
+static const u32 sPlayerExpThreshold[MAX_CHARACTER_LEVEL] = 
 {
-    0x14, 0x2f, 0x63, 0xb9, 0x0138, 0x01EA, 0x02D6, 0x0406
+    0, 20, 47, 99, 185, 312, 490, 726, 1030,
+    1410, 1873, 2429, 3085, 3851, 4735, 5744, 6888, 8174,
+    9612, 11210, 12975, 14917, 17043, 19363, 21885, 24616, 27566,
+    30742, 34154, 37810, 41717, 45885, 50321, 55035, 60035, 65328,
+    70924, 76830, 83056, 89610, 96499, 103733, 111319, 119267, 127585,
+    136280, 145362, 154838, // ! 005dc110 !
 };
 
 static const u16 academicLevelThreshold[6] = { 0, 20, 80, 140, 200, 260 }; // 005e3068
-static const u16 charmLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };       // 005e3078
-static const u16 courageLevelThreshold[6] = { 0, 15, 30, 45, 65, 80 };     // 005e3088
+static const u16 charmLevelThreshold[6] =    { 0, 15, 30, 45, 65, 80 };    // 005e3078
+static const u16 courageLevelThreshold[6] =  { 0, 15, 30, 45, 65, 80 };    // 005e3088
 
 // 005e4150
 static const char* physicalConditionsString[13] = 
@@ -41,7 +46,7 @@ static PlayerStatusData sPlayerStatusData;   // 00836260
 static PlayerEquipmentData sPlayerEquipData; // 0083678c
 static CalendarData sCalendarData;           // 0083679c
 PlayerPersonaData gPlayerPersonaData;        // 00836ba8
-static PersonaData sCompendium[188];         // 00836e52. Not sure of the size
+static PersonaData sCompendium[256];         // 00836e1c
 
 static u32 gGlobalFlags[176]; // 0083a21c. See 'g_flags.h' !!!
 static u32 gIUnkArr[128];     // 0083a4dc
@@ -190,9 +195,9 @@ u32 Character_GetExpUntilNextLevel(u16 characterId)
         nextExp = Persona_GetPersonaNextExp(persona);
     }
 
-    for (i = 0; i < ARRAY_SIZE(playerNextExpThreshold); i++)
+    for (i = 0; i < ARRAY_SIZE(sPlayerExpThreshold); i++)
     {
-        if (nextExp < playerNextExpThreshold[i]) break;
+        if (nextExp < sPlayerExpThreshold[i]) break;
     }
 
     if (i == MAX_CHARACTER_LEVEL)
@@ -205,7 +210,7 @@ u32 Character_GetExpUntilNextLevel(u16 characterId)
         P3FES_ASSERT("g_data.c", 876);
     }
 
-    nextExp = playerNextExpThreshold[i];
+    nextExp = sPlayerExpThreshold[i];
     nextExpTmp = sPlayerStatusData.nextExp;
 
     nextExp -= nextExpTmp;
@@ -225,9 +230,9 @@ u8 Character_DidCharacterLevelUp(u16 characterId, u32 expGain)
         sPlayerStatusData.nextExp += expGain;
         count = 0;
 
-        for (i = 0; i < ARRAY_SIZE(playerNextExpThreshold); i++)
+        for (i = 0; i < ARRAY_SIZE(sPlayerExpThreshold); i++)
         {
-            if (sPlayerStatusData.nextExp < playerNextExpThreshold[i]) break;
+            if (sPlayerStatusData.nextExp < sPlayerExpThreshold[i]) break;
             
             count++;
         }
@@ -731,22 +736,6 @@ u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx)
     // return (equpementIdx * 0x14 + characterId * 0x364 + 0x7fd6d1);
 }
 
-// FUN_0017c8c0
-PersonaData* Player_GetPersonaByCompendiumIdx(u32 idx)
-{
-    if (idx < 0 || idx > 255)
-    {
-        P3FES_ASSERT("g_data.c", 6177);
-    }
-
-    if (!(sCompendium[idx].flags & PERSONA_FLAG_VALID))
-    {
-        return NULL;
-    }
-
-    return &sCompendium[idx];
-}
-
 // FUN_00172890
 void FUN_00172890()
 {
@@ -757,6 +746,12 @@ void FUN_00172890()
 void FUN_00172e10()
 {
     // TODO
+}
+
+// FUN_00175c70
+void Compendium_Init()
+{
+    P3FES_Memset(sCompendium, 0, sizeof(sCompendium));
 }
 
 static inline u16 Inl_Character_GetSocialStatLevel(u16 point, const u16* threshold, u32 size)
@@ -785,6 +780,22 @@ u16 Character_GetCharmLevel(u16 charmPoint)
 u16 Character_GetCourageLevel(u16 couragePoint)
 {
     return Inl_Character_GetSocialStatLevel(couragePoint, courageLevelThreshold, 6);
+}
+
+// FUN_0017c8c0
+PersonaData* Compendium_GetPersonaByIdx(u32 idx)
+{
+    if (idx < 0 || idx >= 256)
+    {
+        P3FES_ASSERT("g_data.c", 6177);
+    }
+
+    if (!(sCompendium[idx].flags & PERSONA_FLAG_VALID))
+    {
+        return NULL;
+    }
+
+    return &sCompendium[idx];
 }
 
 // FUN_0017d7f0
