@@ -17,7 +17,7 @@
 struct KwlnTask;
 
 typedef void* (*KwlnTask_UpdateFunc)(struct KwlnTask* task);
-typedef void (*KwlnTask_DestroyFunc)(struct KwlnTask* task);
+typedef void  (*KwlnTask_DestroyFunc)(struct KwlnTask* task);
 
 typedef enum
 {
@@ -65,6 +65,7 @@ u32 KwlnTask_GetTaskState(KwlnTask* task);
 KwlnTask* KwlnTask_GetTaskByName(const char* name);
 u8 KwlnTask_Exists(KwlnTask* task);
 u32 KwlnTask_GetTaskTimer(KwlnTask* task);
+void KwlnTask_SetTaskData(KwlnTask* task, void* taskData);
 void* KwlnTask_GetTaskData(KwlnTask* task);
 void KwlnTask_AddChild(KwlnTask* parentTask, KwlnTask* childTask);
 void KwlnTask_DetachParent(KwlnTask* childTask);

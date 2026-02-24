@@ -815,6 +815,12 @@ u32 KwlnTask_GetTaskTimer(KwlnTask* task)
     return task->taskTimer;
 }
 
+// FUN_00195530
+void KwlnTask_SetTaskData(KwlnTask* task, void* taskData)
+{
+    task->taskData = taskData;
+}
+
 // FUN_00195540
 void* KwlnTask_GetTaskData(KwlnTask* task)
 {
