@@ -49,7 +49,7 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
         scr->scrName[i] = prcd->name[i];
     }
 
-    scr->instrIdx = prcdIdx;
+    scr->instrIdx = prcd[prcdIdx].offset;
     scr->stackIdx = 0;
     for (i = 0; i < SCR_MAX_STACK_SIZE; i++)
     {
@@ -68,7 +68,7 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
     scr->itfMes = (ItfMes*)-1;
     scr->unk_d0 = 0;
     scr->unk_d4 = 0;
-    scr->unk_d8 = 0;
+    scr->scriptMemory = NULL;
     scr->localInt = NULL;
     scr->localFloat = NULL;
     scr->task = NULL;
@@ -207,7 +207,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
     return NULL;
 }
 
-// FUN_0035bb40
+// FUN_0035bb40. Create a script task by a script header
 KwlnTask* Scr_CreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
 {
     ScrData* scr;
@@ -218,6 +218,38 @@ KwlnTask* Scr_CreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
     {
         P3FES_ASSERT("scrScriptProcess.c", 666);
     }
+
+    scrTask = ScrTask_Init(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
+                           Scr_UpdateTask, Scr_DestroyTask, scr);
+    
+    if (scrTask == NULL)
+    {
+        P3FES_ASSERT("scrScriptProcess.c", 395);
+    }
+
+    scr->task = scrTask;
+
+    return scrTask;
+}
+
+// FUN_0035bc00. Create a script task by an already loaded '.BF' file in memory and copy it
+KwlnTask* Scr_CreateTaskFromScriptCopy(u32 priority, void* baseScript, u32 scriptSize, u32 prcdIdx)
+{
+    void* script;
+    ScrData* scr;
+    KwlnTask* scrTask;
+
+    script = (void*)H_Malloc(scriptSize);
+    P3FES_Memset(script, 0, scriptSize);
+    P3FES_Memcpy(script, baseScript, scriptSize);
+
+    scr = Scr_StartScript2((ScrHeader*)script, prcdIdx);
+    if (scr == NULL)
+    {
+        P3FES_ASSERT("scrScriptProcess.c", 704);
+    }
+
+    scr->scriptMemory = script;
 
     scrTask = ScrTask_Init(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
                            Scr_UpdateTask, Scr_DestroyTask, scr);
