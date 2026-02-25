@@ -9,7 +9,8 @@
 // ?? bytes
 typedef struct BmdHeader
 {
-    u8 unkData1[0x08];
+    u8 unkData1[0x04];
+    u32 size;          // size in bytes
     u32 magic;         // See 'SCR_MSG_HEADER_MAGIC0' and 'SCR_MSG_HEADER_MAGIC1'
 } BmdHeader;
 
