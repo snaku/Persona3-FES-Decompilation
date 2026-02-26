@@ -4,15 +4,15 @@
 u8 ItfMesMng_CheckBmdHeaderMagic(BmdHeader* bmdHeader);
 
 // FUN_003a2d80
-ItfMes* ItfMesMng_Initialize(BmdHeader* bmdHeader)
+s32 ItfMesMng_Initialize(BmdHeader* bmdHeader)
 {
     // TODO
 
-    return NULL;
+    return 0;
 }
 
 // FUN_003a4990
-void ItfMesMng_ChangeWindowType(ItfMes* itfMes, u16 type, u32 param_3)
+void ItfMesMng_ChangeWindowType(s32 mesHandleIdx, u16 type, u32 param_3)
 {
     // TODO
 }

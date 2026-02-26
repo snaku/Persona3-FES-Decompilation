@@ -9,7 +9,6 @@
 
 typedef struct KwlnTask KwlnTask;
 typedef struct BmdHeader BmdHeader;
-typedef struct ItfMes ItfMes;
 
 // 16 bytes
 typedef struct
@@ -80,7 +79,7 @@ typedef struct ScrData
     BmdHeader* msgContentHeader;               // 0xc0
     void* stringsContent;                      // 0xc4
     u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
-    ItfMes* itfMes;                            // 0xcc
+    s32 mesHandleIdx;                          // 0xcc
     s32 unk_d0;                                // 0xd0
     s32 unk_d4;                                // 0xd4
     void* scriptMemory;                        // 0xd8

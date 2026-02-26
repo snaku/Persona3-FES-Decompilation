@@ -21,7 +21,7 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
                          void* strings, s32 prcdIdx)
 {
     ScrData* scr;
-    ItfMes* itfMes;
+    s32 mesHandleIdx;
     s32 i;
     char* prcdName;
 
@@ -65,7 +65,7 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
     scr->msgContentHeader = msg;
     scr->stringsContent = strings;
     scr->prcdIdx = prcdIdx;
-    scr->itfMes = (ItfMes*)-1;
+    scr->mesHandleIdx = -1;
     scr->unk_d0 = 0;
     scr->unk_d4 = 0;
     scr->scriptMemory = NULL;
@@ -114,10 +114,10 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
 
     if (msg != NULL)
     {
-        itfMes = ItfMesMng_Initialize(msg);
-        scr->itfMes = itfMes;
+        mesHandleIdx = ItfMesMng_Initialize(msg);
+        scr->mesHandleIdx = mesHandleIdx;
 
-        ItfMesMng_ChangeWindowType(itfMes, 4, 0);
+        ItfMesMng_ChangeWindowType(mesHandleIdx, 4, 0);
     }
 
     if (sScrHead == NULL)
