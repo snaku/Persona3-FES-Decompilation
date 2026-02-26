@@ -264,10 +264,24 @@ KwlnTask* Scr_CreateTaskFromScriptCopy(u32 priority, void* baseScript, u32 scrip
     return scrTask;
 }
 
+// FUN_0035be30
+void Scr_Destroy(ScrData* scr)
+{
+    // TODO
+}
+
 // FUN_0035c200
 void Scr_DestroyTask(KwlnTask* scrTask)
 {
-    // TODO
+    ScrData* scr;
+
+    scr = ScrTask_GetData(scrTask);
+    if (scr != NULL)
+    {
+        Scr_Destroy(scr);
+    }
+
+    ScrTask_SetData(scrTask, NULL);
 }
 
 // FUN_0035c270
