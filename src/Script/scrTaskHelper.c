@@ -13,3 +13,9 @@ ScrData* ScrTask_GetData(KwlnTask* scrTask)
 {
     return (ScrData*)KwlnTask_GetTaskData(scrTask);
 }
+
+// FUN_0035ae30
+void ScrTask_SetData(KwlnTask* scrTask, ScrData* scr)
+{
+    KwlnTask_SetTaskData(scrTask, (void*)scr);
+}
