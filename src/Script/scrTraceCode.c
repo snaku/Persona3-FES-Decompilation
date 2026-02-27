@@ -255,3 +255,18 @@ void Scr_SetCurrScriptFloatRetVal(f32 retVal)
     gCurrScript->stackTypes[SCR_STACK_RET_IDX] = SCR_VALUE_TYPE_FLOAT;
     gCurrScript->stackValues[SCR_STACK_RET_IDX].fVal = retVal;
 }
+
+// FUN_0035f0a0
+u32 Scr_GetCurrScriptLabelOffset(s32 lblIdx)
+{
+    if (lblIdx < 0)
+    {
+        P3FES_ASSERT("scrTraceCode.c", 1067);
+    }
+    if (gCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount <= lblIdx)
+    {
+        P3FES_ASSERT("scrTraceCode.c", 1068);
+    }
+
+    return gCurrScript->labelsContent[lblIdx].offset;
+}

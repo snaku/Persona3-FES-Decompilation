@@ -9,5 +9,6 @@ f32 Scr_GetFloatParam(s32 paramIdx);
 char* Scr_GetStrParam(s32 paramIdx);
 void Scr_SetCurrScriptIntRetVal(s32 retVal);
 void Scr_SetCurrScriptFloatRetVal(f32 retVal);
+u32 Scr_GetCurrScriptLabelOffset(s32 lblIdx);
 
 #endif
