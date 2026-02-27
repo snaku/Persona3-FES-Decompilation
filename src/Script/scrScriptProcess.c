@@ -267,7 +267,57 @@ KwlnTask* Scr_CreateTaskFromScriptCopy(u32 priority, void* baseScript, u32 scrip
 // FUN_0035be30
 void Scr_Destroy(ScrData* scr)
 {
-    // TODO
+    P3FES_LOG3(scr->proceduresContent[scr->prcdIdx].name);
+    P3FES_LOG3("end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
+    P3FES_LOG1("procedure end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
+
+    if (scr->localInt != NULL)
+    {
+        H_Free((uintptr_t)scr->localInt);
+        P3FES_LOG3("free local int  memory\n");
+    }
+
+    if (scr->localFloat != NULL)
+    {
+        H_Free((uintptr_t)scr->localFloat);
+        P3FES_LOG3("free local float  memory\n");
+    }
+
+    if (scr->mesHandleIdx >= 0)
+    {
+        ItfMesMng_DestroyHandle(scr->mesHandleIdx);
+        P3FES_LOG3("free message handle\n");
+    }
+
+    if (scr->scriptMemory != NULL)
+    {
+        H_Free((uintptr_t)scr->scriptMemory);
+        P3FES_LOG3("free script memory\n");
+    }
+
+    if (sScrHead == scr)
+    {
+        sScrHead = scr->next;
+    }
+    else 
+    {
+        scr->prev->next = scr->next;
+    }
+
+    if (sScrTail == scr)
+    {
+        sScrTail = scr->prev;
+    }
+    else
+    {
+        scr->next->prev = scr->prev;
+    }
+
+    scr->prev = NULL;
+    scr->next = NULL;
+    sScrNum--;
+
+    H_Free((uintptr_t)scr);
 }
 
 // FUN_0035c200
