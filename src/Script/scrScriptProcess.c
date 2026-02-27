@@ -15,7 +15,7 @@ void Scr_DestroyTask(KwlnTask* scrTask);
 void* Scr_UpdateTask(KwlnTask* scrTask);
 
 // FUN_0035b570
-ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
+ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
                          ScrLblPrcd* prcd, ScrLblPrcd* labels, 
                          ScrInstruction* instr, BmdHeader* msg, 
                          void* strings, s32 prcdIdx)
@@ -25,13 +25,13 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
     s32 i;
     char* prcdName;
 
-    if (header == NULL || prcdEntry == NULL || prcd == NULL || instr == NULL)
+    if (header == NULL || entries == NULL || prcd == NULL || instr == NULL)
     {
         FUN_0019d400("scrStartScript(..) invalid script!!\n", "scrScriptProcess.c", 155);
         return NULL;
     }
 
-    if (prcdIdx < 0 || prcdEntry->elementCount <= prcdIdx)
+    if (prcdIdx < 0 || entries[SCR_CONTENT_TYPE_PROCEDURE].elementCount <= prcdIdx)
     {
         FUN_0019d400("scrStartScript(..) invalid start procedure!!\n", "scrScriptProcess.c", 159);
         return NULL;
@@ -58,7 +58,7 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
     }
 
     scr->scrHeader = header;
-    scr->prcdEntry = prcdEntry;
+    scr->entries = entries;
     scr->proceduresContent = prcd;
     scr->labelsContent = labels;
     scr->instrContent = instr;
@@ -196,7 +196,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
             }
         }
 
-        return Scr_StartScript(header, &header->entries[SCR_CONTENT_TYPE_PROCEDURE],
+        return Scr_StartScript(header, header->entries,
                               (ScrLblPrcd*)prcdAddr, (ScrLblPrcd*)labelsAddr, 
                               (ScrInstruction*)instrAddr, (BmdHeader*)msgAddr,
                               (void*)stringsAddr, prcdIdx);

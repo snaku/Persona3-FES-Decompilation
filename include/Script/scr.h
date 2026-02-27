@@ -72,7 +72,7 @@ typedef struct ScrData
     s8 stackTypes[SCR_MAX_STACK_SIZE];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
     ScrValues stackValues[SCR_MAX_STACK_SIZE]; // 0x3c. Values of each variables in the stack
     ScrHeader* scrHeader;                      // 0xac
-    ScrContentEntry* prcdEntry;                // 0xb0
+    ScrContentEntry* entries;                  // 0xb0
     ScrLblPrcd* proceduresContent;             // 0xb4
     ScrLblPrcd* labelsContent;                 // 0xb8
     ScrInstruction* instrContent;              // 0xbc
