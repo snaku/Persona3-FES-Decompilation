@@ -186,7 +186,7 @@ typedef struct
 typedef struct
 {
     u16 equippedPersona;      // 0 to 11
-    PersonaData personas[12]; // start: 00836ba8
+    PersonaData personas[12];
 } PlayerPersonaData;
 
 typedef struct
@@ -266,10 +266,10 @@ u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx);
 void Compendium_Init();
 u16 Player_GetActiveSocialLink();
 u8 Player_GetSocialLinkLevel(u16 socialLink);
-PersonaData* Compendium_GetPersonaByIdx(u32 idx);
+PersonaData* Compendium_GetPersonaByIdx(s32 idx);
 
 void P3FES_ASSERT(const char* file, const u32 line);
-void P3FES_LOG1(const char* fmt, ...);
-void P3FES_LOG3(const char* fmt, ...);
+void FUN_001052b0(const char* fmt, ...);
+void FUN_005225a8(const char* fmt, ...);
 
 #endif // G_DATA_H

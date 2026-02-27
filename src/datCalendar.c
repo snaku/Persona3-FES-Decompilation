@@ -277,7 +277,7 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
 
     if (range == 0)
     {
-        P3FES_LOG1("Calender chk range is 0");
+        FUN_001052b0("Calender chk range is 0");
         return false;
     }
 

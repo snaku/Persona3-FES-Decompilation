@@ -202,7 +202,7 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
 // FUN_001757f0
 void Persona_ClearHeroPersonas()
 {
-    P3FES_Memset(gPlayerPersonaData.personas, 0, sizeof(gPlayerPersonaData.personas));
+    memset(gPlayerPersonaData.personas, 0, sizeof(gPlayerPersonaData.personas));
 }
 
 // FUN_001764b0

@@ -10,10 +10,12 @@
 // FUN_00299e90
 BattleActor* BtlRoot_CreateActor()
 {
+    // !! TODO !!
+
     BattleActor* btlActor;
 
     btlActor = RW_MALLOC(sizeof(BattleActor), 0x40000);
-    P3FES_Memset(btlActor, 0, sizeof(BattleActor));
+    memset(btlActor, 0, sizeof(BattleActor));
 
     // FUN_002d1570(btlActor + 0x38);
 

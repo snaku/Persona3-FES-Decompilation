@@ -22,7 +22,7 @@ typedef struct ScrData ScrData;
 typedef struct RwCamera RwCamera;
 
 void FUN_0019d400(const char* param_1, const char* file, u32 line);
-void* P3FES_Memcpy(void* dst, void* src, u32 size);
-void* P3FES_Memset(void* dst, u8 value, u32 size);
+void* memcpy(void* dst, void* src, u32 size);
+void* memset(void* dst, u8 value, u32 size);
 
 #endif

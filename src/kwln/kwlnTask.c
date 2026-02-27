@@ -309,7 +309,7 @@ void KwlnTask_Destroy(KwlnTask* task)
     {
         case KWLN_TASK_STATE_DESTROY: return;
         case KWLN_TASK_STATE_NULL: 
-            P3FES_LOG3("Process stat Invalid!!\n");
+            FUN_005225a8("Process stat Invalid!!\n");
             P3FES_ASSERT("kwlnTask.c", 574);
             break;
         case KWLN_TASK_STATE_CREATED: // fallthrough
@@ -675,7 +675,7 @@ u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task)
                 case KWLN_TASK_STATE_DESTROY: break;
                 case KWLN_TASK_STATE_NULL: // fallthrough
                 default: 
-                    P3FES_LOG3("Process stat Invalid!!\n");
+                    FUN_005225a8("Process stat Invalid!!\n");
                     P3FES_ASSERT("kwlnTask.c", 574);
                     break;
             }
@@ -723,7 +723,7 @@ u32 KwlnTask_GetTaskState(KwlnTask* task)
         case KWLN_TASK_STATE_NULL:    return state;
     }
 
-    P3FES_LOG3("Process stat Invalid!!\n");
+    FUN_005225a8("Process stat Invalid!!\n");
     P3FES_ASSERT("kwlnTask.c", 1286);
     return KWLN_TASK_STATE_NULL;
 }

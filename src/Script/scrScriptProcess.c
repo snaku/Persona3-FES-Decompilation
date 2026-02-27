@@ -137,9 +137,9 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* prcdEntry,
     sScrNum++;
 
     prcdName = prcd->name;
-    P3FES_LOG3("procedure start <%s>\n", prcdName);
-    P3FES_LOG3("start <%s>\n", prcdName);
-    P3FES_LOG1("procedure start <%s>\n", prcdName);
+    FUN_005225a8("procedure start <%s>\n", prcdName);
+    FUN_005225a8("start <%s>\n", prcdName);
+    FUN_001052b0("procedure start <%s>\n", prcdName);
 
     return scr;
 }
@@ -240,8 +240,8 @@ KwlnTask* Scr_CreateTaskFromScriptCopy(u32 priority, void* baseScript, u32 scrip
     KwlnTask* scrTask;
 
     script = (void*)H_Malloc(scriptSize);
-    P3FES_Memset(script, 0, scriptSize);
-    P3FES_Memcpy(script, baseScript, scriptSize);
+    memset(script, 0, scriptSize);
+    memcpy(script, baseScript, scriptSize);
 
     scr = Scr_StartScript2((ScrHeader*)script, prcdIdx);
     if (scr == NULL)
@@ -267,32 +267,32 @@ KwlnTask* Scr_CreateTaskFromScriptCopy(u32 priority, void* baseScript, u32 scrip
 // FUN_0035be30
 void Scr_Destroy(ScrData* scr)
 {
-    P3FES_LOG3(scr->proceduresContent[scr->prcdIdx].name);
-    P3FES_LOG3("end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
-    P3FES_LOG1("procedure end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
+    FUN_005225a8(scr->proceduresContent[scr->prcdIdx].name);
+    FUN_005225a8("end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
+    FUN_001052b0("procedure end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
 
     if (scr->localInt != NULL)
     {
         H_Free((uintptr_t)scr->localInt);
-        P3FES_LOG3("free local int  memory\n");
+        FUN_005225a8("free local int  memory\n");
     }
 
     if (scr->localFloat != NULL)
     {
         H_Free((uintptr_t)scr->localFloat);
-        P3FES_LOG3("free local float  memory\n");
+        FUN_005225a8("free local float  memory\n");
     }
 
     if (scr->mesHandleIdx >= 0)
     {
         ItfMesMng_DestroyHandle(scr->mesHandleIdx);
-        P3FES_LOG3("free message handle\n");
+        FUN_005225a8("free message handle\n");
     }
 
     if (scr->scriptMemory != NULL)
     {
         H_Free((uintptr_t)scr->scriptMemory);
-        P3FES_LOG3("free script memory\n");
+        FUN_005225a8("free script memory\n");
     }
 
     if (sScrHead == scr)

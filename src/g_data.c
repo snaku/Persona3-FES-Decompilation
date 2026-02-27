@@ -103,7 +103,7 @@ void Character_InitUnitData(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        P3FES_Memset(&sPlayerUnit, 0, sizeof(UnitData));
+        memset(&sPlayerUnit, 0, sizeof(UnitData));
 
         sPlayerUnit.status.aiTactic = AI_TACTIC_ACT_FREELY;
         sPlayerUnit.id = CHARACTER_HERO;
@@ -112,7 +112,7 @@ void Character_InitUnitData(u16 characterId)
         return;
     }
 
-    P3FES_Memset(&gCharacters[characterId], 0, sizeof(UnitData));
+    memset(&gCharacters[characterId], 0, sizeof(UnitData));
 
     gCharacters[characterId].unit.id = characterId;
     gCharacters[characterId].unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
@@ -660,7 +660,7 @@ void Global_SetGlobalFlag(u32 bit, u8 enabled)
 
     if (bit == 4982)
     {
-        P3FES_LOG3("hit \n");
+        FUN_005225a8("hit \n");
     }
 
     idx = bit >> 5;
@@ -751,7 +751,7 @@ void FUN_00172e10()
 // FUN_00175c70
 void Compendium_Init()
 {
-    P3FES_Memset(sCompendium, 0, sizeof(sCompendium));
+    memset(sCompendium, 0, sizeof(sCompendium));
 }
 
 static inline u16 Inl_Character_GetSocialStatLevel(u16 point, const u16* threshold, u32 size)
@@ -783,7 +783,7 @@ u16 Character_GetCourageLevel(u16 couragePoint)
 }
 
 // FUN_0017c8c0
-PersonaData* Compendium_GetPersonaByIdx(u32 idx)
+PersonaData* Compendium_GetPersonaByIdx(s32 idx)
 {
     if (idx < 0 || idx >= 256)
     {
@@ -823,13 +823,13 @@ void P3FES_ASSERT(const char* file, const u32 line)
 }
 
 // FUN_001052b0
-void P3FES_LOG1(const char* fmt, ...)
+void FUN_001052b0(const char* fmt, ...)
 {
     // ...
 }
 
 // FUN_005225a8
-void P3FES_LOG3(const char* fmt, ...)
+void FUN_005225a8(const char* fmt, ...)
 {
     // ...
 }

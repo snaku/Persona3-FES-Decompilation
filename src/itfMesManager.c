@@ -11,6 +11,12 @@ s32 ItfMesMng_Initialize(BmdHeader* bmdHeader)
     return 0;
 }
 
+// FUN_003a3060
+void ItfMesMng_DestroyHandle(s32 mesHandleIdx)
+{
+    // TODO
+}
+
 // FUN_003a4990
 void ItfMesMng_ChangeWindowType(s32 mesHandleIdx, u16 type, u32 param_3)
 {

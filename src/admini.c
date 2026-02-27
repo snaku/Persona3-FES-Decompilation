@@ -78,7 +78,7 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotResto
             P3FES_ASSERT("admini.c", 93);
         }
 
-        P3FES_Memcpy(admini->taskData, taskData, taskDataSize);
+        memcpy(admini->taskData, taskData, taskDataSize);
         admini->taskDataSize = taskDataSize;
     }
 
@@ -282,7 +282,7 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
         if (admini->oldTaskIds[admini->oldTaskIdx] >= ADMINI_TASK_ID_NULL &&
            (admini->oldTasksFlags[admini->oldTaskIdx] & ADMINI_FLAG_CHANGING_TASK))
         {
-            P3FES_LOG3("restore sequence!!\n");
+            FUN_005225a8("restore sequence!!\n");
 
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_RESTORE_PREV);
@@ -375,13 +375,13 @@ KwlnTask* Admini_CreateTask()
 // FUN_0027c9e0
 void Admini_TestCall(u8 isRestored, void* taskData)
 {
-    P3FES_LOG3("+++ call\n");
+    FUN_005225a8("+++ call\n");
 }
 
 // FUN_0027ca10
 s32 Admini_TestExit()
 {
-    P3FES_LOG3("+++ exit\n");
+    FUN_005225a8("+++ exit\n");
 
     return 0;
 }
@@ -389,7 +389,7 @@ s32 Admini_TestExit()
 // FUN_0027ca40
 u8 Admini_TestCheck()
 {
-    P3FES_LOG3("+++ check\n");
+    FUN_005225a8("+++ check\n");
 
     return true;
 }

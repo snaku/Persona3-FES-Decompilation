@@ -3,7 +3,7 @@
 const f32 PI = 3.141592f;
 
 // FUN_00521250
-void* P3FES_Memcpy(void* dst, void* src, u32 size)
+void* memcpy(void* dst, void* src, u32 size)
 {
     // TODO
 
@@ -11,7 +11,7 @@ void* P3FES_Memcpy(void* dst, void* src, u32 size)
 }
 
 // FUN_00521408
-void* P3FES_Memset(void* dst, u8 value, u32 size)
+void* memset(void* dst, u8 value, u32 size)
 {
     // TODO
 
