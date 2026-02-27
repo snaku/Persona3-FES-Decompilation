@@ -185,7 +185,7 @@ typedef struct
 
 typedef struct
 {
-    u16 equippedPersona;      // 0 to 11
+    s16 equippedPersona;      // 0 to 11
     PersonaData personas[12];
 } PlayerPersonaData;
 
@@ -263,6 +263,7 @@ void Global_SetGlobalFlag(u32 bit, u8 enabled);
 void Global_ResetGlobalFlags();
 u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx);
 u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx);
+void Character_InitPersona(u32 characterId);
 void Compendium_Init();
 u16 Player_GetActiveSocialLink();
 u8 Player_GetSocialLinkLevel(u16 socialLink);

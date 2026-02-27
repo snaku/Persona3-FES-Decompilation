@@ -748,6 +748,19 @@ void FUN_00172e10()
     // TODO
 }
 
+void Character_InitPersona(u32 characterId)
+{
+    if (IS_HERO(characterId))
+    {
+        gPlayerPersonaData.equippedPersona = -1;
+        memset(gPlayerPersonaData.personas, 0, sizeof(gPlayerPersonaData.personas));
+
+        return;
+    }
+
+    memset(&gCharacters[characterId].persona, 0, sizeof(PersonaData));
+}
+
 // FUN_00175c70
 void Compendium_Init()
 {
