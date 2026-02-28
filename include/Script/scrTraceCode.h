@@ -3,6 +3,8 @@
 
 #include "Utils.h"
 
+typedef struct ScrData ScrData;
+
 u32 Scr_ExecOpCode(ScrData* scr);
 s32 Scr_GetIntParam(s32 paramIdx);
 f32 Scr_GetFloatParam(s32 paramIdx);
