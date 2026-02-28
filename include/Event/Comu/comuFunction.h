@@ -1,19 +1,7 @@
-#ifndef MT_EVTSITEIBI_H
-#define MT_EVTSITEIBI_H
+#ifndef COMUFUNCTION_H
+#define COMUFUNCTION_H
 
 #include "Utils.h"
-
-// 'Siteibi' is maybe a typo.
-// It should be 'Shiteibi' which means 'fixed date' in japanese 
-// so SiteibiEvent = FixedDateEvent
-
-// To use for a 'SiteibiEvent' array
-typedef enum
-{
-    EVENT_SITEIBI_GAME_MODE,
-    EVENT_SITEIBI_INTRO_ANIME_CS, 
-    // TODO
-} EventSiteibiIdx;
 
 // 24 bytes
 typedef struct SiteibiEvent
