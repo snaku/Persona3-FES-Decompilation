@@ -259,6 +259,7 @@ void CalendarData_SetTime(u8 time);
 void CalendarData_SetDaysSkipTarget(u16 days);
 void CalendarData_SetTimeSkipTarget(u8 time);
 void CalendarData_SetSkipToTarget(u32 val);
+u8 Global_CheckGlobalFlag(u32 bit);
 void Global_SetGlobalFlag(u32 bit, u8 enabled);
 void Global_ResetGlobalFlags();
 u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx);

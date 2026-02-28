@@ -645,6 +645,14 @@ void CalendarData_SetSkipToTarget(u32 val)
     sCalendarData.skipToTarget = val;
 }
 
+// FUN_0016f190
+u8 Global_CheckGlobalFlag(u32 bit)
+{
+    // TODO
+
+    return false;
+}
+
 // FUN_0016f1f0. See 'g_flags.h' !!!
 void Global_SetGlobalFlag(u32 bit, u8 enabled)
 {

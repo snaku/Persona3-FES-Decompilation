@@ -1,6 +1,7 @@
 #include "kwln/kwlnTask.h"
 #include "rw/rwcore.h"
 #include "Script/scrTraceCode.h"
+#include "Event/Comu/comuFunction.h"
 #include "g_data.h"
 #include "temporary.h"
 #include "h_sfdply.h"
@@ -85,6 +86,8 @@ static const u8 daysMoonPhases[] =
 };
 
 static KwlnTask* sClndTask; // 007cdfec. Task name = "CalenderDraw"
+
+s32 Calendar_FindAndExecSiteibiEvents();
 
 // FUN_0017d830
 u32 Calendar_GetMonthFromDaysSinceApr5(u16 daysSinceApr5)
@@ -332,6 +335,83 @@ KwlnTask* Calendar_CreateTask()
     H_SfdPlay_CreateTask(clndTask);
 
     return clndTask;
+}
+
+// FUN_00181720. Check if a siteibi event can be executed. If found, return its index. Return -1 if no event was found
+s32 Calendar_FindAndExecSiteibiEvents()
+{
+    SiteibiEventTable* siteibiTable;
+    u32 i;
+    u32 daysSinceApr5;
+    u32 month;
+    u32 dayOfMonth;
+    u8 time;
+    u8 foundEvt;
+    u16 slLvl;
+
+    siteibiTable = Comu_GetSiteibiEvtTable();
+    for (i = 0; i < siteibiTable->total; i++)
+    {
+        daysSinceApr5 = CalendarData_GetDaysSinceApr5();
+        month = Calendar_GetMonthFromDaysSinceApr5(daysSinceApr5);
+
+        if (siteibiTable->events[i].startMonth == month)
+        {
+            daysSinceApr5 = CalendarData_GetDaysSinceApr5();
+            dayOfMonth = Calendar_GetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
+
+            if (siteibiTable->events[i].startDay == dayOfMonth)
+            {
+                time = CalendarData_GetTime();
+
+                if (siteibiTable->events[i].startTime == time)
+                {
+                    foundEvt = true;
+
+                    if (siteibiTable->events[i].gflagReqOn1 != 0 &&
+                       (!Global_CheckGlobalFlag(siteibiTable->events[i].gflagReqOn1)))
+                    {
+                        foundEvt = false;
+                    }
+                    if (siteibiTable->events[i].gflagReqOn2 != 0 &&
+                       (!Global_CheckGlobalFlag(siteibiTable->events[i].gflagReqOn2)))
+                    {
+                        foundEvt = false;
+                    }
+                    if (siteibiTable->events[i].gflagReqOff1 != 0 &&
+                       (Global_CheckGlobalFlag(siteibiTable->events[i].gflagReqOff1)))
+                    {
+                        foundEvt = false;
+                    }
+                    if (siteibiTable->events[i].gflagReqOff2 != 0 &&
+                       (Global_CheckGlobalFlag(siteibiTable->events[i].gflagReqOff2)))
+                    {
+                        foundEvt = false;
+                    }
+
+                    if (siteibiTable->events[i].slID != SOCIAL_LINK_NONE)
+                    {
+                        slLvl = Player_GetSocialLinkLevel(siteibiTable->events[i].slID);
+                        if (slLvl < siteibiTable->events[i].slLvlReq)
+                        {
+                            foundEvt = false;
+                        }
+                    }
+
+                    if (foundEvt)
+                    {
+                        FUN_005225a8("## EXEC EVENT = %d ##\n", i);
+
+                        Global_SetGlobalFlag(siteibiTable->events[i].gflagToActivate, true);
+                        return i;
+                    }
+                }
+            }
+        }
+    }
+
+    FUN_005225a8("## NO EVENT ##\n");
+    return -1;
 }
 
 // FUN_00181b10
