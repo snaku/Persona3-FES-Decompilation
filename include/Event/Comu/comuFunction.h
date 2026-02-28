@@ -24,4 +24,12 @@ typedef struct SiteibiEvent
     u16 gflagToActivate; // 0x16. 'G_FLAG_*' that the event needs to activate
 } SiteibiEvent;
 
+typedef struct
+{
+    SiteibiEvent* events;
+    u32 total;
+} SiteibiEventTable;
+
+SiteibiEventTable* Comu_GetSiteibiEvtTable();
+
 #endif
