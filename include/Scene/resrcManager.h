@@ -9,4 +9,6 @@ typedef struct
     u8 unkData[0x58];
 } ResManager;
 
+ResManager* ResManager_Create();
+
 #endif
