@@ -13,4 +13,6 @@ typedef struct
 
 extern Mt_Scene* gMtScene;
 
+Mt_Scene* Mt_Scene_GetScene();
+
 #endif
