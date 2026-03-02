@@ -1,10 +1,22 @@
 #include "Scene/mt_scene.h"
+#include "Scene/resrcManager.h"
 
-static Mt_Scene sMtScene;       // 0095afc0
-Mt_Scene* gMtScene = &sMtScene; // 007cd540
+static MtScene sMtScene;       // 0095afc0
+MtScene* gMtScene = &sMtScene; // 007cd540
 
 // FUN_003b5cf0
-Mt_Scene* Mt_Scene_GetScene()
+MtScene* MtScene_GetScene()
 {
     return gMtScene;
+}
+
+// FUN_003b5430
+Resource* MtScene_GetResList(u32 resType)
+{
+    if (gMtScene->resManager == NULL)
+    {
+        return NULL;
+    }
+
+    return ResManager_GetList(gMtScene->resManager, resType);
 }

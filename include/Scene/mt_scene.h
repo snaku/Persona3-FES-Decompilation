@@ -4,6 +4,7 @@
 #include "Utils.h"
 
 typedef struct ResManager ResManager;
+typedef struct Resource Resource;
 
 // 40 bytes ? Not sure
 typedef struct
@@ -12,10 +13,11 @@ typedef struct
     s32 fldMinorId;         // 0x04
     ResManager* resManager; // 0x08
     u8 unkData[0x1c];
-} Mt_Scene;
+} MtScene;
 
-extern Mt_Scene* gMtScene;
+extern MtScene* gMtScene;
 
-Mt_Scene* Mt_Scene_GetScene();
+MtScene* MtScene_GetScene();
+Resource* MtScene_GetResList(u32 resType);
 
 #endif
