@@ -3,7 +3,7 @@
 #include "temporary.h"
 
 // FUN_003b4fc0
-ResManager* ResManager_Create()
+ResManager* ResManager_Init()
 {
     ResManager* resMgr;
 
