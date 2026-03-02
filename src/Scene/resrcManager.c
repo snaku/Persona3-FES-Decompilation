@@ -12,3 +12,14 @@ ResManager* ResManager_Init()
     
     return resMgr;
 }
+
+// FUN_003b5430. Return the head of a list of a resource type
+Resource* ResManager_GetList(ResManager* resManager, u8 resType)
+{
+    if (resType >= RES_TYPE_MAX)
+    {
+        return NULL;
+    }
+
+    return resManager->resLists[resType];
+}

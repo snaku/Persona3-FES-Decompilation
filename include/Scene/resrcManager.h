@@ -26,5 +26,6 @@ typedef struct ResManager
 } ResManager;
 
 ResManager* ResManager_Init();
+Resource* ResManager_GetList(ResManager* resManager, u8 resType);
 
 #endif
