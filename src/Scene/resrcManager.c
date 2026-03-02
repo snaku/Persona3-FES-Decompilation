@@ -13,6 +13,12 @@ ResManager* ResManager_Init()
     return resMgr;
 }
 
+// FUN_003b5360
+void ResManager_DestroyRes(ResManager* resManager, Resource* res)
+{
+    // TODO
+}
+
 // FUN_003b5430. Return the head of a list of a resource type
 Resource* ResManager_GetList(ResManager* resManager, u8 resType)
 {
@@ -22,4 +28,28 @@ Resource* ResManager_GetList(ResManager* resManager, u8 resType)
     }
 
     return resManager->resLists[resType];
+}
+
+// FUN_003b5020
+void ResManager_Destroy(ResManager* resManager)
+{
+    s32 i;
+    Resource* currList;
+
+    if (resManager != NULL)
+    {
+        for (i = 0; i < RES_TYPE_MAX; i++)
+        {
+            currList = ResManager_GetList(resManager, i);
+
+            while (currList != NULL)
+            {
+                ResManager_DestroyRes(resManager, currList);
+
+                currList = ResManager_GetList(resManager, i);
+            }
+        }
+
+        RW_FREE(resManager);
+    }
 }
