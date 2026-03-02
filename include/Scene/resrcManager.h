@@ -3,10 +3,15 @@
 
 #include "Utils.h"
 
+typedef struct KwlnTask KwlnTask;
+
+#define RES_TYPE_MASK 0xffc00
+#define RES_GET_TYPE(resTypeId) (((resTypeId) & RES_TYPE_MASK) >> 10)
+
 typedef enum
 {
     // TODO
-
+    RES_TYPE_DYNAMODEL = 1,
     RES_TYPE_MAX = 22
 } ResourceType;
 
@@ -18,6 +23,16 @@ typedef struct Resource
     struct Resource* next; // 0xf8
     struct Resource* prev; // 0xfc
 } Resource;
+
+// 496 bytes. Resource for a dynamic model
+typedef struct ResDynaModel
+{
+    Resource base;                 // 0x00
+    u8 unkData1[0xe0];
+    KwlnTask* colliCtlTask;        // 0x1e0
+    KwlnTask* renderTexShadowTask; // 0x1e4
+    u8 unkData[0x08];
+} ResDynaModel;
 
 // 88 bytes
 typedef struct ResManager
