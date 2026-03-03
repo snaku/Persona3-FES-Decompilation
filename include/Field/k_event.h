@@ -3,6 +3,8 @@
 
 #include "Utils.h"
 
+typedef struct ResourceNpc ResourceNpc;
+
 typedef enum
 {
     // TODO
@@ -23,11 +25,13 @@ typedef struct FieldDrawCmd
 // 288 bytes
 typedef struct FieldEvent
 {
-    u32 eventType;         // 0x00
-    u8 unkData1[0x58];
-    KwlnTask* drawCmdTask; // 0x5c
-    KwlnTask* objScrTask;  // 0x60. Ptr to the script's task of the object the player is currently interacting
-    u8 unkData2[0xbc];
+    u32 eventType;                // 0x00
+    u8 unkData1[0x18];
+    ResourceNpc* interactableNpc; // 0x1c. Npc the player can currently interact with (in FOV and nearby)
+    u8 unkData2[0x3c];
+    KwlnTask* drawCmdTask;        // 0x5c
+    KwlnTask* objScrTask;         // 0x60. Script task of the object the player is currently interacting
+    u8 unkData3[0xbc];
 } FieldEvent;
 
 KwlnTask* FldEvent_CreateTasks(KwlnTask* fldRootTask);
