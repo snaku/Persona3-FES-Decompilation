@@ -17,7 +17,8 @@ typedef struct
 
 extern MtScene* gMtScene;
 
-MtScene* MtScene_GetScene();
-Resource* MtScene_GetResList(u32 resType);
+MtScene* MT_Scene_GetScene();
+Resource* MT_Scene_GetRes(u16 resTypeId);
+Resource* MT_Scene_GetResList(u32 resType);
 
 #endif
