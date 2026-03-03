@@ -13,23 +13,6 @@ ResManager* ResManager_Init()
     return resMgr;
 }
 
-// FUN_003b5360
-void ResManager_DestroyRes(ResManager* resManager, Resource* res)
-{
-    // TODO
-}
-
-// FUN_003b5430. Return the head of a list of a resource type
-Resource* ResManager_GetList(ResManager* resManager, u8 resType)
-{
-    if (resType >= RES_TYPE_MAX)
-    {
-        return NULL;
-    }
-
-    return resManager->resLists[resType];
-}
-
 // FUN_003b5020
 void ResManager_Destroy(ResManager* resManager)
 {
@@ -52,4 +35,49 @@ void ResManager_Destroy(ResManager* resManager)
 
         RW_FREE(resManager);
     }
+}
+
+// FUN_003b5360
+void ResManager_DestroyRes(ResManager* resManager, Resource* res)
+{
+    // TODO
+}
+
+// FUN_003b5430. Return the head of a list of a resource type
+Resource* ResManager_GetList(ResManager* resManager, u8 resType)
+{
+    if (resType >= RES_TYPE_MAX)
+    {
+        return NULL;
+    }
+
+    return resManager->resLists[resType];
+}
+
+// FUN_003b54c0. Return a resource by a resTypeId
+Resource* ResManager_GetRes(ResManager* resManager, u16 resTypeId)
+{
+    u8 type;
+    Resource* currRes;
+
+    type = RES_GET_TYPE(resTypeId);
+    if (type == 0)
+    {
+        return NULL;
+    }
+
+    if (type >= RES_TYPE_MAX)
+    {
+        return NULL;
+    }
+
+    for (currRes = resManager->resLists[type]; currRes != NULL; currRes = currRes->next)
+    {
+        if (currRes->resTypeId == resTypeId)
+        {
+            return currRes;
+        }
+    }
+
+    return NULL;
 }
