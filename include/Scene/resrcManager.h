@@ -11,7 +11,9 @@ typedef struct KwlnTask KwlnTask;
 typedef enum
 {
     // TODO
-    RES_TYPE_DYNAMODEL = 1,
+    RES_TYPE_DYNAMIC = 1,
+    RES_TYPE_UNK,
+    RES_TYPE_NPC,
     RES_TYPE_MAX = 22
 } ResourceType;
 
@@ -24,15 +26,22 @@ typedef struct Resource
     struct Resource* prev; // 0xfc
 } Resource;
 
-// 496 bytes. Resource for a dynamic model
-typedef struct ResDynaModel
+// 496 bytes. Dynamic resource (TODO: find a better name)
+typedef struct ResourceDynamic
 {
     Resource base;                 // 0x00
     u8 unkData1[0xe0];
     KwlnTask* colliCtlTask;        // 0x1e0
     KwlnTask* renderTexShadowTask; // 0x1e4
     u8 unkData[0x08];
-} ResDynaModel;
+} ResourceDynamic;
+
+// 544 bytes. NPC resource
+typedef struct ResourceNpc
+{
+    Resource base;
+    u8 unkData[0x120];
+} ResourceNpc;
 
 // 88 bytes
 typedef struct ResManager
