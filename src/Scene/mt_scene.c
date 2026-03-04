@@ -31,3 +31,31 @@ Resource* MT_Scene_GetResListHead(u32 resType)
 
     return ResManager_GetListHead(gMtScene->resManager, resType);
 }
+
+// FUN_003b5df0
+u32 MT_Scene_GetTotalResInList(u32 resType)
+{
+    s32 i;
+    s32 total;
+    ResManager* resManager;
+    u32 type;
+
+    type = resType;
+    total = 0;
+    resManager = gMtScene->resManager;
+    if (resManager == NULL)
+    {
+        return 0;
+    }
+
+    // ??? wtf is the point of this loop
+    for (i = 0; i < RES_TYPE_MAX; i++)
+    {
+        if (i == type)
+        {
+            total += ResManager_GetTotalResInList(resManager, i);
+        }
+    }
+
+    return total;
+}

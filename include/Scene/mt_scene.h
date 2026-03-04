@@ -20,5 +20,6 @@ extern MtScene* gMtScene;
 MtScene* MT_Scene_GetScene();
 Resource* MT_Scene_GetRes(u16 resTypeId);
 Resource* MT_Scene_GetResListHead(u32 resType);
+u32 MT_Scene_GetTotalResInList(u32 resType);
 
 #endif
