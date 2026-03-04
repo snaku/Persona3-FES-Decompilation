@@ -22,12 +22,12 @@ Resource* MT_Scene_GetRes(u16 resTypeId)
 }
 
 // FUN_003b5d50
-Resource* MT_Scene_GetResList(u32 resType)
+Resource* MT_Scene_GetResListHead(u32 resType)
 {
     if (gMtScene->resManager == NULL)
     {
         return NULL;
     }
 
-    return ResManager_GetList(gMtScene->resManager, resType);
+    return ResManager_GetListHead(gMtScene->resManager, resType);
 }

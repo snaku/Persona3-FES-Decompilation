@@ -23,13 +23,13 @@ void ResManager_Destroy(ResManager* resManager)
     {
         for (i = 0; i < RES_TYPE_MAX; i++)
         {
-            currList = ResManager_GetList(resManager, i);
+            currList = ResManager_GetListHead(resManager, i);
 
             while (currList != NULL)
             {
                 ResManager_DestroyRes(resManager, currList);
 
-                currList = ResManager_GetList(resManager, i);
+                currList = ResManager_GetListHead(resManager, i);
             }
         }
 
@@ -44,7 +44,7 @@ void ResManager_DestroyRes(ResManager* resManager, Resource* res)
 }
 
 // FUN_003b5430. Return the head of a list of a resource type
-Resource* ResManager_GetList(ResManager* resManager, u8 resType)
+Resource* ResManager_GetListHead(ResManager* resManager, u8 resType)
 {
     if (resType >= RES_TYPE_MAX)
     {
@@ -52,6 +52,30 @@ Resource* ResManager_GetList(ResManager* resManager, u8 resType)
     }
 
     return resManager->resLists[resType];
+}
+
+// FUN_003b5460. Return the tail of a list of a resource type
+Resource* ResManager_GetListTail(ResManager* resManager, u8 resType)
+{
+    Resource* currRes;
+    
+    if (resType >= RES_TYPE_MAX)
+    {
+        return NULL;
+    }
+
+    currRes = resManager->resLists[resType];
+    if (currRes == NULL)
+    {
+        return currRes;
+    }
+
+    while (currRes->next != NULL)
+    {
+        currRes = currRes->next;
+    }
+
+    return currRes;
 }
 
 // FUN_003b54c0. Return a resource by a resTypeId

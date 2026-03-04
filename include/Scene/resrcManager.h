@@ -52,7 +52,8 @@ typedef struct ResManager
 ResManager* ResManager_Init();
 void ResManager_Destroy(ResManager* resManager);
 void ResManager_DestroyRes(ResManager* resManager, Resource* res);
-Resource* ResManager_GetList(ResManager* resManager, u8 resType);
+Resource* ResManager_GetListHead(ResManager* resManager, u8 resType);
+Resource* ResManager_GetListTail(ResManager* resManager, u8 resType);
 Resource* ResManager_GetRes(ResManager* resManager, u16 resTypeId);
 
 #endif
