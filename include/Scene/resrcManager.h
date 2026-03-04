@@ -55,5 +55,6 @@ void ResManager_DestroyRes(ResManager* resManager, Resource* res);
 Resource* ResManager_GetListHead(ResManager* resManager, u8 resType);
 Resource* ResManager_GetListTail(ResManager* resManager, u8 resType);
 Resource* ResManager_GetRes(ResManager* resManager, u16 resTypeId);
+u32 ResManager_GetTotalResInList(ResManager* resManager, u8 resType);
 
 #endif

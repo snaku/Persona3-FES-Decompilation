@@ -105,3 +105,23 @@ Resource* ResManager_GetRes(ResManager* resManager, u16 resTypeId)
 
     return NULL;
 }
+
+// FUN_003b5550. Return the total number of resource in a list by a resType
+u32 ResManager_GetTotalResInList(ResManager* resManager, u8 resType)
+{
+    u32 total;
+    Resource* currRes;
+
+    total = 0;
+    if (resType >= RES_TYPE_MAX)
+    {
+        return total;
+    }
+
+    for (currRes = resManager->resLists[resType]; currRes != NULL; currRes = currRes->next)
+    {
+        total++;
+    }
+
+    return total;
+}
