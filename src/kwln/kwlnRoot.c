@@ -70,7 +70,7 @@ void* KwlnRoot_Update2DDrawPreEndTask(KwlnTask* drawBegin2dPETask)
 void* KwlnRoot_Update2DDrawEndTask(KwlnTask* drawEnd2dTask)
 {
     RwCamera* camera = Kwln_GetMainCamera();
-    RwCamera_EndUpdate(camera);
+    RwCameraEndUpdate(camera);
 
     return KWLN_TASK_CONTINUE;
 }
@@ -99,7 +99,7 @@ void* KwlnRoot_Update3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
     RwCamera* camera = Kwln_GetMainCamera();
     RwRGBA* clearColor = Kwln_GetClearColor();
 
-    RwCamera_Clear(camera, clearColor, RW_CAMERA_CLEAR_MODE_ZBUFFER);
+    RwCameraClear(camera, clearColor, RW_CAMERA_CLEAR_MODE_ZBUFFER);
 
     return KWLN_TASK_CONTINUE;
 }
@@ -117,7 +117,7 @@ void* KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
     }
 
     camera = Kwln_GetMainCamera();
-    RwCamera_EndUpdate(camera);
+    RwCameraEndUpdate(camera);
 
     return KWLN_TASK_CONTINUE;
 }

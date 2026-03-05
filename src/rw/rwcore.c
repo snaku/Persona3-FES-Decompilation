@@ -1,34 +1,34 @@
 #include "rw/rwcore.h"
 
 // FUN_004c9b40
-static RwCamera* Camera_EndUpdate(RwCamera* camera)
+static RwCamera* CameraEndUpdate(RwCamera* camera)
 {
     RwStandardFunc cameraEndUpdateFunc;
 
     cameraEndUpdateFunc = RWSTDFUNC(RW_STD_FUNC_CAMERA_END_UPDATE);
-    if (cameraEndUpdateFunc(NULL, camera, 0))
+    if (!cameraEndUpdateFunc(NULL, camera, 0))
     {
-        RW_CURRCAMERA = NULL;
-        return camera;
+        return NULL;
     }
 
-    return NULL;
+    RW_CURRCAMERA = NULL;
+    return camera;
 }
 
 // FUN_004c9d00
-RwCamera* RwCamera_EndUpdate(RwCamera* camera)
+RwCamera* RwCameraEndUpdate(RwCamera* camera)
 {
     return camera->endUpdate(camera);
 }
 
 // FUN_004c9d10
-RwCamera* RwCamera_BeginUpdate(RwCamera* camera)
+RwCamera* RwCameraBeginUpdate(RwCamera* camera)
 {
     return camera->beginUpdate(camera);
 }
 
 // FUN_004c9e90
-RwCamera* RwCamera_Clear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode)
+RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode)
 {
     RwStandardFunc cameraClearFunc;
 
@@ -42,7 +42,7 @@ RwCamera* RwCamera_Clear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode cle
 }
 
 // FUN_004c9f00
-RwCamera* RwCamera_SetProjectionType(RwCamera* camera, RwCameraProjectionType projType)
+RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjectionType projType)
 {
     // TODO
 

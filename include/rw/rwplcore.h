@@ -29,10 +29,10 @@ typedef RwInt32 RwBool;
 
 // macros to call 'RwGlobals' func ptr
 // memFuncs
-#define RW_MALLOC(size, param_3)          rwGlobals.memFuncs.Rw_Malloc((size), (param_3))
-#define RW_FREE(ptr)                      rwGlobals.memFuncs.Rw_Free((ptr))
-#define RW_REALLOC(ptr, newSize, param_3) rwGlobals.memFuncs.Rw_Realloc((ptr), (newSize), (param_3))
-#define RW_CALLOC(count, size, param_3)   rwGlobals.memFuncs.Rw_Calloc((count), (size), (param_3))
+#define RW_MALLOC(size, param_3)          rwGlobals.memFuncs.RwMalloc((size), (param_3))
+#define RW_FREE(ptr)                      rwGlobals.memFuncs.RwFree((ptr))
+#define RW_REALLOC(ptr, newSize, param_3) rwGlobals.memFuncs.RwRealloc((ptr), (newSize), (param_3))
+#define RW_CALLOC(count, size, param_3)   rwGlobals.memFuncs.RwCalloc((count), (size), (param_3))
 
 // device
 #define RWRENDERSTATE_SET(state, val) rwGlobals.device.setRenderState((state), (void*)(val))
@@ -125,25 +125,25 @@ typedef enum
 typedef RwBool (*RwStandardFunc)(void* out, void* inOut, RwInt32 nI);
 
 // See enmu 'RwRenderState'
-typedef RwBool (*RwRenderState_SetFunc)(RwRenderState renderState, void* val);
-typedef RwBool (*RwRenderState_GetFunc)(RwRenderState renderState, void* val);
+typedef RwBool (*RwRenderStateSetFunc)(RwRenderState renderState, void* val);
+typedef RwBool (*RwRenderStateGetFunc)(RwRenderState renderState, void* val);
 
 // 56 bytes
 typedef struct RwDevice
 {
     u8 unkData1[0x10];
-    RwRenderState_SetFunc setRenderState; // 0x10
-    RwRenderState_GetFunc getRenderState; // 0x14
+    RwRenderStateSetFunc setRenderState; // 0x10
+    RwRenderStateGetFunc getRenderState; // 0x14
     u8 unkData2[0x20];
 } RwDevice;
 
 // 16 bytes
 typedef struct RwMemoryFunctions
 {
-    void* (*Rw_Malloc)(RwUInt32 size, RwUInt32 param_3);
-    void  (*Rw_Free)(void* ptr);
-    void* (*Rw_Realloc)(void* ptr, RwUInt32 newSize, RwUInt32 param_3);
-    void* (*Rw_Calloc)(RwUInt32 elemCount, RwUInt32 elemSize, RwUInt32 param_3);
+    void* (*RwMalloc)(RwUInt32 size, RwUInt32 param_3);
+    void  (*RwFree)(void* ptr);
+    void* (*RwRealloc)(void* ptr, RwUInt32 newSize, RwUInt32 param_3);
+    void* (*RwCalloc)(RwUInt32 elemCount, RwUInt32 elemSize, RwUInt32 param_3);
 } RwMemoryFunctions;
 
 // 300 bytes
@@ -162,7 +162,9 @@ typedef struct
 
 extern RwGlobals rwGlobals; // not sure where to place this
 
-RwUInt32 RwEngine_GetVersion();
-RwBool RwEngine_Init(const RwMemoryFunctions* memFuncs, RwUInt32 flags, RwUInt32 resArenaSize);
+RwReal RwV3dLength(const RwV3d* in);
+RwReal RwV2dLength(const RwV2d* in);
+RwUInt32 RwEngineGetVersion();
+RwBool RwEngineInit(const RwMemoryFunctions* memFuncs, RwUInt32 flags, RwUInt32 resArenaSize);
 
 #endif

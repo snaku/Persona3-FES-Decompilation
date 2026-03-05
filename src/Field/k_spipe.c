@@ -26,7 +26,7 @@ void* FldSPipe_Update3DDrwEndTask(KwlnTask* draw3DEndTask)
     RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_TYPE, RW_FOG_TYPE_1);
 
     camera = Kwln_GetMainCamera();
-    RwCamera_EndUpdate(camera);
+    RwCameraEndUpdate(camera);
     
     KwlnRoot_FUN_00198610(3, 0);
 
