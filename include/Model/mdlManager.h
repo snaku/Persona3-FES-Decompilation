@@ -4,6 +4,10 @@
 #include "Utils.h"
 #include "rw/rwplcore.h"
 
+#define MDL_FLDCHAR_GET_MAJORID(mdlFldCharId) ((mdlFldCharId) >> 8)
+#define MDL_FLDCHAR_GET_MINORID(mdlFldCharId) ((mdlFldCharId) & 0xff)
+#define MDL_FLDCHAR_PACKID(major, minor)      (((major) << 8) | ((minor) & 0xff)) // 'major' is the character id
+
 typedef enum
 {
     MODEL_TYPE_BTLCHAR = 1, // bc*.RMD    - "MODEL/PACK/" (in .pac)
@@ -23,7 +27,7 @@ typedef struct Model
     RwMatrix mat;      // 0x00
     u8 unkData1[0x94];
     u16 type;          // 0xd4. See enum 'ModelType'
-    u16 id;            // 0xd6
+    u16 id;            // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
     u8 unkData[0x358];
 } Model;
 
