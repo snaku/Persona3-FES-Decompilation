@@ -14,4 +14,6 @@ typedef struct Model
     u8 unkData[0x358];
 } Model;
 
+RwMatrix* MdlManager_GetMdlMatrix(Model* mdl);
+
 #endif
