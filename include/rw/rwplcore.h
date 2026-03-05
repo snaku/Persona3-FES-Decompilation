@@ -59,6 +59,46 @@ typedef struct RwRGBAReal
     RwReal a;
 } RwRGBAReal;
 
+// 8 bytes
+typedef struct RwV2d
+{
+    RwReal x; // 0x00
+    RwReal y; // 0x04
+} RwV2d;
+
+// 12 bytes
+typedef struct RwV3d
+{
+    RwReal x; // 0x00
+    RwReal y; // 0x04
+    RwReal z; // 0x08
+} RwV3d;
+
+// 16 bytes
+typedef struct RwV4dTag
+{
+    RwReal x; // 0x00
+    RwReal y; // 0x04
+    RwReal z; // 0x08
+    RwReal w; // 0x0c
+} RwV4d;
+
+// 64 bytes
+typedef struct RwMatrixTag
+{
+    RwV3d right;    // 0x00
+    RwUInt32 flags; // 0x0c
+
+    RwV3d up;       // 0x10
+    RwUInt32 pad1;  // 0x1c
+
+    RwV3d at;       // 0x20
+    RwUInt32 pad2;  // 0x2c
+    
+    RwV3d pos;      // 0x30
+    RwUInt32 pad3;  // 0x3c
+} RwMatrix;
+
 typedef enum
 {
     // TODO
