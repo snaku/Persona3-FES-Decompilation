@@ -4,13 +4,9 @@
 #include "Utils.h"
 #include "rw/rwplcore.h"
 
-#define MDL_FLDCHAR_GET_MAJORID(mdlFldCharId) ((mdlFldCharId) >> 8)
-#define MDL_FLDCHAR_GET_MINORID(mdlFldCharId) ((mdlFldCharId) & 0xff)
-#define MDL_FLDCHAR_PACKID(major, minor)      (((major) << 8) | ((minor) & 0xff)) // 'major' is the character id
-
 typedef enum
 {
-    MODEL_TYPE_BTLCHAR = 1, // bc*.RMD    - "MODEL/PACK/" (in .pac)
+    MODEL_TYPE_BTLCHAR = 1, // BC*.RMD    - "MODEL/PACK/" (in .pac)
     MODEL_TYPE_ENEMY,       // EM*.RMD    - "MODEL/PACK/" (in .pac)
     MODEL_TYPE_PERSONA,     // PS*.RMD    - "MODEL/PERSONA/"
     MODEL_TYPE_NPC = 5,     // N*.RMD     - "MODEL/NPC/"
