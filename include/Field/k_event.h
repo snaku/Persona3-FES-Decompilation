@@ -2,6 +2,7 @@
 #define K_EVENT_H
 
 #include "Utils.h"
+#include "rw/rwplcore.h"
 
 typedef struct ResourceNpc ResourceNpc;
 
@@ -34,6 +35,7 @@ typedef struct FieldEvent
     u8 unkData3[0xbc];
 } FieldEvent;
 
+RwBool FldEvent_IsWithinDistance(f32 maxDist, RwV3d* posA, RwV3d* posB);
 KwlnTask* FldEvent_CreateTasks(KwlnTask* fldRootTask);
 
 #endif

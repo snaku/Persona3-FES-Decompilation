@@ -1,8 +1,27 @@
 #include "kwln/kwlnTask.h"
 #include "Field/k_event.h"
-#include "rw/rwplcore.h"
 
 KwlnTask* FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
+
+// FUN_001c71f0
+RwBool FldEvent_IsWithinDistance(f32 maxDist, RwV3d* posA, RwV3d* posB)
+{
+    RwV3d diff;
+    RwBool withinDist;
+
+    withinDist = false;
+
+    diff.x = posA->x - posB->x;
+    diff.y = posA->y - posB->y;
+    diff.z = posA->z - posB->z;
+
+    if (RwV3dLength(&diff) < maxDist)
+    {
+        withinDist = true;
+    }
+
+    return withinDist;
+}
 
 // FUN_001c8620
 void* FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
