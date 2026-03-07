@@ -32,5 +32,7 @@ typedef struct Model
 Model* MdlManager_InitMdl(u32 type, u32 id);
 Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags);
 RwMatrix* MdlManager_GetMdlMatrix(Model* mdl);
+RpClump* MdlManager_GetMdlClumpParent(Model* mdl);
+RpClump* MdlManager_GetMdlClump(Model* mdl);
 
 #endif
