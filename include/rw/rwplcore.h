@@ -109,6 +109,12 @@ struct RwLLLink
 };
 
 // 8 bytes
+typedef struct RwLinkList
+{
+    RwLLLink link; // 0x00
+} RwLinkList;
+
+// 8 bytes
 typedef struct RwObject
 {
     RwUInt8 type;         // 0x00
