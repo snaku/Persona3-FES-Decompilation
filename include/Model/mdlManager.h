@@ -2,7 +2,7 @@
 #define MDLMANAGER_H
 
 #include "Utils.h"
-#include "rw/rwplcore.h"
+#include "rw/rpworld.h"
 
 typedef enum
 {
@@ -24,7 +24,9 @@ typedef struct Model
     u8 unkData1[0x94];
     u16 type;          // 0xd4. See enum 'ModelType'
     u16 id;            // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
-    u8 unkData[0x358];
+    s32 unk_d8;        // 0xd8
+    RpClump* clump;    // 0xdc
+    u8 unkData[0x350];
 } Model;
 
 Model* MdlManager_InitMdl(u32 type, u32 id);

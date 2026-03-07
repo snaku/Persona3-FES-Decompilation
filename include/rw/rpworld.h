@@ -3,6 +3,8 @@
 
 #include "rw/rwcore.h"
 
+#define rpCLUMP 2
+
 typedef struct RpClump RpClump;
 
 typedef RpClump* (*RpClumpCallBack)(RpClump* clump, void* data);
