@@ -4,6 +4,7 @@
 #include "Utils.h"
 
 typedef struct KwlnTask KwlnTask;
+typedef struct Model Model;
 
 #define RES_TYPE_MASK 0xffc00
 #define RES_GET_TYPE(resTypeId) (((resTypeId) & RES_TYPE_MASK) >> 10)
@@ -30,17 +31,21 @@ typedef struct Resource
 typedef struct ResourceDynamic
 {
     Resource base;                 // 0x00
-    u8 unkData1[0xe0];
+    u8 unkData1[0x28];
+    Model* mdl;                    // 0x128
+    u8 unkData2[0xb4];
     KwlnTask* colliCtlTask;        // 0x1e0
     KwlnTask* renderTexShadowTask; // 0x1e4
-    u8 unkData[0x08];
+    u8 unkData3[0x08];
 } ResourceDynamic;
 
 // 544 bytes. NPC resource
 typedef struct ResourceNpc
 {
-    Resource base;
-    u8 unkData[0x120];
+    Resource base;     // 0x00
+    u8 unkData1[0x28];
+    Model* mdl;        // 0x128
+    u8 unkData2[0xf4];
 } ResourceNpc;
 
 // 88 bytes

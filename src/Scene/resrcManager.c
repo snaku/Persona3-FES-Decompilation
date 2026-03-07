@@ -1,5 +1,6 @@
 #include "Scene/resrcManager.h"
 #include "rw/rwplcore.h"
+#include "Model/mdlManager.h"
 #include "temporary.h"
 
 // FUN_003b4fc0
