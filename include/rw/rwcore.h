@@ -3,6 +3,18 @@
 
 #include "rw/rwplcore.h"
 
+typedef struct RwObjectHasFrame RwObjectHasFrame;
+
+typedef RwObjectHasFrame* (*RwObjectHasFrameSyncFunction)(RwObjectHasFrame* object);
+
+// 20 bytes
+struct RwObjectHasFrame
+{
+    RwObject object;                   // 0x00
+    RwLLLink lFrame;                   // 0x08
+    RwObjectHasFrameSyncFunction sync; // 0x10
+};
+
 typedef struct RwRaster RwRaster;
 
 // 52 bytes

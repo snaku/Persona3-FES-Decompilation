@@ -99,6 +99,25 @@ typedef struct RwMatrixTag
     RwUInt32 pad3;  // 0x3c
 } RwMatrix;
 
+typedef struct RwLLLink RwLLLink;
+
+// 8 bytes
+struct RwLLLink
+{
+    RwLLLink* next; // 0x00
+    RwLLLink* prev; // 0x04
+};
+
+// 8 bytes
+typedef struct RwObject
+{
+    RwUInt8 type;         // 0x00
+    RwUInt8 subType;      // 0x01
+    RwUInt8 flags;        // 0x02
+    RwUInt8 privateFlags; // 0x03
+    void* parent;         // 0x04
+} RwObject;
+
 typedef enum
 {
     // TODO
