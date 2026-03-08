@@ -16,6 +16,18 @@ Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags)
     return NULL;
 }
 
+// FUN_00318ad0
+void MdlManager_SetMdlColor(Model* mdl, RwRGBA* color)
+{
+    mdl->color = *color;
+}
+
+// FUN_00318b00
+RwRGBA* MdlManager_GetMdlColor(Model* mdl)
+{
+    return &mdl->color;
+}
+
 // FUN_00318b60
 RwMatrix* MdlManager_GetMdlMatrix(Model* mdl)
 {

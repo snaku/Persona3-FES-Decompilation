@@ -21,7 +21,8 @@ typedef enum
 typedef struct Model
 {
     RwMatrix mat;      // 0x00
-    u8 unkData1[0x94];
+    u8 unkData1[0x90];
+    RwRGBA color;      // 0xd0
     u16 type;          // 0xd4. See enum 'ModelType'
     u16 id;            // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
     s32 unk_d8;        // 0xd8
