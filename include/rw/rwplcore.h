@@ -167,24 +167,24 @@ typedef struct RwObject
 typedef enum
 {
     // TODO
-    RW_RENDER_STATE_0,
-    RW_RENDER_STATE_FOG_ENABLE = 14,
-    RW_RENDER_STATE_FOG_COLOR,
-    RW_RENDER_STATE_FOG_TYPE,
+    rwRENDERSTATE0,
+    rwRENDERSTATEFOGENABLE = 14,
+    rwRENDERSTATEFOGCOLOR,
+    rwRENDERSTATEFOGTYPE,
 } RwRenderState;
 
 typedef enum
 {
     // TODO
-    RW_FOG_TYPE_0,
-    RW_FOG_TYPE_1
+    rwFOGTYPE0,
+    rwFOGTYPE1
 } RwFogType;
 
 typedef enum
 {
-    RW_STD_FUNC_CAMERA_END_UPDATE = 10,
-    RW_STD_FUNC_CAMERA_CLEAR = 21,
-    RW_STD_FUNC_MAX = 29
+    rwSTANDARDCAMERAENDUPDATE = 10,
+    rwSTANDARDCAMERACLEAR = 21,
+    rwSTANDARDMAX = 29
 } RwStdFunc;
 
 typedef RwBool (*RwStandardFunc)(void* out, void* inOut, RwInt32 nI);
@@ -214,15 +214,15 @@ typedef struct RwMemoryFunctions
 // 300 bytes
 typedef struct
 {
-    void* currCamera;                        // 0x00
-    void* currWorld;                         // 0x04
+    void* currCamera;                      // 0x00
+    void* currWorld;                       // 0x04
     u8 unkData1[0x08];
-    RwDevice device;                         // 0x10
-    RwStandardFunc stdFunc[RW_STD_FUNC_MAX]; // 0x48
+    RwDevice device;                       // 0x10
+    RwStandardFunc stdFunc[rwSTANDARDMAX]; // 0x48
     u8 unkData2[0x4c];
-    RwMemoryFunctions memFuncs;              // 0x108
+    RwMemoryFunctions memFuncs;            // 0x108
     u8 unkData3[0x10];
-    RwUInt32 resArenaSize;                   // 0x128
+    RwUInt32 resArenaSize;                 // 0x128
 } RwGlobals;
 
 extern RwGlobals rwGlobals; // not sure where to place this

@@ -5,7 +5,7 @@ static RwCamera* CameraEndUpdate(RwCamera* camera)
 {
     RwStandardFunc cameraEndUpdateFunc;
 
-    cameraEndUpdateFunc = RWSTDFUNC(RW_STD_FUNC_CAMERA_END_UPDATE);
+    cameraEndUpdateFunc = RWSTDFUNC(rwSTANDARDCAMERAENDUPDATE);
     if (!cameraEndUpdateFunc(NULL, camera, 0))
     {
         return NULL;
@@ -32,7 +32,7 @@ RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clea
 {
     RwStandardFunc cameraClearFunc;
 
-    cameraClearFunc = RWSTDFUNC(RW_STD_FUNC_CAMERA_CLEAR);
+    cameraClearFunc = RWSTDFUNC(rwSTANDARDCAMERACLEAR);
     if (cameraClearFunc(camera, colors, clearMode))
     {
         return camera;
@@ -42,7 +42,7 @@ RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clea
 }
 
 // FUN_004c9f00
-RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjectionType projType)
+RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projType)
 {
     // TODO
 

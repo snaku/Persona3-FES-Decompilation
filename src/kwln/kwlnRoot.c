@@ -99,7 +99,7 @@ void* KwlnRoot_Update3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
     RwCamera* camera = Kwln_GetMainCamera();
     RwRGBA* clearColor = Kwln_GetClearColor();
 
-    RwCameraClear(camera, clearColor, RW_CAMERA_CLEAR_MODE_ZBUFFER);
+    RwCameraClear(camera, clearColor, rwCAMERACLEARZ);
 
     return KWLN_TASK_CONTINUE;
 }
@@ -111,9 +111,9 @@ void* KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 
     if (gFogEnabled)
     {
-        RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_ENABLE, true);
-        RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_COLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
-        RWRENDERSTATE_SET(RW_RENDER_STATE_FOG_TYPE, RW_FOG_TYPE_1);
+        RWRENDERSTATE_SET(rwRENDERSTATEFOGENABLE, true);
+        RWRENDERSTATE_SET(rwRENDERSTATEFOGCOLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
+        RWRENDERSTATE_SET(rwRENDERSTATEFOGTYPE, rwFOGTYPE1);
     }
 
     camera = Kwln_GetMainCamera();

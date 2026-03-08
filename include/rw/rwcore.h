@@ -64,15 +64,15 @@ typedef struct RwCamera* (*RwCameraEndUpdateFunc)(struct RwCamera* camera);
 
 typedef enum
 {
-    RW_PROJ_TYPE_0,
-    RW_PROJ_TYPE_PERSPECTIVE
-} RwCameraProjectionType;
+    rwPROJECTION0,
+    rwPERSPECTIVE
+} RwCameraProjection;
 
 // TODO
 typedef struct RwCamera
 {
     RwObjectHasFrame object;             // 0x00
-    RwCameraProjectionType projType;     // 0x14
+    RwCameraProjection projType;         // 0x14
     RwCameraBeginUpdateFunc beginUpdate; // 0x18
     RwCameraEndUpdateFunc endUpdate;     // 0x1c
     RwMatrix viewMatrix;                 // 0x20
@@ -83,14 +83,14 @@ typedef struct RwCamera
 typedef enum
 {
     // TODO: names
-    RW_CAMERA_CLEAR_MODE_0,
-    RW_CAMERA_CLEAR_MODE_1,
-    RW_CAMERA_CLEAR_MODE_ZBUFFER // clear Z buffer
+    rwCAMERACLEAR0,
+    rwCAMERACLEAR1,
+    rwCAMERACLEARZ  // clear Z buffer
 } RwCameraClearMode;
 
 RwCamera* RwCameraBeginUpdate(RwCamera* camera);
 RwCamera* RwCameraEndUpdate(RwCamera* camera);
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode);
-RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjectionType projType);
+RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projType);
 
 #endif
