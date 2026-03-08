@@ -35,9 +35,9 @@ RwMatrix* MdlManager_GetMdlMatrix(Model* mdl)
 }
 
 // FUN_00318b70
-RpClump* MdlManager_GetMdlClumpParent(Model* mdl)
+RwFrame* MdlManager_GetMdlClumpFrame(Model* mdl)
 {
-    return (RpClump*)mdl->clump->object.parent;
+    return (RwFrame*)mdl->clump->object.parent;
 }
 
 // FUN_00318b80
