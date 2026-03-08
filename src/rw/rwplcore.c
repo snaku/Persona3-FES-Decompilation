@@ -3,6 +3,14 @@
 // 00960070
 RwGlobals rwGlobals;
 
+// FUN_004c2f30
+RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2)
+{
+    RwMatrixMultiplyVUMacro(matrixOut, matrixIn1, matrixIn2);
+
+    return matrixOut;
+}
+
 // FUN_004c6ac0
 RwReal RwV3dLength(const RwV3d* in)
 {

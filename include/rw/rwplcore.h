@@ -99,6 +99,46 @@ typedef struct RwMatrixTag
     RwUInt32 pad3;  // 0x3c
 } RwMatrix;
 
+#define RwMatrixMultiplyVUMacro(_matrix, _matrixIn1, _matrixIn2)    \
+do                                                                  \
+{                                                                   \
+    int __tmp1, __tmp2;                                             \
+                                                                    \
+    asm __volatile__ (".set noreorder ;                             \
+        lqc2        vf1,  0x00(%2) ;                                \
+        lqc2        vf2,  0x10(%2) ;                                \
+        lqc2        vf3,  0x20(%2) ;                                \
+        lqc2        vf4,  0x30(%2) ;                                \
+        lwu         %0,   0x0C(%2) ;                                \
+        lqc2        vf5,  0x00(%3) ;                                \
+        lqc2        vf6,  0x10(%3) ;                                \
+        lqc2        vf7,  0x20(%3) ;                                \
+        lqc2        vf8,  0x30(%3) ;                                \
+        lwu         %1,   0x0C(%3) ;                                \
+        vmulax.xyz  ACC,  vf5, vf1 ;                                \
+        vmadday.xyz ACC,  vf6, vf1 ;                                \
+        vmaddz.xyz  vf9,  vf7, vf1 ;                                \
+        vmulax.xyz  ACC,  vf5, vf2 ;                                \
+        vmadday.xyz ACC,  vf6, vf2 ;                                \
+        vmaddz.xyz  vf10, vf7, vf2 ;                                \
+        vmulax.xyz  ACC,  vf5, vf3 ;                                \
+        vmadday.xyz ACC,  vf6, vf3 ;                                \
+        vmaddz.xyz  vf11, vf7, vf3 ;                                \
+        vmulax.xyz  ACC,  vf5, vf4 ;                                \
+        vmadday.xyz ACC,  vf6, vf4 ;                                \
+        vmaddaz.xyz ACC,  vf7, vf4 ;                                \
+        vmaddw.xyz  vf12, vf8, vf0 ;                                \
+        and         %1, %1, %0     ;                                \
+        sqc2        vf9,  0x00(%4) ;                                \
+        sqc2        vf10, 0x10(%4) ;                                \
+        sqc2        vf11, 0x20(%4) ;                                \
+        sqc2        vf12, 0x30(%4) ;                                \
+        sw          %1, 0x0C(%4)   ;                                \
+        .set reorder "                                              \
+         : "=r&" (__tmp1), "=r&" (__tmp2) : "r" (_matrixIn1),       \
+           "r" (_matrixIn2), "r" (_matrix) : "cc",  "memory");      \
+} while(0)
+
 typedef struct RwLLLink RwLLLink;
 
 // 8 bytes
