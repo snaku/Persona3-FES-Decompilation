@@ -39,6 +39,24 @@ struct RwRaster
     RwInt32 originalStride;  // 0x30
 };
 
+#define rwFRAME 0
+typedef struct RwFrame RwFrame;
+
+// 160 bytes
+struct RwFrame
+{
+    RwObject object;          // 0x00
+    RwLLLink inDirtyListLink; // 0x08
+    RwMatrix modelling;       // 0x10
+    RwMatrix ltm;             // 0x50
+    RwLinkList objectList;    // 0x90
+    RwFrame* child;           // 0x98
+    RwFrame* next;            // 0x9c
+    RwFrame* root;            // 0xa0
+};
+
+#define rwCAMERA 4
+
 struct RwCamera;
 
 typedef struct RwCamera* (*RwCameraBeginUpdateFunc)(struct RwCamera* camera);
@@ -53,10 +71,13 @@ typedef enum
 // TODO
 typedef struct RwCamera
 {
-    u8 unkData1[0x14];
+    RwObjectHasFrame object;             // 0x00
     RwCameraProjectionType projType;     // 0x14
     RwCameraBeginUpdateFunc beginUpdate; // 0x18
     RwCameraEndUpdateFunc endUpdate;     // 0x1c
+    RwMatrix viewMatrix;                 // 0x20
+    RwRaster* frameBuffer;               // 0x60
+    RwRaster* zBuffer;                   // 0x64
 } RwCamera;
 
 typedef enum
