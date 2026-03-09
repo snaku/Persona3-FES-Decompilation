@@ -10,6 +10,10 @@
 #define MDL_RENDER_FLAG_CULLFRONT (1 << 6)  // 0x40.  Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
 #define MDL_RENDER_FLAG_FOG       (1 << 8)  // 0x100. Enable fog for the model
 
+#define MDL_LOOKAT_FLAG_XYZCS (1 << 5) // 0x20. Cutscenes 
+#define MDL_LOOKAT_FLAG_XYZ   (1 << 6) // 0x40
+#define MDL_LOOKAT_FLAG_XY    (1 << 7) // 0x80
+
 typedef enum
 {
     MODEL_TYPE_BTLCHAR = 1, // BC*.RMD    - "MODEL/PACK/" (in .pac)
@@ -26,7 +30,7 @@ typedef enum
 // ?? bytes (TBD, currently 72 bytes)
 typedef struct MdlLookAt
 {
-    u16 flags;          // 0x00
+    u16 flags;          // 0x00. See 'MDL_LOOKAT_FLAG_*'
     f32 blendRotFactor; // 0x04. ]0.0f;1.0f[ = smooth rot, 0.0f = no rot, 1.0f = instant rot
     f32 maxPitchAngle;  // 0x08. Max X rot angle (degrees)
     f32 maxYawAngle;    // 0x0c. Max Y rot angle (degrees)
@@ -57,5 +61,6 @@ RwRGBA* Mdl_GetColor(Model* mdl);
 RwMatrix* Mdl_GetMatrix(Model* mdl);
 RwFrame* Mdl_GetClumpFrame(Model* mdl);
 RpClump* Mdl_GetClump(Model* mdl);
+void Mdl_SetLookAtTargetXYZ(Model* mdl, RwV3d* target);
 
 #endif

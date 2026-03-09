@@ -45,3 +45,13 @@ RpClump* Mdl_GetClump(Model* mdl)
 {
     return mdl->clump;
 }
+
+// FUN_003190b0
+void Mdl_SetLookAtTargetXYZ(Model* mdl, RwV3d* target)
+{
+    mdl->lookAt.flags |= MDL_LOOKAT_FLAG_XYZ;
+    mdl->lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XY);
+    mdl->lookAt.flags &= 0xfeff; // ~(1 << 8)
+
+    mdl->lookAt.target = *target;
+}
