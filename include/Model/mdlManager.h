@@ -27,8 +27,10 @@ typedef enum
 typedef struct MdlLookAt
 {
     u16 flags;          // 0x00
-    f32 blendRotFactor; // 0x04. ]0.0f;1.0f[ = smooth rot, 0.0f = no rot, 1.0f = instant rot 
-    u8 unkData[0x34];
+    f32 blendRotFactor; // 0x04. ]0.0f;1.0f[ = smooth rot, 0.0f = no rot, 1.0f = instant rot
+    f32 maxPitchAngle;  // 0x08. Max X rot angle (degrees)
+    f32 maxYawAngle;    // 0x0c. Max Y rot angle (degrees)
+    u8 unkData[0x2c];
     RwV3d target;       // 0x3c
 } MdlLookAt;
 
@@ -49,8 +51,11 @@ typedef struct Model
 
 Model* MdlManager_InitMdl(u32 type, u32 id);
 Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags);
-RwMatrix* MdlManager_GetMdlMatrix(Model* mdl);
-RwFrame* MdlManager_GetMdlClumpFrame(Model* mdl);
-RpClump* MdlManager_GetMdlClump(Model* mdl);
+
+void Mdl_SetColor(Model* mdl, RwRGBA* color);
+RwRGBA* Mdl_GetColor(Model* mdl);
+RwMatrix* Mdl_GetMatrix(Model* mdl);
+RwFrame* Mdl_GetClumpFrame(Model* mdl);
+RpClump* Mdl_GetClump(Model* mdl);
 
 #endif

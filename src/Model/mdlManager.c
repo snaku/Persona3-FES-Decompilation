@@ -17,31 +17,31 @@ Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags)
 }
 
 // FUN_00318ad0
-void MdlManager_SetMdlColor(Model* mdl, RwRGBA* color)
+void Mdl_SetColor(Model* mdl, RwRGBA* color)
 {
     mdl->color = *color;
 }
 
 // FUN_00318b00
-RwRGBA* MdlManager_GetMdlColor(Model* mdl)
+RwRGBA* Mdl_GetColor(Model* mdl)
 {
     return &mdl->color;
 }
 
 // FUN_00318b60
-RwMatrix* MdlManager_GetMdlMatrix(Model* mdl)
+RwMatrix* Mdl_GetMatrix(Model* mdl)
 {
     return &mdl->mat;
 }
 
 // FUN_00318b70
-RwFrame* MdlManager_GetMdlClumpFrame(Model* mdl)
+RwFrame* Mdl_GetClumpFrame(Model* mdl)
 {
     return (RwFrame*)mdl->clump->object.parent;
 }
 
 // FUN_00318b80
-RpClump* MdlManager_GetMdlClump(Model* mdl)
+RpClump* Mdl_GetClump(Model* mdl)
 {
     return mdl->clump;
 }
