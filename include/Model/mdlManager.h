@@ -4,9 +4,11 @@
 #include "Utils.h"
 #include "rw/rpworld.h"
 
-#define MDL_RENDER_FLAG_NODRAW    (1 << 1)  // 0x02. Don't draw the model (not 100% sure about this one)
-#define MDL_RENDER_FLAG_ZTEST     (1 << 3)  // 0x08. Depth testing
+#define MDL_RENDER_FLAG_NODRAW    (1 << 1)  // 0x02.  Don't draw the model (not 100% sure about this one)
+#define MDL_RENDER_FLAG_ZTEST     (1 << 3)  // 0x08.  Depth testing
 #define MDL_RENDER_FLAG_ZWRITE    (1 << 4)  // 0x10
+#define MDL_RENDER_FLAG_CULLFRONT (1 << 6)  // 0x40.  Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
+#define MDL_RENDER_FLAG_FOG       (1 << 8)  // 0x100. Enable fog for the model
 
 typedef enum
 {
