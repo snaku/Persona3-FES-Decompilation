@@ -3,6 +3,7 @@
 
 #include "Utils.h"
 #include "rw/rpworld.h"
+#include "rw/rtquat.h"
 
 #define MDL_RENDER_FLAG_NODRAW    (1 << 1)  // 0x02.  Don't draw the model (not 100% sure about this one)
 #define MDL_RENDER_FLAG_ZTEST     (1 << 3)  // 0x08.  Depth testing
@@ -35,7 +36,8 @@ typedef struct MdlLookAt
     f32 blendRotFactor; // 0x04. ]0.0f;1.0f[ = smooth rot, 0.0f = no rot, 1.0f = instant rot
     f32 maxPitchAngle;  // 0x08. Max X rot angle (degrees)
     f32 maxYawAngle;    // 0x0c. Max Y rot angle (degrees)
-    u8 unkData[0x2c];
+    RtQuat rot;         // 0x10
+    u8 unkData[0x1c];
     RwV3d target;       // 0x3c
 } MdlLookAt;
 
@@ -62,6 +64,7 @@ RwRGBA* Mdl_GetColor(Model* mdl);
 RwMatrix* Mdl_GetMatrix(Model* mdl);
 RwFrame* Mdl_GetClumpFrame(Model* mdl);
 RpClump* Mdl_GetClump(Model* mdl);
+
 void MdlLookAt_SetTargetXYZ(Model* mdl, RwV3d* target);
 void MdlLookAt_DisableTarget(Model* mdl);
 
