@@ -23,6 +23,15 @@ typedef enum
     MODEL_TYPE_PERSONAFCL   // FP*.RMD    - "MODEL/FACILITYP/"
 } ModelType;
 
+// ?? bytes (TBD, currently 72 bytes)
+typedef struct MdlLookAt
+{
+    u16 flags;          // 0x00
+    f32 blendRotFactor; // 0x04. ]0.0f;1.0f[ = smooth rot, 0.0f = no rot, 1.0f = instant rot 
+    u8 unkData[0x34];
+    RwV3d target;       // 0x3c
+} MdlLookAt;
+
 // 1072 bytes
 typedef struct Model
 {
@@ -31,10 +40,10 @@ typedef struct Model
     RwRGBA color;      // 0xd0
     u16 type;          // 0xd4. See enum 'ModelType'
     u16 id;            // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
-    u16 renderFlag;    // 0xd8
+    u16 renderFlag;    // 0xd8. See 'MDL_RENDER_FLAG_*'
     RpClump* clump;    // 0xdc
-    u8 unkData2[0x94];
-    RwV3d lookAt;      // 0x174. Target pos the model is looking at (Mostly used by NPCs)
+    u8 unkData2[0x58];
+    MdlLookAt lookAt;  // 0x138
     u8 unkData[0x2b0];
 } Model;
 
