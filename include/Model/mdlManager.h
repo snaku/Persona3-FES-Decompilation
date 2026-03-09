@@ -31,7 +31,9 @@ typedef struct Model
     u16 id;            // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
     u16 renderFlag;    // 0xd8
     RpClump* clump;    // 0xdc
-    u8 unkData[0x350];
+    u8 unkData2[0x94];
+    RwV3d lookAt;      // 0x174. Target pos the model is looking at (Mostly used by NPCs)
+    u8 unkData[0x2b0];
 } Model;
 
 Model* MdlManager_InitMdl(u32 type, u32 id);
