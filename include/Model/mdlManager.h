@@ -10,9 +10,10 @@
 #define MDL_RENDER_FLAG_CULLFRONT (1 << 6)  // 0x40.  Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
 #define MDL_RENDER_FLAG_FOG       (1 << 8)  // 0x100. Enable fog for the model
 
-#define MDL_LOOKAT_FLAG_XYZCS (1 << 5) // 0x20. Cutscenes 
-#define MDL_LOOKAT_FLAG_XYZ   (1 << 6) // 0x40
-#define MDL_LOOKAT_FLAG_XY    (1 << 7) // 0x80
+#define MDL_LOOKAT_FLAG_XYZCS    (1 << 5) // 0x20. Cutscenes
+#define MDL_LOOKAT_FLAG_XYZ      (1 << 6) // 0x40
+#define MDL_LOOKAT_FLAG_XY       (1 << 7) // 0x80
+#define MDL_LOOKAT_FLAG_NOTARGET (1 << 8) // 0x100
 
 typedef enum
 {
@@ -61,6 +62,7 @@ RwRGBA* Mdl_GetColor(Model* mdl);
 RwMatrix* Mdl_GetMatrix(Model* mdl);
 RwFrame* Mdl_GetClumpFrame(Model* mdl);
 RpClump* Mdl_GetClump(Model* mdl);
-void Mdl_SetLookAtTargetXYZ(Model* mdl, RwV3d* target);
+void MdlLookAt_SetTargetXYZ(Model* mdl, RwV3d* target);
+void MdlLookAt_DisableTarget(Model* mdl);
 
 #endif
