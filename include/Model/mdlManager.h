@@ -4,6 +4,10 @@
 #include "Utils.h"
 #include "rw/rpworld.h"
 
+#define MDL_RENDER_FLAG_NODRAW    (1 << 1)  // 0x02. Don't draw the model (not 100% sure about this one)
+#define MDL_RENDER_FLAG_ZTEST     (1 << 3)  // 0x08. Depth testing
+#define MDL_RENDER_FLAG_ZWRITE    (1 << 4)  // 0x10
+
 typedef enum
 {
     MODEL_TYPE_BTLCHAR = 1, // BC*.RMD    - "MODEL/PACK/" (in .pac)
@@ -25,7 +29,7 @@ typedef struct Model
     RwRGBA color;      // 0xd0
     u16 type;          // 0xd4. See enum 'ModelType'
     u16 id;            // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
-    s32 unk_d8;        // 0xd8
+    u16 renderFlag;    // 0xd8
     RpClump* clump;    // 0xdc
     u8 unkData[0x350];
 } Model;
