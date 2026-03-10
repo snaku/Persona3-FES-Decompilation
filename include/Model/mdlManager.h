@@ -37,7 +37,8 @@ typedef struct MdlLookAt
     f32 maxPitchAngle;  // 0x08. Max X rot angle (degrees)
     f32 maxYawAngle;    // 0x0c. Max Y rot angle (degrees)
     RtQuat rot;         // 0x10
-    u8 unkData[0x1c];
+    u8 unkData[0x10];
+    RwV3d scale;        // 0x30
     RwV3d target;       // 0x3c
 } MdlLookAt;
 
