@@ -67,5 +67,6 @@ RpClump* Mdl_GetClump(Model* mdl);
 
 void MdlLookAt_SetTargetXYZ(Model* mdl, RwV3d* target);
 void MdlLookAt_DisableTarget(Model* mdl);
+u8 MdlLookAt_IsActive(Model* mdl);
 
 #endif

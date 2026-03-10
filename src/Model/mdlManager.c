@@ -61,3 +61,12 @@ void MdlLookAt_DisableTarget(Model* mdl)
 {
     mdl->lookAt.flags |= MDL_LOOKAT_FLAG_NOTARGET;
 }
+
+// FUN_003191d0
+u8 MdlLookAt_IsActive(Model* mdl)
+{
+    return (mdl->lookAt.flags & (MDL_LOOKAT_FLAG_XYZCS |
+                                 MDL_LOOKAT_FLAG_XYZ   |
+                                 MDL_LOOKAT_FLAG_XY    | 
+                                 MDL_LOOKAT_FLAG_NOTARGET)) != 0;
+}
