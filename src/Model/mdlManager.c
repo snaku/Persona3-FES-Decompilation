@@ -57,6 +57,27 @@ void MdlLookAt_SetTargetXYZ(Model* mdl, RwV3d* target)
     mdl->lookAt.target = *target;
 }
 
+// FUN_00319100
+void MdlLookAt_SetTargetXYZCS(Model* mdl, RwV3d* target)
+{
+    mdl->lookAt.flags |= MDL_LOOKAT_FLAG_XYZCS;
+    mdl->lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZ | MDL_LOOKAT_FLAG_XY);
+    mdl->lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
+
+    mdl->lookAt.target = *target;
+}
+
+// FUN_00319150
+void MdlLookAt_SetTargetXY(Model* mdl, f32 xTarget, f32 yTarget)
+{
+    mdl->lookAt.flags |= MDL_LOOKAT_FLAG_XY;
+    mdl->lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XYZ);
+    mdl->lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
+
+    mdl->lookAt.target.x = xTarget;
+    mdl->lookAt.target.y = yTarget;
+}
+
 // FUN_00319190
 void MdlLookAt_DisableTarget(Model* mdl)
 {

@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "rw/rtquat.h"
 
+typedef struct RwFrame RwFrame;
 typedef struct RpClump RpClump;
 
 #define MDL_RENDER_FLAG_NODRAW    (1 << 1)  // 0x02.  Don't draw the model (not 100% sure about this one)
@@ -78,6 +79,8 @@ RwFrame* Mdl_GetClumpFrame(Model* mdl);
 RpClump* Mdl_GetClump(Model* mdl);
 
 void MdlLookAt_SetTargetXYZ(Model* mdl, RwV3d* target);
+void MdlLookAt_SetTargetXYZCS(Model* mdl, RwV3d* target);
+void MdlLookAt_SetTargetXY(Model* mdl, f32 xTarget, f32 yTarget);
 void MdlLookAt_DisableTarget(Model* mdl);
 u8 MdlLookAt_IsActive(Model* mdl);
 
