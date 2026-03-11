@@ -2,8 +2,9 @@
 #define MDLMANAGER_H
 
 #include "Utils.h"
-#include "rw/rpworld.h"
 #include "rw/rtquat.h"
+
+typedef struct RpClump RpClump;
 
 #define MDL_RENDER_FLAG_NODRAW    (1 << 1)  // 0x02.  Don't draw the model (not 100% sure about this one)
 #define MDL_RENDER_FLAG_ZTEST     (1 << 3)  // 0x08.  Depth testing
@@ -29,6 +30,14 @@ typedef enum
     MODEL_TYPE_PERSONAFCL   // FP*.RMD    - "MODEL/FACILITYP/"
 } ModelType;
 
+// ?? bytes (TBD)
+typedef struct MdlAnim
+{
+    u8 unkData1[0x08];
+    f32 speed;         // 0x08. How fast the animation is playing
+    f32 currTime;      // 0x0c
+} MdlAnim;
+
 // ?? bytes (TBD, currently 72 bytes)
 typedef struct MdlLookAt
 {
@@ -52,9 +61,11 @@ typedef struct Model
     u16 id;            // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
     u16 renderFlag;    // 0xd8. See 'MDL_RENDER_FLAG_*'
     RpClump* clump;    // 0xdc
-    u8 unkData2[0x58];
+    u8 unkData2[0x0c];
+    MdlAnim anim;      // 0xec
+    u8 unkData3[0x3c];
     MdlLookAt lookAt;  // 0x138
-    u8 unkData[0x2b0];
+    u8 unkDat4[0x2b0];
 } Model;
 
 Model* MdlManager_InitMdl(u32 type, u32 id);

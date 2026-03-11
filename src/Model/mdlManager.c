@@ -1,4 +1,5 @@
 #include "Model/mdlManager.h"
+#include "rw/rpworld.h"
 
 // FUN_00316690. TODO
 Model* MdlManager_InitMdl(u32 type, u32 id)
