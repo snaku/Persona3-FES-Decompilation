@@ -3,7 +3,18 @@
 
 #include "rw/rwcore.h"
 
-typedef struct RtAnimAnimation RtAnimAnimation; // TODO
+typedef struct RtAnimInterpolatorInfo RtAnimInterpolatorInfo; // TODO
+
+// 24 bytes
+typedef struct RtAnimAnimation
+{
+    RtAnimInterpolatorInfo* interpInfo; // 0x00
+    RwInt32 numFrames;                  // 0x04
+    RwInt32 flags;                      // 0x08
+    RwReal duration;                    // 0x0c
+    void* pFrames;                      // 0x10
+    void* customData;                   // 0x14
+} RtAnimAnimation;
 
 typedef struct RtAnimInterpolator RtAnimInterpolator;
 
