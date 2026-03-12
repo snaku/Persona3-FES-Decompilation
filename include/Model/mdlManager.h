@@ -7,6 +7,7 @@
 typedef struct RwFrame RwFrame;
 typedef struct RpClump RpClump;
 typedef struct RpHAnimHierarchy RpHAnimHierarchy;
+typedef struct RtAnimInterpolator RtAnimInterpolator;
 
 #define MDL_RENDER_FLAG_NODRAW    (1 << 1)  // 0x02.  Don't draw the model (not 100% sure about this one)
 #define MDL_RENDER_FLAG_ZTEST     (1 << 3)  // 0x08.  Depth testing
@@ -32,15 +33,16 @@ typedef enum
     MODEL_TYPE_PERSONAFCL   // FP*.RMD    - "MODEL/FACILITYP/"
 } ModelType;
 
-// ?? bytes (TBD, currently 36 bytes)
+// ?? bytes (TBD, currently 40 bytes)
 typedef struct MdlAnim
 {
-    u32 flags;                   // 0x00
-    s16 id;                      // 0x04
-    f32 speed;                   // 0x08. How fast the animation is playing
-    f32 currTime;                // 0x0c
+    u32 flags;                        // 0x00
+    s16 id;                           // 0x04
+    f32 speed;                        // 0x08. How fast the animation is playing
+    f32 currTime;                     // 0x0c
     u8 unkData2[0x10];
-    RpHAnimHierarchy* hierarchy; // 0x20
+    RpHAnimHierarchy* hierarchy;      // 0x20
+    RtAnimInterpolator* interpolator; // 0x24
 } MdlAnim;
 
 // ?? bytes (TBD, currently 72 bytes)
@@ -60,7 +62,7 @@ typedef struct MdlLookAt
 typedef struct
 {
     MdlAnim anim;      // 0x00
-    u8 unkData1[0x28];
+    u8 unkData1[0x24];
     MdlLookAt lookAt;  // 0x4c
     u8 unkData2[0x08];
 } MdlAnimSlot;
