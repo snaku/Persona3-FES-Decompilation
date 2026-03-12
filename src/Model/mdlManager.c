@@ -2,6 +2,8 @@
 #include "rw/rpworld.h"
 #include "rw/rphanim.h"
 
+const f32 gFrameDuration = (1.0f / 30.0f); // 007cadd4. 33.3ms. Not sure where to place this
+
 // FUN_00316690. TODO
 Model* MdlManager_InitMdl(u32 type, u32 id)
 {
@@ -16,6 +18,23 @@ Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags)
     // TODO
 
     return NULL;
+}
+
+// FUN_00318990
+f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx)
+{
+    f32 currTime;
+
+    if (mdl->animSlots[slotIdx].anim.id < 0)
+    {
+        currTime = 0.0f;
+    }
+    else
+    {
+        currTime = mdl->animSlots[slotIdx].anim.currTime;
+    }
+
+    return currTime / gFrameDuration;
 }
 
 // FUN_00318ad0

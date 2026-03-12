@@ -82,8 +82,12 @@ typedef struct Model
     u8 unkDat4[0xd4];
 } Model;
 
+extern const f32 gFrameDuration;
+
 Model* MdlManager_InitMdl(u32 type, u32 id);
 Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags);
+
+f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx);
 
 void Mdl_SetColor(Model* mdl, RwRGBA* color);
 RwRGBA* Mdl_GetColor(Model* mdl);
