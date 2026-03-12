@@ -34,7 +34,7 @@ struct RwRaster
     RwUInt8 privateFlags;    // 0x22
     RwUInt8 cFormat;         // 0x23
     RwUInt8* originalPixels; // 0x24
-    RwInt32 originalWith;    // 0x28
+    RwInt32 originalWidth;    // 0x28
     RwInt32 originalHeight;  // 0x2c
     RwInt32 originalStride;  // 0x30
 };

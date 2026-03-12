@@ -1,9 +1,7 @@
 #ifndef RPHANIM_H
 #define RPHANIM_H
 
-#include "rw/rwcore.h"
-
-typedef struct RtAnimInterpolator RtAnimInterpolator; // TODO: Not in this file. Create struct in 'rtanim.h'
+#include "rw/rtanim.h"
 
 typedef struct RpHAnimNodeInfo RpHAnimNodeInfo; // TODO
 
