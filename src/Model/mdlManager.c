@@ -1,5 +1,6 @@
 #include "Model/mdlManager.h"
 #include "rw/rpworld.h"
+#include "rw/rphanim.h"
 
 // FUN_00316690. TODO
 Model* MdlManager_InitMdl(u32 type, u32 id)
@@ -50,45 +51,45 @@ RpClump* Mdl_GetClump(Model* mdl)
 // FUN_003190b0
 void MdlLookAt_SetTargetXYZ(Model* mdl, RwV3d* target)
 {
-    mdl->lookAt.flags |= MDL_LOOKAT_FLAG_XYZ;
-    mdl->lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XY);
-    mdl->lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
+    mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZ;
+    mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XY);
+    mdl->animSlots[0].lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
 
-    mdl->lookAt.target = *target;
+    mdl->animSlots[0].lookAt.target = *target;
 }
 
 // FUN_00319100
 void MdlLookAt_SetTargetXYZCS(Model* mdl, RwV3d* target)
 {
-    mdl->lookAt.flags |= MDL_LOOKAT_FLAG_XYZCS;
-    mdl->lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZ | MDL_LOOKAT_FLAG_XY);
-    mdl->lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
+    mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZCS;
+    mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZ | MDL_LOOKAT_FLAG_XY);
+    mdl->animSlots[0].lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
 
-    mdl->lookAt.target = *target;
+    mdl->animSlots[0].lookAt.target = *target;
 }
 
 // FUN_00319150
 void MdlLookAt_SetTargetXY(Model* mdl, f32 xTarget, f32 yTarget)
 {
-    mdl->lookAt.flags |= MDL_LOOKAT_FLAG_XY;
-    mdl->lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XYZ);
-    mdl->lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
+    mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XY;
+    mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XYZ);
+    mdl->animSlots[0].lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
 
-    mdl->lookAt.target.x = xTarget;
-    mdl->lookAt.target.y = yTarget;
+    mdl->animSlots[0].lookAt.target.x = xTarget;
+    mdl->animSlots[0].lookAt.target.y = yTarget;
 }
 
 // FUN_00319190
 void MdlLookAt_DisableTarget(Model* mdl)
 {
-    mdl->lookAt.flags |= MDL_LOOKAT_FLAG_NOTARGET;
+    mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_NOTARGET;
 }
 
 // FUN_003191d0
 u8 MdlLookAt_IsActive(Model* mdl)
 {
-    return (mdl->lookAt.flags & (MDL_LOOKAT_FLAG_XYZCS |
-                                 MDL_LOOKAT_FLAG_XYZ   |
-                                 MDL_LOOKAT_FLAG_XY    | 
-                                 MDL_LOOKAT_FLAG_NOTARGET)) != 0;
+    return (mdl->animSlots[0].lookAt.flags & (MDL_LOOKAT_FLAG_XYZCS |
+                                              MDL_LOOKAT_FLAG_XYZ   |
+                                              MDL_LOOKAT_FLAG_XY    | 
+                                              MDL_LOOKAT_FLAG_NOTARGET)) != 0;
 }

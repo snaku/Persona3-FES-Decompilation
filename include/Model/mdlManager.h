@@ -35,7 +35,8 @@ typedef enum
 // ?? bytes (TBD, currently 36 bytes)
 typedef struct MdlAnim
 {
-    u8 unkData1[0x08];
+    u32 flags;                   // 0x00
+    s16 id;                      // 0x04
     f32 speed;                   // 0x08. How fast the animation is playing
     f32 currTime;                // 0x0c
     u8 unkData2[0x10];
@@ -55,21 +56,28 @@ typedef struct MdlLookAt
     RwV3d target;       // 0x3c
 } MdlLookAt;
 
+// 156 bytes. Maybe temp name
+typedef struct
+{
+    MdlAnim anim;      // 0x00
+    u8 unkData1[0x28];
+    MdlLookAt lookAt;  // 0x4c
+    u8 unkData2[0x08];
+} MdlAnimSlot;
+
 // 1072 bytes
 typedef struct Model
 {
-    RwMatrix mat;      // 0x00
+    RwMatrix mat;             // 0x00
     u8 unkData1[0x90];
-    RwRGBA color;      // 0xd0
-    u16 type;          // 0xd4. See enum 'ModelType'
-    u16 id;            // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
-    u16 renderFlag;    // 0xd8. See 'MDL_RENDER_FLAG_*'
-    RpClump* clump;    // 0xdc
+    RwRGBA color;             // 0xd0
+    u16 type;                 // 0xd4. See enum 'ModelType'
+    u16 id;                   // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
+    u16 renderFlag;           // 0xd8. See 'MDL_RENDER_FLAG_*'
+    RpClump* clump;           // 0xdc
     u8 unkData2[0x0c];
-    MdlAnim anim;      // 0xec
-    u8 unkData3[0x3c];
-    MdlLookAt lookAt;  // 0x138
-    u8 unkDat4[0x2b0];
+    MdlAnimSlot animSlots[4]; // 0xec
+    u8 unkDat4[0xd4];
 } Model;
 
 Model* MdlManager_InitMdl(u32 type, u32 id);
