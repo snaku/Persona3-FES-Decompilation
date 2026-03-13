@@ -20,6 +20,38 @@ Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags)
     return NULL;
 }
 
+// FUN_00318870
+f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx)
+{
+    f32 duration;
+
+    if (mdl->animSlots[slotIdx].anim.id < 0)
+    {
+        duration = 0.0f;
+    }
+    else
+    {
+        if (mdl->animSlots[slotIdx].anim.hierarchy == NULL ||
+           (mdl->animSlots[slotIdx].anim.hierarchy->currentAnim == NULL))
+        {
+            duration = 0.0f;
+        }
+        else
+        {
+            if (mdl->animSlots[slotIdx].anim.hierarchy->currentAnim->pCurrentAnim == NULL)
+            {
+                duration = 0.0f;
+            }
+            else
+            {
+                duration = mdl->animSlots[slotIdx].anim.hierarchy->currentAnim->pCurrentAnim->duration;
+            }
+        }
+    }
+
+    return duration / gFrameDuration;
+}
+
 // FUN_00318990
 f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx)
 {

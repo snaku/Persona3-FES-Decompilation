@@ -59,7 +59,7 @@ typedef struct MdlLookAt
 } MdlLookAt;
 
 // 156 bytes. Maybe temp name
-typedef struct
+typedef struct MdlAnimSlot
 {
     MdlAnim anim;      // 0x00
     u8 unkData1[0x24];
@@ -87,6 +87,7 @@ extern const f32 gFrameDuration;
 Model* MdlManager_InitMdl(u32 type, u32 id);
 Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags);
 
+f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx);
 f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx);
 
 void Mdl_SetColor(Model* mdl, RwRGBA* color);
