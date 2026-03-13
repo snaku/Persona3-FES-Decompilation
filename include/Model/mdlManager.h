@@ -10,11 +10,13 @@ typedef struct RpHAnimHierarchy RpHAnimHierarchy;
 typedef struct RtAnimInterpolator RtAnimInterpolator;
 typedef struct RtAnimAnimation RtAnimAnimation;
 
-#define MDL_RENDER_FLAG_NODRAW    (1 << 1)  // 0x02.  Don't draw the model (not 100% sure about this one)
-#define MDL_RENDER_FLAG_ZTEST     (1 << 3)  // 0x08.  Depth testing
-#define MDL_RENDER_FLAG_ZWRITE    (1 << 4)  // 0x10
-#define MDL_RENDER_FLAG_CULLFRONT (1 << 6)  // 0x40.  Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
-#define MDL_RENDER_FLAG_FOG       (1 << 8)  // 0x100. Enable fog for the model
+#define MDL_FLAG_FULLSHADOW (1 << 0)  // 0x01
+#define MDL_FLAG_NODRAW     (1 << 1)  // 0x02.  Don't draw the model (not 100% sure about this one)
+#define MDL_FLAG_ZTEST      (1 << 3)  // 0x08.  Depth testing
+#define MDL_FLAG_ZWRITE     (1 << 4)  // 0x10
+#define MDL_FLAG_CULLFRONT  (1 << 6)  // 0x40.  Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
+#define MDL_FLAG_FOG        (1 << 8)  // 0x100. Enable fog for the model
+#define MDL_FLAG_UPDATE     (1 << 12) // 0x1000
 
 #define MDL_LOOKAT_FLAG_XYZCS    (1 << 5) // 0x20. Cutscenes
 #define MDL_LOOKAT_FLAG_XYZ      (1 << 6) // 0x40
@@ -50,17 +52,18 @@ typedef struct MdlAnimEntryTable
     u8 unkData[0x0a];
 } MdlAnimEntryTable;
 
-// ?? bytes (TBD, currently 44 bytes)
+// ?? bytes (TBD, currently 48 bytes)
 typedef struct MdlAnim
 {
-    u32 flags;                        // 0x00
-    s16 id;                           // 0x04
-    f32 speed;                        // 0x08. How fast the animation is playing
-    f32 currTime;                     // 0x0c
+    u32 flags;                         // 0x00
+    s16 id;                            // 0x04
+    f32 speed;                         // 0x08. How fast the animation is playing
+    f32 currTime;                      // 0x0c
     u8 unkData2[0x10];
-    RpHAnimHierarchy* hierarchy;      // 0x20
-    RtAnimInterpolator* interpolator; // 0x24
-    MdlAnimEntryTable* table;         // 0x28
+    RpHAnimHierarchy* hierarchy;       // 0x20
+    RtAnimInterpolator* interpolator;  // 0x24
+    RtAnimInterpolator* interpolator2; // 0x28
+    MdlAnimEntryTable* table;          // 0x2c
 } MdlAnim;
 
 // ?? bytes (TBD, currently 72 bytes)
@@ -80,7 +83,7 @@ typedef struct MdlLookAt
 typedef struct MdlAnimSlot
 {
     MdlAnim anim;      // 0x00
-    u8 unkData1[0x20];
+    u8 unkData1[0x1c];
     MdlLookAt lookAt;  // 0x4c
     u8 unkData2[0x08];
 } MdlAnimSlot;
@@ -93,7 +96,7 @@ typedef struct Model
     RwRGBA color;             // 0xd0
     u16 type;                 // 0xd4. See enum 'ModelType'
     u16 id;                   // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
-    u16 renderFlag;           // 0xd8. See 'MDL_RENDER_FLAG_*'
+    u16 flags;                // 0xd8. See 'MDL_FLAG_*'
     RpClump* clump;           // 0xdc
     u8 unkData2[0x0c];
     MdlAnimSlot animSlots[4]; // 0xec
@@ -106,6 +109,7 @@ Model* MdlManager_InitMdl(u32 type, u32 id);
 Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags);
 
 f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx);
+f32 MdlAnim_GetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
 f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx);
 
 void Mdl_SetColor(Model* mdl, RwRGBA* color);
