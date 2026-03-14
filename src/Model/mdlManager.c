@@ -52,6 +52,23 @@ f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx)
     return duration / gFrameDuration;
 }
 
+// FUN_00318910
+f32 MdlAnim_GetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
+{
+    f32 duration;
+
+    if (mdl->animSlots[slotIdx].anim.hierarchy == NULL)
+    {
+        duration = 0.0f;
+    }
+    else
+    {
+        duration = mdl->animSlots[slotIdx].anim.table->entries[animId].rtAnim->duration;
+    }
+
+    return duration / gFrameDuration;
+}
+
 // FUN_00318990
 f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx)
 {
