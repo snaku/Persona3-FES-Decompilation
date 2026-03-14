@@ -92,13 +92,16 @@ typedef struct MdlAnimSlot
 typedef struct Model
 {
     RwMatrix mat;             // 0x00
-    u8 unkData1[0x90];
+    RwMatrix identityMat;     // 0x40
+    u8 unkData1[0x50];
     RwRGBA color;             // 0xd0
     u16 type;                 // 0xd4. See enum 'ModelType'
     u16 id;                   // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
     u16 flags;                // 0xd8. See 'MDL_FLAG_*'
     RpClump* clump;           // 0xdc
-    u8 unkData2[0x0c];
+    void* unk_e0;             // 0xe0
+    u32 gsAlpha1Reg;          // 0xe4. ALPHA_1 GS register value to set
+    u32 gsTest1Reg;           // 0xe8. TEST_1 GS register value to set
     MdlAnimSlot animSlots[4]; // 0xec
     u8 unkDat4[0xd4];
 } Model;
@@ -121,8 +124,8 @@ RpClump* Mdl_GetClump(Model* mdl);
 void MdlLookAt_SetTargetPosXYZ(Model* mdl, RwV3d* target);
 void MdlLookAt_SetTargetPosXYZCS(Model* mdl, RwV3d* target);
 void MdlLookAt_SetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget);
-void MdlLookAt_SetTargetScale(Model* mdl, RwV3d* scale);
 void MdlLookAt_DisableTarget(Model* mdl);
 u8 MdlLookAt_IsActive(Model* mdl);
+void MdlLookAt_SetTargetScale(Model* mdl, RwV3d* scale);
 
 #endif
