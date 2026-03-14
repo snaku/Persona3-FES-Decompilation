@@ -161,3 +161,9 @@ u8 MdlLookAt_IsActive(Model* mdl)
                                               MDL_LOOKAT_FLAG_XY    | 
                                               MDL_LOOKAT_FLAG_NOTARGET)) != 0;
 }
+
+// FUN_00319210
+void MdlLookAt_SetTargetScale(Model* mdl, RwV3d* scale)
+{
+    mdl->animSlots[0].lookAt.targetScale = *scale;
+}

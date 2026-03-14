@@ -121,6 +121,7 @@ RpClump* Mdl_GetClump(Model* mdl);
 void MdlLookAt_SetTargetPosXYZ(Model* mdl, RwV3d* target);
 void MdlLookAt_SetTargetPosXYZCS(Model* mdl, RwV3d* target);
 void MdlLookAt_SetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget);
+void MdlLookAt_SetTargetScale(Model* mdl, RwV3d* scale);
 void MdlLookAt_DisableTarget(Model* mdl);
 u8 MdlLookAt_IsActive(Model* mdl);
 
