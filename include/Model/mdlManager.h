@@ -11,7 +11,7 @@ typedef struct RtAnimInterpolator RtAnimInterpolator;
 typedef struct RtAnimAnimation RtAnimAnimation;
 
 #define MDL_FLAG_FULLSHADOW (1 << 0)  // 0x01
-#define MDL_FLAG_NODRAW     (1 << 1)  // 0x02.  Don't draw the model (not 100% sure about this one)
+#define MDL_FLAG_NODRAW     (1 << 1)  // 0x02.  Don't draw the model
 #define MDL_FLAG_ZTEST      (1 << 3)  // 0x08.  Depth testing
 #define MDL_FLAG_ZWRITE     (1 << 4)  // 0x10
 #define MDL_FLAG_CULLFRONT  (1 << 6)  // 0x40.  Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
@@ -73,10 +73,10 @@ typedef struct MdlLookAt
     f32 blendRotFactor; // 0x04. ]0.0f;1.0f[ = smooth rot, 0.0f = no rot, 1.0f = instant rot
     f32 maxPitchAngle;  // 0x08. Max X rot angle (degrees)
     f32 maxYawAngle;    // 0x0c. Max Y rot angle (degrees)
-    RtQuat rot;         // 0x10
-    u8 unkData[0x10];
-    RwV3d scale;        // 0x30
-    RwV3d target;       // 0x3c
+    RtQuat rot;         // 0x10. Current rotation
+    RtQuat targetRot;   // 0x20
+    RwV3d targetScale;  // 0x30
+    RwV3d targetPos;    // 0x3c
 } MdlLookAt;
 
 // 156 bytes. Maybe temp name
@@ -118,9 +118,9 @@ RwMatrix* Mdl_GetMatrix(Model* mdl);
 RwFrame* Mdl_GetClumpFrame(Model* mdl);
 RpClump* Mdl_GetClump(Model* mdl);
 
-void MdlLookAt_SetTargetXYZ(Model* mdl, RwV3d* target);
-void MdlLookAt_SetTargetXYZCS(Model* mdl, RwV3d* target);
-void MdlLookAt_SetTargetXY(Model* mdl, f32 xTarget, f32 yTarget);
+void MdlLookAt_SetTargetPosXYZ(Model* mdl, RwV3d* target);
+void MdlLookAt_SetTargetPosXYZCS(Model* mdl, RwV3d* target);
+void MdlLookAt_SetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget);
 void MdlLookAt_DisableTarget(Model* mdl);
 u8 MdlLookAt_IsActive(Model* mdl);
 

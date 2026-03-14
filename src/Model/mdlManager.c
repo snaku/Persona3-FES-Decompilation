@@ -117,34 +117,34 @@ RpClump* Mdl_GetClump(Model* mdl)
 }
 
 // FUN_003190b0
-void MdlLookAt_SetTargetXYZ(Model* mdl, RwV3d* target)
+void MdlLookAt_SetTargetPosXYZ(Model* mdl, RwV3d* target)
 {
     mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZ;
     mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XY);
     mdl->animSlots[0].lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
 
-    mdl->animSlots[0].lookAt.target = *target;
+    mdl->animSlots[0].lookAt.targetPos = *target;
 }
 
 // FUN_00319100
-void MdlLookAt_SetTargetXYZCS(Model* mdl, RwV3d* target)
+void MdlLookAt_SetTargetPosXYZCS(Model* mdl, RwV3d* target)
 {
     mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZCS;
     mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZ | MDL_LOOKAT_FLAG_XY);
     mdl->animSlots[0].lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
 
-    mdl->animSlots[0].lookAt.target = *target;
+    mdl->animSlots[0].lookAt.targetPos = *target;
 }
 
 // FUN_00319150
-void MdlLookAt_SetTargetXY(Model* mdl, f32 xTarget, f32 yTarget)
+void MdlLookAt_SetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget)
 {
     mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XY;
     mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XYZ);
     mdl->animSlots[0].lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
 
-    mdl->animSlots[0].lookAt.target.x = xTarget;
-    mdl->animSlots[0].lookAt.target.y = yTarget;
+    mdl->animSlots[0].lookAt.targetPos.x = xTarget;
+    mdl->animSlots[0].lookAt.targetPos.y = yTarget;
 }
 
 // FUN_00319190
