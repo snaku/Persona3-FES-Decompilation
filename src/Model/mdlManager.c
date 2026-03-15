@@ -116,6 +116,13 @@ RpClump* Mdl_GetClump(Model* mdl)
     return mdl->clump;
 }
 
+// FUN_003190a0
+void MdlLookAt_SetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle)
+{
+    mdl->animSlots[0].lookAt.maxPitchAngle = maxPitchAngle;
+    mdl->animSlots[0].lookAt.maxYawAngle = maxYawAngle;
+}
+
 // FUN_003190b0
 void MdlLookAt_SetTargetPosXYZ(Model* mdl, RwV3d* target)
 {
