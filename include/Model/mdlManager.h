@@ -121,6 +121,7 @@ RwMatrix* Mdl_GetMatrix(Model* mdl);
 RwFrame* Mdl_GetClumpFrame(Model* mdl);
 RpClump* Mdl_GetClump(Model* mdl);
 
+void MdlLookAt_SetBlendRotFactor(Model* mdl, f32 blendRotFactor);
 void MdlLookAt_SetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle);
 void MdlLookAt_SetTargetPosXYZ(Model* mdl, RwV3d* target);
 void MdlLookAt_SetTargetPosXYZCS(Model* mdl, RwV3d* target);

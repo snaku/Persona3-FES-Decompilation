@@ -116,6 +116,12 @@ RpClump* Mdl_GetClump(Model* mdl)
     return mdl->clump;
 }
 
+// FUN_00319090
+void MdlLookAt_SetBlendRotFactor(Model* mdl, f32 blendRotFactor)
+{
+    mdl->animSlots[0].lookAt.blendRotFactor = blendRotFactor;
+}
+
 // FUN_003190a0
 void MdlLookAt_SetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle)
 {
