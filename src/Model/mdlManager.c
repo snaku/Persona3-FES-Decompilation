@@ -116,6 +116,18 @@ RpClump* Mdl_GetClump(Model* mdl)
     return mdl->clump;
 }
 
+// FUN_00319010
+void Mdl_EnableFullShadow(Model* mdl)
+{
+    mdl->flags |= MDL_FLAG_FULLSHADOW;
+}
+
+// FUN_00319030
+void Mdl_DisableFullShadow(Model* mdl)
+{
+    mdl->flags &= ~MDL_FLAG_FULLSHADOW;
+}
+
 // FUN_00319090
 void MdlLookAt_SetBlendRotFactor(Model* mdl, f32 blendRotFactor)
 {

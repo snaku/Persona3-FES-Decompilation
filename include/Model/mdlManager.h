@@ -120,6 +120,8 @@ RwRGBA* Mdl_GetColor(Model* mdl);
 RwMatrix* Mdl_GetMatrix(Model* mdl);
 RwFrame* Mdl_GetClumpFrame(Model* mdl);
 RpClump* Mdl_GetClump(Model* mdl);
+void Mdl_EnableFullShadow(Model* mdl);
+void Mdl_DisableFullShadow(Model* mdl);
 
 void MdlLookAt_SetBlendRotFactor(Model* mdl, f32 blendRotFactor);
 void MdlLookAt_SetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle);
