@@ -59,7 +59,9 @@ typedef struct MdlAnim
     s16 id;                            // 0x04
     f32 speed;                         // 0x08. How fast the animation is playing
     f32 currTime;                      // 0x0c
-    u8 unkData2[0x10];
+    s16 oldId;                         // 0x10
+    f32 oldTime;                       // 0x14
+    u8 unkData2[0x08];
     RpHAnimHierarchy* hierarchy;       // 0x20
     RtAnimInterpolator* interpolator;  // 0x24
     RtAnimInterpolator* interpolator2; // 0x28
