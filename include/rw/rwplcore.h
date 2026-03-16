@@ -83,6 +83,19 @@ typedef struct RwV4dTag
     RwReal w; // 0x0c
 } RwV4d;
 
+typedef enum
+{
+    rwMATRIXTYPENORMAL = 0x00000001,
+    rwMATRIXTYPEORTHOGONAL = 0x00000002,
+    rwMATRIXTYPEORTHONORMAL = 0x00000003,
+    rwMATRIXTYPEMASK = 0x00000003
+} RwMatrixType;
+
+typedef enum
+{
+    rwMATRIXINTERNALIDENTITY = 0x00020000
+} RwMatrixFlag;
+
 // 64 bytes
 typedef struct RwMatrixTag
 {
@@ -98,6 +111,29 @@ typedef struct RwMatrixTag
     RwV3d pos;      // 0x30
     RwUInt32 pad3;  // 0x3c
 } RwMatrix;
+
+typedef enum
+{
+    rwCOMBINEREPLACE = 0,
+    rwCOMBINEPRECONCAT,
+    rwCOMBINEPOSTCONCAT,
+} RwOpCombineType;
+
+#define rwMatrixSetFlags(m, flagsbit) ((m)->flags = (flagsbit))
+#define rwMatrixGetFlags(m)           ((m)->flags)
+
+#define RwMatrixSetIdentity(m)                                  \
+do                                                              \
+{                                                               \
+    (m)->right.x = (m)->up.y    = (m)->at.z  = (RwReal)((1.0)); \
+    (m)->right.y = (m)->right.z = (m)->up.x  = (RwReal)((0.0)); \
+    (m)->up.z    = (m)->at.x    = (m)->at.y  = (RwReal)((0.0)); \
+    (m)->pos.x   = (m)->pos.y   = (m)->pos.z = (RwReal)((0.0)); \
+    rwMatrixSetFlags((m),                                       \
+                     rwMatrixGetFlags(m) |                      \
+                     (rwMATRIXINTERNALIDENTITY |                \
+                      rwMATRIXTYPEORTHONORMAL));                \
+} while(0)
 
 #define RwMatrixMultiplyVUMacro(_matrix, _matrixIn1, _matrixIn2)    \
 do                                                                  \
@@ -227,6 +263,8 @@ typedef struct
 
 extern RwGlobals rwGlobals; // not sure where to place this
 
+RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2);
+RwMatrix* RwMatrixRotate(RwMatrix* matrix, const RwV3d* axis, RwReal angle, RwOpCombineType combineOp);
 RwReal RwV3dLength(const RwV3d* in);
 RwReal RwV2dLength(const RwV2d* in);
 RwUInt32 RwEngineGetVersion();

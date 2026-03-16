@@ -1,8 +1,33 @@
 #include "Model/mdlManager.h"
 #include "rw/rpworld.h"
 #include "rw/rphanim.h"
+#include "temporary.h"
 
 const f32 gFrameDuration = (1.0f / 30.0f); // 007cadd4. 33.3ms. Not sure where to place this
+
+// FUN_00311310
+MdlAnimEntryTable* Mdl_CreateAnimEntryTable(u16 animCount)
+{
+    MdlAnimEntryTable* table;
+    u32 size;
+    u32 i;
+
+    size = animCount * sizeof(MdlAnimEntry) + sizeof(MdlAnimEntryTable);
+    table = (MdlAnimEntryTable*)RW_MALLOC(size, 0x40000);
+    P3FES_Memset(table, 0, size);
+
+    table->entries = (MdlAnimEntry*)((u8*)table + sizeof(MdlAnimEntryTable));
+    table->count = animCount;
+
+    for (i = 0; i < table->count; i++)
+    {
+        RwMatrixSetIdentity(&table->entries[i].identityMat);
+    }
+
+    table->unk_06 = 1;
+
+    return table;
+}
 
 // FUN_00316690. TODO
 Model* MdlManager_InitMdl(u32 type, u32 id)

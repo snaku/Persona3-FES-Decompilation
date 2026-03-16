@@ -49,7 +49,8 @@ typedef struct MdlAnimEntryTable
 {
     MdlAnimEntry* entries; // 0x00
     u16 count;             // 0x04
-    u8 unkData[0x0a];
+    u16 unk_06;            // 0x06
+    u8 unkData[0x08];
 } MdlAnimEntryTable;
 
 // ?? bytes (TBD, currently 48 bytes)
