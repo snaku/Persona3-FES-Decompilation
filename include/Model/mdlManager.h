@@ -55,17 +55,17 @@ typedef struct MdlAnimEntryTable
 // ?? bytes (TBD, currently 48 bytes)
 typedef struct MdlAnim
 {
-    u32 flags;                         // 0x00
-    s16 id;                            // 0x04
-    f32 speed;                         // 0x08. How fast the animation is playing
-    f32 currTime;                      // 0x0c
-    s16 oldId;                         // 0x10
-    f32 oldTime;                       // 0x14
+    u32 flags;                      // 0x00
+    s16 id;                         // 0x04
+    f32 speed;                      // 0x08. How fast the animation is playing
+    f32 currTime;                   // 0x0c
+    s16 oldId;                      // 0x10
+    f32 oldTime;                    // 0x14
     u8 unkData2[0x08];
-    RpHAnimHierarchy* hierarchy;       // 0x20
-    RtAnimInterpolator* interpolator;  // 0x24
-    RtAnimInterpolator* interpolator2; // 0x28
-    MdlAnimEntryTable* table;          // 0x2c
+    RpHAnimHierarchy* hierarchy;    // 0x20
+    RtAnimInterpolator* oldInterp;  // 0x24. Old animation data
+    RtAnimInterpolator* nextInterp; // 0x28. Animation data of the next animation to play
+    MdlAnimEntryTable* table;       // 0x2c
 } MdlAnim;
 
 // ?? bytes (TBD, currently 72 bytes)
