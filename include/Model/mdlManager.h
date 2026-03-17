@@ -62,7 +62,8 @@ typedef struct MdlAnim
     f32 currTime;                   // 0x0c
     s16 oldId;                      // 0x10
     f32 oldTime;                    // 0x14
-    u8 unkData2[0x08];
+    u16 blendFrameCount;            // 0x18
+    f32 blendFactor;                // 0x1c
     RpHAnimHierarchy* hierarchy;    // 0x20
     RtAnimInterpolator* oldInterp;  // 0x24. Old animation data
     RtAnimInterpolator* nextInterp; // 0x28. Animation data of the next animation to play
@@ -106,7 +107,8 @@ typedef struct Model
     u32 gsAlpha1Reg;          // 0xe4. ALPHA_1 GS register value to set
     u32 gsTest1Reg;           // 0xe8. TEST_1 GS register value to set
     MdlAnimSlot animSlots[4]; // 0xec
-    u8 unkDat4[0xd4];
+    void* unk_35c;            // 0x35c
+    u8 unkDat4[0xd0];
 } Model;
 
 extern const f32 gFrameDuration;
