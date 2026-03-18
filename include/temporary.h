@@ -25,5 +25,7 @@ void FUN_0019d400(const char* param_1, const char* file, u32 line);
 void* memcpy(void* dst, void* src, u32 size);
 void* memset(void* dst, u8 value, u32 size);
 void sprintf(char* buffer, const char* fmt, ...);
+char* strcpy(char* dst, const char* src);
+size_t strlen(const char* str);
 
 #endif

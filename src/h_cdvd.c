@@ -1,3 +1,45 @@
 #include "h_cdvd.h"
 #include "temporary.h"
 
+// FUN_00101010
+void H_Cdvd_BuildPathUppercase(char* src, char* dst)
+{
+    // Need to rework a little bit
+
+    char* pathBase;
+    size_t basePathLen;
+    char* dstPtr;
+    u32 i;
+    char currChar;
+
+    pathBase = "VOL:\\";
+    strcpy(src, pathBase);
+    basePathLen = strlen(pathBase);
+
+    dstPtr = dst + basePathLen;
+    i = 0;
+    while (i < MAX_PATH_SIZE)
+    {
+        currChar = src[i];
+        if (currChar == '\0')
+        {
+            dstPtr[i] = '\0';
+            return;
+        }
+
+        if (currChar == '/')
+        {
+            dstPtr[i] = '\\';
+        }
+        else if (currChar >= 'a' && currChar <= 'z')
+        {
+            dstPtr[i] = currChar - 0x20; // to upper
+        }
+        else
+        {
+            dstPtr[i] = currChar;
+        }
+
+        i++;
+    }
+}

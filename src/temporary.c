@@ -28,3 +28,19 @@ void sprintf(char* buffer, const char* fmt, ...)
 {
     // TODO
 }
+
+// FUN_00524270
+char* strcpy(char* dst, const char* src)
+{
+    // TODO
+
+    return dst;
+}
+
+// FUN_00524388
+size_t strlen(const char* str)
+{
+    // TODO
+
+    return 0;
+}
