@@ -14,9 +14,13 @@ struct H_Cdvd
     H_Cdvd* next;             // 0x04
     u8 unkData1[0x08];
     char path[MAX_PATH_SIZE]; // 0x10
-    u8 unkData2[0x255];
+    void* fileMemory;         // 0x110. File loaded in memory
+    void* unk_114;            // 0x114
+    u32 fileSize;             // 0x118. Size of the file in bytes
+    u8 unkData2[0x248];
 };
 
-void H_Cdvd_BuildPathUppercase(char* srcBuf, char* dstBuf);
+H_Cdvd* H_Cdvd_Request(const char* path, u32 param_2);
+void H_Cdvd_BuildPathUppercase(char* src, char* dst);
 
 #endif

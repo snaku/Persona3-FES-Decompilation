@@ -1,6 +1,16 @@
 #include "h_cdvd.h"
 #include "temporary.h"
 
+static H_Cdvd sCdvdListHead; // 007e0380. Dummy head
+
+// FUN_00100d80
+H_Cdvd* H_Cdvd_Request(const char* path, u32 param_2)
+{
+    // TODO
+
+    return NULL;
+}
+
 // FUN_00101010
 void H_Cdvd_BuildPathUppercase(char* src, char* dst)
 {
