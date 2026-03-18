@@ -200,6 +200,8 @@ typedef struct RwObject
     void* parent;         // 0x04
 } RwObject;
 
+typedef struct RwStream RwStream; // TODO
+
 typedef enum
 {
     // TODO

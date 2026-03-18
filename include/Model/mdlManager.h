@@ -10,6 +10,8 @@ typedef struct RpHAnimHierarchy RpHAnimHierarchy;
 typedef struct RtAnimInterpolator RtAnimInterpolator;
 typedef struct RtAnimAnimation RtAnimAnimation;
 
+typedef struct H_Cdvd H_Cdvd;
+
 #define MDL_FLAG_FULLSHADOW (1 << 0)  // 0x01
 #define MDL_FLAG_NODRAW     (1 << 1)  // 0x02.  Don't draw the model
 #define MDL_FLAG_ZTEST      (1 << 3)  // 0x08.  Depth testing
@@ -92,6 +94,15 @@ typedef struct MdlAnimSlot
     u8 unkData2[0x08];
 } MdlAnimSlot;
 
+// 80 bytes. Maybe temp name
+typedef struct MdlStream
+{
+    RwStream* rws;     // 0x00
+    u8 unkData1[0x40];
+    H_Cdvd* cdvd;      // 0x44
+    u8 unkData2[0x08];
+} MdlStream;
+
 // 1072 bytes
 typedef struct Model
 {
@@ -108,7 +119,9 @@ typedef struct Model
     u32 gsTest1Reg;           // 0xe8. TEST_1 GS register value to set
     MdlAnimSlot animSlots[4]; // 0xec
     void* unk_35c;            // 0x35c
-    u8 unkDat4[0xd0];
+    u8 unkData2[0xc8];
+    MdlStream* stream;        // 0x428
+    u8 unkDat3[0x08];
 } Model;
 
 extern const f32 gFrameDuration;

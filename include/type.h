@@ -19,6 +19,8 @@ typedef double f64;
 typedef s32 intptr_t;
 typedef u32 uintptr_t;
 
+typedef u32 size_t;
+
 #define NULL ((void*)0)
 
 #endif // TYPE_H
