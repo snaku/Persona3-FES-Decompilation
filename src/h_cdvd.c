@@ -53,3 +53,9 @@ void H_Cdvd_BuildPathUppercase(char* src, char* dst)
         i++;
     }
 }
+
+// FUN_001016b0. Not sure about this one, but that's probably its semantics
+u8 H_Cdvd_IsFileLoaded(H_Cdvd* cdvd)
+{
+    return cdvd->state == 4;
+}

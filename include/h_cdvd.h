@@ -12,7 +12,8 @@ struct H_Cdvd
 {
     H_Cdvd* prev;             // 0x00
     H_Cdvd* next;             // 0x04
-    u8 unkData1[0x08];
+    s32 unk_08;               // 0x08
+    u32 state;                // 0x0c
     char path[MAX_PATH_SIZE]; // 0x10
     void* fileMemory;         // 0x110. File loaded in memory
     void* unk_114;            // 0x114
@@ -22,5 +23,6 @@ struct H_Cdvd
 
 H_Cdvd* H_Cdvd_Request(const char* path, u32 param_2);
 void H_Cdvd_BuildPathUppercase(char* src, char* dst);
+u8 H_Cdvd_IsFileLoaded(H_Cdvd* cdvd);
 
 #endif
