@@ -1,16 +1,63 @@
 #include "Field/k_dungeon.h"
 #include "Field/k_data.h"
 #include "kwln/kwlnTask.h"
+#include "Model/mdlManager.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
 #include "h_cdvd.h"
 #include "g_data.h"
 
 static KwlnTask* sDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
+Model* gDungeonTpMdl;          // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?
 
 #define DUNGEON_TASK_DATA ((FieldDungeon*)sDungeonTask->taskData)
 
 H_Cdvd* FldDungeon_RequestScript();
+
+void FldDungeon_FUN_001c03f0();
+
+// FUN_001bf570
+void* FldDungeon_UpdateTask(KwlnTask* dungeonTask)
+{
+    // TODO
+
+    return KWLN_TASK_CONTINUE;
+}
+
+void FldDungeon_DestroyTask(KwlnTask* dungeonTask)
+{
+    // TODO
+}
+
+// FUN_001bfbc0
+KwlnTask* FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
+{
+    FieldDungeon* dungeon;
+    KwlnTask* dungeonTask;
+
+    dungeon = RW_CALLOC(1, sizeof(FieldDungeon), 0x40000);
+    if (dungeon == NULL)
+    {
+        return NULL;
+    }
+
+    dungeonTask = KwlnTask_CreateWithAutoPriority(parentTask, 10, "automatic dungeon ", FldDungeon_UpdateTask, FldDungeon_DestroyTask, dungeon);
+    sDungeonTask = dungeonTask;
+
+    dungeon->currFloor = floor;
+    dungeon->unk_08 = param_3;
+
+    if (floor > 1)
+    {
+        gDungeonTpMdl = MdlManager_CreateMdl(4, 0xffff, "field/grmd/fobj000.RMD", 0);
+
+        dungeon->scrCdvd = FldDungeon_RequestScript();
+
+        FldDungeon_FUN_001c03f0();
+    }
+
+    return dungeonTask;
+}
 
 // FUN_001bff00
 void FldDungeon_RequestShutdown()
@@ -111,4 +158,9 @@ H_Cdvd* FldDungeon_RequestScript()
     }
 
     return cdvd;
+}
+
+void FldDungeon_FUN_001c03f0()
+{
+    // TODO
 }

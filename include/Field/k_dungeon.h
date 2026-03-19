@@ -6,6 +6,7 @@
 typedef struct KwlnTask KwlnTask;
 typedef struct FieldDungeonFloorData FieldDungeonFloorData;
 typedef struct H_Cdvd H_Cdvd;
+typedef struct Model Model;
 
 typedef enum
 {
@@ -31,6 +32,9 @@ typedef struct FieldDungeon
     s32 unk_3c;                        // 0x3c
 } FieldDungeon;
 
+extern Model* gDungeonTpMdl;
+
+KwlnTask* FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3);
 void FldDungeon_RequestShutdown();
 u32 FldDungeon_GetCurrentFloor();
 u8 FldDungeon_IsCurrentFloorExplorable();

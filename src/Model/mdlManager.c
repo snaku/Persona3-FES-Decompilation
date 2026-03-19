@@ -36,7 +36,7 @@ MdlAnimEntryTable* Mdl_CreateAnimEntryTable(u16 animCount)
 }
 
 // FUN_00316690. TODO
-Model* MdlManager_InitMdl(u32 type, u32 id)
+Model* MdlManager_InitMdl(u16 type, u16 id)
 {
     // TODO
 
@@ -44,7 +44,7 @@ Model* MdlManager_InitMdl(u32 type, u32 id)
 }
 
 // FUN_00316b40. Temporary name
-Model* MdlManager_CreateMdl(u32 type, u32 id, const char* path, u32 flags)
+Model* MdlManager_CreateMdl(u16 type, u16 id, const char* path, u32 flags)
 {
     Model* mdl;
 
@@ -64,7 +64,7 @@ Model* MdlManager_CreateMdl(u32 type, u32 id, const char* path, u32 flags)
 }
 
 // FUN_00316e00. TODO
-Model* MdlManager_CreateMdl2(u32 type, u32 id, u32 flags)
+Model* MdlManager_CreateMdl2(u16 type, u16 id, u32 flags)
 {
     // TODO
 
