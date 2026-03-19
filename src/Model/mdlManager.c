@@ -2,8 +2,14 @@
 #include "rw/rpworld.h"
 #include "rw/rphanim.h"
 #include "temporary.h"
+#include "h_cdvd.h"
 
 const f32 gFrameDuration = (1.0f / 30.0f); // 007cadd4. 33.3ms. Not sure where to place this
+
+u8 Mdl_FUN_00316f70(Model* mdl);
+
+void MdlStream_Init(Model* mdl);
+void MdlStream_RequestCdvd(Model* mdl, const char* path);
 
 // FUN_00311310
 MdlAnimEntryTable* Mdl_CreateAnimEntryTable(u16 animCount)
@@ -37,12 +43,40 @@ Model* MdlManager_InitMdl(u32 type, u32 id)
     return NULL;
 }
 
+// FUN_00316b40. Temporary name
+Model* MdlManager_CreateMdl(u32 type, u32 id, const char* path, u32 flags)
+{
+    Model* mdl;
+
+    mdl = MdlManager_InitMdl(type, id);
+
+    if (flags & 0x01)
+    {
+        mdl->flags |= MDL_FLAG_UNK4000;
+    }
+
+    MdlStream_Init(mdl);
+    MdlStream_RequestCdvd(mdl, path);
+
+    Mdl_FUN_00316f70(mdl);
+
+    return mdl;
+}
+
 // FUN_00316e00. TODO
-Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags)
+Model* MdlManager_CreateMdl2(u32 type, u32 id, u32 flags)
 {
     // TODO
 
     return NULL;
+}
+
+// FUN_00316f70
+u8 Mdl_FUN_00316f70(Model* mdl)
+{
+    // TODO
+
+    return true;
 }
 
 // FUN_00318870
@@ -216,4 +250,16 @@ u8 MdlLookAt_IsActive(Model* mdl)
 void MdlLookAt_SetTargetScale(Model* mdl, RwV3d* scale)
 {
     mdl->animSlots[0].lookAt.targetScale = *scale;
+}
+
+// FUN_00319840
+void MdlStream_Init(Model* mdl)
+{
+    // TODO
+}
+
+// FUN_003198c0
+void MdlStream_RequestCdvd(Model* mdl, const char* path)
+{
+    // TODO
 }

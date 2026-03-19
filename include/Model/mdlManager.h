@@ -19,6 +19,7 @@ typedef struct H_Cdvd H_Cdvd;
 #define MDL_FLAG_CULLFRONT  (1 << 6)  // 0x40.  Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
 #define MDL_FLAG_FOG        (1 << 8)  // 0x100. Enable fog for the model
 #define MDL_FLAG_UPDATE     (1 << 12) // 0x1000
+#define MDL_FLAG_UNK4000    (1 << 14) // 0x4000
 
 #define MDL_LOOKAT_FLAG_XYZCS    (1 << 5) // 0x20. Cutscenes
 #define MDL_LOOKAT_FLAG_XYZ      (1 << 6) // 0x40
@@ -127,7 +128,8 @@ typedef struct Model
 extern const f32 gFrameDuration;
 
 Model* MdlManager_InitMdl(u32 type, u32 id);
-Model* MdlManager_CreateMdl(u32 type, u32 id, u32 flags);
+Model* MdlManager_CreateMdl(u32 type, u32 id, const char* path, u32 flags);
+Model* MdlManager_CreateMdl2(u32 type, u32 id, u32 flags);
 
 f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx);
 f32 MdlAnim_GetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
