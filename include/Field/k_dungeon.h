@@ -4,7 +4,6 @@
 #include "Utils.h"
 
 typedef struct KwlnTask KwlnTask;
-typedef struct ScrHeader ScrHeader;
 typedef struct FieldDungeonFloorData FieldDungeonFloorData;
 
 typedef enum
@@ -25,7 +24,7 @@ typedef struct FieldDungeon
     KwlnTask* eplKosakaTask;           // 0x1c
     FieldDungeonFloorData* floorsData; // 0x20. Ptr to 'gFldDngFloorsData'
     u8 unkData2[0x10];
-    ScrHeader* scrHeader;              // 0x34. script header of 'DUNGEONAT.BF' or 'DUNGEONAT_AEGIS.BF' 
+    void* scrMemory;                   // 0x34. script memory of 'DUNGEONAT.BF' or 'DUNGEONAT_AEGIS.BF'
     u32 scrSize;                       // 0x38. Size in bytes of 'DUNGEONAT.BF' or 'DUNGEONAT_AEGIS.BF'
     s32 unk_3c;                        // 0x3c
 } FieldDungeon;
@@ -34,7 +33,7 @@ void FldDungeon_RequestShutdown();
 u32 FldDungeon_GetCurrentFloor();
 u8 FldDungeon_IsCurrentFloorExplorable();
 u16 FldDungeon_GetCurrentFloorMajorId();
-ScrHeader* FldDungeon_GetScrHeader();
+void* FldDungeon_GetScrMemory();
 u32 FldDungeon_GetScrSize();
 
 #endif

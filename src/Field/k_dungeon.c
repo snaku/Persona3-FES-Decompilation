@@ -6,6 +6,8 @@ static KwlnTask* sDungeonTask; // 007ce268. NULL when not in tartarus. Task name
 
 #define DUNGEON_TASK_DATA ((FieldDungeon*)sDungeonTask->taskData)
 
+H_Cdvd* FldDungeon_LoadScript();
+
 // FUN_001bff00
 void FldDungeon_RequestShutdown()
 {
@@ -60,14 +62,14 @@ u16 FldDungeon_GetCurrentFloorMajorId()
 }
 
 // FUN_001bffe0
-ScrHeader* FldDungeon_GetScrHeader()
+void* FldDungeon_GetScrMemory()
 {
     if (sDungeonTask == NULL)
     {
         return NULL;
     }
 
-    return DUNGEON_TASK_DATA->scrHeader;
+    return DUNGEON_TASK_DATA->scrMemory;
 }
 
 // FUN_001c0010
@@ -75,7 +77,7 @@ u32 FldDungeon_GetScrSize()
 {
     if (sDungeonTask == NULL)
     {
-        return NULL;
+        return 0;
     }
 
     return DUNGEON_TASK_DATA->scrSize;
