@@ -1,12 +1,16 @@
 #include "Field/k_dungeon.h"
 #include "Field/k_data.h"
 #include "kwln/kwlnTask.h"
+#include "rw/rwplcore.h"
+#include "temporary.h"
+#include "h_cdvd.h"
+#include "g_data.h"
 
 static KwlnTask* sDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
 
 #define DUNGEON_TASK_DATA ((FieldDungeon*)sDungeonTask->taskData)
 
-H_Cdvd* FldDungeon_LoadScript();
+H_Cdvd* FldDungeon_RequestScript();
 
 // FUN_001bff00
 void FldDungeon_RequestShutdown()
@@ -81,4 +85,30 @@ u32 FldDungeon_GetScrSize()
     }
 
     return DUNGEON_TASK_DATA->scrSize;
+}
+
+// FUN_001c0190
+H_Cdvd* FldDungeon_RequestScript()
+{
+    H_Cdvd* cdvd;
+
+    cdvd = NULL;
+    if (sDungeonTask == NULL)
+    {
+        return NULL;
+    }
+
+    if (DUNGEON_TASK_DATA->scrMemory == NULL)
+    {
+        if (Global_GetScenarioMode() == SCENARIO_MODE_JOURNEY)
+        {
+            cdvd = H_Cdvd_Request("field/script/dungeonat.bf", 0);
+        }
+        else
+        {
+            cdvd = H_Cdvd_Request("field/script/dungeonat_aegis.bf", 0);
+        }
+    }
+
+    return cdvd;
 }

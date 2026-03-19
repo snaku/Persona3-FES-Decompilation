@@ -5,6 +5,7 @@
 
 typedef struct KwlnTask KwlnTask;
 typedef struct FieldDungeonFloorData FieldDungeonFloorData;
+typedef struct H_Cdvd H_Cdvd;
 
 typedef enum
 {
@@ -19,7 +20,8 @@ typedef struct FieldDungeon
     u32 currFloor;                     // 0x04
     s32 unk_08;                        // 0x08
     u32 shouldShutdown;                // 0x0c. If true, set state to 'DUNGEON_STATE_STOP'
-    u8 unkData1[0x08];
+    s32 unk_10;                        // 0x10
+    H_Cdvd* scrCdvd;                   // 0x14
     KwlnTask* fldRootTask;             // 0x18
     KwlnTask* eplKosakaTask;           // 0x1c
     FieldDungeonFloorData* floorsData; // 0x20. Ptr to 'gFldDngFloorsData'
