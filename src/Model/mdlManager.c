@@ -255,7 +255,11 @@ void MdlLookAt_SetTargetScale(Model* mdl, RwV3d* scale)
 // FUN_00319840
 void MdlStream_Init(Model* mdl)
 {
-    // TODO
+    MdlStream* stream;
+
+    stream = RW_MALLOC(sizeof(MdlStream), 0x40000);
+    mdl->stream = stream;
+    memset(stream, 0, sizeof(MdlStream));
 }
 
 // FUN_003198c0
@@ -263,7 +267,7 @@ void MdlStream_RequestCdvd(Model* mdl, const char* path)
 {
     MdlStream* stream;
     stream = mdl->stream;
-    
+
     stream->cdvd = H_Cdvd_Request(path, 0);
     stream->rws = NULL;
 }
