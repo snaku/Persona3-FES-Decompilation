@@ -20,7 +20,7 @@ MdlAnimEntryTable* Mdl_CreateAnimEntryTable(u16 animCount)
 
     size = animCount * sizeof(MdlAnimEntry) + sizeof(MdlAnimEntryTable);
     table = (MdlAnimEntryTable*)RW_MALLOC(size, 0x40000);
-    P3FES_Memset(table, 0, size);
+    memset(table, 0, size);
 
     table->entries = (MdlAnimEntry*)((u8*)table + sizeof(MdlAnimEntryTable));
     table->count = animCount;
@@ -261,5 +261,9 @@ void MdlStream_Init(Model* mdl)
 // FUN_003198c0
 void MdlStream_RequestCdvd(Model* mdl, const char* path)
 {
-    // TODO
+    MdlStream* stream;
+    stream = mdl->stream;
+    
+    stream->cdvd = H_Cdvd_Request(path, 0);
+    stream->rws = NULL;
 }
