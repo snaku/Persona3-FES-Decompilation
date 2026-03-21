@@ -13,6 +13,7 @@ Model* gDungeonTpMdl;          // 007ce280. FOBJ000.RMD, model for the teleport 
 #define DUNGEON_TASK_DATA ((FieldDungeon*)sDungeonTask->taskData)
 
 H_Cdvd* FldDungeon_RequestScript();
+void FldDungeon_DestroyScrMemory();
 
 void FldDungeon_FUN_001c03f0();
 
@@ -35,7 +36,7 @@ KwlnTask* FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
     FieldDungeon* dungeon;
     KwlnTask* dungeonTask;
 
-    dungeon = RW_CALLOC(1, sizeof(FieldDungeon), 0x40000);
+    dungeon = (FieldDungeon*)RW_CALLOC(1, sizeof(FieldDungeon), 0x40000);
     if (dungeon == NULL)
     {
         return NULL;
@@ -160,6 +161,23 @@ H_Cdvd* FldDungeon_RequestScript()
     return cdvd;
 }
 
+// FUN_001c02e0
+void FldDungeon_DestroyScrMemory()
+{
+    FieldDungeon* dungeon;
+
+    if (sDungeonTask != NULL)
+    {
+        dungeon = DUNGEON_TASK_DATA;
+        if (dungeon->scrMemory != NULL)
+        {
+            RW_FREE(dungeon->scrMemory);
+            dungeon->scrMemory = NULL;
+        }
+    }
+}
+
+// FUN_001c03f0
 void FldDungeon_FUN_001c03f0()
 {
     // TODO
