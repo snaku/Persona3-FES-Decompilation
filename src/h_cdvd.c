@@ -11,6 +11,14 @@ H_Cdvd* H_Cdvd_Request(const char* path, u32 param_2)
     return NULL;
 }
 
+// FUN_00100ec0
+u8 H_Cdvd_Destroy(H_Cdvd* cdvd)
+{
+    // TODO
+
+    return true;
+}
+
 // FUN_00101010
 void H_Cdvd_BuildPathUppercase(char* src, char* dst)
 {
