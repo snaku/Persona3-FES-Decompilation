@@ -14,6 +14,7 @@ Model* gDungeonTpMdl;          // 007ce280. FOBJ000.RMD, model for the teleport 
 
 H_Cdvd* FldDungeon_RequestScript();
 void FldDungeon_DestroyScrMemory();
+u8 FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd);
 
 void FldDungeon_FUN_001c03f0();
 
@@ -159,6 +160,36 @@ H_Cdvd* FldDungeon_RequestScript()
     }
 
     return cdvd;
+}
+
+// FUN_001c0210
+u8 FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd)
+{
+    FieldDungeon* dungeon;
+
+    if (sDungeonTask == NULL)
+    {
+        return true;
+    }
+
+    dungeon = DUNGEON_TASK_DATA;
+    if (scrCdvd == NULL)
+    {
+        return true;
+    }
+
+    if (H_Cdvd_IsFileLoaded(scrCdvd))
+    {
+        dungeon->scrMemory = RW_CALLOC(1, scrCdvd->fileSize, 0x40000);
+        dungeon->scrSize = scrCdvd->fileSize;
+        memcpy(dungeon->scrMemory, scrCdvd->fileMemory, scrCdvd->fileSize);
+
+        H_Cdvd_Destroy(scrCdvd);
+
+        return true;
+    }
+
+    return false;
 }
 
 // FUN_001c02e0
