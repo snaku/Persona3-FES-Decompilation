@@ -6,9 +6,11 @@
 // 16 bytes
 typedef struct FieldDungeonFloorData
 {
-    u16 majorId;
-    u16 minorId;
-    u8 unkData[0x0c];
+    u16 majorId;        // 0x00
+    u16 minorId;        // 0x02
+    u8 unkData1[0x08];
+    u8 blockId;         // 0x0c. Tartarus block
+    u8 unkData[0x04];
 } FieldDungeonFloorData;
 
 extern FieldDungeonFloorData gFldDngFloorsData[500];

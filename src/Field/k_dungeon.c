@@ -136,7 +136,7 @@ u32 FldDungeon_GetScrSize()
     return DUNGEON_TASK_DATA->scrSize;
 }
 
-// FUN_001c0190
+// FUN_001c0190. Request a cdvd stream to load main tartarus script
 H_Cdvd* FldDungeon_RequestScript()
 {
     H_Cdvd* cdvd;
@@ -162,7 +162,7 @@ H_Cdvd* FldDungeon_RequestScript()
     return cdvd;
 }
 
-// FUN_001c0210
+// FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory'
 u8 FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd)
 {
     FieldDungeon* dungeon;
@@ -206,6 +206,23 @@ void FldDungeon_DestroyScrMemory()
             dungeon->scrMemory = NULL;
         }
     }
+}
+
+// FUN_001c0330. Request a cdvd stream to load tartarus block specific script (thebel, arqa, etc...)
+H_Cdvd* FldDungeon_RequestBlockScript(u32 blockId)
+{
+    char buffer[128];
+
+    if (Global_GetScenarioMode() == SCENARIO_MODE_JOURNEY)
+    {
+        sprintf(buffer, "field/script/dungeonat%02d.bf", blockId);
+    }
+    else
+    {
+        sprintf(buffer, "field/script/dungeonat%02d_aegis.bf", blockId);
+    }
+
+    return H_Cdvd_Request(buffer, 0);
 }
 
 // FUN_001c03f0

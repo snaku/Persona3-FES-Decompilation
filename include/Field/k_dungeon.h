@@ -41,5 +41,6 @@ u8 FldDungeon_IsCurrentFloorExplorable();
 FieldDungeonFloorData* FldDungeon_GetCurrentFloorData();
 void* FldDungeon_GetScrMemory();
 u32 FldDungeon_GetScrSize();
+H_Cdvd* FldDungeon_RequestBlockScript(u32 blockId);
 
 #endif
