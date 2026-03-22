@@ -104,14 +104,14 @@ u8 FldDungeon_IsCurrentFloorExplorable()
 }
 
 // FUN_001bffa0
-u16 FldDungeon_GetCurrentFloorMajorId()
+FieldDungeonFloorData* FldDungeon_GetCurrentFloorData()
 {
     if (sDungeonTask == NULL)
     {
         return 0;
     }
 
-    return DUNGEON_TASK_DATA->floorsData[DUNGEON_TASK_DATA->currFloor].majorId;
+    return &DUNGEON_TASK_DATA->floorsData[DUNGEON_TASK_DATA->currFloor];
 }
 
 // FUN_001bffe0

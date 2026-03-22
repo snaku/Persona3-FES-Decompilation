@@ -38,7 +38,7 @@ KwlnTask* FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3);
 void FldDungeon_RequestShutdown();
 u32 FldDungeon_GetCurrentFloor();
 u8 FldDungeon_IsCurrentFloorExplorable();
-u16 FldDungeon_GetCurrentFloorMajorId();
+FieldDungeonFloorData* FldDungeon_GetCurrentFloorData();
 void* FldDungeon_GetScrMemory();
 u32 FldDungeon_GetScrSize();
 
