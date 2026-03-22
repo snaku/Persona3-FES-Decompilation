@@ -56,7 +56,7 @@ typedef struct MdlAnimEntryTable
     u8 unkData[0x08];
 } MdlAnimEntryTable;
 
-// ?? bytes (TBD, currently 48 bytes)
+// 76 bytes
 typedef struct MdlAnim
 {
     u32 flags;                      // 0x00
@@ -71,9 +71,14 @@ typedef struct MdlAnim
     RtAnimInterpolator* oldInterp;  // 0x24. Old animation data
     RtAnimInterpolator* nextInterp; // 0x28. Animation data of the next animation to play
     MdlAnimEntryTable* table;       // 0x2c
+    void* unk_30;                   // 0x30
+    u32 keyframeIdx;                // 0x34. Unknown purpose
+    RwV3d keyframeVec;              // 0x38. Unknown purpose. Used in a RtAnimKeyFrameApplyCallBack func
+    f32 unk_44;                     // 0x44
+    f32 unk_48;                     // 0x48
 } MdlAnim;
 
-// ?? bytes (TBD, currently 72 bytes)
+// 80 bytes
 typedef struct MdlLookAt
 {
     u16 flags;          // 0x00. See 'MDL_LOOKAT_FLAG_*'
@@ -84,24 +89,26 @@ typedef struct MdlLookAt
     RtQuat targetRot;   // 0x20
     RwV3d targetScale;  // 0x30
     RwV3d targetPos;    // 0x3c
+    s32 unk_48;         // 0x48
+    s32 unk_4c;         // 0x4c
 } MdlLookAt;
 
 // 156 bytes. Maybe temp name
 typedef struct MdlAnimSlot
 {
     MdlAnim anim;      // 0x00
-    u8 unkData1[0x1c];
     MdlLookAt lookAt;  // 0x4c
-    u8 unkData2[0x08];
 } MdlAnimSlot;
 
 // 80 bytes. Maybe temp name
 typedef struct MdlStream
 {
     RwStream* rws;     // 0x00
-    u8 unkData1[0x40];
+    u8 unkData1[0x08];
+    void* unk_0c;      // 0x0c
+    u8 unkData2[0x34];
     H_Cdvd* cdvd;      // 0x44
-    u8 unkData2[0x08];
+    u8 unkData3[0x08];
 } MdlStream;
 
 // 1072 bytes

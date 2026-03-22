@@ -10,6 +10,7 @@ u8 Mdl_FUN_00316f70(Model* mdl);
 
 void MdlStream_Init(Model* mdl);
 void MdlStream_RequestCdvd(Model* mdl, const char* path);
+void MdlStream_Destroy(Model* mdl);
 
 // FUN_00311310
 MdlAnimEntryTable* Mdl_CreateAnimEntryTable(u16 animCount)
@@ -270,4 +271,16 @@ void MdlStream_RequestCdvd(Model* mdl, const char* path)
 
     stream->cdvd = H_Cdvd_Request(path, 0);
     stream->rws = NULL;
+}
+
+// FUN_00319910
+void MdlStream_Destroy(Model* mdl)
+{
+    if (mdl->stream->unk_0c != NULL)
+    {
+        RW_FREE(mdl->stream->unk_0c);
+    }
+
+    RW_FREE(mdl->stream);
+    mdl->stream = NULL;
 }
