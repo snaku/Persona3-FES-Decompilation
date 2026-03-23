@@ -111,8 +111,10 @@ typedef struct MdlStream
     u8 unkData3[0x08];
 } MdlStream;
 
+typedef struct Model Model;
+
 // 1072 bytes
-typedef struct Model
+struct Model
 {
     RwMatrix mat;             // 0x00
     RwMatrix identityMat;     // 0x40
@@ -127,10 +129,12 @@ typedef struct Model
     u32 gsTest1Reg;           // 0xe8. TEST_1 GS register value to set
     MdlAnimSlot animSlots[4]; // 0xec
     void* unk_35c;            // 0x35c
-    u8 unkData2[0xc8];
+    u8 unkData2[0xc0];
+    Model* next;              // 0x420
+    Model* prev;              // 0x424
     MdlStream* stream;        // 0x428
     u8 unkDat3[0x08];
-} Model;
+};
 
 extern const f32 gFrameDuration;
 
