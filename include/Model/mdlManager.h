@@ -41,6 +41,8 @@ typedef enum
     MODEL_TYPE_MAX = 12
 } ModelType;
 
+typedef struct Model Model;
+
 // 80 bytes
 typedef struct MdlAnimEntry
 {
@@ -102,7 +104,15 @@ typedef struct MdlAnimSlot
     MdlLookAt lookAt;  // 0x4c
 } MdlAnimSlot;
 
-// 80 bytes. Maybe temp name
+// 12 bytes
+typedef struct MdlAttachedWpn
+{
+    u8 flags;      // 0x00
+    Model* wpnMdl; // 0x04
+    s32 unk_08;    // 0x08. Always 500, 501 (-1 is base init value)
+} MdlAttachedWpn;
+
+// 80 bytes
 typedef struct MdlStream
 {
     RwStream* rws;     // 0x00
@@ -113,29 +123,29 @@ typedef struct MdlStream
     u8 unkData3[0x08];
 } MdlStream;
 
-typedef struct Model Model;
-
 // 1072 bytes
 struct Model
 {
-    RwMatrix mat;             // 0x00
-    RwMatrix identityMat;     // 0x40
+    RwMatrix mat;                   // 0x00
+    RwMatrix identityMat;           // 0x40
     u8 unkData1[0x50];
-    RwRGBA color;             // 0xd0
-    u16 type;                 // 0xd4. See enum 'ModelType'
-    u16 id;                   // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
-    u16 flags;                // 0xd8. See 'MDL_FLAG_*'
-    RpClump* clump;           // 0xdc
-    void* unk_e0;             // 0xe0
-    u32 gsAlpha1Reg;          // 0xe4. ALPHA_1 GS register value to set
-    u32 gsTest1Reg;           // 0xe8. TEST_1 GS register value to set
-    MdlAnimSlot animSlots[4]; // 0xec
-    void* unk_35c;            // 0x35c
-    u8 unkData2[0xc0];
-    Model* next;              // 0x420
-    Model* prev;              // 0x424
-    MdlStream* stream;        // 0x428
-    u8 unkDat3[0x08];
+    RwRGBA color;                   // 0xd0
+    u16 type;                       // 0xd4. See enum 'ModelType'
+    u16 id;                         // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
+    u16 flags;                      // 0xd8. See 'MDL_FLAG_*'
+    RpClump* clump;                 // 0xdc
+    void* unk_e0;                   // 0xe0
+    u32 gsAlpha1Reg;                // 0xe4. ALPHA_1 GS register value to set
+    u32 gsTest1Reg;                 // 0xe8. TEST_1 GS register value to set
+    MdlAnimSlot animSlots[4];       // 0xec
+    void* unk_35c;                  // 0x35c
+    u8 unkData2[0x54];
+    MdlAttachedWpn attachedWpns[5]; // 0x3b4. Only for 'MODEL_TYPE_BTLCHAR'
+    u8 unkData3[0x30];
+    Model* next;                    // 0x420
+    Model* prev;                    // 0x424
+    MdlStream* stream;              // 0x428
+    u8 unkData4[0x08];
 };
 
 extern const f32 gFrameDuration;
