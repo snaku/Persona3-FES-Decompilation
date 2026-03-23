@@ -141,6 +141,7 @@ struct Model
 extern const f32 gFrameDuration;
 
 Model* MdlManager_InitMdl(u16 type, u16 id);
+Model* MdlManager_Search(u16 type, u16 id, u16 flags);
 Model* MdlManager_CreateMdl(u16 type, u16 id, const char* path, u32 flags);
 Model* MdlManager_CreateMdl2(u16 type, u16 id, u32 flags);
 

@@ -46,6 +46,35 @@ Model* MdlManager_InitMdl(u16 type, u16 id)
     return NULL;
 }
 
+// FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter
+Model* MdlManager_Search(u16 type, u16 id, u16 flags)
+{
+    Model* mdl;
+
+    mdl = sMdlListTails[type];
+    while (mdl != NULL)
+    {
+        if (mdl->id == id)
+        {
+            if (flags != 0)
+            {
+                if (mdl->flags & flags)
+                {
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        mdl = mdl->prev;
+    }
+
+    return mdl;
+}
+
 // FUN_00316b40. Temporary name
 Model* MdlManager_CreateMdl(u16 type, u16 id, const char* path, u32 flags)
 {
