@@ -4,7 +4,9 @@
 #include "temporary.h"
 #include "h_cdvd.h"
 
-const f32 gFrameDuration = (1.0f / 30.0f); // 007cadd4. 33.3ms. Not sure where to place this
+const f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where to place this
+
+static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
 
 u8 Mdl_FUN_00316f70(Model* mdl);
 
