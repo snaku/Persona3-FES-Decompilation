@@ -31,7 +31,8 @@ typedef enum
     MODEL_TYPE_BTLCHAR = 1, // BC*.RMD    - "MODEL/PACK/" (in .pac)
     MODEL_TYPE_ENEMY,       // EM*.RMD    - "MODEL/PACK/" (in .pac)
     MODEL_TYPE_PERSONA,     // PS*.RMD    - "MODEL/PERSONA/"
-    MODEL_TYPE_NPC = 5,     // N*.RMD     - "MODEL/NPC/"
+    MODEL_TYPE_FLDOBJ,      // FOBJ*.RMD  - "FIELD/GRMD/"
+    MODEL_TYPE_NPC,         // N*.RMD     - "MODEL/NPC/"
     MODEL_TYPE_WEAPON = 7,  // WP*.RMD    - "MODEL/WEAPON/"
     MODEL_TYPE_ENEMYSYMBOL, // ES*.RMD    - "MODEL/SYMBOL/"
     MODEL_TYPE_FLDCHAR,     // FC_*_*.RMD - "MODEL/FIELD/"
@@ -152,8 +153,8 @@ extern const f32 gFrameDuration;
 
 Model* MdlManager_InitMdl(u16 type, u16 id);
 Model* MdlManager_Search(u16 type, u16 id, u16 flags);
-Model* MdlManager_CreateMdl(u16 type, u16 id, const char* path, u32 flags);
-Model* MdlManager_CreateMdl2(u16 type, u16 id, u32 flags);
+Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 flags);
+Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 flags);
 
 f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx);
 f32 MdlAnim_GetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);

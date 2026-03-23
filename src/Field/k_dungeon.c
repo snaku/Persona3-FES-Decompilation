@@ -51,7 +51,7 @@ KwlnTask* FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
 
     if (floor > 1)
     {
-        gDungeonTpMdl = MdlManager_CreateMdl(4, 0xffff, "field/grmd/fobj000.RMD", 0);
+        gDungeonTpMdl = MdlManager_CreateMdlFromPath(MODEL_TYPE_FLDOBJ, 0xffff, "field/grmd/fobj000.RMD", 0);
 
         dungeon->scrCdvd = FldDungeon_RequestScript();
 

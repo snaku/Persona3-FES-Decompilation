@@ -75,8 +75,8 @@ Model* MdlManager_Search(u16 type, u16 id, u16 flags)
     return mdl;
 }
 
-// FUN_00316b40. Temporary name
-Model* MdlManager_CreateMdl(u16 type, u16 id, const char* path, u32 flags)
+// FUN_00316b40
+Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 flags)
 {
     Model* mdl;
 
@@ -95,8 +95,8 @@ Model* MdlManager_CreateMdl(u16 type, u16 id, const char* path, u32 flags)
     return mdl;
 }
 
-// FUN_00316e00. TODO
-Model* MdlManager_CreateMdl2(u16 type, u16 id, u32 flags)
+// FUN_00316e00. Only for .RMD in 'MODEL' folder
+Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 flags)
 {
     // TODO
 
