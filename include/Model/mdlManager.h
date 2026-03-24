@@ -116,19 +116,25 @@ typedef struct MdlAttachedWpn
     s32 unk_08;    // 0x08. Always 500, 501 (-1 is base init value)
 } MdlAttachedWpn;
 
+// 8 bytes
+typedef struct MdlRmdFileMemory
+{
+    void* memory; // 0x00. Loaded .RMD file in memory
+    u32 size;     // 0x04. Size of .RMD file in bytes
+} MdlRmdFileMemory;
+
 // 80 bytes
 typedef struct MdlStream
 {
-    RwStream* rws;     // 0x00
+    RwStream* rws;        // 0x00
     u8 unkData1[0x08];
-    void* unk_0c;      // 0x0c
+    void* unk_0c;         // 0x0c
     u8 unkData2[0x28];
-    void* rmdMemory;   // 0x38. Loaded .RMD file in memory
-    u32 rmdSize;       // 0x3c. Size of .RMD file in bytes
-    s32 unk_40;        // 0x40
-    H_Cdvd* cdvd;      // 0x44
-    u8 unk_48;         // 0x48
-    u32 isInPacFile;   // 0x4c
+    MdlRmdFileMemory rmd; // 0x38
+    s32 unk_40;           // 0x40
+    H_Cdvd* cdvd;         // 0x44
+    u8 unk_48;            // 0x48
+    u32 isInPacFile;      // 0x4c
 } MdlStream;
 
 // 1072 bytes
