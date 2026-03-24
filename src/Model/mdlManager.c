@@ -96,6 +96,30 @@ Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvd
     return mdl;
 }
 
+// FUN_00316bd0. Create a model with a loaded .RMD file in memory
+Model* MdlManager_CreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 cdvdRead)
+{
+    Model* mdl;
+    MdlRmdFileMemory rmd;
+
+    mdl = MdlManager_InitMdl(type, id);
+
+    if (cdvdRead & MDL_CDVDREAD)
+    {
+        mdl->flags |= MDL_FLAG_CDVDREAD;
+    }
+
+    MdlStream_Init(mdl);
+
+    rmd.memory = rmdMemory;
+    rmd.size = rmdSize;
+    MdlStream_SetRmdFileMemory(mdl, &rmd);
+
+    MdlStream_Read(mdl);
+
+    return mdl;
+}
+
 // FUN_00316e00. Only for .RMD in 'MODEL' folder (See enum 'ModelType')
 Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead)
 {
