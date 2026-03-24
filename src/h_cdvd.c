@@ -4,7 +4,7 @@
 static H_Cdvd sCdvdListHead; // 007e0380. Dummy head
 
 // FUN_00100d80
-H_Cdvd* H_Cdvd_Request(const char* path, u32 param_2)
+H_Cdvd* H_Cdvd_Request(const char* path, u32 isArchiveFile)
 {
     // TODO
 
