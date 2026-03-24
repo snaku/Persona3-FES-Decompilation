@@ -3,6 +3,12 @@
 
 static H_Cdvd sCdvdListHead; // 007e0380. Dummy head
 
+// FUN_00100980. Asynchronous read
+void H_Cdvd_AsyncRead()
+{
+    // TODO
+}
+
 // FUN_00100d80
 H_Cdvd* H_Cdvd_Request(const char* path, u32 isArchiveFile)
 {
@@ -82,12 +88,13 @@ void* H_Cdvd_GetFileMemoryInArchive(H_Cdvd* cdvd, s32 fileIdx, u32* fileSize)
         memcpy(&entryHeader, (void*)fileMemoryAddr, sizeof(ArchiveEntryHeader));
 
         fileMemoryAddr += sizeof(ArchiveEntryHeader);
+
         alignedSize = entryHeader.fileSize + 0x3f;
         alignedSize >>= 6;
-        
+
         if (alignedSize < 0)
         {
-            alignedSize = (alignedSize + 0x3f);
+            alignedSize += 0x3f;
             alignedSize >>= 6;
         }
         
@@ -98,4 +105,20 @@ void* H_Cdvd_GetFileMemoryInArchive(H_Cdvd* cdvd, s32 fileIdx, u32* fileSize)
     *fileSize = entryHeader.fileSize;
 
     return (void*)(fileMemoryAddr + sizeof(ArchiveEntryHeader));
+}
+
+// FUN_001023a0. Synchronous read
+void H_Cdvd_SyncRead(H_Cdvd* cdvd)
+{
+    while (true)
+    {
+        if (!H_Cdvd_IsFileLoaded(cdvd))
+        {
+            H_Cdvd_AsyncRead();
+        }
+        else
+        {
+            break;
+        }
+    }
 }

@@ -37,10 +37,12 @@ typedef struct ArchiveEntryHeader
     u32 fileSize;       // 0xfc. Size in bytes
 } ArchiveEntryHeader;
 
+void H_Cdvd_AsyncRead();
 H_Cdvd* H_Cdvd_Request(const char* path, u32 isArchiveFile);
 u8 H_Cdvd_Destroy(H_Cdvd* cdvd);
 void H_Cdvd_BuildPathUppercase(char* src, char* dst);
 u8 H_Cdvd_IsFileLoaded(H_Cdvd* cdvd);
 void* H_Cdvd_GetFileMemoryInArchive(H_Cdvd* cdvd, s32 fileIdx, u32* fileSize);
+void H_Cdvd_SyncRead(H_Cdvd* cdvd);
 
 #endif
