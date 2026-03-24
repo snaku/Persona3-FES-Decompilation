@@ -67,3 +67,35 @@ u8 H_Cdvd_IsFileLoaded(H_Cdvd* cdvd)
 {
     return cdvd->readState == 4;
 }
+
+// FUN_00102100. Get file memory of a specific file in an archive (.PAC, .PAK or .BIN)
+void* H_Cdvd_GetFileMemoryInArchive(H_Cdvd* cdvd, s32 fileIdx, u32* fileSize)
+{
+    ArchiveEntryHeader entryHeader;
+    uintptr_t fileMemoryAddr;
+    s32 alignedSize;
+    s32 i;
+
+    fileMemoryAddr = (uintptr_t)cdvd->fileMemory;
+    for (i = 0; i < fileIdx; i++)
+    {
+        memcpy(&entryHeader, (void*)fileMemoryAddr, sizeof(ArchiveEntryHeader));
+
+        fileMemoryAddr += sizeof(ArchiveEntryHeader);
+        alignedSize = entryHeader.fileSize + 0x3f;
+        alignedSize >>= 6;
+        
+        if (alignedSize < 0)
+        {
+            alignedSize = (alignedSize + 0x3f);
+            alignedSize >>= 6;
+        }
+        
+        fileMemoryAddr += (alignedSize << 6);
+    }
+
+    memcpy(&entryHeader, (void*)fileMemoryAddr, sizeof(ArchiveEntryHeader));
+    *fileSize = entryHeader.fileSize;
+
+    return (void*)(fileMemoryAddr + sizeof(ArchiveEntryHeader));
+}
