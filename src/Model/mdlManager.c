@@ -8,7 +8,7 @@ const f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where
 
 static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
 
-u8 Mdl_FUN_00316f70(Model* mdl);
+u8 MdlStream_Read(Model* mdl);
 
 void MdlStream_Init(Model* mdl);
 void MdlStream_RequestCdvd(Model* mdl, const char* path);
@@ -76,27 +76,27 @@ Model* MdlManager_Search(u16 type, u16 id, u16 flags)
 }
 
 // FUN_00316b40
-Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 flags)
+Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead)
 {
     Model* mdl;
 
     mdl = MdlManager_InitMdl(type, id);
 
-    if (flags & 0x01)
+    if (cdvdRead & MDL_CDVDREAD)
     {
-        mdl->flags |= MDL_FLAG_UNK4000;
+        mdl->flags |= MDL_FLAG_CDVDREAD;
     }
 
     MdlStream_Init(mdl);
     MdlStream_RequestCdvd(mdl, path);
 
-    Mdl_FUN_00316f70(mdl);
+    MdlStream_Read(mdl);
 
     return mdl;
 }
 
-// FUN_00316e00. Only for .RMD in 'MODEL' folder
-Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 flags)
+// FUN_00316e00. Only for .RMD in 'MODEL' folder (See enum 'ModelType')
+Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead)
 {
     // TODO
 
@@ -104,7 +104,7 @@ Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 flags)
 }
 
 // FUN_00316f70
-u8 Mdl_FUN_00316f70(Model* mdl)
+u8 MdlStream_Read(Model* mdl)
 {
     // TODO
 

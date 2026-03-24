@@ -12,14 +12,17 @@ typedef struct RtAnimAnimation RtAnimAnimation;
 
 typedef struct H_Cdvd H_Cdvd;
 
+#define MDL_CDVDREAD   0x01
+#define MDL_NOCDVDREAD 0x00
+
 #define MDL_FLAG_FULLSHADOW (1 << 0)  // 0x01
 #define MDL_FLAG_NODRAW     (1 << 1)  // 0x02.  Don't draw the model
 #define MDL_FLAG_ZTEST      (1 << 3)  // 0x08.  Depth testing
 #define MDL_FLAG_ZWRITE     (1 << 4)  // 0x10
 #define MDL_FLAG_CULLFRONT  (1 << 6)  // 0x40.  Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
 #define MDL_FLAG_FOG        (1 << 8)  // 0x100. Enable fog for the model
-#define MDL_FLAG_UPDATE     (1 << 12) // 0x1000
-#define MDL_FLAG_UNK4000    (1 << 14) // 0x4000
+#define MDL_FLAG_STREAMDONE (1 << 12) // 0x1000
+#define MDL_FLAG_CDVDREAD   (1 << 14) // 0x4000. Can read .RMD or .PAC file from CDVD
 
 #define MDL_LOOKAT_FLAG_XYZCS    (1 << 5) // 0x20. Cutscenes
 #define MDL_LOOKAT_FLAG_XYZ      (1 << 6) // 0x40
@@ -28,8 +31,8 @@ typedef struct H_Cdvd H_Cdvd;
 
 typedef enum
 {
-    MODEL_TYPE_BTLCHAR = 1, // BC*.RMD    - "MODEL/PACK/" (in .pac)
-    MODEL_TYPE_ENEMY,       // EM*.RMD    - "MODEL/PACK/" (in .pac)
+    MODEL_TYPE_BTLCHAR = 1, // BC*.RMD    - "MODEL/PACK/"    (in .pac)
+    MODEL_TYPE_ENEMY,       // EM*.RMD    - "MODEL/PACK/"    (in .pac)
     MODEL_TYPE_PERSONA,     // PS*.RMD    - "MODEL/PERSONA/"
     MODEL_TYPE_FLDOBJ,      // FOBJ*.RMD  - "FIELD/GRMD/"
     MODEL_TYPE_NPC,         // N*.RMD     - "MODEL/NPC/"
@@ -157,8 +160,8 @@ extern const f32 gFrameDuration;
 
 Model* MdlManager_InitMdl(u16 type, u16 id);
 Model* MdlManager_Search(u16 type, u16 id, u16 flags);
-Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 flags);
-Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 flags);
+Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead);
+Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead);
 
 f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx);
 f32 MdlAnim_GetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
