@@ -11,6 +11,7 @@ static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model ty
 u8 MdlStream_Read(Model* mdl);
 
 void MdlStream_Init(Model* mdl);
+void MdlStream_SetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd);
 void MdlStream_RequestCdvd(Model* mdl, const char* path);
 void MdlStream_Destroy(Model* mdl);
 
@@ -292,6 +293,16 @@ void MdlStream_Init(Model* mdl)
     stream = RW_MALLOC(sizeof(MdlStream), 0x40000);
     mdl->stream = stream;
     memset(stream, 0, sizeof(MdlStream));
+}
+
+// FUN_003198a0
+void MdlStream_SetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd)
+{
+    MdlStream* stream;
+    stream = mdl->stream;
+
+    stream->rmd.memory = rmd->memory;
+    stream->rmd.size = rmd->size;
 }
 
 // FUN_003198c0
