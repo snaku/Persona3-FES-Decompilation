@@ -1,4 +1,4 @@
-#include "Field/k_data.h"
+#include "Kosaka/k_data.h"
 
 // 00867f60
-FieldDungeonFloorData gFldDngFloorsData[500];
+K_FieldDungeonFloorData gFldDngFloorsData[500];

@@ -4,7 +4,7 @@
 #include "Utils.h"
 
 // 16 bytes
-typedef struct FieldDungeonFloorData
+typedef struct K_FieldDungeonFloorData
 {
     u16 majorId;        // 0x00
     u16 minorId;        // 0x02

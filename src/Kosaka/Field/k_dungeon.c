@@ -111,7 +111,7 @@ u8 K_FldDungeon_IsCurrentFloorExplorable()
     return true;
 }
 
-// FUN_001bffa0. DONT FORGET
+// FUN_001bffa0
 K_FieldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
 {
     if (sDungeonTask == NULL)

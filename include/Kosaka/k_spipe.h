@@ -5,7 +5,7 @@
 
 typedef struct KwlnTask KwlnTask;
 
-KwlnTask* FldSPipe_Create3DDrwBeginTask(KwlnTask* draw3DTask);
-KwlnTask* FldSPipe_Create3DDrwEndTask(KwlnTask* draw3DTask);
+KwlnTask* K_SPipe_Create3DDrwBeginTask(KwlnTask* draw3DTask);
+KwlnTask* K_SPipe_Create3DDrwEndTask(KwlnTask* draw3DTask);
 
 #endif
