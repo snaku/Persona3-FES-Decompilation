@@ -1,5 +1,5 @@
-#include "Field/k_dungeon.h"
-#include "Field/k_data.h"
+#include "Kosaka/Field/k_dungeon.h"
+#include "Kosaka/k_data.h"
 #include "kwln/kwlnTask.h"
 #include "Model/mdlManager.h"
 #include "rw/rwplcore.h"
@@ -10,40 +10,45 @@
 static KwlnTask* sDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
 Model* gDungeonTpMdl;          // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?
 
-#define DUNGEON_TASK_DATA ((FieldDungeon*)sDungeonTask->taskData)
+#define DUNGEON_TASK_DATA ((K_FieldDungeon*)sDungeonTask->taskData)
 
-H_Cdvd* FldDungeon_RequestScript();
-void FldDungeon_DestroyScrMemory();
-u8 FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd);
+H_Cdvd* K_FldDungeon_RequestScript();
+void K_FldDungeon_DestroyScrMemory();
+u8 K_FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd);
 
-void FldDungeon_FUN_001c03f0();
+void K_FldDungeon_FUN_001c03f0();
 
 // FUN_001bf570
-void* FldDungeon_UpdateTask(KwlnTask* dungeonTask)
+void* K_FldDungeon_UpdateTask(KwlnTask* dungeonTask)
 {
     // TODO
 
     return KWLN_TASK_CONTINUE;
 }
 
-void FldDungeon_DestroyTask(KwlnTask* dungeonTask)
+void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
 {
     // TODO
 }
 
 // FUN_001bfbc0
-KwlnTask* FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
+KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
 {
-    FieldDungeon* dungeon;
+    K_FieldDungeon* dungeon;
     KwlnTask* dungeonTask;
 
-    dungeon = (FieldDungeon*)RW_CALLOC(1, sizeof(FieldDungeon), 0x40000);
+    dungeon = (K_FieldDungeon*)RW_CALLOC(1, sizeof(K_FieldDungeon), 0x40000);
     if (dungeon == NULL)
     {
         return NULL;
     }
 
-    dungeonTask = KwlnTask_CreateWithAutoPriority(parentTask, 10, "automatic dungeon ", FldDungeon_UpdateTask, FldDungeon_DestroyTask, dungeon);
+    dungeonTask = KwlnTask_CreateWithAutoPriority(parentTask,
+                                                  10,
+                                                  "automatic dungeon ",
+                                                  K_FldDungeon_UpdateTask,
+                                                  K_FldDungeon_DestroyTask,
+                                                  dungeon);
     sDungeonTask = dungeonTask;
 
     dungeon->currFloor = floor;
@@ -51,18 +56,21 @@ KwlnTask* FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
 
     if (floor > 1)
     {
-        gDungeonTpMdl = MdlManager_CreateMdlFromPath(MODEL_TYPE_FLDOBJ, 0xffff, "field/grmd/fobj000.RMD", MDL_CDVDREAD_ASYNC);
+        gDungeonTpMdl = MdlManager_CreateMdlFromPath(MODEL_TYPE_FLDOBJ,
+                                                     0xffff,
+                                                     "field/grmd/fobj000.RMD",
+                                                     MDL_CDVDREAD_ASYNC);
 
-        dungeon->scrCdvd = FldDungeon_RequestScript();
+        dungeon->scrCdvd = K_FldDungeon_RequestScript();
 
-        FldDungeon_FUN_001c03f0();
+        K_FldDungeon_FUN_001c03f0();
     }
 
     return dungeonTask;
 }
 
 // FUN_001bff00
-void FldDungeon_RequestShutdown()
+void K_FldDungeon_RequestShutdown()
 {
     if (sDungeonTask != NULL)
     {
@@ -71,7 +79,7 @@ void FldDungeon_RequestShutdown()
 }
 
 // FUN_001bff20
-u32 FldDungeon_GetCurrentFloor()
+u32 K_FldDungeon_GetCurrentFloor()
 {
     if (sDungeonTask == NULL)
     {
@@ -82,7 +90,7 @@ u32 FldDungeon_GetCurrentFloor()
 }
 
 // FUN_001bff50
-u8 FldDungeon_IsCurrentFloorExplorable()
+u8 K_FldDungeon_IsCurrentFloorExplorable()
 {
     u32 currFloor;
 
@@ -103,8 +111,8 @@ u8 FldDungeon_IsCurrentFloorExplorable()
     return true;
 }
 
-// FUN_001bffa0
-FieldDungeonFloorData* FldDungeon_GetCurrentFloorData()
+// FUN_001bffa0. DONT FORGET
+K_FieldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
 {
     if (sDungeonTask == NULL)
     {
@@ -115,7 +123,7 @@ FieldDungeonFloorData* FldDungeon_GetCurrentFloorData()
 }
 
 // FUN_001bffe0
-void* FldDungeon_GetScrMemory()
+void* K_FldDungeon_GetScrMemory()
 {
     if (sDungeonTask == NULL)
     {
@@ -126,7 +134,7 @@ void* FldDungeon_GetScrMemory()
 }
 
 // FUN_001c0010
-u32 FldDungeon_GetScrSize()
+u32 K_FldDungeon_GetScrSize()
 {
     if (sDungeonTask == NULL)
     {
@@ -137,7 +145,7 @@ u32 FldDungeon_GetScrSize()
 }
 
 // FUN_001c0190. Request a cdvd stream to load main tartarus script
-H_Cdvd* FldDungeon_RequestScript()
+H_Cdvd* K_FldDungeon_RequestScript()
 {
     H_Cdvd* cdvd;
 
@@ -163,9 +171,9 @@ H_Cdvd* FldDungeon_RequestScript()
 }
 
 // FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory'
-u8 FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd)
+u8 K_FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd)
 {
-    FieldDungeon* dungeon;
+    K_FieldDungeon* dungeon;
 
     if (sDungeonTask == NULL)
     {
@@ -193,9 +201,9 @@ u8 FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd)
 }
 
 // FUN_001c02e0
-void FldDungeon_DestroyScrMemory()
+void K_FldDungeon_DestroyScrMemory()
 {
-    FieldDungeon* dungeon;
+    K_FieldDungeon* dungeon;
 
     if (sDungeonTask != NULL)
     {
@@ -209,7 +217,7 @@ void FldDungeon_DestroyScrMemory()
 }
 
 // FUN_001c0330. Request a cdvd stream to load tartarus block specific script (thebel, arqa, etc...)
-H_Cdvd* FldDungeon_RequestBlockScript(u32 blockId)
+H_Cdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
 {
     char buffer[128];
 
@@ -226,7 +234,7 @@ H_Cdvd* FldDungeon_RequestBlockScript(u32 blockId)
 }
 
 // FUN_001c03f0
-void FldDungeon_FUN_001c03f0()
+void K_FldDungeon_FUN_001c03f0()
 {
     // TODO
 }

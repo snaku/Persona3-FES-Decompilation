@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "rw/rwplcore.h"
 
+typedef struct KwlnTask KwlnTask;
 typedef struct ResourceNpc ResourceNpc;
 
 typedef enum
@@ -15,16 +16,16 @@ typedef enum
 } FieldEventType;
 
 // 4 bytes
-typedef struct FieldDrawCmd
+typedef struct K_FieldDrawCmd
 {
     u8 unk_00;
     u8 unk_01;
     u8 unk_02;
     u8 unk_03;
-} FieldDrawCmd;
+} K_FieldDrawCmd;
 
 // 288 bytes
-typedef struct FieldEvent
+typedef struct K_FieldEvent
 {
     u32 eventType;                // 0x00
     u8 unkData1[0x18];
@@ -33,9 +34,9 @@ typedef struct FieldEvent
     KwlnTask* drawCmdTask;        // 0x5c
     KwlnTask* objScrTask;         // 0x60. Script task of the object the player is currently interacting
     u8 unkData3[0xbc];
-} FieldEvent;
+} K_FieldEvent;
 
-RwBool FldEvent_IsWithinDistance(f32 maxDist, RwV3d* posA, RwV3d* posB);
-KwlnTask* FldEvent_CreateTasks(KwlnTask* fldRootTask);
+RwBool K_FldEvent_IsWithinDistance(f32 maxDist, RwV3d* posA, RwV3d* posB);
+KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask);
 
 #endif

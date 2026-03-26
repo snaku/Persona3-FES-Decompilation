@@ -5,6 +5,6 @@
 
 typedef struct KwlnTask KwlnTask;
 
-KwlnTask* FldSceneDraw_CreateTasks(KwlnTask* rootProcTask);
+KwlnTask* K_FldSceneDraw_CreateTasks(KwlnTask* rootProcTask);
 
 #endif

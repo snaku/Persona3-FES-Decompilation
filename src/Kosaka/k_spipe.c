@@ -1,6 +1,6 @@
+#include "Kosaka/k_spipe.h"
 #include "kwln/kwlnTask.h"
 #include "kwln/kwln.h"
-#include "Field/k_spipe.h"
 #include "rw/rwcore.h"
 #include "temporary.h"
 #include "g_data.h"
@@ -8,7 +8,7 @@
 static KwlnTask* sDraw3DTask; // 007ce134. Task name = "3D Draw"
 
 // FUN_00199520
-void* FldSPipe_Update3DDrwBeginTask(KwlnTask* draw3DBeginTask)
+void* K_SPipe_Update3DDrwBeginTask(KwlnTask* draw3DBeginTask)
 {
     // TODO
 
@@ -16,7 +16,7 @@ void* FldSPipe_Update3DDrwBeginTask(KwlnTask* draw3DBeginTask)
 }
 
 // FUN_001995f0
-void* FldSPipe_Update3DDrwEndTask(KwlnTask* draw3DEndTask)
+void* K_SPipe_Update3DDrwEndTask(KwlnTask* draw3DEndTask)
 {
     RwCamera* camera;
 
@@ -34,19 +34,19 @@ void* FldSPipe_Update3DDrwEndTask(KwlnTask* draw3DEndTask)
 }
 
 // FUN_001996c0
-KwlnTask* FldSPipe_Create3DDrwBeginTask(KwlnTask* draw3DTask)
+KwlnTask* K_SPipe_Create3DDrwBeginTask(KwlnTask* draw3DTask)
 {
-    return KwlnTask_Create(draw3DTask, "3D Draw Begin", 2098, FldSPipe_Update3DDrwBeginTask, NULL, NULL);
+    return KwlnTask_Create(draw3DTask, "3D Draw Begin", 2098, K_SPipe_Update3DDrwBeginTask, NULL, NULL);
 }
 
 // FUN_00199700
-KwlnTask* FldSPipe_Create3DDrwEndTask(KwlnTask* draw3DTask)
+KwlnTask* K_SPipe_Create3DDrwEndTask(KwlnTask* draw3DTask)
 {
-    return KwlnTask_Create(draw3DTask, "3D Draw End", 4167, FldSPipe_Update3DDrwEndTask, NULL, NULL);
+    return KwlnTask_Create(draw3DTask, "3D Draw End", 4167, K_SPipe_Update3DDrwEndTask, NULL, NULL);
 }
 
 // FUN_00199740
-void* FldSPipe_UpdateShadowNodeTask(KwlnTask* shadowNodeTask)
+void* K_SPipe_UpdateShadowNodeTask(KwlnTask* shadowNodeTask)
 {
     // TODO
 
@@ -54,7 +54,7 @@ void* FldSPipe_UpdateShadowNodeTask(KwlnTask* shadowNodeTask)
 }
 
 // FUN_001997a0
-KwlnTask* FldSPipe_CreateShadowNodeTask(KwlnTask* draw3DTask)
+KwlnTask* K_SPipe_CreateShadowNodeTask(KwlnTask* draw3DTask)
 {
-    return KwlnTask_Create(draw3DTask, "shadow node(camera all clear)", 2069, FldSPipe_UpdateShadowNodeTask, NULL, NULL);
+    return KwlnTask_Create(draw3DTask, "shadow node(camera all clear)", 2069, K_SPipe_UpdateShadowNodeTask, NULL, NULL);
 }

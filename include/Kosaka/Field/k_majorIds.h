@@ -1,7 +1,7 @@
 #ifndef K_MAJORIDS_H
 #define K_MAJORIDS_H
 
-// Every major field ids. Use them with corresponding minor id enum in 'k_minorIds.h' file
+// Every major field ids. Use them with corresponding minor id enum in 'k_minorIds.h' file. TODO !!
 typedef enum
 {
     FIELD_MAJOR_ID_THEBEL = 21,      // 'Thebel' tartarus block (floor 2F to 16F). See enum 'FieldMinorIdThebel'

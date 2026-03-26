@@ -1,10 +1,10 @@
-#include "Field/k_command.h"
+#include "Kosaka/k_command.h"
 #include "Script/scrTraceCode.h"
 #include "datCalendar.h"
 #include "g_data.h"
 
 // FUN_001c2780
-u8 FldCmd_IsDateInRange()
+u8 K_Cmd_IsDateInRange()
 {
     u32 startMonth;
     u32 startDay;

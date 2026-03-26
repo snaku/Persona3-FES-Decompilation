@@ -10,8 +10,8 @@ typedef struct
 {
     s32 state; // 0x00
     u8 unkData[0x04];
-} FieldShadowMap;
+} K_FieldShadowMap;
 
-KwlnTask* FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask);
+KwlnTask* K_FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask);
 
 #endif

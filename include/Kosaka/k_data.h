@@ -11,8 +11,8 @@ typedef struct FieldDungeonFloorData
     u8 unkData1[0x08];
     u8 blockId;         // 0x0c. Tartarus block
     u8 unkData[0x04];
-} FieldDungeonFloorData;
+} K_FieldDungeonFloorData;
 
-extern FieldDungeonFloorData gFldDngFloorsData[500];
+extern K_FieldDungeonFloorData gFldDngFloorsData[500];
 
 #endif

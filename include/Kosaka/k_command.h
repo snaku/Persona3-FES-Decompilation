@@ -3,6 +3,6 @@
 
 #include "Utils.h"
 
-u8 FldCmd_IsDateInRange();
+u8 K_Cmd_IsDateInRange();
 
 #endif
