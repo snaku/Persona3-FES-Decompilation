@@ -15,4 +15,6 @@ typedef struct K_FieldDungeonFloorData
 
 extern K_FieldDungeonFloorData gFldDngFloorsData[500];
 
+void K_Data_LoadDngFloorsData(u32 scenarioMode);
+
 #endif
