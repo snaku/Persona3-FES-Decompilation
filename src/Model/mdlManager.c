@@ -1,4 +1,5 @@
 #include "Model/mdlManager.h"
+#include "Model/mdlFile.h"
 #include "rw/rpworld.h"
 #include "rw/rphanim.h"
 #include "temporary.h"
@@ -83,9 +84,9 @@ Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvd
 
     mdl = MdlManager_InitMdl(type, id);
 
-    if (cdvdRead & MDL_CDVDREAD)
+    if (cdvdRead & MDL_CDVDREAD_SYNC)
     {
-        mdl->flags |= MDL_FLAG_CDVDREAD;
+        mdl->flags |= MDL_FLAG_CDVDREADSYNC;
     }
 
     MdlStream_Init(mdl);
@@ -104,9 +105,9 @@ Model* MdlManager_CreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 
 
     mdl = MdlManager_InitMdl(type, id);
 
-    if (cdvdRead & MDL_CDVDREAD)
+    if (cdvdRead & MDL_CDVDREAD_SYNC)
     {
-        mdl->flags |= MDL_FLAG_CDVDREAD;
+        mdl->flags |= MDL_FLAG_CDVDREADSYNC;
     }
 
     MdlStream_Init(mdl);

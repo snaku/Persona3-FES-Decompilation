@@ -12,17 +12,17 @@ typedef struct RtAnimAnimation RtAnimAnimation;
 
 typedef struct H_Cdvd H_Cdvd;
 
-#define MDL_CDVDREAD   0x01
-#define MDL_NOCDVDREAD 0x00
+#define MDL_CDVDREAD_ASYNC 0x00
+#define MDL_CDVDREAD_SYNC  0x01
 
-#define MDL_FLAG_FULLSHADOW (1 << 0)  // 0x01
-#define MDL_FLAG_NODRAW     (1 << 1)  // 0x02.  Don't draw the model
-#define MDL_FLAG_ZTEST      (1 << 3)  // 0x08.  Depth testing
-#define MDL_FLAG_ZWRITE     (1 << 4)  // 0x10
-#define MDL_FLAG_CULLFRONT  (1 << 6)  // 0x40.  Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
-#define MDL_FLAG_FOG        (1 << 8)  // 0x100. Enable fog for the model
-#define MDL_FLAG_STREAMDONE (1 << 12) // 0x1000
-#define MDL_FLAG_CDVDREAD   (1 << 14) // 0x4000. Can read .RMD or .PAC file from CDVD
+#define MDL_FLAG_FULLSHADOW   (1 << 0)  // 0x01
+#define MDL_FLAG_NODRAW       (1 << 1)  // 0x02.   Don't draw the model
+#define MDL_FLAG_ZTEST        (1 << 3)  // 0x08.   Depth testing
+#define MDL_FLAG_ZWRITE       (1 << 4)  // 0x10
+#define MDL_FLAG_CULLFRONT    (1 << 6)  // 0x40.   Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
+#define MDL_FLAG_FOG          (1 << 8)  // 0x100.  Enable fog for the model
+#define MDL_FLAG_STREAMDONE   (1 << 12) // 0x1000
+#define MDL_FLAG_CDVDREADSYNC (1 << 14) // 0x4000. Synchronous read of .RMD or .PAC file from CDVD
 
 #define MDL_LOOKAT_FLAG_XYZCS    (1 << 5) // 0x20. Cutscenes
 #define MDL_LOOKAT_FLAG_XYZ      (1 << 6) // 0x40
