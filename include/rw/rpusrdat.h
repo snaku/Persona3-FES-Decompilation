@@ -26,4 +26,8 @@ RwInt32 RpMaterialAddUserDataArray(RpMaterial* material, RwChar* name, RpUserDat
 RwInt32 RpMaterialGetUserDataArrayCount(const RpMaterial* material);
 RpUserDataArray* RpMaterialGetUserDataArray(const RpMaterial* material, RwInt32 data);
 
+RwChar* RpUserDataArrayGetName(RpUserDataArray* userData);
+RpUserDataFormat RpUserDataArrayGetFormat(RpUserDataArray* userData);
+RwInt32 RpUserDataArrayGetInt(RpUserDataArray* userData, RwInt32 index);
+
 #endif

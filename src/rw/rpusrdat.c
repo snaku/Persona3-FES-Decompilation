@@ -23,3 +23,23 @@ RpUserDataArray* RpMaterialGetUserDataArray(const RpMaterial* material, RwInt32 
 
     return NULL;
 }
+
+// FUN_0048ef10
+RwChar* RpUserDataArrayGetName(RpUserDataArray* userData)
+{
+    return userData->name;
+}
+
+// FUN_0048ef20
+RpUserDataFormat RpUserDataArrayGetFormat(RpUserDataArray* userData)
+{
+    return userData->format;
+}
+
+// FUN_0048ef40
+RwInt32 RpUserDataArrayGetInt(RpUserDataArray* userData, RwInt32 index)
+{
+    // TODO
+
+    return 0;
+}
