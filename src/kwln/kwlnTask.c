@@ -24,8 +24,6 @@ void KwlnTask_RemoveFromList(KwlnTask* task)
     KwlnTask* next;
     KwlnTask* prev;
     u32 taskState;
-    u32 taskState2;
-    u32 taskState3;
     
     taskState = KWLN_TASK_GET_STATE(task);
     if (taskState == KWLN_TASK_STATE_NULL ||
@@ -61,8 +59,8 @@ void KwlnTask_RemoveFromList(KwlnTask* task)
     }
     else
     {
-        taskState2 = KWLN_TASK_GET_STATE(task);
-        switch (taskState2)
+        taskState = KWLN_TASK_GET_STATE(task);
+        switch (taskState)
         {
             case KWLN_TASK_STATE_CREATED: sStagedTaskTail  = task->prev; break;
             case KWLN_TASK_STATE_RUNNING: sRunningTaskTail = task->prev; break;
@@ -73,8 +71,8 @@ void KwlnTask_RemoveFromList(KwlnTask* task)
     task->next = NULL;
     task->prev = NULL;
     
-    taskState3 = KWLN_TASK_GET_STATE(task);
-    switch (taskState3)
+    taskState = KWLN_TASK_GET_STATE(task);
+    switch (taskState)
     {
         case KWLN_TASK_STATE_CREATED: sNumTaskStaged--;  break;
         case KWLN_TASK_STATE_RUNNING: sNumTaskRunning--; break;
