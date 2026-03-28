@@ -460,7 +460,6 @@ KwlnTask* KwlnTask_Init(const char* taskName,
     KwlnTask* task;
     char currChar;
     s32 i;
-    u32 state;
 
     if (taskName[0] == '\0')
     {
@@ -495,8 +494,8 @@ nameLoop:
     
 continueInit:
     task->taskName[23] = '\0';
-    state = task->stateAndFlags = KWLN_TASK_STATE_NULL;
-    task->stateAndFlags = (state | KWLN_TASK_STATE_CREATED);
+    task->stateAndFlags = KWLN_TASK_STATE_NULL;
+    task->stateAndFlags |= KWLN_TASK_STATE_CREATED;
     task->priority = priority;
     task->unk_24 = 0;
     task->taskTimer = 0;
@@ -543,7 +542,6 @@ KwlnTask* KwlnTask_InitEx(const char* taskName,
     KwlnTask* task;
     char currChar;
     u32 i;
-    u32 state;
 
     if (taskName[0] == '\0')
     {
@@ -579,8 +577,8 @@ nameLoop:
     
 continueInit:
     task->taskName[23] = '\0';
-    state = task->stateAndFlags = KWLN_TASK_STATE_NULL;
-    task->stateAndFlags = (state | KWLN_TASK_STATE_CREATED);
+    task->stateAndFlags = KWLN_TASK_STATE_NULL;
+    task->stateAndFlags |= KWLN_TASK_STATE_CREATED;
     task->priority = priority;
     task->unk_24 = 0;
     task->taskTimer = 0;
