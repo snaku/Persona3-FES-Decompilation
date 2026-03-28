@@ -10,7 +10,7 @@ void H_Cdvd_AsyncRead()
 }
 
 // FUN_00100d80
-H_Cdvd* H_Cdvd_Request(const char* path, u32 isArchiveFile)
+H_Cdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 {
     // TODO
 

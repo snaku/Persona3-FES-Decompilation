@@ -1,4 +1,6 @@
 #include "Kosaka/k_data.h"
+#include "Kosaka/Field/k_dungeon.h"
+#include "kwln/kwlnTask.h"
 #include "h_cdvd.h"
 #include "g_data.h"
 #include "temporary.h"
@@ -18,7 +20,7 @@ void K_Data_LoadFldMainScript()
 
     sprintf(buffer, "field/script/field.bf");
 
-    cdvd = H_Cdvd_Request(buffer, false);
+    cdvd = H_Cdvd_Request(buffer, H_CDVD_FILENORMAL);
     H_Cdvd_SyncRead(cdvd);
 
     // TODO: 'cdvd->fileSize' is being loaded first and i don't know why
@@ -47,7 +49,7 @@ void K_Data_LoadDngFloorsData(u32 scenarioMode)
         sprintf(buffer, "field/table/dungeonFES.bin");
     }
 
-    cdvd = H_Cdvd_Request(buffer, false);
+    cdvd = H_Cdvd_Request(buffer, H_CDVD_FILENORMAL);
     H_Cdvd_SyncRead(cdvd);
 
     fileSize = cdvd->fileSize;
@@ -56,7 +58,7 @@ void K_Data_LoadDngFloorsData(u32 scenarioMode)
         FUN_0019d3f0("k_data.c", 170);
     }
 
-    fileSize = (cdvd)->fileSize;
+    fileSize = cdvd->fileSize;
     memcpy((u8*)gFldDngFloorsData, (u8*)cdvd->fileMemory, fileSize);
 
     H_Cdvd_Destroy(cdvd);

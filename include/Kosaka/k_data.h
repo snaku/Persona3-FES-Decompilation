@@ -13,8 +13,8 @@ typedef struct K_FieldDungeonFloorData
     u8 unkData[0x04];
 } K_FieldDungeonFloorData;
 
-extern u32 gFldScrSize;
 extern void* gFldScrMemory;
+extern u32 gFldScrSize;
 
 extern K_FieldDungeonFloorData gFldDngFloorsData[500];
 

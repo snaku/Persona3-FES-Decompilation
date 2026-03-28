@@ -7,10 +7,10 @@
 #include "h_cdvd.h"
 #include "g_data.h"
 
-static KwlnTask* sDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
-Model* gDungeonTpMdl;          // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?
+KwlnTask* gDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
+Model* gDungeonTpMdl;   // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?
 
-#define DUNGEON_TASK_DATA ((K_FieldDungeon*)sDungeonTask->taskData)
+#define DUNGEON_TASK_DATA ((K_FieldDungeon*)gDungeonTask->taskData)
 
 H_Cdvd* K_FldDungeon_RequestScript();
 void K_FldDungeon_DestroyScrMemory();
@@ -34,8 +34,8 @@ void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
 // FUN_001bfbc0
 KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
 {
-    K_FieldDungeon* dungeon;
     KwlnTask* dungeonTask;
+    K_FieldDungeon* dungeon;
 
     dungeon = (K_FieldDungeon*)RW_CALLOC(1, sizeof(K_FieldDungeon), 0x40000);
     if (dungeon == NULL)
@@ -49,7 +49,7 @@ KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
                                                   K_FldDungeon_UpdateTask,
                                                   K_FldDungeon_DestroyTask,
                                                   dungeon);
-    sDungeonTask = dungeonTask;
+    gDungeonTask = dungeonTask;
 
     dungeon->currFloor = floor;
     dungeon->unk_08 = param_3;
@@ -72,7 +72,7 @@ KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
 // FUN_001bff00
 void K_FldDungeon_RequestShutdown()
 {
-    if (sDungeonTask != NULL)
+    if (gDungeonTask != NULL)
     {
         DUNGEON_TASK_DATA->shouldShutdown = true;
     }
@@ -81,7 +81,7 @@ void K_FldDungeon_RequestShutdown()
 // FUN_001bff20
 u32 K_FldDungeon_GetCurrentFloor()
 {
-    if (sDungeonTask == NULL)
+    if (gDungeonTask == NULL)
     {
         return 0;
     }
@@ -94,7 +94,7 @@ u8 K_FldDungeon_IsCurrentFloorExplorable()
 {
     u32 currFloor;
 
-    if (sDungeonTask == NULL)
+    if (gDungeonTask == NULL)
     {
         currFloor = 0;
     }
@@ -114,7 +114,7 @@ u8 K_FldDungeon_IsCurrentFloorExplorable()
 // FUN_001bffa0
 K_FieldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
 {
-    if (sDungeonTask == NULL)
+    if (gDungeonTask == NULL)
     {
         return 0;
     }
@@ -125,7 +125,7 @@ K_FieldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
 // FUN_001bffe0
 void* K_FldDungeon_GetScrMemory()
 {
-    if (sDungeonTask == NULL)
+    if (gDungeonTask == NULL)
     {
         return NULL;
     }
@@ -136,7 +136,7 @@ void* K_FldDungeon_GetScrMemory()
 // FUN_001c0010
 u32 K_FldDungeon_GetScrSize()
 {
-    if (sDungeonTask == NULL)
+    if (gDungeonTask == NULL)
     {
         return 0;
     }
@@ -150,7 +150,7 @@ H_Cdvd* K_FldDungeon_RequestScript()
     H_Cdvd* cdvd;
 
     cdvd = NULL;
-    if (sDungeonTask == NULL)
+    if (gDungeonTask == NULL)
     {
         return NULL;
     }
@@ -159,11 +159,11 @@ H_Cdvd* K_FldDungeon_RequestScript()
     {
         if (Global_GetScenarioMode() == SCENARIO_MODE_JOURNEY)
         {
-            cdvd = H_Cdvd_Request("field/script/dungeonat.bf", 0);
+            cdvd = H_Cdvd_Request("field/script/dungeonat.bf", H_CDVD_FILENORMAL);
         }
         else
         {
-            cdvd = H_Cdvd_Request("field/script/dungeonat_aegis.bf", 0);
+            cdvd = H_Cdvd_Request("field/script/dungeonat_aegis.bf", H_CDVD_FILENORMAL);
         }
     }
 
@@ -175,7 +175,7 @@ u8 K_FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd)
 {
     K_FieldDungeon* dungeon;
 
-    if (sDungeonTask == NULL)
+    if (gDungeonTask == NULL)
     {
         return true;
     }
@@ -188,6 +188,8 @@ u8 K_FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd)
 
     if (H_Cdvd_IsFileLoaded(scrCdvd))
     {
+        // TODO: 'cdvd->fileSize' is being loaded first and i don't know why
+
         dungeon->scrMemory = RW_CALLOC(1, scrCdvd->fileSize, 0x40000);
         dungeon->scrSize = scrCdvd->fileSize;
         memcpy(dungeon->scrMemory, scrCdvd->fileMemory, scrCdvd->fileSize);
@@ -205,7 +207,7 @@ void K_FldDungeon_DestroyScrMemory()
 {
     K_FieldDungeon* dungeon;
 
-    if (sDungeonTask != NULL)
+    if (gDungeonTask != NULL)
     {
         dungeon = DUNGEON_TASK_DATA;
         if (dungeon->scrMemory != NULL)
@@ -230,7 +232,7 @@ H_Cdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
         sprintf(buffer, "field/script/dungeonat%02d_aegis.bf", blockId);
     }
 
-    return H_Cdvd_Request(buffer, 0);
+    return H_Cdvd_Request(buffer, H_CDVD_FILENORMAL);
 }
 
 // FUN_001c03f0

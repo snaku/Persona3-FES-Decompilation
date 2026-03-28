@@ -32,6 +32,7 @@ typedef struct K_FieldDungeon
     s32 unk_3c;                          // 0x3c
 } K_FieldDungeon;
 
+extern KwlnTask* gDungeonTask;
 extern Model* gDungeonTpMdl;
 
 KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3);

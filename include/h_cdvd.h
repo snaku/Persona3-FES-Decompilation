@@ -9,6 +9,9 @@
 typedef struct ADX_FS ADX_FS;
 typedef ADX_FS* ADXF;
 
+#define H_CDVD_FILENORMAL  0
+#define H_CDVD_FILEARCHIVE 1 // Is a .PAC, .PAK or .BIN
+
 typedef struct H_Cdvd H_Cdvd;
 
 // 868 bytes
@@ -23,7 +26,7 @@ struct H_Cdvd
     void* unalignedFileMemory; // 0x114. Unaligned buffer of the file loaded in memory
     u32 fileSize;              // 0x118. Size of the file in bytes
     u8 unkData1[0x34];
-    u32 isArchiveFile;         // 0x150. Is a .PAC, .PAK or .BIN file
+    u32 fileMode;              // 0x150. See 'H_CDVD_FILE*'
     ADXF adxf;                 // 0x154
     u8 unkData2[0x202];
     u16 refCount;              // 0x35a
@@ -38,7 +41,7 @@ typedef struct ArchiveEntryHeader
 } ArchiveEntryHeader;
 
 void H_Cdvd_AsyncRead();
-H_Cdvd* H_Cdvd_Request(const char* path, u32 isArchiveFile);
+H_Cdvd* H_Cdvd_Request(const char* path, u32 fileMode);
 u8 H_Cdvd_Destroy(H_Cdvd* cdvd);
 void H_Cdvd_BuildPathUppercase(char* src, char* dst);
 u8 H_Cdvd_IsFileLoaded(H_Cdvd* cdvd);
