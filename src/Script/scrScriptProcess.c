@@ -1,6 +1,7 @@
 #include "Script/scrScriptProcess.h"
 #include "Script/scrTaskHelper.h"
 #include "Script/scrTraceCode.h"
+#include "Kosaka/k_assert.h"
 #include "itfMesManager.h"
 #include "h_malloc.h"
 #include "g_data.h"
@@ -27,20 +28,20 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
 
     if (header == NULL || entries == NULL || prcd == NULL || instr == NULL)
     {
-        FUN_0019d400("scrStartScript(..) invalid script!!\n", "scrScriptProcess.c", 155);
+        K_Abort("scrStartScript(..) invalid script!!\n", "scrScriptProcess.c", 155);
         return NULL;
     }
 
     if (prcdIdx < 0 || entries[SCR_CONTENT_TYPE_PROCEDURE].elementCount <= prcdIdx)
     {
-        FUN_0019d400("scrStartScript(..) invalid start procedure!!\n", "scrScriptProcess.c", 159);
+        K_Abort("scrStartScript(..) invalid start procedure!!\n", "scrScriptProcess.c", 159);
         return NULL;
     }
 
     scr = (ScrData*)H_Malloc(sizeof(ScrData));
     if (scr == NULL)
     {
-        FUN_0019d400("scrStartScript(..) chip memory allock error!\n", "scrScriptProcess.c", 169);
+        K_Abort("scrStartScript(..) chip memory allock error!\n", "scrScriptProcess.c", 169);
         return NULL;
     }
 
@@ -78,10 +79,7 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
 
     if (header->localIntNum > 0)
     {
-        if (header->localIntNum >= 256)
-        {
-            P3FES_ASSERT("scrScriptProcess.c", 202);
-        }
+        K_ASSERT(header->localIntNum < 256, 202);
 
         scr->localInt = (s32*)H_Malloc(header->localIntNum * sizeof(s32));
         for (i = 0; i < header->localIntNum; i++)
@@ -96,10 +94,7 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
 
     if (header->localFloatNum > 0)
     {
-        if (header->localFloatNum >= 128)
-        {
-            P3FES_ASSERT("scrScriptProcess.c", 214);
-        }
+        K_ASSERT(header->localFloatNum < 128, 214);
 
         scr->localFloat = (f32*)H_Malloc(header->localFloatNum * sizeof(f32));
         for (i = 0; i < header->localFloatNum; i++)
@@ -154,10 +149,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
     uintptr_t stringsAddr = 0;
     u32 i;
 
-    if (header == NULL)
-    {
-        P3FES_ASSERT("scrScripProcess.c", 271);
-    }
+    K_ASSERT(header != NULL, 271);
 
     if (header->magic[0] == 'F' && header->magic[1] == 'L' &&
         header->magic[2] == 'W' && header->magic[3] == '0')
@@ -189,7 +181,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
             {
                 if (currEntry->contentType != SCR_CONTENT_TYPE_PROCEDURE)
                 {
-                    FUN_0019d400("scrStartScript2(..) Invalid type!!\n", "scrScriptProcess.c", 306);
+                    K_Abort("scrStartScript2(..) Invalid type!!\n", "scrScriptProcess.c", 306);
                     return NULL;
                 }
                 prcdAddr = (uintptr_t)header + currEntry->offset;
@@ -202,7 +194,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
                               (void*)stringsAddr, prcdIdx);
     }
 
-    FUN_0019d400("invalid script data!!\n", "scrScriptProcess.c", 280);
+    K_Abort("invalid script data!!\n", "scrScriptProcess.c", 280);
 
     return NULL;
 }
@@ -214,18 +206,11 @@ KwlnTask* Scr_CreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
     KwlnTask* scrTask;
 
     scr = Scr_StartScript2(header, prcdIdx);
-    if (scr == NULL)
-    {
-        P3FES_ASSERT("scrScriptProcess.c", 666);
-    }
+    K_ASSERT(scr != NULL, 666);
 
     scrTask = ScrTask_Init(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
                            Scr_UpdateTask, Scr_DestroyTask, scr);
-    
-    if (scrTask == NULL)
-    {
-        P3FES_ASSERT("scrScriptProcess.c", 395);
-    }
+    K_ASSERT(scrTask != NULL, 395);
 
     scr->task = scrTask;
 
@@ -244,20 +229,13 @@ KwlnTask* Scr_CreateTaskFromScriptCopy(u32 priority, void* baseScript, u32 scrip
     memcpy(script, baseScript, scriptSize);
 
     scr = Scr_StartScript2((ScrHeader*)script, prcdIdx);
-    if (scr == NULL)
-    {
-        P3FES_ASSERT("scrScriptProcess.c", 704);
-    }
+    K_ASSERT(scr != NULL, 704);
 
     scr->scriptMemory = script;
 
     scrTask = ScrTask_Init(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
                            Scr_UpdateTask, Scr_DestroyTask, scr);
-    
-    if (scrTask == NULL)
-    {
-        P3FES_ASSERT("scrScriptProcess.c", 395);
-    }
+    K_ASSERT(scrTask != NULL, 395);
 
     scr->task = scrTask;
 
@@ -346,7 +324,7 @@ void* Scr_UpdateTask(KwlnTask* scrTask)
     switch (execOpCodeRes)
     {
         case 0:
-            FUN_0019d400("scrScriptProcess(..) error script!\n", "scrScriptProcess.c", 1120);
+            K_Abort("scrScriptProcess(..) error script!\n", "scrScriptProcess.c", 1120);
             return KWLN_TASK_STOP;
         case 1:  // fallthrough
         default: break;

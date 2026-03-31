@@ -1,5 +1,6 @@
 #include "g_data.h"
 #include "datCalc.h"
+#include "Kosaka/k_assert.h"
 
 // FUN_002ffcc0
 u8 Unit_GetLevel(UnitData* unit){
@@ -9,10 +10,7 @@ u8 Unit_GetLevel(UnitData* unit){
     if (!(unit->flags & UNIT_FLAG_ENEMY) && !IS_HERO(unit->id))
     {
         persona = Persona_GetPersonaByCharacterId(unit->id);
-        if (persona == NULL)
-        {
-            P3FES_ASSERT("datCalc.c", 66);
-        }
+        K_ASSERT(persona != NULL, 66);
 
         level = Persona_GetPersonaLevel(persona);
     }
@@ -21,10 +19,7 @@ u8 Unit_GetLevel(UnitData* unit){
         level = unit->status.level;
     }
 
-    if (level == 0)
-    {
-        P3FES_ASSERT("datCalc.c", 70);
-    }
+    K_ASSERT(level != 0, 70);
 
     return level;
 }
@@ -139,7 +134,7 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
             if (heroWeaponUnkFlag & (1 << 8) || heroWeaponUnkFlag & (1 << 0))
                 return WEAPON_TYPE_2H_SWORD;
 
-            P3FES_ASSERT("datCalc.c", 4237);
+            K_Assert("datCalc.c", 4237);
         case CHARACTER_YUKARI:            return WEAPON_TYPE_BOW;
         case CHARACTER_AIGIS:             return WEAPON_TYPE_GUN;
         case CHARACTER_MITSURU:           return WEAPON_TYPE_1H_SWORD;
@@ -150,7 +145,7 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
         case CHARACTER_SHINJIRO_OR_METIS: return WEAPON_TYPE_AXE;
         case CHARACTER_KOROMARU:          return WEAPON_TYPE_KNIFE;
         default: 
-            P3FES_ASSERT("datCalc.c", 4259);
+            K_Assert("datCalc.c", 4259);
             break;
     }
 
@@ -164,10 +159,7 @@ u8 Unit_CountEquipmentWithEffectById(u16 characterId, u16 effect)
     u16 equipIdx;
     u8 equipEffect;
 
-    if (characterId >= CHARACTER_MAX)
-    {
-        P3FES_ASSERT("datCalc.h", 286);
-    }
+    K_ASSERT(characterId < CHARACTER_MAX, 646);
 
     // weapon
     equipIdx = Character_GetEquipmentIdx(characterId, EQUIPMENT_TYPE_WEAPON);

@@ -1,5 +1,6 @@
 #include "Kosaka/k_data.h"
 #include "Kosaka/Field/k_dungeon.h"
+#include "Kosaka/k_assert.h"
 #include "kwln/kwlnTask.h"
 #include "h_cdvd.h"
 #include "g_data.h"
@@ -53,10 +54,8 @@ void K_Data_LoadDngFloorsData(u32 scenarioMode)
     H_Cdvd_SyncRead(cdvd);
 
     fileSize = cdvd->fileSize;
-    if (fileSize >= 0x2000)
-    {
-        FUN_0019d3f0("k_data.c", 170);
-    }
+
+    K_ASSERT(fileSize < 0x2000, 170);
 
     fileSize = cdvd->fileSize;
     memcpy((u8*)gFldDngFloorsData, (u8*)cdvd->fileMemory, fileSize);

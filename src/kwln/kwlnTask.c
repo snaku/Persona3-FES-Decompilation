@@ -1,4 +1,5 @@
 #include "kwln/kwlnTask.h"
+#include "Kosaka/k_assert.h"
 #include "g_data.h"
 #include "h_malloc.h"
 #include "temporary.h"
@@ -31,7 +32,7 @@ void KwlnTask_RemoveFromList(KwlnTask* task)
        (taskState != KWLN_TASK_STATE_RUNNING) &&
        (taskState != KWLN_TASK_STATE_CREATED))
     {
-        FUN_0019d400("Process stat Invalid!!", "kwlnTask.c", 70);
+        K_Abort("Process stat Invalid!!", "kwlnTask.c", 70);
         return;
     }
 
@@ -91,8 +92,9 @@ void KwlnTask_AddToList(KwlnTask* task)
         case KWLN_TASK_STATE_CREATED: list = sStagedTaskHead;  break;
         case KWLN_TASK_STATE_RUNNING: list = sRunningTaskHead; break;
         case KWLN_TASK_STATE_DESTROY: list = sDestroyTaskHead; break;
+
         case KWLN_TASK_STATE_NULL: // fallthrough
-        default: FUN_0019d400("Process stat Invalid!!", "kwlnTask.c", 143); return;
+        default: K_Abort("Process stat Invalid!!", "kwlnTask.c", 143); return;
     }
 
     if (list == NULL)
@@ -187,24 +189,17 @@ void KwlnTask_AddToList(KwlnTask* task)
     {
         case KWLN_TASK_STATE_CREATED:
             sNumTaskStaged++;
-            if (sNumTaskStaged > 10000)
-            {
-                P3FES_ASSERT("kwlnTask.c", 226);
-            }
+            K_ASSERT(sNumTaskStaged < 10000, 226);
             break;
+
         case KWLN_TASK_STATE_RUNNING:
             sNumTaskRunning++;
-            if (sNumTaskRunning > 10000)
-            {
-                P3FES_ASSERT("kwlnTask.c", 230);
-            }
+            K_ASSERT(sNumTaskRunning < 10000, 230);
             break;
+
         case KWLN_TASK_STATE_DESTROY:
             sNumTaskDestroy++;
-            if (sNumTaskDestroy > 10000)
-            {
-                P3FES_ASSERT("kwlnTask.c", 234);
-            }
+            K_ASSERT(sNumTaskDestroy < 10000, 234);
             break;
     }
 }
@@ -308,8 +303,9 @@ void KwlnTask_Destroy(KwlnTask* task)
         case KWLN_TASK_STATE_DESTROY: return;
         case KWLN_TASK_STATE_NULL: 
             FUN_005225a8("Process stat Invalid!!\n");
-            P3FES_ASSERT("kwlnTask.c", 574);
+            K_Assert("kwlnTask.c", 574);
             break;
+
         case KWLN_TASK_STATE_CREATED: // fallthrough
         case KWLN_TASK_STATE_RUNNING:
             KwlnTask_RemoveFromList(task);
@@ -459,16 +455,11 @@ KwlnTask* KwlnTask_Init(const char* taskName,
     char currChar;
     s32 i;
 
-    if (taskName[0] == '\0')
-    {
-        P3FES_ASSERT("kwlnTask.c", 1022);
-    }
+    K_ASSERT(taskName[0] != '\0', 1022);
 
     task = (KwlnTask*)H_Malloc(sizeof(KwlnTask));
-    if (task == NULL)
-    {
-        P3FES_ASSERT("kwlnTask.c", 1032);
-    }
+    K_ASSERT(task != NULL, 1032);
+
     if (task == NULL)
     {
         return NULL;
@@ -541,16 +532,11 @@ KwlnTask* KwlnTask_InitEx(const char* taskName,
     char currChar;
     u32 i;
 
-    if (taskName[0] == '\0')
-    {
-        P3FES_ASSERT("kwlnTask.c", 1101);
-    }
+    K_ASSERT(taskName[0] != '\0', 1101);
 
     task = (KwlnTask*)H_Malloc(sizeof(KwlnTask));
-    if (task == NULL)
-    {
-        P3FES_ASSERT("kwlnTask.c", 1109);
-    }
+    K_ASSERT(task != NULL, 1109);
+
     if (task == NULL)
     {
         return NULL;
@@ -632,7 +618,7 @@ u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task)
 
     if (task == NULL || task == (KwlnTask*)0xFFFFFFFF)
     {
-        FUN_0019d400("ProcessID invalid!!\n", "kwlnTask.c", 1181);
+        K_Abort("ProcessID invalid!!\n", "kwlnTask.c", 1181);
         return false;
     }
 
@@ -672,7 +658,7 @@ u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task)
                 case KWLN_TASK_STATE_NULL: // fallthrough
                 default: 
                     FUN_005225a8("Process stat Invalid!!\n");
-                    P3FES_ASSERT("kwlnTask.c", 574);
+                    K_Assert("kwlnTask.c", 574);
                     break;
             }
 
@@ -693,7 +679,7 @@ u8 KwlnTask_DeleteWithHierarchy(KwlnTask* task)
             break;
         case KWLN_TASK_STATE_NULL: // fallthrough
         default:
-            FUN_0019d400("ProcessID invalid!!\n", "kwlnTask.c", 1204);
+            K_Abort("ProcessID invalid!!\n", "kwlnTask.c", 1204);
             return false;
     }
 
@@ -720,7 +706,7 @@ u32 KwlnTask_GetTaskState(KwlnTask* task)
     }
 
     FUN_005225a8("Process stat Invalid!!\n");
-    P3FES_ASSERT("kwlnTask.c", 1286);
+    K_Assert("kwlnTask.c", 1286);
     return KWLN_TASK_STATE_NULL;
 }
 
@@ -866,11 +852,7 @@ void KwlnTask_DetachParent(KwlnTask* childTask)
     parentTask = childTask->parent;
     if (parentTask == NULL) 
     {
-        if (childTask->sibling != NULL) 
-        {
-            P3FES_ASSERT("kwlnTask.c", 1519);
-        }
-
+        K_ASSERT(childTask->sibling == NULL, 1519);
         return;
     } 
 

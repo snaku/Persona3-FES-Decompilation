@@ -2,6 +2,7 @@
 #include "Script/scrTraceCode.h"
 #include "Script/scrScriptProcess.h"
 #include "Script/scrCommonCommand.h"
+#include "Kosaka/k_assert.h"
 #include "g_data.h"
 #include "temporary.h"
 
@@ -46,10 +47,7 @@ u32 Scr_ExecOpCodePushi(ScrData* scr)
 
     operand = scr->instrContent[++scr->instrIdx].iOperand;
 
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
-    {
-        P3FES_ASSERT("scrTraceCode.c", 43);
-    }
+    K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 43);
 
     scr->stackTypes[scr->stackIdx] = SCR_VALUE_TYPE_INTEGER;
     scr->stackValues[scr->stackIdx].iVal = operand;
@@ -67,10 +65,7 @@ u32 Scr_ExecOpCodePushs(ScrData* scr)
 
     operand = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
 
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
-    {
-        P3FES_ASSERT("scrTraceCode.c", 43);
-    }
+    K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 43);
 
     scr->stackTypes[scr->stackIdx] = SCR_VALUE_TYPE_INTEGER;
     scr->stackValues[scr->stackIdx].iVal = operand;
@@ -88,10 +83,7 @@ u32 Scr_ExecOpCodePushf(ScrData* scr)
 
     operand = scr->instrContent[++scr->instrIdx].fOperand;
 
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
-    {
-        P3FES_ASSERT("scrTraceCode.c", 55);
-    }
+    K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 55);
 
     scr->stackTypes[scr->stackIdx] = SCR_VALUE_TYPE_FLOAT;
     scr->stackValues[scr->stackIdx].fVal = operand;
@@ -105,10 +97,7 @@ u32 Scr_ExecOpCodePushf(ScrData* scr)
 // FUN_0035c870. Push return value
 u32 Scr_ExecOpCodePushRet(ScrData* scr)
 {
-    if (scr->stackIdx >= SCR_MAX_STACK_SIZE - 1)
-    {
-        P3FES_ASSERT("scrTraceCode.c", 268);
-    }
+    K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 268);
 
     scr->stackTypes[scr->stackIdx] = scr->stackTypes[SCR_STACK_RET_IDX];
     scr->stackValues[scr->stackIdx].fVal = scr->stackValues[SCR_STACK_RET_IDX].fVal;
@@ -136,20 +125,11 @@ u32 Scr_ExecOpCodeCmnCmd(ScrData* scr)
     s32 cmdIdx;
 
     cmdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
-    if (cmdIdx < 0)
-    {
-        P3FES_ASSERT("scrTraceCode.c", 342);
-    }
-    if (gScrCmdData.total <= cmdIdx)
-    {
-        P3FES_ASSERT("scrTraceCode.c", 343);
-    }
+    K_ASSERT(cmdIdx > 0, 342);
+    K_ASSERT(gScrCmdData.total > cmdIdx, 343);
 
     cmdFunc = gScrCmdData.table[cmdIdx].cmdFunc;
-    if (cmdFunc == NULL)
-    {
-        P3FES_ASSERT("scrTraceCode.c", 344);
-    }
+    K_ASSERT(cmdFunc != NULL, 344);
 
     savedInstrIdx = scr->instrIdx;
     gCurrScript = scr;
@@ -221,10 +201,7 @@ char* Scr_GetStrParam(s32 paramIdx)
     s32 paramStackIdx;
 
     paramStackIdx = gCurrScript->stackIdx - (paramIdx + 1);
-    if (gCurrScript->stackIdx < (paramIdx + 1))
-    {
-        P3FES_ASSERT("scrTraceCode.c", 1005);
-    }
+    K_ASSERT(gCurrScript->stackIdx > (paramIdx + 1), 1005);
 
     switch (gCurrScript->stackTypes[paramStackIdx])
     {
@@ -237,7 +214,7 @@ char* Scr_GetStrParam(s32 paramIdx)
         case 3:                      // fallthrough
         case 4:                      // fallthrough
         default:
-            FUN_0019d400("scrGetStrPara(..) invalid stack type!!\n", "scrTraceCode.c", 1016);
+            K_Abort("scrGetStrPara(..) invalid stack type!!\n", "scrTraceCode.c", 1016);
             return NULL;
     }
 }
@@ -259,14 +236,8 @@ void Scr_SetCurrScriptFloatRetVal(f32 retVal)
 // FUN_0035f0a0
 u32 Scr_GetCurrScriptLabelOffset(s32 lblIdx)
 {
-    if (lblIdx < 0)
-    {
-        P3FES_ASSERT("scrTraceCode.c", 1067);
-    }
-    if (gCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount <= lblIdx)
-    {
-        P3FES_ASSERT("scrTraceCode.c", 1068);
-    }
+    K_ASSERT(lblIdx > 0, 1067);
+    K_ASSERT(gCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount > lblIdx, 1067);
 
     return gCurrScript->labelsContent[lblIdx].offset;
 }

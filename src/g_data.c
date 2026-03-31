@@ -3,6 +3,7 @@
 #include "g_flags.h"
 #include "datCalc.h"
 #include "temporary.h"
+#include "Kosaka/k_assert.h"
 
 // 005dc050
 static const u32 sPlayerExpThreshold[MAX_CHARACTER_LEVEL] = 
@@ -58,10 +59,7 @@ void FUN_00172e10();
 // TODO
 void FUN_0016f3e0(u32 idx, u32 value)
 {
-    if (idx > 127)
-    {
-        P3FES_ASSERT("g_data.c", 2007);
-    }
+    K_ASSERT(idx <= 127, 2007);
 
     gIUnkArr[idx] = value;
 }
@@ -76,7 +74,7 @@ u16 Persona_GetPersonaId(u16 characterId)
             return gPlayerPersonaData.personas[gPlayerPersonaData.equippedPersona].id;
         }
 
-        P3FES_ASSERT("g_data.c", 633);
+        K_Assert("g_data.c", 633);
     }
 
     return gCharacters[characterId].persona.id;
@@ -90,12 +88,9 @@ UnitData* Character_GetUnit(u16 characterId)
         return &sPlayerUnit;
     }
 
-    if (characterId >= CHARACTER_MAX)
-    {
-        return &gCharacters[characterId].unit;
-    }
+    K_ASSERT(characterId < CHARACTER_MAX, 737);
 
-    P3FES_ASSERT("g_data.c", 737);
+    return &gCharacters[characterId].unit;
 }
 
 // FUN_0016cdf0
@@ -187,10 +182,7 @@ u32 Character_GetExpUntilNextLevel(u16 characterId)
     if (!IS_HERO(characterId))
     {
         persona = Persona_GetPersonaByCharacterId(characterId);
-        if (persona == NULL)
-        {
-            P3FES_ASSERT("g_data.c", 622);
-        }
+        K_ASSERT(persona != NULL, 622);
 
         nextExp = Persona_GetPersonaNextExp(persona);
     }
@@ -205,10 +197,7 @@ u32 Character_GetExpUntilNextLevel(u16 characterId)
         nextExp = 0;
     }
 
-    if (i == 0 || i > MAX_CHARACTER_LEVEL)
-    {
-        P3FES_ASSERT("g_data.c", 876);
-    }
+    K_ASSERT(i != 0 && i < MAX_CHARACTER_LEVEL, 876);
 
     nextExp = sPlayerExpThreshold[i];
     nextExpTmp = sPlayerStatusData.nextExp;
@@ -242,7 +231,7 @@ u8 Character_DidCharacterLevelUp(u16 characterId, u32 expGain)
     }
     else 
     {
-        P3FES_ASSERT("g_data.c", 901);
+        K_Assert("g_data.c", 901);
     }
 
     level = Character_GetLevel(characterId);
@@ -253,10 +242,7 @@ u8 Character_DidCharacterLevelUp(u16 characterId, u32 expGain)
 // FUN_0016dad0
 void Character_SetAiTactic(u16 characterId, u8 aiTacticId)
 {
-    if (aiTacticId >= AI_TACTIC_MAX)
-    {
-        P3FES_ASSERT("g_data.c", 999);
-    }
+    K_ASSERT(aiTacticId < AI_TACTIC_MAX, 999);
 
     if (IS_HERO(characterId))
     {
@@ -397,10 +383,7 @@ u32 CalendarData_GetSkipToTarget()
 // FUN_0016cfe0
 void Character_SetAcademicPoint(u16 characterId, u16 academicPoint)
 {
-    if (academicPoint < SOCIAL_STAT_MIN_POINT || academicPoint > SOCIAL_STAT_MAX_POINT)
-    {
-        P3FES_ASSERT("g_data.c", 797);
-    }
+    K_ASSERT(academicPoint > SOCIAL_STAT_MIN_POINT && academicPoint < SOCIAL_STAT_MAX_POINT, 797);
 
     if (IS_HERO(characterId))
     {
@@ -414,10 +397,7 @@ void Character_SetAcademicPoint(u16 characterId, u16 academicPoint)
 // FUN_0016d090
 void Character_SetCharmPoint(u16 characterId, u16 charmPoint)
 {
-    if (charmPoint < SOCIAL_STAT_MIN_POINT || charmPoint > SOCIAL_STAT_MAX_POINT)
-    {
-        P3FES_ASSERT("g_data.c", 808);
-    }
+    K_ASSERT(charmPoint > SOCIAL_STAT_MIN_POINT && charmPoint < SOCIAL_STAT_MAX_POINT, 808);
 
     if (IS_HERO(characterId))
     {
@@ -433,10 +413,7 @@ void Character_SetCharmPoint(u16 characterId, u16 charmPoint)
 // FUN_0016d160
 void Character_SetCouragePoint(u16 characterId, u16 couragePoint)
 {
-    if (couragePoint < SOCIAL_STAT_MIN_POINT || couragePoint > SOCIAL_STAT_MAX_POINT)
-    {
-        P3FES_ASSERT("g_data.c", 828);
-    }
+    K_ASSERT(couragePoint > SOCIAL_STAT_MIN_POINT && couragePoint < SOCIAL_STAT_MAX_POINT, 828);
 
     if (IS_HERO(characterId))
     {
@@ -525,10 +502,7 @@ u32 Character_GetNextExp(u16 characterId)
     }
 
     persona = Persona_GetPersonaByCharacterId(characterId);
-    if (persona == NULL)
-    {
-        P3FES_ASSERT("g_data.c", 622);
-    }
+    K_ASSERT(persona != NULL, 622);
 
     return Persona_GetPersonaNextExp(persona);
 }
@@ -559,10 +533,7 @@ u8 Player_GetSocialLinkLevel(u16 socialLink)
 // FUN_0016e100
 u8 Player_SocialLinkLevelIsNotZero(u16 socialLink)
 {
-    if (socialLink < SOCIAL_LINK_SEES || socialLink > SOCIAL_LINK_NYX_TEAM)
-    {
-        P3FES_ASSERT("g_data.c", 1429);
-    }
+    K_ASSERT(socialLink > SOCIAL_LINK_SEES && socialLink < SOCIAL_LINK_NYX_TEAM, 1429);
 
     return sPlayerStatusData.socialLinkStat[socialLink] > 0;
 }
@@ -661,10 +632,7 @@ void Global_SetGlobalFlag(u32 bit, u8 enabled)
 
     // 5632 is the total number of bit 
     // (There are 176 u32 in the array. u32 = 4 bytes = 32 bit. 32 * 176 = 5632)
-    if ((s32)bit < 0 || (s32)bit >= 5632)
-    {
-        P3FES_ASSERT("g_data.c", 1933);
-    }
+    K_ASSERT((s32)bit > 0 && (s32)bit < 5632, 1933);
 
     if (bit == 4982)
     {
@@ -806,10 +774,7 @@ u16 Character_GetCourageLevel(u16 couragePoint)
 // FUN_0017c8c0
 PersonaData* Compendium_GetPersonaByIdx(s32 idx)
 {
-    if (idx < 0 || idx >= 256)
-    {
-        P3FES_ASSERT("g_data.c", 6177);
-    }
+    K_ASSERT(idx > 0 && idx < 256, 6177);
 
     if (!(sCompendium[idx].flags & PERSONA_FLAG_VALID))
     {
@@ -834,14 +799,6 @@ u32 Global_GetScenarioMode()
 
 
 // !! FUNCTIONS TO MOVE LATER !!
-
-void P3FES_ASSERT(const char* file, const u32 line)
-{
-    // Probably an assert function. 
-    // It's empty because it's only used if the game was compiled in debug
-    // which is not the case here.
-    return;
-}
 
 // FUN_001052b0
 void FUN_001052b0(const char* fmt, ...)

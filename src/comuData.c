@@ -1,5 +1,6 @@
 #include "comuData.h"
 #include "g_data.h"
+#include "Kosaka/k_assert.h"
 
 static const char* daysStrings[CALENDAR_DAY_MAX] =
 {
@@ -30,7 +31,7 @@ static const char* unkStrings1[5] =
 };
 
 // FUN_003c4130
-char* Day_GetCurrentDayString(u32 month, u32 day)
+const char* Day_GetCurrentDayString(u32 month, u32 day)
 {
     const char* dayString;
     u32 currentDay;
@@ -62,7 +63,7 @@ char* Day_GetCurrentDayString(u32 month, u32 day)
             dayString = daysStrings[CALENDAR_DAY_SATURDAY];
             break;
         default:
-            P3FES_ASSERT("comuData.c", 136);
+            K_Assert("comuData.c", 136);
             dayString = NULL;
     }
 
@@ -72,10 +73,7 @@ char* Day_GetCurrentDayString(u32 month, u32 day)
 // FUN_003c4210
 const char* ComuData_FUN_003c4210(u32 idx)
 {
-    if (idx > ARRAY_SIZE(unkStrings1))
-    {
-        P3FES_ASSERT("comuData.c", 147);
-    }
+    K_ASSERT(idx < ARRAY_SIZE(unkStrings1), 147);
 
     return unkStrings1[idx];
 }
@@ -83,10 +81,7 @@ const char* ComuData_FUN_003c4210(u32 idx)
 const char* ComuData_GetUltSLPersonasString(u32 idx)
 {
     idx--;
-    if (idx < 0 || idx > ARRAY_SIZE(ultSLPersonasStrings) - 1)
-    {
-        P3FES_ASSERT("comuData.c", 198);
-    }
+    K_ASSERT(idx > 0 && idx < ARRAY_SIZE(ultSLPersonasStrings) - 1, 198);
 
     return ultSLPersonasStrings[idx];
 }

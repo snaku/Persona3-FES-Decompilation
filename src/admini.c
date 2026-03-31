@@ -1,6 +1,7 @@
 #include "kwln/kwlnTask.h"
 #include "rw/rwplcore.h"
 #include "Battle/btlMain.h"
+#include "Kosaka/k_assert.h"
 #include "admini.h"
 #include "g_data.h"
 #include "temporary.h"
@@ -40,16 +41,10 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotResto
     Admini* admini;
 
     adminiTask = KwlnTask_GetTaskByName("admini");
-    if (adminiTask == NULL)
-    {
-        P3FES_ASSERT("admini.c", 46);
-    }
+    K_ASSERT(admini != NULL, 46);
 
     admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
-    if (admini == NULL)
-    {
-        P3FES_ASSERT("admini.c", 48);
-    }
+    K_ASSERT(admini != NULL, 46);
 
     ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
     ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08, ADMINI_FLAG_CHANGING_TASK);
@@ -73,10 +68,7 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotResto
     else
     {
         admini->taskData = RW_MALLOC(taskDataSize, 0x40000);
-        if (admini->taskData == NULL)
-        {
-            P3FES_ASSERT("admini.c", 93);
-        }
+        K_ASSERT(admini->taskData != NULL, 93);
 
         memcpy(admini->taskData, taskData, taskDataSize);
         admini->taskDataSize = taskDataSize;
@@ -98,16 +90,10 @@ void Admini_ForcePassedCheck()
     Admini* admini;
 
     adminiTask = KwlnTask_GetTaskByName("admini");
-    if (adminiTask == NULL)
-    {
-        P3FES_ASSERT("admini.c", 46);
-    }
+    K_ASSERT(admini != NULL, 46);
 
     admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
-    if (admini == NULL)
-    {
-        P3FES_ASSERT("admini.c", 48);
-    }
+    K_ASSERT(admini != NULL, 48);
 
     ADMINI_SET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);
 }
@@ -119,16 +105,10 @@ s8 Admini_GetTaskId()
     Admini* admini;
 
     adminiTask = KwlnTask_GetTaskByName("admini");
-    if (adminiTask == NULL)
-    {
-        P3FES_ASSERT("admini.c", 46);
-    }
+    K_ASSERT(admini != NULL, 46);
 
     admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
-    if (admini == NULL)
-    {
-        P3FES_ASSERT("admini.c", 48);
-    }
+    K_ASSERT(admini != NULL, 48);
 
     return admini->taskId;
 }
@@ -140,16 +120,10 @@ s8 Admini_GetTaskIdToSet()
     Admini* admini;
 
     adminiTask = KwlnTask_GetTaskByName("admini");
-    if (adminiTask == NULL)
-    {
-        P3FES_ASSERT("admini.c", 46);
-    }
+    K_ASSERT(admini != NULL, 46);
 
     admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
-    if (admini == NULL)
-    {
-        P3FES_ASSERT("admini.c", 48);
-    }
+    K_ASSERT(admini != NULL, 48);
 
     return admini->taskIdToSet;
 }
@@ -161,10 +135,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
     u8 isRestored;
 
     admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
-    if (admini == NULL)
-    {
-        P3FES_ASSERT("admini.c", 217);
-    }
+    K_ASSERT(admini != NULL, 217);
 
     if (!(admini->flags & ADMINI_FLAG_CHANGING_TASK) ||
          (admini->taskIdToSet < ADMINI_TASK_ID_NULL))
@@ -228,10 +199,7 @@ void* Admini_UpdateTask_Exit(KwlnTask* adminiTask)
     s32 taskChangeDelay;
 
     admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
-    if (admini == NULL)
-    {
-        P3FES_ASSERT("admini.c", 296);
-    }
+    K_ASSERT(admini != NULL, 296);
 
     if (admini->taskId >= ADMINI_TASK_ID_NULL &&
        (gAdminiTasksTable[admini->taskId].Admini_Exit != NULL))
@@ -255,10 +223,7 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
     Admini* admini;
 
     admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
-    if (admini == NULL)
-    {
-        P3FES_ASSERT("admini.c", 333);
-    }
+    K_ASSERT(admini != NULL, 333);
 
     if (!(admini->flags & ADMINI_FLAG_PASSED_CHECK) &&
          (admini->taskId >= ADMINI_TASK_ID_NULL))
@@ -351,10 +316,7 @@ KwlnTask* Admini_CreateTask()
     }
 
     admini = RW_MALLOC(sizeof(Admini), 0x40000);
-    if (admini == NULL)
-    {
-        P3FES_ASSERT("admini.c", 435);
-    }
+    K_ASSERT(admini != NULL, 435);
 
     admini->flags = 0;
     admini->timer = 0;

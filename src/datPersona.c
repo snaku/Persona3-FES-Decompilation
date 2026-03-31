@@ -1,6 +1,7 @@
 #include "datPersona.h"
 #include "g_data.h"
 #include "temporary.h"
+#include "Kosaka/k_assert.h"
 
 // FUN_001732f0
 u8 Persona_GetPersonaLevel(PersonaData* persona)
@@ -55,10 +56,7 @@ u16 Persona_GetTotalStat(PersonaData* persona, u16 statId)
 // was probably inlined
 u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
 {
-    if (statId >= PERSONA_STAT_MAX)
-    {
-        P3FES_ASSERT("datPersona.c", 316);
-    }
+    K_ASSERT(statId < PERSONA_STAT_MAX, 316);
 
     return persona->naturalStats[statId];
 }
@@ -66,10 +64,7 @@ u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
 // FUN_00173b00
 u8 Persona_GetBonusStat(PersonaData* persona, u16 statId)
 {
-    if (statId >= PERSONA_STAT_MAX)
-    {
-        P3FES_ASSERT("datPersona.c", 454);
-    }
+    K_ASSERT(statId < PERSONA_STAT_MAX, 454);
 
     return persona->bonusStats[statId];
 }
@@ -93,10 +88,7 @@ void Persona_AddToBonusStatByCharacterId(u16 characterId, u16 statId, s8 amount)
 // FUN_00173c00
 u8 Persona_GetStat3(PersonaData* persona, u16 statId)
 {
-    if (statId > PERSONA_STAT_LUCK)
-    {
-        P3FES_ASSERT("datPersona.c", 503);
-    }
+    K_ASSERT(statId <= PERSONA_STAT_LUCK, 503);
 
     return persona->stats3[statId];
 }
@@ -106,10 +98,7 @@ u16 Persona_AddToNaturalStat(PersonaData* persona, u16 statId, s8 amount)
 {
     u8 statTotal;
 
-    if (statId > PERSONA_STAT_LUCK)
-    {
-        P3FES_ASSERT("datPersona.c", 722);
-    }
+    K_ASSERT(statId <= PERSONA_STAT_LUCK, 722);
     
     statTotal = persona->naturalStats[statId] + amount;
     if (statTotal < 100)
@@ -135,10 +124,7 @@ u16 Persona_AddToNaturalStatHeroPersonaIdx(u16 heroPersonaIdx, u16 statId, s8 am
     u8 statTotal;
     PersonaData* heroPersona = Persona_GetHeroPersona(heroPersonaIdx);
 
-    if (heroPersona == NULL)
-    {
-        P3FES_ASSERT("datPersona.c", 747);
-    }
+    K_ASSERT(heroPersona != NULL, 747);
 
     return Persona_AddToNaturalStat(heroPersona, statId, amount); // was inlined
 }
@@ -154,18 +140,12 @@ PersonaData* Persona_GetPersonaByCharacterId(u16 characterId)
     }
     else 
     {
-        if (characterId >= CHARACTER_MAX)
-        {
-            P3FES_ASSERT("datPersona.c", 779);
-        }
+        K_ASSERT(characterId < CHARACTER_MAX, 779);
 
         persona = &gCharacters[characterId].persona;
     }
 
-    if (persona == NULL)
-    {
-        P3FES_ASSERT("datPersona.c", 783);
-    }
+    K_ASSERT(persona != NULL, 783);
 
     return persona;
 }
@@ -208,10 +188,7 @@ void Persona_ClearHeroPersonas()
 // FUN_001764b0
 void Persona_AddExp(PersonaData* persona, u32 exp)
 {
-    if (exp < 0)
-    {
-        P3FES_ASSERT("datPersona.c", 1458);
-    }
+    K_ASSERT(exp > 0, 1458);
 
     persona->nextExp += exp;
 }
@@ -222,10 +199,7 @@ void Persona_MoveValidSkillsOnTop(PersonaData* persona)
     u32 skillIdx;
     u32 nextSkillIdx = 0;
 
-    if (persona == NULL)
-    {
-        P3FES_ASSERT("datPersona.c", 1478);
-    }
+    K_ASSERT(persona != NULL, 1478);
 
     for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
@@ -256,10 +230,7 @@ u8 Persona_SetSkill(PersonaData* persona, u16 skillId)
     s32 skillIdx;
     u16* skillSlot;
 
-    if (persona == NULL || skillId == PERSONA_SKILL_SLASH_ATTACK)
-    {
-        P3FES_ASSERT("datPersona.c", 1546);
-    }
+    K_ASSERT(persona != NULL && skillId != PERSONA_SKILL_SLASH_ATTACK, 1546);
 
     for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
     {
@@ -279,10 +250,7 @@ u8 Persona_ResetSkill(PersonaData* persona, u16 skillId)
 {
     u32 skillIdx;
 
-    if (persona == NULL || skillId == PERSONA_SKILL_SLASH_ATTACK)
-    {
-        P3FES_ASSERT("datPersona.c", 1560);
-    }
+    K_ASSERT(persona != NULL && skillId != PERSONA_SKILL_SLASH_ATTACK, 1560);
 
     for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
@@ -301,10 +269,7 @@ s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId)
 {
     s32 skillIdx = 0;
 
-    if (persona == NULL || skillId == PERSONA_SKILL_SLASH_ATTACK)
-    {
-        P3FES_ASSERT("datPersona.c", 1588);
-    }
+    K_ASSERT(persona != NULL && skillId != PERSONA_SKILL_SLASH_ATTACK, 1588);
 
     for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
@@ -320,11 +285,8 @@ u32 Persona_CountValidSkills(PersonaData* persona)
 {
     u32 skillIdx;
     u32 validSkills = 0;
-    
-    if (persona == NULL)
-    {
-        P3FES_ASSERT("datPersona.c", 1601);
-    }
+
+    K_ASSERT(persona != NULL, 1601);
 
     for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
