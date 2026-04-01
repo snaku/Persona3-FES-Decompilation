@@ -1,17 +1,31 @@
 #include "kwln/kwln.h"
-#include "rw/rwplcore.h"
+#include "rw/rpworld.h"
 
-static RwCamera* sMainCamera;   // 007ce0c0
-static KwlnTask* sRootProcTask; // 007ce0d0
-u32 gFogEnabled;                // 007ce0d4
-u8 gFogRed;                     // 007ce0d8
+static RpLight* sAmbientLight;     // 007ce0a8
+static RpLight* sDirectionalLight; // 007ce0ac
+static RwCamera* sMainCamera;      // 007ce0c0
+static KwlnTask* sRootProcTask;    // 007ce0d0
+u32 gFogEnabled;                   // 007ce0d4
+u8 gFogRed;                        // 007ce0d8
 static u8 sbssPad1[0x03];
-u8 gFogBlue;                    // 007ce0dc
+u8 gFogBlue;                       // 007ce0dc
 static u8 sbssPad2[0x03];
-u8 gFogGreen;                   // 007ce0e0
+u8 gFogGreen;                      // 007ce0e0
 static u8 sbssPad3[0x03];
-u8 gFogAlpha;                   // 007ce0e4
-static RwRGBA sClearColor;      // 007ce128
+u8 gFogAlpha;                      // 007ce0e4
+static RwRGBA sClearColor;         // 007ce128
+
+// FUN_00198560
+RpLight* Kwln_GetAmbientLight()
+{
+    return sAmbientLight;
+}
+
+// FUN_00198570
+RpLight* Kwln_GetDirectionalLight()
+{
+    return sDirectionalLight;
+}
 
 // FUN_00198590
 RwCamera* Kwln_GetMainCamera()
