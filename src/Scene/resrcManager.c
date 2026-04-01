@@ -2,35 +2,36 @@
 #include "rw/rwplcore.h"
 #include "Model/mdlManager.h"
 #include "temporary.h"
+#include "g_data.h"
 
 // FUN_003b4fc0
-ResManager* ResManager_Init()
+ResrcManager* ResrcMng_Init()
 {
-    ResManager* resMgr;
+    ResrcManager* resMgr;
 
-    resMgr = RW_MALLOC(sizeof(ResManager), 0x40000);
-    memset(resMgr, 0, sizeof(ResManager));
+    resMgr = RW_MALLOC(sizeof(ResrcManager), 0x40000);
+    memset(resMgr, 0, sizeof(ResrcManager));
     
     return resMgr;
 }
 
 // FUN_003b5020
-void ResManager_Destroy(ResManager* resManager)
+void ResrcMng_Destroy(ResrcManager* resManager)
 {
     s32 i;
-    Resource* currList;
+    Resrc* currList;
 
     if (resManager != NULL)
     {
-        for (i = 0; i < RES_TYPE_MAX; i++)
+        for (i = 0; i < RESRC_TYPE_MAX; i++)
         {
-            currList = ResManager_GetListHead(resManager, i);
+            currList = ResrcMng_GetListHead(resManager, i);
 
             while (currList != NULL)
             {
-                ResManager_DestroyRes(resManager, currList);
+                ResrcMng_DestroyRes(resManager, currList);
 
-                currList = ResManager_GetListHead(resManager, i);
+                currList = ResrcMng_GetListHead(resManager, i);
             }
         }
 
@@ -39,15 +40,15 @@ void ResManager_Destroy(ResManager* resManager)
 }
 
 // FUN_003b5360
-void ResManager_DestroyRes(ResManager* resManager, Resource* res)
+void ResrcMng_DestroyRes(ResrcManager* resManager, Resrc* res)
 {
     // TODO
 }
 
 // FUN_003b5430. Return the head of a list of a resource type
-Resource* ResManager_GetListHead(ResManager* resManager, u8 resType)
+Resrc* ResrcMng_GetListHead(ResrcManager* resManager, u8 resType)
 {
-    if (resType >= RES_TYPE_MAX)
+    if (resType >= RESRC_TYPE_MAX)
     {
         return NULL;
     }
@@ -56,11 +57,11 @@ Resource* ResManager_GetListHead(ResManager* resManager, u8 resType)
 }
 
 // FUN_003b5460. Return the tail of a list of a resource type
-Resource* ResManager_GetListTail(ResManager* resManager, u8 resType)
+Resrc* ResrcMng_GetListTail(ResrcManager* resManager, u8 resType)
 {
-    Resource* currRes;
+    Resrc* currRes;
     
-    if (resType >= RES_TYPE_MAX)
+    if (resType >= RESRC_TYPE_MAX)
     {
         return NULL;
     }
@@ -80,10 +81,10 @@ Resource* ResManager_GetListTail(ResManager* resManager, u8 resType)
 }
 
 // FUN_003b54c0. Return a resource by a resTypeId
-Resource* ResManager_GetRes(ResManager* resManager, u16 resTypeId)
+Resrc* ResrcMng_GetRes(ResrcManager* resManager, u16 resTypeId)
 {
     u8 type;
-    Resource* currRes;
+    Resrc* currRes;
 
     type = RES_GET_TYPE(resTypeId);
     if (type == 0)
@@ -91,7 +92,7 @@ Resource* ResManager_GetRes(ResManager* resManager, u16 resTypeId)
         return NULL;
     }
 
-    if (type >= RES_TYPE_MAX)
+    if (type >= RESRC_TYPE_MAX)
     {
         return NULL;
     }
@@ -108,13 +109,13 @@ Resource* ResManager_GetRes(ResManager* resManager, u16 resTypeId)
 }
 
 // FUN_003b5550. Return the total number of resource in a list by a resType
-u32 ResManager_GetTotalResInList(ResManager* resManager, u8 resType)
+u32 ResrcMng_GetTotalResInList(ResrcManager* resManager, u8 resType)
 {
     u32 total;
-    Resource* currRes;
+    Resrc* currRes;
 
     total = 0;
-    if (resType >= RES_TYPE_MAX)
+    if (resType >= RESRC_TYPE_MAX)
     {
         return total;
     }

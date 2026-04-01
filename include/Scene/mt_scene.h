@@ -3,23 +3,26 @@
 
 #include "Utils.h"
 
-typedef struct ResManager ResManager;
-typedef struct Resource Resource;
+typedef struct ResrcManager ResrcManager;
+typedef struct Resrc Resrc;
+typedef struct H_Cdvd H_Cdvd;
 
 // 40 bytes ? Not sure
 typedef struct
 {
-    s32 fldMajorId;         // 0x00
-    s32 fldMinorId;         // 0x04
-    ResManager* resManager; // 0x08
-    u8 unkData[0x1c];
+    s32 fldMajorId;           // 0x00
+    s32 fldMinorId;           // 0x04
+    ResrcManager* resManager; // 0x08
+    s32 unk_0c;               // 0x0c
+    H_Cdvd* cmrCdvd;          // 0x10. Cdvd of "field/env/f*.CMR". Path doesn't exist, so never used
+    u8 unkData[0x14];
 } MtScene;
 
 extern MtScene* gMtScene;
 
 MtScene* MT_Scene_GetScene();
-Resource* MT_Scene_GetRes(u16 resTypeId);
-Resource* MT_Scene_GetResListHead(u32 resType);
+Resrc* MT_Scene_GetRes(u16 resTypeId);
+Resrc* MT_Scene_GetResListHead(u32 resType);
 u32 MT_Scene_GetTotalResInList(u32 resType);
 
 #endif

@@ -5,7 +5,7 @@
 #include "rw/rwplcore.h"
 
 typedef struct KwlnTask KwlnTask;
-typedef struct ResourceNpc ResourceNpc;
+typedef struct ResrcModelNpc ResrcModelNpc;
 
 typedef enum
 {
@@ -27,12 +27,12 @@ typedef struct K_FieldDrawCmd
 // 288 bytes
 typedef struct K_FieldEvent
 {
-    u32 eventType;                // 0x00
+    u32 eventType;                  // 0x00
     u8 unkData1[0x18];
-    ResourceNpc* interactableNpc; // 0x1c. Npc the player can currently interact with (in FOV and nearby)
+    ResrcModelNpc* interactableNpc; // 0x1c. Npc the player can currently interact with (in FOV and nearby)
     u8 unkData2[0x3c];
-    KwlnTask* drawCmdTask;        // 0x5c
-    KwlnTask* objScrTask;         // 0x60. Script task of the object the player is currently interacting
+    KwlnTask* drawCmdTask;          // 0x5c
+    KwlnTask* objScrTask;           // 0x60. Script task of the object the player is currently interacting
     u8 unkData3[0xbc];
 } K_FieldEvent;
 
