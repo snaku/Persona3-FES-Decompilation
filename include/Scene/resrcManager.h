@@ -7,8 +7,12 @@
 typedef struct KwlnTask KwlnTask;
 typedef struct Model Model;
 
+#define RESRC_ID_MASK   0x3ff
 #define RESRC_TYPE_MASK 0xffc00
+
+#define RESRC_GET_ID(resTypeId)   ((resTypeId) & RESRC_ID_MASK)
 #define RESRC_GET_TYPE(resTypeId) (((resTypeId) & RESRC_TYPE_MASK) >> 10)
+#define RESRC_MAKE_TYPEID(resId, resType) (RESRC_GET_ID((resId)) | ((resType) << 10))
 
 typedef enum
 {
@@ -85,6 +89,7 @@ typedef struct ResrcManager
 
 ResrcManager* ResrcMng_Init();
 void ResrcMng_Destroy(ResrcManager* resManager);
+Resrc* ResrcMng_CreateRes(ResrcManager* resManager, u16 resTypeId);
 void ResrcMng_DestroyRes(ResrcManager* resManager, Resrc* res);
 Resrc* ResrcMng_GetListHead(ResrcManager* resManager, u8 resType);
 Resrc* ResrcMng_GetListTail(ResrcManager* resManager, u8 resType);

@@ -39,6 +39,14 @@ void ResrcMng_Destroy(ResrcManager* resManager)
     }
 }
 
+// FUN_003b50d0
+Resrc* ResrcMng_CreateRes(ResrcManager* resManager, u16 resTypeId)
+{
+    // TODO
+
+    return NULL;
+}
+
 // FUN_003b5360
 void ResrcMng_DestroyRes(ResrcManager* resManager, Resrc* res)
 {
