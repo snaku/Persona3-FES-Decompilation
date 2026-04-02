@@ -2,6 +2,7 @@
 #define RESRCMANAGER_H
 
 #include "Utils.h"
+#include "rw/rwplcore.h"
 
 typedef struct KwlnTask KwlnTask;
 typedef struct Model Model;
@@ -13,8 +14,10 @@ typedef enum
 {
     // TODO
     RESRC_TYPE_MODELPARTY = 1,
-    RESRC_TYPE_UNK,
+    RESRC_TYPE_MODELUNK,
     RESRC_TYPE_MODELNPC,
+    RESRC_TYPE_LIGHTPARTY,
+    RESRC_TYPE_LIGHTNPC,
     RESRC_TYPE_MAX = 22
 } ResrcType;
 
@@ -53,6 +56,26 @@ typedef struct ResrcModelNpc
     Model* mdl;        // 0x128
     u8 unkData2[0xf4];
 } ResrcModelNpc;
+
+// 432 bytes. Lighting parameters resource for party
+typedef struct ResrcLightParty
+{
+    Resrc base;                  // 0x00
+    RwRGBAReal ambientColor;     // 0x100
+    RwRGBAReal directionalColor; // 0x110
+    RwMatrix directionalMat;     // 0x120
+    u8 unkData1[0x50];
+} ResrcLightParty;
+
+// 432 bytes. Lighting parameters resource for npc's
+typedef struct ResrcLightNpc
+{
+    Resrc base;                  // 0x00
+    RwRGBAReal ambientColor;     // 0x100
+    RwRGBAReal directionalColor; // 0x110
+    RwMatrix directionalMat;     // 0x120
+    u8 unkData1[0x50];
+} ResrcLightNpc;
 
 // 88 bytes
 typedef struct ResrcManager
