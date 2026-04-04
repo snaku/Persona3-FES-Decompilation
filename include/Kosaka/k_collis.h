@@ -22,4 +22,10 @@ typedef struct K_CollisCtl
     u8 unkData1[0x10];
 } K_CollisCtl;
 
+// 4 bytes. Task data for a 'collis sphere' task
+typedef struct K_CollisSphereDebug
+{
+    u32 debugDraw; // 0x00
+} K_CollisSphereDebug;
+
 #endif
