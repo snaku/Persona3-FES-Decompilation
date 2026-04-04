@@ -10,8 +10,8 @@ typedef struct Model Model;
 #define RESRC_ID_MASK   0x3ff
 #define RESRC_TYPE_MASK 0xffc00
 
-#define RESRC_GET_ID(resTypeId)   ((resTypeId) & RESRC_ID_MASK)
-#define RESRC_GET_TYPE(resTypeId) (((resTypeId) & RESRC_TYPE_MASK) >> 10)
+#define RESRC_GET_ID(resTypeId)           ((resTypeId) & RESRC_ID_MASK)
+#define RESRC_GET_TYPE(resTypeId)         (((resTypeId) & RESRC_TYPE_MASK) >> 10)
 #define RESRC_MAKE_TYPEID(resId, resType) (RESRC_GET_ID((resId)) | ((resType) << 10))
 
 typedef enum
@@ -47,7 +47,7 @@ typedef struct ResrcModelParty
     u8 unkData1[0x28];
     Model* mdl;                    // 0x128
     u8 unkData2[0xb4];
-    KwlnTask* colliCtlTask;        // 0x1e0
+    KwlnTask* collisCtlTask;       // 0x1e0. Task for a 'FldFrame'
     KwlnTask* renderTexShadowTask; // 0x1e4
     u8 unkData3[0x08];
 } ResrcModelParty;
