@@ -132,7 +132,7 @@ typedef struct MdlStream
     u8 unkData2[0x28];
     MdlRmdFileMemory rmd; // 0x38
     s32 unk_40;           // 0x40
-    H_Cdvd* cdvd;         // 0x44
+    HCdvd* cdvd;          // 0x44
     u8 unk_48;            // 0x48
     u32 isInPacFile;      // 0x4c
 } MdlStream;

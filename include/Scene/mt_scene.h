@@ -5,7 +5,7 @@
 
 typedef struct ResrcManager ResrcManager;
 typedef struct Resrc Resrc;
-typedef struct H_Cdvd H_Cdvd;
+typedef struct HCdvd HCdvd;
 
 // 40 bytes ? Not sure
 typedef struct
@@ -14,7 +14,7 @@ typedef struct
     s32 fldMinorId;           // 0x04
     ResrcManager* resManager; // 0x08
     s32 unk_0c;               // 0x0c
-    H_Cdvd* cmrCdvd;          // 0x10. Cdvd of "field/env/f*.CMR". Path doesn't exist, so never used
+    HCdvd* cmrCdvd;           // 0x10. Cdvd of "field/env/f*.CMR". Path doesn't exist, so never used
     u8 unkData[0x14];
 } MtScene;
 

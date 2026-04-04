@@ -15,7 +15,7 @@ K_FieldDungeonFloorData gFldDngFloorsData[500]; // 00867f60
 void K_Data_LoadFldMainScript()
 {
     char buffer[128];
-    H_Cdvd* cdvd;
+    HCdvd* cdvd;
     u32 scrSize;
     void* scrMemory;
 
@@ -38,7 +38,7 @@ void K_Data_LoadFldMainScript()
 void K_Data_LoadDngFloorsData(u32 scenarioMode)
 {
     char buffer[128];
-    H_Cdvd* cdvd;
+    HCdvd* cdvd;
     u32 fileSize;
 
     if (scenarioMode == SCENARIO_MODE_JOURNEY)

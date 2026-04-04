@@ -5,7 +5,7 @@
 
 typedef struct KwlnTask KwlnTask;
 typedef struct K_FieldDungeonFloorData K_FieldDungeonFloorData;
-typedef struct H_Cdvd H_Cdvd;
+typedef struct HCdvd HCdvd;
 typedef struct Model Model;
 
 typedef enum
@@ -22,7 +22,7 @@ typedef struct K_FieldDungeon
     s32 unk_08;                          // 0x08
     u32 shouldShutdown;                  // 0x0c. If true, set state to 'DUNGEON_STATE_STOP'
     s32 unk_10;                          // 0x10
-    H_Cdvd* scrCdvd;                     // 0x14
+    HCdvd* scrCdvd;                      // 0x14
     KwlnTask* fldRootTask;               // 0x18
     KwlnTask* eplKosakaTask;             // 0x1c
     K_FieldDungeonFloorData* floorsData; // 0x20. Ptr to 'gFldDngFloorsData'
@@ -42,6 +42,6 @@ u8 K_FldDungeon_IsCurrentFloorExplorable();
 K_FieldDungeonFloorData* K_FldDungeon_GetCurrentFloorData();
 void* K_FldDungeon_GetScrMemory();
 u32 K_FldDungeon_GetScrSize();
-H_Cdvd* K_FldDungeon_RequestBlockScript(u32 blockId);
+HCdvd* K_FldDungeon_RequestBlockScript(u32 blockId);
 
 #endif

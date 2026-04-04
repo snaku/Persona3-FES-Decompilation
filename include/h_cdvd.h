@@ -10,15 +10,15 @@ typedef struct ADX_FS ADX_FS;
 typedef ADX_FS* ADXF;
 
 #define H_CDVD_FILENORMAL  0
-#define H_CDVD_FILEARCHIVE 1 // Is a .PAC, .PAK or .BIN
+#define H_CDVD_FILEARCHIVE 1 // Is a .PAC, .PAK, .BIN or .FPC
 
-typedef struct H_Cdvd H_Cdvd;
+typedef struct HCdvd HCdvd;
 
 // 868 bytes
-struct H_Cdvd
+struct HCdvd
 {
-    H_Cdvd* prev;              // 0x00
-    H_Cdvd* next;              // 0x04
+    HCdvd* prev;               // 0x00
+    HCdvd* next;               // 0x04
     s32 unk_08;                // 0x08
     u32 readState;             // 0x0c
     char path[MAX_PATH_SIZE];  // 0x10
@@ -41,11 +41,11 @@ typedef struct ArchiveEntryHeader
 } ArchiveEntryHeader;
 
 void H_Cdvd_AsyncRead();
-H_Cdvd* H_Cdvd_Request(const char* path, u32 fileMode);
-u8 H_Cdvd_Destroy(H_Cdvd* cdvd);
+HCdvd* H_Cdvd_Request(const char* path, u32 fileMode);
+u8 H_Cdvd_Destroy(HCdvd* cdvd);
 void H_Cdvd_BuildPathUppercase(char* src, char* dst);
-u8 H_Cdvd_IsFileLoaded(H_Cdvd* cdvd);
-void* H_Cdvd_GetFileMemoryInArchive(H_Cdvd* cdvd, s32 fileIdx, u32* fileSize);
-void H_Cdvd_SyncRead(H_Cdvd* cdvd);
+u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd);
+void* H_Cdvd_GetFileMemoryInArchive(HCdvd* cdvd, s32 fileIdx, u32* fileSize);
+void H_Cdvd_SyncRead(HCdvd* cdvd);
 
 #endif

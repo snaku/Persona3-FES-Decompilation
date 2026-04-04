@@ -12,9 +12,9 @@ Model* gDungeonTpMdl;   // 007ce280. FOBJ000.RMD, model for the teleport pad. Ma
 
 #define DUNGEON_TASK_DATA ((K_FieldDungeon*)gDungeonTask->taskData)
 
-H_Cdvd* K_FldDungeon_RequestScript();
+HCdvd* K_FldDungeon_RequestScript();
 void K_FldDungeon_DestroyScrMemory();
-u8 K_FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd);
+u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd);
 
 void K_FldDungeon_FUN_001c03f0();
 
@@ -145,9 +145,9 @@ u32 K_FldDungeon_GetScrSize()
 }
 
 // FUN_001c0190. Request a cdvd stream to load main tartarus script
-H_Cdvd* K_FldDungeon_RequestScript()
+HCdvd* K_FldDungeon_RequestScript()
 {
-    H_Cdvd* cdvd;
+    HCdvd* cdvd;
 
     cdvd = NULL;
     if (gDungeonTask == NULL)
@@ -171,7 +171,7 @@ H_Cdvd* K_FldDungeon_RequestScript()
 }
 
 // FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory'
-u8 K_FldDungeon_CreateScrMemory(H_Cdvd* scrCdvd)
+u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
 {
     K_FieldDungeon* dungeon;
 
@@ -219,7 +219,7 @@ void K_FldDungeon_DestroyScrMemory()
 }
 
 // FUN_001c0330. Request a cdvd stream to load tartarus block specific script (thebel, arqa, etc...)
-H_Cdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
+HCdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
 {
     char buffer[128];
 

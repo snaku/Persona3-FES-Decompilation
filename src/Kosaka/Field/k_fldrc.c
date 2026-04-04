@@ -2,7 +2,7 @@
 #include "h_cdvd.h"
 #include "temporary.h"
 
-static H_Cdvd* sFldArchiveCdvd; // 007ce15c. "field/pack/f%03d_%03d.pac"
+static HCdvd* sFldArchiveCdvd; // 007ce15c. "field/pack/f%03d_%03d.pac"
 
 // FUN_001b0870
 void K_FldRc_RequestFldArchive(s16 majorId, s16 minorId)
@@ -28,7 +28,7 @@ u8 K_FldRc_IsFldArchiveLoaded()
 }
 
 // FUN_001b0910
-H_Cdvd* K_FldRc_GetFldArchiveCdvd()
+HCdvd* K_FldRc_GetFldArchiveCdvd()
 {
     return sFldArchiveCdvd;
 }

@@ -1,7 +1,7 @@
 #include "h_cdvd.h"
 #include "temporary.h"
 
-static H_Cdvd sCdvdListHead; // 007e0380. Dummy head
+static HCdvd sCdvdListHead; // 007e0380. Dummy head
 
 // FUN_00100980. Asynchronous read
 void H_Cdvd_AsyncRead()
@@ -10,7 +10,7 @@ void H_Cdvd_AsyncRead()
 }
 
 // FUN_00100d80
-H_Cdvd* H_Cdvd_Request(const char* path, u32 fileMode)
+HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 {
     // TODO
 
@@ -18,7 +18,7 @@ H_Cdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 }
 
 // FUN_00100ec0
-u8 H_Cdvd_Destroy(H_Cdvd* cdvd)
+u8 H_Cdvd_Destroy(HCdvd* cdvd)
 {
     // TODO
 
@@ -69,13 +69,13 @@ void H_Cdvd_BuildPathUppercase(char* src, char* dst)
 }
 
 // FUN_001016b0
-u8 H_Cdvd_IsFileLoaded(H_Cdvd* cdvd)
+u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd)
 {
     return cdvd->readState == 4;
 }
 
 // FUN_00102100. Get file memory of a specific file in an archive (.PAC, .PAK or .BIN)
-void* H_Cdvd_GetFileMemoryInArchive(H_Cdvd* cdvd, s32 fileIdx, u32* fileSize)
+void* H_Cdvd_GetFileMemoryInArchive(HCdvd* cdvd, s32 fileIdx, u32* fileSize)
 {
     ArchiveEntryHeader entryHeader;
     uintptr_t fileMemoryAddr;
@@ -108,7 +108,7 @@ void* H_Cdvd_GetFileMemoryInArchive(H_Cdvd* cdvd, s32 fileIdx, u32* fileSize)
 }
 
 // FUN_001023a0. Synchronous read
-void H_Cdvd_SyncRead(H_Cdvd* cdvd)
+void H_Cdvd_SyncRead(HCdvd* cdvd)
 {
     while (true)
     {

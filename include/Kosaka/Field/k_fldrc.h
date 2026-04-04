@@ -3,10 +3,10 @@
 
 #include "Utils.h"
 
-typedef struct H_Cdvd H_Cdvd;
+typedef struct HCdvd HCdvd;
 
 void K_FldRc_RequestFldArchive(s16 majorId, s16 minorId);
 u8 K_FldRc_IsFldArchiveLoaded();
-H_Cdvd* K_FldRc_GetFldArchiveCdvd();
+HCdvd* K_FldRc_GetFldArchiveCdvd();
 
 #endif
