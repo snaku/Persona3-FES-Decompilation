@@ -9,7 +9,7 @@
 void* gFldScrMemory; // 007ce228
 u32 gFldScrSize;     // 007ce224
 
-K_FieldDungeonFloorData gFldDngFloorsData[500]; // 00867f60
+FldDungeonFloorData gFldDngFloorsData[500]; // 00867f60
 
 // FUN_001b7b10. Read 'field.bf' and copy its content in 'gFldScrMemory' and its size in 'gFldScrSize'
 void K_Data_LoadFldMainScript()

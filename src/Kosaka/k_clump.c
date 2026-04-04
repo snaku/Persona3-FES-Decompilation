@@ -16,13 +16,11 @@ s32 K_Clump_MatGetUsrDataInt(RpMaterial* material, const char* name)
         userData = RpMaterialGetUserDataArray(material, i);
         currName = RpUserDataArrayGetName(userData);
 
-        if (strcmp(currName, name) == 0)
+        if (strcmp(currName, name) == 0 &&
+           (RpUserDataArrayGetFormat(userData) == rpINTUSERDATA))
         {
-            if (RpUserDataArrayGetFormat(userData) == rpINTUSERDATA)
-            {
-                val = RpUserDataArrayGetInt(userData, 0);
-                break;
-            }
+            val = RpUserDataArrayGetInt(userData, 0);
+            break;
         }
     }
 

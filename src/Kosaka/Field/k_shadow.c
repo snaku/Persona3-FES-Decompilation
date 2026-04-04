@@ -36,9 +36,9 @@ void K_FldShadow_DestroyShadowMapTask(KwlnTask* fldShadowMapTask)
 // FUN_0019d2a0
 KwlnTask* K_FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask)
 {
-    K_FieldShadowMap* fldShadowMap;
+    FldShadowMap* fldShadowMap;
 
-    fldShadowMap = RW_CALLOC(1, sizeof(K_FieldShadowMap), 0x40000);
+    fldShadowMap = (FldShadowMap*)RW_CALLOC(1, sizeof(FldShadowMap), 0x40000);
     if (fldShadowMap == NULL)
     {
         return NULL;

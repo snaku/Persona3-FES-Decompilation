@@ -10,7 +10,7 @@
 KwlnTask* gDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
 Model* gDungeonTpMdl;   // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?
 
-#define DUNGEON_TASK_DATA ((K_FieldDungeon*)gDungeonTask->taskData)
+#define DUNGEON_TASK_DATA ((FldDungeon*)gDungeonTask->taskData)
 
 HCdvd* K_FldDungeon_RequestScript();
 void K_FldDungeon_DestroyScrMemory();
@@ -35,9 +35,9 @@ void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
 KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
 {
     KwlnTask* dungeonTask;
-    K_FieldDungeon* dungeon;
+    FldDungeon* dungeon;
 
-    dungeon = (K_FieldDungeon*)RW_CALLOC(1, sizeof(K_FieldDungeon), 0x40000);
+    dungeon = (FldDungeon*)RW_CALLOC(1, sizeof(FldDungeon), 0x40000);
     if (dungeon == NULL)
     {
         return NULL;
@@ -112,7 +112,7 @@ u8 K_FldDungeon_IsCurrentFloorExplorable()
 }
 
 // FUN_001bffa0
-K_FieldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
+FldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
 {
     if (gDungeonTask == NULL)
     {
@@ -173,7 +173,7 @@ HCdvd* K_FldDungeon_RequestScript()
 // FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory'
 u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
 {
-    K_FieldDungeon* dungeon;
+    FldDungeon* dungeon;
 
     if (gDungeonTask == NULL)
     {
@@ -205,7 +205,7 @@ u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
 // FUN_001c02e0
 void K_FldDungeon_DestroyScrMemory()
 {
-    K_FieldDungeon* dungeon;
+    FldDungeon* dungeon;
 
     if (gDungeonTask != NULL)
     {

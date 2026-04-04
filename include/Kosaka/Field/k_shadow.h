@@ -6,11 +6,11 @@
 typedef struct KwlnTask KwlnTask;
 
 // 8 bytes
-typedef struct
+typedef struct FldShadowMap
 {
     s32 state; // 0x00
     u8 unkData[0x04];
-} K_FieldShadowMap;
+} FldShadowMap;
 
 KwlnTask* K_FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask);
 

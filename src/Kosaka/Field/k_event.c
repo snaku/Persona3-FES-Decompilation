@@ -40,10 +40,10 @@ void K_FldEvent_DestroyFldEventTask(KwlnTask* fldEventTask)
 // FUN_001cd5a0. Create 'field event' and 'draw command' tasks
 KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask)
 {
-    K_FieldEvent* fldEvent;
+    FldEvent* fldEvent;
     KwlnTask* fldEventTask;
 
-    fldEvent = RW_CALLOC(1, sizeof(K_FieldEvent), 0x40000);
+    fldEvent = (FldEvent*)RW_CALLOC(1, sizeof(FldEvent), 0x40000);
     if (fldEvent == NULL)
     {
         return NULL;
@@ -73,9 +73,9 @@ void K_FldEvent_DestroyDrawCmdTask(KwlnTask* drawCmdTask)
 // FUN_001cd710
 KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask)
 {
-    K_FieldDrawCmd* drawCmd;
+    FldDrawCmd* drawCmd;
 
-    drawCmd = RW_CALLOC(1, sizeof(K_FieldDrawCmd), 0x40000);
+    drawCmd = (FldDrawCmd*)RW_CALLOC(1, sizeof(FldDrawCmd), 0x40000);
     if (drawCmd == NULL)
     {
         return NULL;

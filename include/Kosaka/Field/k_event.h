@@ -10,22 +10,22 @@ typedef struct ResrcModelNpc ResrcModelNpc;
 typedef enum
 {
     // TODO
-    FIELD_EVENT_TYPE_OBJ_INTERACT = 2,  // Player is interacting with an object
-    FIELD_EVENT_TYPE_NPC_INTERACT = 21, // Player is interacting with an NPC
-    FIELD_EVENT_TYPE_DESTROY = 32       // destroy 'field event' task
-} FieldEventType;
+    FLDEVENT_TYPE_OBJ_INTERACT = 2,  // Player is interacting with an object
+    FLDEVENT_TYPE_NPC_INTERACT = 21, // Player is interacting with an NPC
+    FLDEVENT_TYPE_DESTROY = 32       // destroy 'field event' task
+} FldEventType;
 
 // 4 bytes
-typedef struct K_FieldDrawCmd
+typedef struct FldDrawCmd
 {
     u8 unk_00;
     u8 unk_01;
     u8 unk_02;
     u8 unk_03;
-} K_FieldDrawCmd;
+} FldDrawCmd;
 
 // 288 bytes
-typedef struct K_FieldEvent
+typedef struct FldEvent
 {
     u32 eventType;                  // 0x00
     u8 unkData1[0x18];
@@ -34,7 +34,7 @@ typedef struct K_FieldEvent
     KwlnTask* drawCmdTask;          // 0x5c
     KwlnTask* objScrTask;           // 0x60. Script task of the object the player is currently interacting
     u8 unkData3[0xbc];
-} K_FieldEvent;
+} FldEvent;
 
 RwBool K_FldEvent_IsWithinDistance(f32 maxDist, RwV3d* posA, RwV3d* posB);
 KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask);
