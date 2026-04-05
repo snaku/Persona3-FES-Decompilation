@@ -40,6 +40,7 @@ typedef struct CollisSphereDebug
     u32 debugDraw; // 0x00
 } CollisSphereDebug;
 
-void K_FldFrame_CopyPos(RwV3d* dst, const KwlnTask* collisCtlTask);
+void K_FldFrame_CopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
+void K_FldFrame_SetVelocityFromSpeedAndDir(f32 speed, KwlnTask* collisCtlTask, const RwV3d* normalizedDir);
 
 #endif
