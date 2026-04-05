@@ -203,6 +203,18 @@ f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx)
     return currTime / gFrameDuration;
 }
 
+// FUN_00318a30
+void Mdl_Translate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp)
+{
+    RwMatrixTranslate(&mdl->mat, translation, combineOp);
+}
+
+// FUN_00318a50
+void Mdl_Rotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp)
+{
+    RwMatrixRotate(&mdl->mat, axis, angle, combineOp);
+}
+
 // FUN_00318ad0
 void Mdl_SetColor(Model* mdl, RwRGBA* color)
 {

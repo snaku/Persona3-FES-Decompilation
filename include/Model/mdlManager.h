@@ -174,6 +174,8 @@ f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx);
 f32 MdlAnim_GetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
 f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx);
 
+void Mdl_Translate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp);
+void Mdl_Rotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp);
 void Mdl_SetColor(Model* mdl, RwRGBA* color);
 RwRGBA* Mdl_GetColor(Model* mdl);
 RwMatrix* Mdl_GetMatrix(Model* mdl);

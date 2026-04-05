@@ -267,8 +267,12 @@ extern RwGlobals rwGlobals; // not sure where to place this
 
 RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2);
 RwMatrix* RwMatrixRotate(RwMatrix* matrix, const RwV3d* axis, RwReal angle, RwOpCombineType combineOp);
+RwMatrix* RwMatrixTranslate(RwMatrix* matrix, const RwV3d* translation, RwOpCombineType combineOp);
+
+RwReal RwV3dNormalize(RwV3d* out, const RwV3d* in);
 RwReal RwV3dLength(const RwV3d* in);
 RwReal RwV2dLength(const RwV2d* in);
+
 RwUInt32 RwEngineGetVersion();
 RwBool RwEngineInit(const RwMemoryFunctions* memFuncs, RwUInt32 flags, RwUInt32 resArenaSize);
 

@@ -11,6 +11,30 @@ RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const
     return matrixOut;
 }
 
+// FUN_004c31b0
+RwMatrix* RwMatrixRotate(RwMatrix* matrix, const RwV3d* axis, RwReal angle, RwOpCombineType combineOp)
+{
+    // TODO
+
+    return matrix;
+}
+
+// FUN_004c35d0
+RwMatrix* RwMatrixTranslate(RwMatrix* matrix, const RwV3d* translation, RwOpCombineType combineOp)
+{
+    // TODO
+
+    return matrix;
+}
+
+// FUN_004c69f0
+RwReal RwV3dNormalize(RwV3d* out, const RwV3d* in)
+{
+    // TODO
+
+    return 0.0f;
+}
+
 // FUN_004c6ac0
 RwReal RwV3dLength(const RwV3d* in)
 {
