@@ -4,10 +4,13 @@
 #include "Utils.h"
 #include "rw/rwplcore.h"
 
-#define FLDFRAME_FLAG_DEBUGDRAW (1 << 31) // 0x80000000. Draw collisions
-
 typedef struct Model Model;
 typedef struct KwlnTask KwlnTask;
+
+#define FLDFRAME_FLAG_NOCOLLIS  (1 << 28) // 0x10000000. Disable collisions
+#define FLDFRAME_FLAG_DEBUGDRAW (1 << 31) // 0x80000000. Draw collisions
+
+#define FLDFRAME_GET(collisCtlTask) ((FldFrame*)collisCtlTask->taskData)
 
 typedef enum
 {
@@ -26,7 +29,9 @@ typedef struct FldFrame
     Model* mdl;             // 0x10
     RwV3d velocity;         // 0x14
     f32 sphereCollisRadius; // 0x20. Radius of the sphere collision
-    u8 unkData1[0x10];
+    s32 unk_24;             // 0x24
+    u32 totalDist;          // 0x28. Total distance travelled (weirdly it's not a float)
+    u8 unkData1[0x08];
 } FldFrame;
 
 // 4 bytes. Task data for a 'collis sphere' task
@@ -34,5 +39,7 @@ typedef struct CollisSphereDebug
 {
     u32 debugDraw; // 0x00
 } CollisSphereDebug;
+
+void K_FldFrame_CopyPos(RwV3d* dst, const KwlnTask* collisCtlTask);
 
 #endif

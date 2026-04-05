@@ -10,7 +10,7 @@ typedef struct RpHAnimHierarchy RpHAnimHierarchy;
 typedef struct RtAnimInterpolator RtAnimInterpolator;
 typedef struct RtAnimAnimation RtAnimAnimation;
 
-typedef struct H_Cdvd H_Cdvd;
+typedef struct HCdvd HCdvd;
 
 #define MDL_CDVDREAD_ASYNC 0x00
 #define MDL_CDVDREAD_SYNC  0x01
