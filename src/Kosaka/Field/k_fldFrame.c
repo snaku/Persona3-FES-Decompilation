@@ -2,6 +2,12 @@
 #include "Model/mdlManager.h"
 #include "kwln/kwlnTask.h"
 
+// FUN_001ad8b0
+f32 K_FldFrame_GetSphereCollisRadius(KwlnTask* collisCtlTask)
+{
+    return FLDFRAME_GET(collisCtlTask)->sphereCollisRadius;
+}
+
 // FUN_001ad940
 void K_FldFrame_CopyPos(RwV3d* dst, KwlnTask* collisCtlTask)
 {
