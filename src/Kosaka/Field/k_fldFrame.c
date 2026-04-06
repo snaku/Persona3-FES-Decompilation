@@ -59,3 +59,26 @@ void K_FldFrame_MoveForward(f32 speed, KwlnTask* collisCtlTask)
         fldFrame->state = FLDFRAME_STATE_DIRTY;
     }
 }
+
+// FUN_001adff0
+void K_FldFrame_Rotate(KwlnTask* collisCtlTask, const RwV3d* axis, f32 angle)
+{
+    FldFrame* fldFrame;
+    RwV3d originalPos;
+    RwV3d negPos;
+
+    fldFrame = FLDFRAME_GET(collisCtlTask);
+
+    if (fldFrame->mdl != NULL)
+    {
+        originalPos = Mdl_GetMatrix(fldFrame->mdl)->pos;
+
+        negPos.x = originalPos.x * -1.0f;
+        negPos.y = originalPos.y * -1.0f;
+        negPos.z = originalPos.z * -1.0f;
+
+        Mdl_Translate(fldFrame->mdl, &negPos, rwCOMBINEPOSTCONCAT); // basically just do pos + (-pos) = (0, 0, 0)
+        Mdl_Rotate(fldFrame->mdl, axis, angle, rwCOMBINEPOSTCONCAT);
+        Mdl_Translate(fldFrame->mdl, &originalPos, rwCOMBINEPOSTCONCAT);
+    }
+}
