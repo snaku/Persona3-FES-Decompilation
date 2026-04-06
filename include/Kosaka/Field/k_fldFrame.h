@@ -41,6 +41,7 @@ typedef struct CollisSphereDebug
 } CollisSphereDebug;
 
 f32 K_FldFrame_GetSphereCollisRadius(KwlnTask* collisCtlTask);
+void K_FldFrame_SetSphereCollisRadius(KwlnTask* collisCtlTask, f32 radius);
 void K_FldFrame_CopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
 void K_FldFrame_MoveInDir(f32 speed, KwlnTask* collisCtlTask, const RwV3d* normalizedDir);
 void K_FldFrame_MoveForward(f32 speed, KwlnTask* collisCtlTask);

@@ -8,6 +8,23 @@ f32 K_FldFrame_GetSphereCollisRadius(KwlnTask* collisCtlTask)
     return FLDFRAME_GET(collisCtlTask)->sphereCollisRadius;
 }
 
+// FUN_001ad8c0
+void K_FldFrame_SetSphereCollisRadius(KwlnTask* collisCtlTask, f32 radius)
+{
+    FldFrame* fldFrame;
+
+    fldFrame = FLDFRAME_GET(collisCtlTask);
+    fldFrame->sphereCollisRadius = radius;
+
+    if (radius == 0.0f)
+    {
+        fldFrame->flags |= FLDFRAME_FLAG_NOCOLLIS;
+        return;
+    }
+
+    fldFrame->flags &= ~FLDFRAME_FLAG_NOCOLLIS;
+}
+
 // FUN_001ad940
 void K_FldFrame_CopyPos(RwV3d* dst, KwlnTask* collisCtlTask)
 {
