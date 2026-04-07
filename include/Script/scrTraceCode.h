@@ -5,12 +5,12 @@
 
 typedef struct ScrData ScrData;
 
-u32 Scr_ExecOpCode(ScrData* scr);
-s32 Scr_GetIntParam(s32 paramIdx);
-f32 Scr_GetFloatParam(s32 paramIdx);
-char* Scr_GetStrParam(s32 paramIdx);
-void Scr_SetCurrScriptIntRetVal(s32 retVal);
-void Scr_SetCurrScriptFloatRetVal(f32 retVal);
-u32 Scr_GetCurrScriptLabelOffset(s32 lblIdx);
+u32 scrExecOpCode(ScrData* scr);
+s32 scrGetIntPara(s32 paramIdx);
+f32 scrGetFloatPara(s32 paramIdx);
+char* scrGetStrPara(s32 paramIdx);
+void scrSetIntReturnVal(s32 retVal);
+void scrSetFloatReturnVal(f32 retVal);
+u32 scrGetCurrScriptLabelOffset(s32 lblIdx);
 
 #endif

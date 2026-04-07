@@ -12,11 +12,11 @@ static ScrData* sScrHead; // 007ce580
 static ScrData* sScrTail; // 007ce584
 ScrData* gCurrScript;     // 007ce5a8. Current script being executed
 
-void Scr_DestroyTask(KwlnTask* scrTask);
-void* Scr_UpdateTask(KwlnTask* scrTask);
+void scrDestroyTask(KwlnTask* scrTask);
+void* scrScriptProcess(KwlnTask* scrTask);
 
 // FUN_0035b570
-ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
+ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
                          ScrLblPrcd* prcd, ScrLblPrcd* labels, 
                          ScrInstruction* instr, BmdHeader* msg, 
                          void* strings, s32 prcdIdx)
@@ -140,7 +140,7 @@ ScrData* Scr_StartScript(ScrHeader* header, ScrContentEntry* entries,
 }
 
 // FUN_0035b930. (Need to rework a little bit)
-ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
+ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
 {
     uintptr_t prcdAddr = 0;
     uintptr_t labelsAddr = 0;
@@ -188,7 +188,7 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
             }
         }
 
-        return Scr_StartScript(header, header->entries,
+        return scrStartScript(header, header->entries,
                               (ScrLblPrcd*)prcdAddr, (ScrLblPrcd*)labelsAddr, 
                               (ScrInstruction*)instrAddr, (BmdHeader*)msgAddr,
                               (void*)stringsAddr, prcdIdx);
@@ -200,16 +200,16 @@ ScrData* Scr_StartScript2(ScrHeader* header, u32 prcdIdx)
 }
 
 // FUN_0035bb40. Create a script task by a script header
-KwlnTask* Scr_CreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
+KwlnTask* scrCreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
 {
     ScrData* scr;
     KwlnTask* scrTask;
 
-    scr = Scr_StartScript2(header, prcdIdx);
+    scr = scrStartScript2(header, prcdIdx);
     K_ASSERT(scr != NULL, 666);
 
-    scrTask = ScrTask_Init(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
-                           Scr_UpdateTask, Scr_DestroyTask, scr);
+    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
+                           scrScriptProcess, scrDestroyTask, scr);
     K_ASSERT(scrTask != NULL, 395);
 
     scr->task = scrTask;
@@ -218,7 +218,7 @@ KwlnTask* Scr_CreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
 }
 
 // FUN_0035bc00. Create a script task by an already loaded '.BF' file in memory and copy it
-KwlnTask* Scr_CreateTaskFromScriptCopy(u32 priority, void* baseScript, u32 scriptSize, u32 prcdIdx)
+KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scriptSize, u32 prcdIdx)
 {
     void* script;
     ScrData* scr;
@@ -226,15 +226,15 @@ KwlnTask* Scr_CreateTaskFromScriptCopy(u32 priority, void* baseScript, u32 scrip
 
     script = (void*)H_Malloc(scriptSize);
     memset(script, 0, scriptSize);
-    memcpy(script, baseScript, scriptSize);
+    memcpy(script, scrMemory, scriptSize);
 
-    scr = Scr_StartScript2((ScrHeader*)script, prcdIdx);
+    scr = scrStartScript2((ScrHeader*)script, prcdIdx);
     K_ASSERT(scr != NULL, 704);
 
     scr->scriptMemory = script;
 
-    scrTask = ScrTask_Init(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
-                           Scr_UpdateTask, Scr_DestroyTask, scr);
+    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
+                           scrScriptProcess, scrDestroyTask, scr);
     K_ASSERT(scrTask != NULL, 395);
 
     scr->task = scrTask;
@@ -243,7 +243,7 @@ KwlnTask* Scr_CreateTaskFromScriptCopy(u32 priority, void* baseScript, u32 scrip
 }
 
 // FUN_0035be30
-void Scr_Destroy(ScrData* scr)
+void scrDestroy(ScrData* scr)
 {
     FUN_005225a8(scr->proceduresContent[scr->prcdIdx].name);
     FUN_005225a8("end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
@@ -299,27 +299,27 @@ void Scr_Destroy(ScrData* scr)
 }
 
 // FUN_0035c200
-void Scr_DestroyTask(KwlnTask* scrTask)
+void scrDestroyTask(KwlnTask* scrTask)
 {
     ScrData* scr;
 
-    scr = ScrTask_GetData(scrTask);
+    scr = scrTaskGetData(scrTask);
     if (scr != NULL)
     {
-        Scr_Destroy(scr);
+        scrDestroy(scr);
     }
 
-    ScrTask_SetData(scrTask, NULL);
+    scrTaskSetData(scrTask, NULL);
 }
 
 // FUN_0035c270
-void* Scr_UpdateTask(KwlnTask* scrTask)
+void* scrScriptProcess(KwlnTask* scrTask)
 {
     ScrData* scr;
     u32 execOpCodeRes;
 
-    scr = ScrTask_GetData(scrTask);
-    execOpCodeRes = Scr_ExecOpCode(scr);
+    scr = scrTaskGetData(scrTask);
+    execOpCodeRes = scrExecOpCode(scr);
 
     switch (execOpCodeRes)
     {

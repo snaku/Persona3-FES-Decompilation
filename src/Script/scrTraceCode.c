@@ -6,42 +6,42 @@
 #include "g_data.h"
 #include "temporary.h"
 
-u32 Scr_ExecOpCodePushi(ScrData* scr);
-u32 Scr_ExecOpCodePushs(ScrData* scr);
-u32 Scr_ExecOpCodePushf(ScrData* scr);
-u32 Scr_ExecOpCodePushRet(ScrData* scr);
-u32 Scr_ExecOpCodeStPrcd(ScrData* scr);
-u32 Scr_ExecOpCodeCmnCmd(ScrData* scr);
-u32 Scr_ExecOpCodeJmp(ScrData* scr);
-u32 Scr_ExecOpCodeGoto(ScrData* scr);
+u32 scrExecOpCodePushi(ScrData* scr);
+u32 scrExecOpCodePushs(ScrData* scr);
+u32 scrExecOpCodePushf(ScrData* scr);
+u32 scrExecOpCodePushRet(ScrData* scr);
+u32 scrExecOpCodeStPrcd(ScrData* scr);
+u32 scrExecOpCodeCmnCmd(ScrData* scr);
+u32 scrExecOpCodeJmp(ScrData* scr);
+u32 scrExecOpCodeGoto(ScrData* scr);
 
-typedef u32 (*Scr_ExecOpCodeFunc)(ScrData* scr);
+typedef u32 (*ScrExecOpCodeFunc)(ScrData* scr);
 
 // 0069d3e0
-static const Scr_ExecOpCodeFunc opCodeFuncTable[] =
+static const ScrExecOpCodeFunc opCodeFuncTable[] =
 {
     // NULL func are unknown for now
-    Scr_ExecOpCodePushi, Scr_ExecOpCodePushf,
+    scrExecOpCodePushi, scrExecOpCodePushf,
     NULL, NULL,
-    Scr_ExecOpCodePushRet, NULL,
-    NULL, Scr_ExecOpCodeStPrcd,
-    Scr_ExecOpCodeCmnCmd, NULL,
-    Scr_ExecOpCodeJmp, NULL,
+    scrExecOpCodePushRet, NULL,
+    NULL, scrExecOpCodeStPrcd,
+    scrExecOpCodeCmnCmd, NULL,
+    scrExecOpCodeJmp, NULL,
     NULL, NULL,
-    Scr_ExecOpCodeGoto, NULL,
-    NULL, NULL,
-    NULL, NULL,
+    scrExecOpCodeGoto, NULL,
     NULL, NULL,
     NULL, NULL,
     NULL, NULL,
     NULL, NULL,
-    Scr_ExecOpCodePushs, NULL
+    NULL, NULL,
+    NULL, NULL,
+    scrExecOpCodePushs, NULL
 };
 
-u32 Scr_ExecOpCode1(ScrData* scr);
+u32 scrExecOpCode1(ScrData* scr);
 
 // FUN_0035c300. Push int 
-u32 Scr_ExecOpCodePushi(ScrData* scr)
+u32 scrExecOpCodePushi(ScrData* scr)
 {
     s32 operand;
 
@@ -59,7 +59,7 @@ u32 Scr_ExecOpCodePushi(ScrData* scr)
 }
 
 // FUN_0035c3b0. Push short
-u32 Scr_ExecOpCodePushs(ScrData* scr)
+u32 scrExecOpCodePushs(ScrData* scr)
 {
     s32 operand;
 
@@ -77,7 +77,7 @@ u32 Scr_ExecOpCodePushs(ScrData* scr)
 }
 
 // FUN_0035c450. Push float
-u32 Scr_ExecOpCodePushf(ScrData* scr)
+u32 scrExecOpCodePushf(ScrData* scr)
 {
     f32 operand;
 
@@ -95,7 +95,7 @@ u32 Scr_ExecOpCodePushf(ScrData* scr)
 }
 
 // FUN_0035c870. Push return value
-u32 Scr_ExecOpCodePushRet(ScrData* scr)
+u32 scrExecOpCodePushRet(ScrData* scr)
 {
     K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 268);
 
@@ -109,7 +109,7 @@ u32 Scr_ExecOpCodePushRet(ScrData* scr)
 }
 
 // FUN_0035cf00. Start procedure
-u32 Scr_ExecOpCodeStPrcd(ScrData* scr)
+u32 scrExecOpCodeStPrcd(ScrData* scr)
 {
     scr->instrIdx++;
 
@@ -117,9 +117,9 @@ u32 Scr_ExecOpCodeStPrcd(ScrData* scr)
 }
 
 // FUN_0035cf20. Call a common command (functions that are in the game executable) by index
-u32 Scr_ExecOpCodeCmnCmd(ScrData* scr)
+u32 scrExecOpCodeCmnCmd(ScrData* scr)
 {
-    Scr_CmdFunc cmdFunc;
+    ScrCmdFunc cmdFunc;
     u32 savedInstrIdx;
     u32 cmdFuncRes;
     s32 cmdIdx;
@@ -150,7 +150,7 @@ u32 Scr_ExecOpCodeCmnCmd(ScrData* scr)
 }
 
 // FUN_0035d1d0. Jump to a procedure
-u32 Scr_ExecOpCodeJmp(ScrData* scr)
+u32 scrExecOpCodeJmp(ScrData* scr)
 {
     s16 prcdIdx;
 
@@ -161,7 +161,7 @@ u32 Scr_ExecOpCodeJmp(ScrData* scr)
 }
 
 // FUN_0035d310. Jump to a label
-u32 Scr_ExecOpCodeGoto(ScrData* scr)
+u32 scrExecOpCodeGoto(ScrData* scr)
 {
     s16 lblIdx;
 
@@ -172,7 +172,7 @@ u32 Scr_ExecOpCodeGoto(ScrData* scr)
 }
 
 // FUN_0035ebf0
-u32 Scr_ExecOpCode(ScrData* scr)
+u32 scrExecOpCode(ScrData* scr)
 {
     // TODO
 
@@ -180,7 +180,7 @@ u32 Scr_ExecOpCode(ScrData* scr)
 }
 
 // FUN_0035ed20
-s32 Scr_GetIntParam(s32 paramIdx)
+s32 scrGetIntPara(s32 paramIdx)
 {
     // TODO
 
@@ -188,7 +188,7 @@ s32 Scr_GetIntParam(s32 paramIdx)
 }
 
 // FUN_0035ee60
-f32 Scr_GetFloatParam(s32 paramIdx)
+f32 scrGetFloatPara(s32 paramIdx)
 {
     // TODO
 
@@ -196,7 +196,7 @@ f32 Scr_GetFloatParam(s32 paramIdx)
 }
 
 // FUN_0035efa0
-char* Scr_GetStrParam(s32 paramIdx)
+char* scrGetStrPara(s32 paramIdx)
 {
     s32 paramStackIdx;
 
@@ -220,21 +220,21 @@ char* Scr_GetStrParam(s32 paramIdx)
 }
 
 // FUN_0035f060. Set 'retType' of the current script to int and set 'iVal' to 'retVal'
-void Scr_SetCurrScriptIntRetVal(s32 retVal)
+void scrSetIntReturnVal(s32 retVal)
 {
     gCurrScript->stackTypes[SCR_STACK_RET_IDX] = SCR_VALUE_TYPE_INTEGER;
     gCurrScript->stackValues[SCR_STACK_RET_IDX].iVal = retVal;
 }
 
 // FUN_0035f080. Set 'retType' of the current script to float and set 'fVal' to 'retVal'
-void Scr_SetCurrScriptFloatRetVal(f32 retVal)
+void scrSetFloatReturnVal(f32 retVal)
 {
     gCurrScript->stackTypes[SCR_STACK_RET_IDX] = SCR_VALUE_TYPE_FLOAT;
     gCurrScript->stackValues[SCR_STACK_RET_IDX].fVal = retVal;
 }
 
 // FUN_0035f0a0
-u32 Scr_GetCurrScriptLabelOffset(s32 lblIdx)
+u32 scrGetCurrScriptLabelOffset(s32 lblIdx)
 {
     K_ASSERT(lblIdx > 0, 1067);
     K_ASSERT(gCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount > lblIdx, 1067);

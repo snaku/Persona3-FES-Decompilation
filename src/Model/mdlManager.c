@@ -9,15 +9,15 @@ const f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where
 
 static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
 
-u8 MdlStream_Read(Model* mdl);
+u8 mdlStreamRead(Model* mdl);
 
-void MdlStream_Init(Model* mdl);
-void MdlStream_SetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd);
-void MdlStream_RequestCdvd(Model* mdl, const char* path);
-void MdlStream_Destroy(Model* mdl);
+void mdlStreamInit(Model* mdl);
+void mdlStreamSetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd);
+void mdlStreamRequestCdvd(Model* mdl, const char* path);
+void mdlStreamDestroy(Model* mdl);
 
 // FUN_00311310
-MdlAnimEntryTable* Mdl_CreateAnimEntryTable(u16 animCount)
+MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
 {
     MdlAnimEntryTable* table;
     u32 size;
@@ -41,7 +41,7 @@ MdlAnimEntryTable* Mdl_CreateAnimEntryTable(u16 animCount)
 }
 
 // FUN_00316690. TODO
-Model* MdlManager_InitMdl(u16 type, u16 id)
+Model* mdlMngInitMdl(u16 type, u16 id)
 {
     // TODO
 
@@ -49,7 +49,7 @@ Model* MdlManager_InitMdl(u16 type, u16 id)
 }
 
 // FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter
-Model* MdlManager_Search(u16 type, u16 id, u16 flags)
+Model* mdlMngSearch(u16 type, u16 id, u16 flags)
 {
     Model* mdl;
 
@@ -78,51 +78,51 @@ Model* MdlManager_Search(u16 type, u16 id, u16 flags)
 }
 
 // FUN_00316b40
-Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead)
+Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead)
 {
     Model* mdl;
 
-    mdl = MdlManager_InitMdl(type, id);
+    mdl = mdlMngInitMdl(type, id);
 
     if (cdvdRead & MDL_CDVDREAD_SYNC)
     {
         mdl->flags |= MDL_FLAG_CDVDREADSYNC;
     }
 
-    MdlStream_Init(mdl);
-    MdlStream_RequestCdvd(mdl, path);
+    mdlStreamInit(mdl);
+    mdlStreamRequestCdvd(mdl, path);
 
-    MdlStream_Read(mdl);
+    mdlStreamRead(mdl);
 
     return mdl;
 }
 
 // FUN_00316bd0. Create a model with a loaded .RMD file in memory
-Model* MdlManager_CreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 cdvdRead)
+Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 cdvdRead)
 {
     Model* mdl;
     MdlRmdFileMemory rmd;
 
-    mdl = MdlManager_InitMdl(type, id);
+    mdl = mdlMngInitMdl(type, id);
 
     if (cdvdRead & MDL_CDVDREAD_SYNC)
     {
         mdl->flags |= MDL_FLAG_CDVDREADSYNC;
     }
 
-    MdlStream_Init(mdl);
+    mdlStreamInit(mdl);
 
     rmd.memory = rmdMemory;
     rmd.size = rmdSize;
-    MdlStream_SetRmdFileMemory(mdl, &rmd);
+    mdlStreamSetRmdFileMemory(mdl, &rmd);
 
-    MdlStream_Read(mdl);
+    mdlStreamRead(mdl);
 
     return mdl;
 }
 
 // FUN_00316e00. Only for .RMD in 'MODEL' folder (See enum 'ModelType')
-Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead)
+Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead)
 {
     // TODO
 
@@ -130,7 +130,7 @@ Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead)
 }
 
 // FUN_00316f70
-u8 MdlStream_Read(Model* mdl)
+u8 mdlStreamRead(Model* mdl)
 {
     // TODO
 
@@ -138,7 +138,7 @@ u8 MdlStream_Read(Model* mdl)
 }
 
 // FUN_00318870
-f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx)
+f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx)
 {
     f32 duration;
 
@@ -170,7 +170,7 @@ f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx)
 }
 
 // FUN_00318910
-f32 MdlAnim_GetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
+f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
 {
     f32 duration;
 
@@ -187,7 +187,7 @@ f32 MdlAnim_GetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
 }
 
 // FUN_00318990
-f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx)
+f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx)
 {
     f32 currTime;
 
@@ -204,74 +204,74 @@ f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx)
 }
 
 // FUN_00318a30
-void Mdl_Translate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp)
+void mdlTranslate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp)
 {
     RwMatrixTranslate(&mdl->mat, translation, combineOp);
 }
 
 // FUN_00318a50
-void Mdl_Rotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp)
+void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp)
 {
     RwMatrixRotate(&mdl->mat, axis, angle, combineOp);
 }
 
 // FUN_00318ad0
-void Mdl_SetColor(Model* mdl, RwRGBA* color)
+void mdlSetColor(Model* mdl, RwRGBA* color)
 {
     mdl->color = *color;
 }
 
 // FUN_00318b00
-RwRGBA* Mdl_GetColor(Model* mdl)
+RwRGBA* mdlGetColor(Model* mdl)
 {
     return &mdl->color;
 }
 
 // FUN_00318b60
-RwMatrix* Mdl_GetMatrix(Model* mdl)
+RwMatrix* mdlGetMatrix(Model* mdl)
 {
     return &mdl->mat;
 }
 
 // FUN_00318b70
-RwFrame* Mdl_GetClumpFrame(Model* mdl)
+RwFrame* mdlGetClumpFrame(Model* mdl)
 {
     return (RwFrame*)mdl->clump->object.parent;
 }
 
 // FUN_00318b80
-RpClump* Mdl_GetClump(Model* mdl)
+RpClump* mdlGetClump(Model* mdl)
 {
     return mdl->clump;
 }
 
 // FUN_00319010
-void Mdl_EnableFullShadow(Model* mdl)
+void mdlEnableFullShadow(Model* mdl)
 {
     mdl->flags |= MDL_FLAG_FULLSHADOW;
 }
 
 // FUN_00319030
-void Mdl_DisableFullShadow(Model* mdl)
+void mdlDisableFullShadow(Model* mdl)
 {
     mdl->flags &= ~MDL_FLAG_FULLSHADOW;
 }
 
 // FUN_00319090
-void MdlLookAt_SetBlendRotFactor(Model* mdl, f32 blendRotFactor)
+void mdlLookAtSetBlendRotFactor(Model* mdl, f32 blendRotFactor)
 {
     mdl->animSlots[0].lookAt.blendRotFactor = blendRotFactor;
 }
 
 // FUN_003190a0
-void MdlLookAt_SetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle)
+void mdlLookAtSetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle)
 {
     mdl->animSlots[0].lookAt.maxPitchAngle = maxPitchAngle;
     mdl->animSlots[0].lookAt.maxYawAngle = maxYawAngle;
 }
 
 // FUN_003190b0
-void MdlLookAt_SetTargetPosXYZ(Model* mdl, RwV3d* target)
+void mdlLookAtSetTargetPosXYZ(Model* mdl, RwV3d* target)
 {
     mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZ;
     mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XY);
@@ -281,7 +281,7 @@ void MdlLookAt_SetTargetPosXYZ(Model* mdl, RwV3d* target)
 }
 
 // FUN_00319100
-void MdlLookAt_SetTargetPosXYZCS(Model* mdl, RwV3d* target)
+void mdlLookAtSetTargetPosXYZCS(Model* mdl, RwV3d* target)
 {
     mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZCS;
     mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZ | MDL_LOOKAT_FLAG_XY);
@@ -291,7 +291,7 @@ void MdlLookAt_SetTargetPosXYZCS(Model* mdl, RwV3d* target)
 }
 
 // FUN_00319150
-void MdlLookAt_SetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget)
+void mdlLookAtSetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget)
 {
     mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XY;
     mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XYZ);
@@ -302,13 +302,13 @@ void MdlLookAt_SetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget)
 }
 
 // FUN_00319190
-void MdlLookAt_DisableTarget(Model* mdl)
+void mdlLookAtDisableTarget(Model* mdl)
 {
     mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_NOTARGET;
 }
 
 // FUN_003191d0
-u8 MdlLookAt_IsActive(Model* mdl)
+u8 mdlLookAtIsActive(Model* mdl)
 {
     return (mdl->animSlots[0].lookAt.flags & (MDL_LOOKAT_FLAG_XYZCS |
                                               MDL_LOOKAT_FLAG_XYZ   |
@@ -317,13 +317,13 @@ u8 MdlLookAt_IsActive(Model* mdl)
 }
 
 // FUN_00319210
-void MdlLookAt_SetTargetScale(Model* mdl, RwV3d* scale)
+void mdlLookAtSetTargetScale(Model* mdl, RwV3d* scale)
 {
     mdl->animSlots[0].lookAt.targetScale = *scale;
 }
 
 // FUN_00319840
-void MdlStream_Init(Model* mdl)
+void mdlStreamInit(Model* mdl)
 {
     MdlStream* stream;
 
@@ -333,7 +333,7 @@ void MdlStream_Init(Model* mdl)
 }
 
 // FUN_003198a0
-void MdlStream_SetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd)
+void mdlStreamSetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd)
 {
     MdlStream* stream;
     stream = mdl->stream;
@@ -343,7 +343,7 @@ void MdlStream_SetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd)
 }
 
 // FUN_003198c0
-void MdlStream_RequestCdvd(Model* mdl, const char* path)
+void mdlStreamRequestCdvd(Model* mdl, const char* path)
 {
     MdlStream* stream;
     stream = mdl->stream;
@@ -353,7 +353,7 @@ void MdlStream_RequestCdvd(Model* mdl, const char* path)
 }
 
 // FUN_00319910
-void MdlStream_Destroy(Model* mdl)
+void mdlStreamDestroy(Model* mdl)
 {
     if (mdl->stream->unk_0c != NULL)
     {

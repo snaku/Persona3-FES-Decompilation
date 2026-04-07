@@ -9,7 +9,7 @@
 #define MODEL_PATH "model/"
 
 // FUN_0031d4f0
-u8 MdlFile_IsPacMdlType(u16 type)
+u8 mdlFileIsTypePac(u16 type)
 {
     switch (type)
     {

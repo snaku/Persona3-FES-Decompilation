@@ -3,12 +3,12 @@
 
 #include "Utils.h"
 
-typedef u32 (*Scr_CmdFunc)();
+typedef u32 (*ScrCmdFunc)();
 
 // 8 bytes
 typedef struct
 {
-    Scr_CmdFunc cmdFunc; // 0x00
+    ScrCmdFunc cmdFunc; // 0x00
     u32 totalParam;      // 0x04
 } ScrCommonCommand;
 

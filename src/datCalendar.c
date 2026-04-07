@@ -436,9 +436,9 @@ u8 Calendar_ScrCmdSetDate()
     u8 time;
     u32 daysSinceApr5;
 
-    month = Scr_GetIntParam(0);
-    day = Scr_GetIntParam(1);
-    time = Scr_GetIntParam(2);
+    month = scrGetIntPara(0);
+    day = scrGetIntPara(1);
+    time = scrGetIntPara(2);
 
     daysSinceApr5 = Calendar_GetDaysSinceStartFromDate(month, day);
 

@@ -3,6 +3,6 @@
 
 #include "Utils.h"
 
-u8 MdlFile_IsPacMdlType(u16 type);
+u8 mdlFileIsTypePac(u16 type);
 
 #endif

@@ -87,13 +87,13 @@ typedef struct ResrcManager
     Resrc* resLists[RESRC_TYPE_MAX]; // 0x00. Head of list for every type of resource
 } ResrcManager;
 
-ResrcManager* ResrcMng_Init();
-void ResrcMng_Destroy(ResrcManager* resManager);
-Resrc* ResrcMng_CreateRes(ResrcManager* resManager, u16 resTypeId);
-void ResrcMng_DestroyRes(ResrcManager* resManager, Resrc* res);
-Resrc* ResrcMng_GetListHead(ResrcManager* resManager, u8 resType);
-Resrc* ResrcMng_GetListTail(ResrcManager* resManager, u8 resType);
-Resrc* ResrcMng_GetRes(ResrcManager* resManager, u16 resTypeId);
-u32 ResrcMng_GetTotalResInList(ResrcManager* resManager, u8 resType);
+ResrcManager* resrcMngInit();
+void resrcMngDestroy(ResrcManager* resManager);
+Resrc* resrcMngCreateRes(ResrcManager* resManager, u16 resTypeId);
+void resrcMngDestroyRes(ResrcManager* resManager, Resrc* res);
+Resrc* resrcMngGetListHead(ResrcManager* resManager, u8 resType);
+Resrc* resrcMngGetListTail(ResrcManager* resManager, u8 resType);
+Resrc* resrcMngGetRes(ResrcManager* resManager, u16 resTypeId);
+u32 resrcMngGetTotalResInList(ResrcManager* resManager, u8 resType);
 
 #endif

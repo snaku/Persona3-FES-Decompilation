@@ -164,33 +164,33 @@ struct Model
 
 extern const f32 gFrameDuration;
 
-Model* MdlManager_InitMdl(u16 type, u16 id);
-Model* MdlManager_Search(u16 type, u16 id, u16 flags);
-Model* MdlManager_CreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead);
-Model* MdlManager_CreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 cdvdRead);
-Model* MdlManager_CreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead);
+Model* mdlMngInitMdl(u16 type, u16 id);
+Model* mdlMngSearch(u16 type, u16 id, u16 flags);
+Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead);
+Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 cdvdRead);
+Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead);
 
-f32 MdlAnim_GetDurationInFrame(Model* mdl, u16 slotIdx);
-f32 MdlAnim_GetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
-f32 MdlAnim_GetCurrentFrame(Model* mdl, u16 slotIdx);
+f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx);
+f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
+f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx);
 
-void Mdl_Translate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp);
-void Mdl_Rotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp);
-void Mdl_SetColor(Model* mdl, RwRGBA* color);
-RwRGBA* Mdl_GetColor(Model* mdl);
-RwMatrix* Mdl_GetMatrix(Model* mdl);
-RwFrame* Mdl_GetClumpFrame(Model* mdl);
-RpClump* Mdl_GetClump(Model* mdl);
-void Mdl_EnableFullShadow(Model* mdl);
-void Mdl_DisableFullShadow(Model* mdl);
+void mdlTranslate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp);
+void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp);
+void mdlSetColor(Model* mdl, RwRGBA* color);
+RwRGBA* mdlGetColor(Model* mdl);
+RwMatrix* mdlGetMatrix(Model* mdl);
+RwFrame* mdlGetClumpFrame(Model* mdl);
+RpClump* mdlGetClump(Model* mdl);
+void mdlEnableFullShadow(Model* mdl);
+void mdlDisableFullShadow(Model* mdl);
 
-void MdlLookAt_SetBlendRotFactor(Model* mdl, f32 blendRotFactor);
-void MdlLookAt_SetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle);
-void MdlLookAt_SetTargetPosXYZ(Model* mdl, RwV3d* target);
-void MdlLookAt_SetTargetPosXYZCS(Model* mdl, RwV3d* target);
-void MdlLookAt_SetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget);
-void MdlLookAt_DisableTarget(Model* mdl);
-u8 MdlLookAt_IsActive(Model* mdl);
-void MdlLookAt_SetTargetScale(Model* mdl, RwV3d* scale);
+void mdlLookAtSetBlendRotFactor(Model* mdl, f32 blendRotFactor);
+void mdlLookAtSetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle);
+void mdlLookAtSetTargetPosXYZ(Model* mdl, RwV3d* target);
+void mdlLookAtSetTargetPosXYZCS(Model* mdl, RwV3d* target);
+void mdlLookAtSetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget);
+void mdlLookAtDisableTarget(Model* mdl);
+u8 mdlLookAtIsActive(Model* mdl);
+void mdlLookAtSetTargetScale(Model* mdl, RwV3d* scale);
 
 #endif

@@ -12,19 +12,19 @@ u8 K_Cmd_IsDateInRange()
     u32 endDay;
     u8 isInRange;
 
-    startMonth = Scr_GetIntParam(0);
-    startDay = Scr_GetIntParam(1);
-    endMonth = Scr_GetIntParam(2);
-    endDay = Scr_GetIntParam(3);
+    startMonth = scrGetIntPara(0);
+    startDay = scrGetIntPara(1);
+    endMonth = scrGetIntPara(2);
+    endDay = scrGetIntPara(3);
 
     isInRange = Calendar_IsDateInRange(startMonth, startDay, endMonth, endDay);
     if (isInRange)
     {
-        Scr_SetCurrScriptIntRetVal(1);
+        scrSetIntReturnVal(1);
     }
     else
     {
-        Scr_SetCurrScriptIntRetVal(0);
+        scrSetIntReturnVal(0);
     }
 
     return 1;

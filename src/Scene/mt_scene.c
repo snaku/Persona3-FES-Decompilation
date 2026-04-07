@@ -19,7 +19,7 @@ Resrc* MT_Scene_GetRes(u16 resTypeId)
         return NULL;
     }
 
-    return ResrcMng_GetRes(gMtScene->resManager, resTypeId);
+    return resrcMngGetRes(gMtScene->resManager, resTypeId);
 }
 
 // FUN_003b5d50
@@ -30,7 +30,7 @@ Resrc* MT_Scene_GetResListHead(u32 resType)
         return NULL;
     }
 
-    return ResrcMng_GetListHead(gMtScene->resManager, resType);
+    return resrcMngGetListHead(gMtScene->resManager, resType);
 }
 
 // FUN_003b5df0
@@ -54,7 +54,7 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
     {
         if (i == type)
         {
-            total += ResrcMng_GetTotalResInList(resManager, i);
+            total += resrcMngGetTotalResInList(resManager, i);
         }
     }
 
@@ -76,7 +76,7 @@ u16 MT_Scene_CreateResLightParty(u16 id)
         return 0;
     }
 
-    if (ResrcMng_CreateRes(resManager, resTypeId) == NULL)
+    if (resrcMngCreateRes(resManager, resTypeId) == NULL)
     {
         return 0;
     }

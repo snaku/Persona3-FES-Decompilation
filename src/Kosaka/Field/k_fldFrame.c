@@ -33,7 +33,7 @@ void K_FldFrame_CopyPos(RwV3d* dst, KwlnTask* collisCtlTask)
 
     if (fldFrame->mdl != NULL)
     {
-        vec = Mdl_GetMatrix(fldFrame->mdl)->pos;
+        vec = mdlGetMatrix(fldFrame->mdl)->pos;
     }
 
     *dst = vec;
@@ -69,7 +69,7 @@ void K_FldFrame_MoveForward(f32 speed, KwlnTask* collisCtlTask)
 
     if (fldFrame->state == FLDFRAME_STATE_NOTDIRTY)
     {
-        velocity = Mdl_GetMatrix(fldFrame->mdl)->at;
+        velocity = mdlGetMatrix(fldFrame->mdl)->at;
         RwV3dNormalize(&velocity, &velocity);
         
         velocity.x *= speed;
@@ -94,14 +94,14 @@ void K_FldFrame_Rotate(KwlnTask* collisCtlTask, const RwV3d* axis, f32 angle)
 
     if (fldFrame->mdl != NULL)
     {
-        originalPos = Mdl_GetMatrix(fldFrame->mdl)->pos;
+        originalPos = mdlGetMatrix(fldFrame->mdl)->pos;
 
         negPos.x = originalPos.x * -1.0f;
         negPos.y = originalPos.y * -1.0f;
         negPos.z = originalPos.z * -1.0f;
 
-        Mdl_Translate(fldFrame->mdl, &negPos, rwCOMBINEPOSTCONCAT); // basically just do pos + (-pos) = (0, 0, 0)
-        Mdl_Rotate(fldFrame->mdl, axis, angle, rwCOMBINEPOSTCONCAT);
-        Mdl_Translate(fldFrame->mdl, &originalPos, rwCOMBINEPOSTCONCAT);
+        mdlTranslate(fldFrame->mdl, &negPos, rwCOMBINEPOSTCONCAT); // basically just do pos + (-pos) = (0, 0, 0)
+        mdlRotate(fldFrame->mdl, axis, angle, rwCOMBINEPOSTCONCAT);
+        mdlTranslate(fldFrame->mdl, &originalPos, rwCOMBINEPOSTCONCAT);
     }
 }
