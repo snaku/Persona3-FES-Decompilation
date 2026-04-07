@@ -31,7 +31,8 @@ typedef struct FldFrame
     f32 sphereCollisRadius; // 0x20. Radius of the sphere collision
     s32 unk_24;             // 0x24
     u32 totalDist;          // 0x28. Total distance travelled (weirdly it's not a float)
-    u8 unkData1[0x08];
+    s32 xGrid;              // 0x2c. Current X grid
+    s32 zGrid;              // 0x30. Current Z grid
 } FldFrame;
 
 // 4 bytes. Task data for a 'collis sphere' task
@@ -42,6 +43,8 @@ typedef struct CollisSphereDebug
 
 f32 K_FldFrame_GetSphereCollisRadius(KwlnTask* collisCtlTask);
 void K_FldFrame_SetSphereCollisRadius(KwlnTask* collisCtlTask, f32 radius);
+s32 K_FldFrame_GetXGrid(KwlnTask* collisCtlTask);
+s32 K_FldFrame_GetZGrid(KwlnTask* collisCtlTask);
 void K_FldFrame_CopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
 void K_FldFrame_MoveInDir(f32 speed, KwlnTask* collisCtlTask, const RwV3d* normalizedDir);
 void K_FldFrame_MoveForward(f32 speed, KwlnTask* collisCtlTask);

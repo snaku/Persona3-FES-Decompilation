@@ -25,6 +25,18 @@ void K_FldFrame_SetSphereCollisRadius(KwlnTask* collisCtlTask, f32 radius)
     fldFrame->flags &= ~FLDFRAME_FLAG_NOCOLLIS;
 }
 
+// FUN_001ad910
+s32 K_FldFrame_GetXGrid(KwlnTask* collisCtlTask)
+{
+    return FLDFRAME_GET(collisCtlTask)->xGrid;
+}
+
+// FUN_001ad920
+s32 K_FldFrame_GetZGrid(KwlnTask* collisCtlTask)
+{
+    return FLDFRAME_GET(collisCtlTask)->zGrid;
+}
+
 // FUN_001ad940
 void K_FldFrame_CopyPos(RwV3d* dst, KwlnTask* collisCtlTask)
 {
