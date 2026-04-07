@@ -10,7 +10,7 @@ typedef struct KwlnTask KwlnTask;
 #define FLDFRAME_FLAG_NOCOLLIS  (1 << 28) // 0x10000000. Disable collisions
 #define FLDFRAME_FLAG_DEBUGDRAW (1 << 31) // 0x80000000. Draw collisions
 
-#define FLDFRAME_GET(collisCtlTask) ((FldFrame*)collisCtlTask->taskData)
+#define FLDFRAME_GET(collisCtlTask) ((FldFrame*)collisCtlTask->workData)
 
 typedef enum
 {

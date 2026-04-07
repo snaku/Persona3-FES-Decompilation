@@ -28,13 +28,13 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 {
     // TODO
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001cd570
 void K_FldEvent_DestroyFldEventTask(KwlnTask* fldEventTask)
 {
-    RW_FREE(fldEventTask->taskData);
+    RW_FREE(fldEventTask->workData);
 }
 
 // FUN_001cd5a0. Create 'field event' and 'draw command' tasks
@@ -49,7 +49,7 @@ KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask)
         return NULL;
     }
 
-    fldEventTask = KwlnTask_CreateWithAutoPriority(fldRootTask, 10, "field event", K_FldEvent_UpdateFldEventTask, K_FldEvent_DestroyFldEventTask, fldEvent);
+    fldEventTask = kwlnTaskCreateWithAutoPriority(fldRootTask, 10, "field event", K_FldEvent_UpdateFldEventTask, K_FldEvent_DestroyFldEventTask, fldEvent);
     
     fldEvent->drawCmdTask = K_FldEvent_CreateDrawCmdTask(fldEventTask);
 
@@ -61,13 +61,13 @@ void* K_FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
 {
     // TODO
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001cd6e0
 void K_FldEvent_DestroyDrawCmdTask(KwlnTask* drawCmdTask)
 {
-    RW_FREE(drawCmdTask->taskData);
+    RW_FREE(drawCmdTask->workData);
 }
 
 // FUN_001cd710
@@ -81,5 +81,5 @@ KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask)
         return NULL;
     }
 
-    return KwlnTask_CreateWithAutoPriority(fldEventTask, 4207, "draw command", K_FldEvent_UpdateDrawCmdTask, K_FldEvent_DestroyDrawCmdTask, drawCmd);
+    return kwlnTaskCreateWithAutoPriority(fldEventTask, 4207, "draw command", K_FldEvent_UpdateDrawCmdTask, K_FldEvent_DestroyDrawCmdTask, drawCmd);
 }

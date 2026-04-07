@@ -8,12 +8,12 @@
 
 typedef struct
 {
-    void (*Admini_Call)(u8 isRestored, void* taskData);
+    void (*Admini_Call)(u8 isRestored, void* workData);
     s32 (*Admini_Exit)();
     u8 (*Admini_Check)();
 } AdminiTaskEntry;
 
-void Admini_TestCall(u8 isRestored, void* taskData);
+void Admini_TestCall(u8 isRestored, void* workData);
 s32 Admini_TestExit();
 u8 Admini_TestCheck();
 s32 Admini_BtlBossExit();
@@ -35,15 +35,15 @@ static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] =
 void* Admini_UpdateTask_Check(KwlnTask* adminiTask);
 
 // FUN_0027c080
-void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotRestorable)
+void Admini_ChangeTask(s8 taskId, void* workData, u8 workDataSize, u8 isNotRestorable)
 {
     KwlnTask* adminiTask;
     Admini* admini;
 
-    adminiTask = KwlnTask_GetTaskByName("admini");
+    adminiTask = kwlnTaskGetTaskByName("admini");
     K_ASSERT(admini != NULL, 46);
 
-    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 46);
 
     ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
@@ -53,25 +53,25 @@ void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotResto
     admini->taskIdToSet = taskId;
     admini->taskChangeDelay = 1;
 
-    if (admini->taskData != NULL)
+    if (admini->taskWorkData != NULL)
     {
-        RW_FREE(admini->taskData);
-        admini->taskData = NULL;
-        admini->taskDataSize = 0;
+        RW_FREE(admini->taskWorkData);
+        admini->taskWorkData = NULL;
+        admini->taskWorkDataSize = 0;
     }
 
-    if (taskData == NULL)
+    if (workData == NULL)
     {
-        admini->taskData = NULL;
-        admini->taskDataSize = 0;
+        admini->taskWorkData = NULL;
+        admini->taskWorkDataSize = 0;
     }
     else
     {
-        admini->taskData = RW_MALLOC(taskDataSize, 0x40000);
-        K_ASSERT(admini->taskData != NULL, 93);
+        admini->taskWorkData = RW_MALLOC(workDataSize, 0x40000);
+        K_ASSERT(admini->taskWorkData != NULL, 93);
 
-        memcpy(admini->taskData, taskData, taskDataSize);
-        admini->taskDataSize = taskDataSize;
+        memcpy(admini->taskWorkData, workData, workDataSize);
+        admini->taskWorkDataSize = workDataSize;
     }
 
     if (!isNotRestorable)
@@ -89,10 +89,10 @@ void Admini_ForcePassedCheck()
     KwlnTask* adminiTask;
     Admini* admini;
 
-    adminiTask = KwlnTask_GetTaskByName("admini");
+    adminiTask = kwlnTaskGetTaskByName("admini");
     K_ASSERT(admini != NULL, 46);
 
-    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)kwlnTaskGetWorkDataData(adminiTask);
     K_ASSERT(admini != NULL, 48);
 
     ADMINI_SET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);
@@ -104,10 +104,10 @@ s8 Admini_GetTaskId()
     KwlnTask* adminiTask;
     Admini* admini;
 
-    adminiTask = KwlnTask_GetTaskByName("admini");
+    adminiTask = kwlnTaskGetTaskByName("admini");
     K_ASSERT(admini != NULL, 46);
 
-    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 48);
 
     return admini->taskId;
@@ -119,10 +119,10 @@ s8 Admini_GetTaskIdToSet()
     KwlnTask* adminiTask;
     Admini* admini;
 
-    adminiTask = KwlnTask_GetTaskByName("admini");
+    adminiTask = kwlnTaskGetTaskByName("admini");
     K_ASSERT(admini != NULL, 46);
 
-    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 48);
 
     return admini->taskIdToSet;
@@ -134,7 +134,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
     Admini* admini;
     u8 isRestored;
 
-    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 217);
 
     if (!(admini->flags & ADMINI_FLAG_CHANGING_TASK) ||
@@ -182,14 +182,14 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
 
         if (gAdminiTasksTable[admini->taskId].Admini_Call != NULL)
         {
-            gAdminiTasksTable[admini->taskId].Admini_Call(isRestored, admini->taskData);
+            gAdminiTasksTable[admini->taskId].Admini_Call(isRestored, admini->taskWorkData);
         }
 
         return Admini_UpdateTask_Check;
     }
 
     admini->taskChangeDelay--;
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_0027c5a0
@@ -198,7 +198,7 @@ void* Admini_UpdateTask_Exit(KwlnTask* adminiTask)
     Admini* admini;
     s32 taskChangeDelay;
 
-    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 296);
 
     if (admini->taskId >= ADMINI_TASK_ID_NULL &&
@@ -207,7 +207,7 @@ void* Admini_UpdateTask_Exit(KwlnTask* adminiTask)
         taskChangeDelay = gAdminiTasksTable[admini->taskId].Admini_Exit();
         if (taskChangeDelay < 0)
         {
-            return KWLN_TASK_CONTINUE;
+            return KWLNTASK_CONTINUE;
         }
 
         admini->taskChangeDelay = taskChangeDelay + 1;
@@ -222,7 +222,7 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
 {
     Admini* admini;
 
-    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 333);
 
     if (!(admini->flags & ADMINI_FLAG_PASSED_CHECK) &&
@@ -257,11 +257,11 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
 
             ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
 
-            if (admini->taskData != NULL)
+            if (admini->taskWorkData != NULL)
             {
-                RW_FREE(admini->taskData);
-                admini->taskData = NULL;
-                admini->taskDataSize = 0;
+                RW_FREE(admini->taskWorkData);
+                admini->taskWorkData = NULL;
+                admini->taskWorkDataSize = 0;
             }
         }
 
@@ -276,7 +276,7 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
     if (!(admini->flags & ADMINI_FLAG_CHANGING_TASK) ||
          (admini->taskIdToSet < ADMINI_TASK_ID_NULL))
     {
-        return KWLN_TASK_CONTINUE;
+        return KWLNTASK_CONTINUE;
     }
 
     return Admini_UpdateTask_Exit;
@@ -287,7 +287,7 @@ void Admini_DestroyTask(KwlnTask* adminiTask)
 {
     Admini* admini;
 
-    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
     
     if (admini->taskId >= ADMINI_TASK_ID_NULL &&
        (gAdminiTasksTable[admini->taskId].Admini_Exit != NULL))
@@ -295,12 +295,12 @@ void Admini_DestroyTask(KwlnTask* adminiTask)
         gAdminiTasksTable[admini->taskId].Admini_Exit();
     }
 
-    if (admini->taskData != NULL)
+    if (admini->taskWorkData != NULL)
     {
-        RW_FREE(admini->taskData);
+        RW_FREE(admini->taskWorkData);
     }
 
-    admini = (Admini*)KwlnTask_GetTaskData(adminiTask);
+    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
     RW_FREE(admini);
 }
 
@@ -310,7 +310,7 @@ KwlnTask* Admini_CreateTask()
     Admini* admini;
     u32 i;
 
-    if (KwlnTask_GetTaskByName("admini") != NULL)
+    if (kwlnTaskGetTaskByName("admini") != NULL)
     {
         return NULL;
     }
@@ -328,14 +328,14 @@ KwlnTask* Admini_CreateTask()
         admini->oldTaskIds[i] = ADMINI_TASK_ID_INVALID;
         admini->oldTasksFlags[i] = 0;
     }
-    admini->taskData = NULL;
-    admini->taskDataSize = 0;
+    admini->taskWorkData = NULL;
+    admini->taskWorkDataSize = 0;
 
-    return KwlnTask_Create(NULL, "admini", 1, Admini_UpdateTask_Check, Admini_DestroyTask, admini);
+    return kwlnTaskCreate(NULL, "admini", 1, Admini_UpdateTask_Check, Admini_DestroyTask, admini);
 }
 
 // FUN_0027c9e0
-void Admini_TestCall(u8 isRestored, void* taskData)
+void Admini_TestCall(u8 isRestored, void* workData)
 {
     FUN_005225a8("+++ call\n");
 }
@@ -364,7 +364,7 @@ s32 Admini_BtlBossExit()
     btlTask = BtlMain_GetBtlTask();
     if (btlTask != NULL)
     {
-        KwlnTask_DeleteWithHierarchy(btlTask);
+        kwlnTaskDestroyWithHierarchy(btlTask);
     }
 
     return 0;

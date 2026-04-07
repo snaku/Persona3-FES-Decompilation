@@ -16,31 +16,31 @@ u8 gFogAlpha;                      // 007ce0e4
 static RwRGBA sClearColor;         // 007ce128
 
 // FUN_00198560
-RpLight* Kwln_GetAmbientLight()
+RpLight* kwlnGetAmbientLight()
 {
     return sAmbientLight;
 }
 
 // FUN_00198570
-RpLight* Kwln_GetDirectionalLight()
+RpLight* kwlnGetDirectionalLight()
 {
     return sDirectionalLight;
 }
 
 // FUN_00198590
-RwCamera* Kwln_GetMainCamera()
+RwCamera* kwlnGetMainCamera()
 {
     return sMainCamera;
 }
 
 // FUN_001985a0
-RwRGBA* Kwln_GetClearColor()
+RwRGBA* kwlnGetClearColor()
 {
     return &sClearColor;
 }
 
 // FUN_001985b0
-void Kwln_SetClearColor(u8 r, u8 g, u8 b, u8 a)
+void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a)
 {
     sClearColor.r = r;
     sClearColor.g = g;

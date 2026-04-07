@@ -98,11 +98,11 @@ typedef enum
 } CalendarTaskState;
 
 // 44 bytes
-typedef struct CalendarTaskData
+typedef struct CalendarWorkData
 {
     u32 state;        // See enum 'CalendarTaskState'
     u8 unkData[0x28];
-} CalendarTaskData;
+} CalendarWorkData;
 
 extern const u16 numOfDaysInMonths[12];
 

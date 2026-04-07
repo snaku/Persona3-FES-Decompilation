@@ -15,10 +15,10 @@ extern u8 gFogBlue;
 extern u8 gFogGreen;
 extern u8 gFogAlpha;
 
-RpLight* Kwln_GetAmbientLight();
-RpLight* Kwln_GetDirectionalLight();
-RwCamera* Kwln_GetMainCamera();
-RwRGBA* Kwln_GetClearColor();
-void Kwln_SetClearColor(u8 r, u8 g, u8 b, u8 a);
+RpLight* kwlnGetAmbientLight();
+RpLight* kwlnGetDirectionalLight();
+RwCamera* kwlnGetMainCamera();
+RwRGBA* kwlnGetClearColor();
+void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a);
 
 #endif

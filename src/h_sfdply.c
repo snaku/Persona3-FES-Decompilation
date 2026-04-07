@@ -10,7 +10,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
 {
     // TODO
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_0010bb00
@@ -31,7 +31,7 @@ KwlnTask* H_SfdPlay_CreateTask(KwlnTask* calendarTask)
         return NULL;
     }
 
-    sfdPlayTask = KwlnTask_Create(calendarTask, "H_SfdPlay", 7383, H_SfdPlay_UpdateTask, H_SfdPlay_DestroyTask, sfdPlay);
+    sfdPlayTask = kwlnTaskCreate(calendarTask, "H_SfdPlay", 7383, H_SfdPlay_UpdateTask, H_SfdPlay_DestroyTask, sfdPlay);
     if (sfdPlayTask == NULL)
     {
         return NULL;

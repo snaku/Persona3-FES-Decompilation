@@ -42,14 +42,14 @@ typedef struct Admini
     u8 unk_0b;                            // 0x0b
     s8 oldTaskIds[ADMINI_TASK_ID_MAX];    // 0x0c. History of task ids
     s8 oldTasksFlags[ADMINI_TASK_ID_MAX]; // 0x14. History of admini flags
-    void* taskData;                       // 0x1c. Current task data
-    u8 taskDataSize;                      // 0x20. Current task data size in bytes
+    void* taskWorkData;                   // 0x1c. Current task work data
+    u8 taskWorkDataSize;                  // 0x20. Current task data size in bytes
     u8 taskChangeDelay;                   // 0x21. Frames until task transition. Set by 'Admini_Exit' return value + 1
     u8 unk_22;                            // 0x22
     u8 unk_23;                            // 0x23
 } Admini;
 
-void Admini_ChangeTask(s8 taskId, void* taskData, u8 taskDataSize, u8 isNotRestorable);
+void Admini_ChangeTask(s8 taskId, void* workData, u8 workDataSize, u8 isNotRestorable);
 void Admini_ForcePassedCheck();
 s8 Admini_GetTaskId();
 s8 Admini_GetTaskIdToSet();

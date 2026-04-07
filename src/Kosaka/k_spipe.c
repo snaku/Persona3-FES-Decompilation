@@ -12,7 +12,7 @@ void* K_SPipe_Update3DDrwBeginTask(KwlnTask* draw3DBeginTask)
 {
     // TODO
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001995f0
@@ -30,19 +30,19 @@ void* K_SPipe_Update3DDrwEndTask(KwlnTask* draw3DEndTask)
     
     KwlnRoot_FUN_00198610(3, 0);
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001996c0
 KwlnTask* K_SPipe_Create3DDrwBeginTask(KwlnTask* draw3DTask)
 {
-    return KwlnTask_Create(draw3DTask, "3D Draw Begin", 2098, K_SPipe_Update3DDrwBeginTask, NULL, NULL);
+    return kwlnTaskCreate(draw3DTask, "3D Draw Begin", 2098, K_SPipe_Update3DDrwBeginTask, NULL, NULL);
 }
 
 // FUN_00199700
 KwlnTask* K_SPipe_Create3DDrwEndTask(KwlnTask* draw3DTask)
 {
-    return KwlnTask_Create(draw3DTask, "3D Draw End", 4167, K_SPipe_Update3DDrwEndTask, NULL, NULL);
+    return kwlnTaskCreate(draw3DTask, "3D Draw End", 4167, K_SPipe_Update3DDrwEndTask, NULL, NULL);
 }
 
 // FUN_00199740
@@ -50,11 +50,11 @@ void* K_SPipe_UpdateShadowNodeTask(KwlnTask* shadowNodeTask)
 {
     // TODO
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001997a0
 KwlnTask* K_SPipe_CreateShadowNodeTask(KwlnTask* draw3DTask)
 {
-    return KwlnTask_Create(draw3DTask, "shadow node(camera all clear)", 2069, K_SPipe_UpdateShadowNodeTask, NULL, NULL);
+    return kwlnTaskCreate(draw3DTask, "shadow node(camera all clear)", 2069, K_SPipe_UpdateShadowNodeTask, NULL, NULL);
 }

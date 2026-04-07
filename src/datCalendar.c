@@ -301,13 +301,13 @@ void* Calendar_UpdateTask(KwlnTask* clndTask)
 {
     // TODO
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_0017faa0
 void Calendar_DestroyTask(KwlnTask* clndTask)
 {
-    RW_FREE(clndTask->taskData);
+    RW_FREE(clndTask->workData);
     sClndTask = NULL;
 }
 
@@ -315,15 +315,15 @@ void Calendar_DestroyTask(KwlnTask* clndTask)
 KwlnTask* Calendar_CreateTask()
 {
     KwlnTask* clndTask;
-    CalendarTaskData* clndTaskData;
+    CalendarWorkData* clndWork;
 
-    clndTaskData = RW_CALLOC(1, sizeof(CalendarTaskData), 0x40000);
-    if (clndTaskData == NULL)
+    clndWork = RW_CALLOC(1, sizeof(CalendarWorkData), 0x40000);
+    if (clndWork == NULL)
     {
         return NULL;
     }
 
-    clndTask = KwlnTask_CreateWithAutoPriority(NULL, 4207, "CalenderDraw", Calendar_UpdateTask, Calendar_DestroyTask, clndTaskData);
+    clndTask = kwlnTaskCreateWithAutoPriority(NULL, 4207, "CalenderDraw", Calendar_UpdateTask, Calendar_DestroyTask, clndWork);
     if (clndTask == NULL)
     {
         return NULL;
@@ -331,7 +331,7 @@ KwlnTask* Calendar_CreateTask()
 
     sClndTask = clndTask;
 
-    clndTaskData->state = 3;
+    clndWork->state = 3;
     H_SfdPlay_CreateTask(clndTask);
 
     return clndTask;

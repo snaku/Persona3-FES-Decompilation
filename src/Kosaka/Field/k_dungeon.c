@@ -10,7 +10,7 @@
 KwlnTask* gDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
 Model* gDungeonTpMdl;   // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?
 
-#define DUNGEON_TASK_DATA ((FldDungeon*)gDungeonTask->taskData)
+#define DUNGEON_GET_WORK ((FldDungeon*)gDungeonTask->workData)
 
 HCdvd* K_FldDungeon_RequestScript();
 void K_FldDungeon_DestroyScrMemory();
@@ -23,7 +23,7 @@ void* K_FldDungeon_UpdateTask(KwlnTask* dungeonTask)
 {
     // TODO
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
@@ -43,12 +43,12 @@ KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
         return NULL;
     }
 
-    dungeonTask = KwlnTask_CreateWithAutoPriority(parentTask,
-                                                  10,
-                                                  "automatic dungeon ",
-                                                  K_FldDungeon_UpdateTask,
-                                                  K_FldDungeon_DestroyTask,
-                                                  dungeon);
+    dungeonTask = kwlnTaskCreateWithAutoPriority(parentTask,
+                                                 10,
+                                                 "automatic dungeon ",
+                                                 K_FldDungeon_UpdateTask,
+                                                 K_FldDungeon_DestroyTask,
+                                                 dungeon);
     gDungeonTask = dungeonTask;
 
     dungeon->currFloor = floor;
@@ -74,7 +74,7 @@ void K_FldDungeon_RequestShutdown()
 {
     if (gDungeonTask != NULL)
     {
-        DUNGEON_TASK_DATA->shouldShutdown = true;
+        DUNGEON_GET_WORK->shouldShutdown = true;
     }
 }
 
@@ -86,7 +86,7 @@ u32 K_FldDungeon_GetCurrentFloor()
         return 0;
     }
 
-    return DUNGEON_TASK_DATA->currFloor;
+    return DUNGEON_GET_WORK->currFloor;
 }
 
 // FUN_001bff50
@@ -100,7 +100,7 @@ u8 K_FldDungeon_IsCurrentFloorExplorable()
     }
     else 
     {
-        currFloor = DUNGEON_TASK_DATA->currFloor;
+        currFloor = DUNGEON_GET_WORK->currFloor;
     }
 
     if (currFloor < 2 || currFloor >= 400)
@@ -119,7 +119,7 @@ FldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
         return 0;
     }
 
-    return &DUNGEON_TASK_DATA->floorsData[DUNGEON_TASK_DATA->currFloor];
+    return &DUNGEON_GET_WORK->floorsData[DUNGEON_GET_WORK->currFloor];
 }
 
 // FUN_001bffe0
@@ -130,7 +130,7 @@ void* K_FldDungeon_GetScrMemory()
         return NULL;
     }
 
-    return DUNGEON_TASK_DATA->scrMemory;
+    return DUNGEON_GET_WORK->scrMemory;
 }
 
 // FUN_001c0010
@@ -141,7 +141,7 @@ u32 K_FldDungeon_GetScrSize()
         return 0;
     }
 
-    return DUNGEON_TASK_DATA->scrSize;
+    return DUNGEON_GET_WORK->scrSize;
 }
 
 // FUN_001c0190. Request a cdvd stream to load main tartarus script
@@ -155,7 +155,7 @@ HCdvd* K_FldDungeon_RequestScript()
         return NULL;
     }
 
-    if (DUNGEON_TASK_DATA->scrMemory == NULL)
+    if (DUNGEON_GET_WORK->scrMemory == NULL)
     {
         if (Global_GetScenarioMode() == SCENARIO_MODE_JOURNEY)
         {
@@ -180,7 +180,7 @@ u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
         return true;
     }
 
-    dungeon = DUNGEON_TASK_DATA;
+    dungeon = DUNGEON_GET_WORK;
     if (scrCdvd == NULL)
     {
         return true;
@@ -209,7 +209,7 @@ void K_FldDungeon_DestroyScrMemory()
 
     if (gDungeonTask != NULL)
     {
-        dungeon = DUNGEON_TASK_DATA;
+        dungeon = DUNGEON_GET_WORK;
         if (dungeon->scrMemory != NULL)
         {
             RW_FREE(dungeon->scrMemory);

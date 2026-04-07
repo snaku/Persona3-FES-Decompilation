@@ -325,11 +325,11 @@ void* Scr_UpdateTask(KwlnTask* scrTask)
     {
         case 0:
             K_Abort("scrScriptProcess(..) error script!\n", "scrScriptProcess.c", 1120);
-            return KWLN_TASK_STOP;
+            return KWLNTASK_STOP;
         case 1:  // fallthrough
         default: break;
-        case 2:  return KWLN_TASK_STOP;
+        case 2:  return KWLNTASK_STOP;
     }
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }

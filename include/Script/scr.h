@@ -6,6 +6,7 @@
 
 #define SCR_MAX_STACK_SIZE 28 // idx 27 is reserved for return value !!
 #define SCR_STACK_RET_IDX  27
+#define SCR_STACK_USE      26
 
 typedef struct KwlnTask KwlnTask;
 typedef struct BmdHeader BmdHeader;

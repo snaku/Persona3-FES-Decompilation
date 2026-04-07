@@ -19,11 +19,11 @@ Field* K_Field_Get()
 // FUN_001bab20. Get field major id by the root field task. Not really used that much, 'gMtScene' is used instead
 s16 K_Field_GetMajorId(KwlnTask* fldRootTask)
 {
-    return ((FldRoot*)fldRootTask->taskData)->majorId;
+    return ((FldRoot*)fldRootTask->workData)->majorId;
 }
 
 // FUN_001bab30. Get field minor id by the root field task. Not really used that much, 'gMtScene' is used instead
 s16 K_Field_GetMinorId(KwlnTask* fldRootTask)
 {
-    return ((FldRoot*)fldRootTask->taskData)->minorId;
+    return ((FldRoot*)fldRootTask->workData)->minorId;
 }

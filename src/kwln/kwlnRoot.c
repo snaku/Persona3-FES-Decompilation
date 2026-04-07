@@ -5,47 +5,47 @@
 #include "temporary.h"
 #include "h_snd.h"
 
-KwlnTask* KwlnRoot_Create2DDrawBeginTask();
-KwlnTask* KwlnRoot_Create2DDrawBeginPreEndTask();
-KwlnTask* KwlnRoot_Create2DDrawEndTask();
-KwlnTask* KwlnRoot_Create3DOn2DZClearTask();
-KwlnTask* KwlnRoot_Create3DOn2DDrawEndTask();
+KwlnTask* kwlnRootCreate2DDrawBeginTask();
+KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask();
+KwlnTask* kwlnRootCreate2DDrawEndTask();
+KwlnTask* kwlnRootCreate3DOn2DZClearTask();
+KwlnTask* kwlnRootCreate3DOn2DDrawEndTask();
 
 // FUN_00198610
-void KwlnRoot_FUN_00198610(u32 flags, u8 enabled)
+void kwlnRootFUN_00198610(u32 flags, u8 enabled)
 {
     // TODO
 }
 
 // FUN_00198650
-void* KwlnRoot_UpdateRootProcTask(KwlnTask* rootProcTask)
+void* kwlnRootUpdateRootProcTask(KwlnTask* rootProcTask)
 {
     // TODO
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001988f0
-void KwlnRoot_DestroyRootProcTask(KwlnTask* rootProcTask)
+void kwlnRootDestroyRootProcTask(KwlnTask* rootProcTask)
 {
     // TODO
 
-    RW_FREE(rootProcTask->taskData);
+    RW_FREE(rootProcTask->workData);
 }
 
 // FUN_00198940
-KwlnTask* KwlnRoot_CreateRootProcTask()
+KwlnTask* kwlnRootCreateRootProcTask()
 {
     KwlnTask* rootProcTask;
-    KwlnRoot* root;
+    KwlnRootWork* root;
 
-    root = RW_CALLOC(1, sizeof(KwlnRoot), 0x40000);
+    root = RW_CALLOC(1, sizeof(KwlnRootWork), 0x40000);
     if (root == NULL)
     {
         return NULL;
     }
 
-    rootProcTask = KwlnTask_Init("rootProc", 0, KwlnRoot_UpdateRootProcTask, KwlnRoot_DestroyRootProcTask, root);
+    rootProcTask = kwlnTaskInit("rootProc", 0, kwlnRootUpdateRootProcTask, kwlnRootDestroyRootProcTask, root);
     H_Snd_FUN_00109ca0(0, 1);
     H_Snd_FUN_00109ca0(1, 2);
 
@@ -53,59 +53,59 @@ KwlnTask* KwlnRoot_CreateRootProcTask()
 }
 
 // FUN_001989e0
-void* KwlnRoot_Update2DDrawBeginTask(KwlnTask* drawBegin2dTask)
+void* kwlnRootUpdate2DDrawBeginTask(KwlnTask* drawBegin2dTask)
 {
     // TODO
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_00198b10
-void* KwlnRoot_Update2DDrawPreEndTask(KwlnTask* drawBegin2dPETask)
+void* kwlnRootUpdate2DDrawPreEndTask(KwlnTask* drawBegin2dPETask)
 {
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_00198b20
-void* KwlnRoot_Update2DDrawEndTask(KwlnTask* drawEnd2dTask)
+void* kwlnRootUpdate2DDrawEndTask(KwlnTask* drawEnd2dTask)
 {
-    RwCamera* camera = Kwln_GetMainCamera();
+    RwCamera* camera = kwlnGetMainCamera();
     RwCameraEndUpdate(camera);
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_00198b50
-KwlnTask* KwlnRoot_Create2DDrawBeginTask()
+KwlnTask* kwlnRootCreate2DDrawBeginTask()
 {
-    return KwlnTask_Init("2D Draw Begin", 4196, KwlnRoot_Update2DDrawBeginTask, NULL, NULL);
+    return kwlnTaskInit("2D Draw Begin", 4196, kwlnRootUpdate2DDrawBeginTask, NULL, NULL);
 }
 
 // FUN_00198b90
-KwlnTask* KwlnRoot_Create2DDrawBeginPreEndTask()
+KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask()
 {
-    return KwlnTask_Init("2D Draw Begin Pre End", 5231, KwlnRoot_Update2DDrawPreEndTask, NULL, NULL);
+    return kwlnTaskInit("2D Draw Begin Pre End", 5231, kwlnRootUpdate2DDrawPreEndTask, NULL, NULL);
 }
 
 // FUN_00198bd0
-KwlnTask* KwlnRoot_Create2DDrawEndTask()
+KwlnTask* kwlnRootCreate2DDrawEndTask()
 {
-    return KwlnTask_Init("2D Draw End", 5241, KwlnRoot_Update2DDrawEndTask, NULL, NULL);
+    return kwlnTaskInit("2D Draw End", 5241, kwlnRootUpdate2DDrawEndTask, NULL, NULL);
 }
 
 // FUN_00198c10
-void* KwlnRoot_Update3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
+void* kwlnRootUpdate3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
 {
-    RwCamera* camera = Kwln_GetMainCamera();
-    RwRGBA* clearColor = Kwln_GetClearColor();
+    RwCamera* camera = kwlnGetMainCamera();
+    RwRGBA* clearColor = kwlnGetClearColor();
 
     RwCameraClear(camera, clearColor, rwCAMERACLEARZ);
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_00198d20
-void* KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
+void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 {
     RwCamera* camera;
 
@@ -116,20 +116,20 @@ void* KwlnRoot_Update3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
         RWRENDERSTATE_SET(rwRENDERSTATEFOGTYPE, rwFOGTYPE1);
     }
 
-    camera = Kwln_GetMainCamera();
+    camera = kwlnGetMainCamera();
     RwCameraEndUpdate(camera);
 
-    return KWLN_TASK_CONTINUE;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_00198dd0
-KwlnTask* KwlnRoot_Create3DOn2DZClearTask()
+KwlnTask* kwlnRootCreate3DOn2DZClearTask()
 {
-    return KwlnTask_Init("3D on 2D Zclear", 5243, KwlnRoot_Update3DOn2DZClearTask, NULL, NULL);
+    return kwlnTaskInit("3D on 2D Zclear", 5243, kwlnRootUpdate3DOn2DZClearTask, NULL, NULL);
 }
 
 // FUN_00198e50
-KwlnTask* KwlnRoot_Create3DOn2DDrawEndTask()
+KwlnTask* kwlnRootCreate3DOn2DDrawEndTask()
 {
-    return KwlnTask_Init("3D on 2D Draw End", 6320, KwlnRoot_Update3DOn2DDrawEndTask, NULL, NULL);
+    return kwlnTaskInit("3D on 2D Draw End", 6320, kwlnRootUpdate3DOn2DDrawEndTask, NULL, NULL);
 }

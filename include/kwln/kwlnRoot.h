@@ -8,13 +8,13 @@ typedef struct RwCamera RwCamera;
 typedef struct RwRGBA RwRGBA;
 
 // 8 bytes
-typedef struct KwlnRoot
+typedef struct KwlnRootWork
 {
     u32 state;
     u32 unk_04;
-} KwlnRoot;
+} KwlnRootWork;
 
-void KwlnRoot_FUN_00198610(u32 flags, u8 enabled);
-KwlnTask* KwlnRoot_CreateRootProcTask();
+void kwlnRootFUN_00198610(u32 flags, u8 enabled);
+KwlnTask* kwlnRootCreateRootProcTask();
 
 #endif
