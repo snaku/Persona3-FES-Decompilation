@@ -15,4 +15,6 @@ typedef struct CylinderDrawWork
     f32 height;     // 0x14
 } CylinderDrawWork;
 
+KwlnTask* K_Draw_CreateCylinderTask(KwlnTask* parent);
+
 #endif
