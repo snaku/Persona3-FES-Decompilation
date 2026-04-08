@@ -61,7 +61,7 @@ typedef enum
 } PersonaStats;
 
 // 52 bytes
-typedef struct
+typedef struct DatPersonaWork
 {
     u16 flags;
     u16 id;
@@ -71,32 +71,32 @@ typedef struct
     u8 naturalStats[PERSONA_STAT_MAX]; // stats gained naturally. See enum PersonaStats
     u8 bonusStats[PERSONA_STAT_MAX];   // stats gained through incense cards. See enum PersonaStats
     u8 stats3[PERSONA_STAT_MAX];       // ??
-} PersonaData;
+} DatPersonaWork;
 
-u8 Persona_GetPersonaLevel(PersonaData* persona);
-u8 Persona_GetPersonaLevelCharacterId(u16 characterId);
-u32 Persona_GetPersonaNextExp(PersonaData* persona);
-u16* Persona_GetSkills(PersonaData* persona);
-u16* Persona_GetSkillsByCharacterId(u16 characterId);
-u16 Persona_GetTotalStat(PersonaData* persona, u16 statId);
-u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId);
-u8 Persona_GetBonusStat(PersonaData* persona, u16 statId);
-void Persona_SetBonusStatByCharacterId(u16 characterId, u16 statId, u8 amount);
-void Persona_AddToBonusStatByCharacterId(u16 characterId, u16 statId, s8 amount);
-u8 Persona_GetStat3(PersonaData* persona, u16 statId);
-u16 Persona_AddToNaturalStat(PersonaData* persona, u16 statId, s8 amount);
-u16 Persona_AddToNaturalStatHeroPersonaIdx(u16 heroPersonaIdx, u16 statId, s8 amount);
+u8 datPersonaGetLevel(DatPersonaWork* persona);
+u8 datPersonaGetLevelCharacterId(u16 characterId);
+u32 datPersonaGetNextExp(DatPersonaWork* persona);
+u16* datPersonaGetSkills(DatPersonaWork* persona);
+u16* datPersonaGetSkillsByCharacterId(u16 characterId);
+u16 datPersonaGetTotalStat(DatPersonaWork* persona, u16 statId);
+u8 datPersonaGetNaturalStat(DatPersonaWork* persona, u16 statId);
+u8 datPersonaGetBonusStat(DatPersonaWork* persona, u16 statId);
+void datPersonaSetBonusStatByCharacterId(u16 characterId, u16 statId, u8 amount);
+void datPersonaAddToBonusStatByCharacterId(u16 characterId, u16 statId, s8 amount);
+u8 datPersonaGetStat3(DatPersonaWork* persona, u16 statId);
+u16 datPersonaAddToNaturalStat(DatPersonaWork* persona, u16 statId, s8 amount);
+u16 datPersonaAddToNaturalStatHeroPersona(u16 heroPersonaIdx, u16 statId, s8 amount);
 
-PersonaData* Persona_GetPersonaByCharacterId(u16 characterId);
-u8 Persona_IsHeroPersonaValid(u16 heroPersonaIdx);
-PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx);
-void Persona_ClearHeroPersonas();
+DatPersonaWork* datPersonaGetByCharacterId(u16 characterId);
+u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx);
+DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx);
+void datPersonaClearHeroPersonas();
 
-void Persona_AddExp(PersonaData* persona, u32 exp);
-void Persona_MoveValidSkillsOnTop(PersonaData* persona);
-u8 Persona_SetSkill(PersonaData* persona, u16 skillId);
-u8 Persona_ResetSkill(PersonaData* persona, u16 skillId);
-s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId);
-u32 Persona_CountValidSkills(PersonaData* persona);
+void datPersonaAddExp(DatPersonaWork* persona, u32 exp);
+void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona);
+u8 datPersonaSetSkill(DatPersonaWork* persona, u16 skillId);
+u8 datPersonaResetSkill(DatPersonaWork* persona, u16 skillId);
+s32 datPersonaFindSkillIdx(DatPersonaWork* persona, u16 skillId);
+u32 datPersonaCountValidSkills(DatPersonaWork* persona);
 
 #endif

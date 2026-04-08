@@ -59,7 +59,7 @@ KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
         gDungeonTpMdl = MdlManager_CreateMdlFromPath(MODEL_TYPE_FLDOBJ,
                                                      0xffff,
                                                      "field/grmd/fobj000.RMD",
-                                                     MDL_CDVDREAD_ASYNC);
+                                                     MDL_READASYNC);
 
         dungeon->scrCdvd = K_FldDungeon_RequestScript();
 
@@ -157,7 +157,7 @@ HCdvd* K_FldDungeon_RequestScript()
 
     if (DUNGEON_GET_WORK->scrMemory == NULL)
     {
-        if (Global_GetScenarioMode() == SCENARIO_MODE_JOURNEY)
+        if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
         {
             cdvd = H_Cdvd_Request("field/script/dungeonat.bf", H_CDVD_FILENORMAL);
         }
@@ -223,7 +223,7 @@ HCdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
 {
     char buffer[128];
 
-    if (Global_GetScenarioMode() == SCENARIO_MODE_JOURNEY)
+    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
     {
         sprintf(buffer, "field/script/dungeonat%02d.bf", blockId);
     }

@@ -3,22 +3,21 @@
 
 #include "datPersona.h"
 
-typedef struct UnitData UnitData;
+typedef struct DatUnit DatUnit;
 
-u8 Unit_GetLevel(UnitData* unit);
-u16 Unit_GetHealth(UnitData* unit);
-u16 Unit_GetSp(UnitData* unit);
-void Unit_SetHealth(UnitData* unit, u16 health);
-void Unit_SetSp(UnitData* unit, u16 sp);
-void Unit_AddBattleFlags(UnitData* unit, u32 flags);
-u32 Unit_GetBattleFlagsNoDown(UnitData* unit);
-u32 Unit_GetBattleFlags(UnitData* unit);
-void Unit_RemoveBattleFlags(UnitData* unit, u32 flags);
-u8 Unit_HasBattleFlags(UnitData* unit, u32 flags);
-u32 Unit_GetHeldWeaponType(UnitData* unit);
-u8 Unit_CountEquipmentWithEffectById(u16 characterId, u16 effect);
-u8 Unit_CountEquipmentWithEffect(UnitData* unit, u16 effect);
-u8 Unit_IsUnitDead(UnitData* unit, s32 param_2);
-void FUN_0030c440();
+u8 datCalcGetLevel(DatUnit* unit);
+u16 datCalcGetHealth(DatUnit* unit);
+u16 datCalcGetSp(DatUnit* unit);
+void datCalcSetHealth(DatUnit* unit, u16 health);
+void datCalcSetSp(DatUnit* unit, u16 sp);
+void datCalcAddStatusFlags(DatUnit* unit, u32 flags);
+u32 datCalcGetStatusFlagsNoDown(DatUnit* unit);
+u32 datCalcGetStatusFlags(DatUnit* unit);
+void datCalcRemoveStatusFlags(DatUnit* unit, u32 flags);
+u8 datCalcChkStatusFlags(DatUnit* unit, u32 flags);
+u32 datCalcGetHeldWeaponType(DatUnit* unit);
+u8 datCalcCountEquipmentWithEffectById(u16 characterId, u16 effect);
+u8 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect);
+u8 datCalcChkDead(DatUnit* unit, s32 param_2);
 
 #endif

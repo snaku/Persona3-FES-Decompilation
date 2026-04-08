@@ -3,16 +3,16 @@
 #include "Kosaka/k_assert.h"
 
 // FUN_002ffcc0
-u8 Unit_GetLevel(UnitData* unit){
+u8 datCalcGetLevel(DatUnit* unit){
     u8 level;
-    PersonaData* persona;
+    DatPersonaWork* persona;
 
     if (!(unit->flags & UNIT_FLAG_ENEMY) && !IS_HERO(unit->id))
     {
-        persona = Persona_GetPersonaByCharacterId(unit->id);
+        persona = datPersonaGetByCharacterId(unit->id);
         K_ASSERT(persona != NULL, 66);
 
-        level = Persona_GetPersonaLevel(persona);
+        level = datPersonaGetLevel(persona);
     }
     else 
     {
@@ -25,19 +25,19 @@ u8 Unit_GetLevel(UnitData* unit){
 }
 
 // FUN_002ffd70
-u16 Unit_GetHealth(UnitData* unit)
+u16 datCalcGetHealth(DatUnit* unit)
 {
     return unit->status.health;
 }
 
 // FUN_002ffd80
-u16 Unit_GetSp(UnitData* unit)
+u16 datCalcGetSp(DatUnit* unit)
 {
     return unit->status.sp;
 }
 
 // FUN_002ffd90
-void Unit_SetHealth(UnitData* unit, u16 health)
+void datCalcSetHealth(DatUnit* unit, u16 health)
 {
     if (health > 999 && !(unit->flags & UNIT_FLAG_ENEMY))
     {
@@ -48,7 +48,7 @@ void Unit_SetHealth(UnitData* unit, u16 health)
 }
 
 // FUN_002ffdc0
-void Unit_SetSp(UnitData* unit, u16 sp)
+void datCalcSetSp(DatUnit* unit, u16 sp)
 {
     if (sp > 999 && !(unit->flags & UNIT_FLAG_ENEMY))
     {
@@ -59,48 +59,46 @@ void Unit_SetSp(UnitData* unit, u16 sp)
 }
 
 // FUN_003004f0
-void Unit_AddBattleFlags(UnitData* unit, u32 flags)
+void datCalcAddStatusFlags(DatUnit* unit, u32 flags)
 {
-    const u32 LOW_20_BITS = 0x000FFFFF;
-    const u32 HIGH_12_BITS = 0xFFF00000;
-
-    if (!(flags & LOW_20_BITS))
+    if (!(flags & 0x000FFFFF))
     {
-        unit->status.flags = (unit->status.flags & HIGH_12_BITS) |
-                                       (flags & LOW_20_BITS);
+        unit->status.flags = (unit->status.flags & 0xFFF00000) |
+                                       (flags & 0x000FFFFF);
     }
 
-    unit->status.flags |= (flags & HIGH_12_BITS);
+    unit->status.flags |= (flags & 0xFFF00000);
 }
 
 // FUN_00300530
-u32 Unit_GetBattleFlagsNoDown(UnitData* unit)
+u32 datCalcGetStatusFlagsNoDown(DatUnit* unit)
 {
-    // without bit 20 and over (so UNIT_STATUS_FLAG_DOWN)
     return unit->status.flags & 0x000FFFFF;
 }
 
 // FUN_00300550
-u32 Unit_GetBattleFlags(UnitData* unit)
+u32 datCalcGetStatusFlags(DatUnit* unit)
 {
     return unit->status.flags;
 }
 
 // FUN_00300560
-void Unit_RemoveBattleFlags(UnitData* unit, u32 flags)
+void datCalcRemoveStatusFlags(DatUnit* unit, u32 flags)
 {
     unit->status.flags &= ~flags;
 }
 
 // FUN_00300580
-u8 Unit_HasBattleFlags(UnitData* unit, u32 flags)
+u8 datCalcChkStatusFlags(DatUnit* unit, u32 flags)
 {
     return (unit->status.flags & flags);
 }
 
 // FUN_00308c60
-u32 Unit_GetHeldWeaponType(UnitData* unit)
+u32 datCalcGetHeldWeaponType(DatUnit* unit)
 {
+    // WIP
+
     u16 heroWeaponIdx;
     u16 heroWeaponId;
     u16 heroWeaponUnkFlag;
@@ -113,8 +111,8 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
     switch (unit->id)
     {
         case CHARACTER_HERO:
-            heroWeaponIdx = Character_GetEquipmentIdx(CHARACTER_HERO, EQUIPMENT_TYPE_WEAPON);
-            heroWeaponId = Character_GetEquipmentId(CHARACTER_HERO, heroWeaponIdx);
+            heroWeaponIdx = datGetEquipmentIdx(CHARACTER_HERO, EQUIPMENT_TYPE_WEAPON);
+            heroWeaponId = datGetEquipmentId(CHARACTER_HERO, heroWeaponIdx);
             // unkStruct = FUN_00170d60(heroWeaponId);
             // heroWeaponUnkFlag = unkStruct->flags;
             if (heroWeaponUnkFlag & (1 << 15) || heroWeaponUnkFlag & (1 << 7))
@@ -153,7 +151,7 @@ u32 Unit_GetHeldWeaponType(UnitData* unit)
 }
 
 // FUN_00300870. Return the number of equipments with the effect
-u8 Unit_CountEquipmentWithEffectById(u16 characterId, u16 effect)
+u8 datCalcCountEquipmentWithEffectById(u16 characterId, u16 effect)
 {
     u8 equipWithEffectNum = 0;
     u16 equipIdx;
@@ -162,40 +160,40 @@ u8 Unit_CountEquipmentWithEffectById(u16 characterId, u16 effect)
     K_ASSERT(characterId < CHARACTER_MAX, 646);
 
     // weapon
-    equipIdx = Character_GetEquipmentIdx(characterId, EQUIPMENT_TYPE_WEAPON);
-    equipEffect = Character_GetEquipmentEffect(characterId, equipIdx);
+    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_WEAPON);
+    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
     if (effect == equipEffect) equipWithEffectNum++;
 
     // armor
-    equipIdx = Character_GetEquipmentIdx(characterId, EQUIPMENT_TYPE_ARMOR);
-    equipEffect = Character_GetEquipmentEffect(characterId, equipIdx);
+    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_ARMOR);
+    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
     if (effect == equipEffect) equipWithEffectNum++;
 
     // boots
-    equipIdx = Character_GetEquipmentIdx(characterId, EQUIPMENT_TYPE_BOOTS);
-    equipEffect = Character_GetEquipmentEffect(characterId, equipIdx);
+    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_BOOTS);
+    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
     if (effect == equipEffect) equipWithEffectNum++;
 
     return equipWithEffectNum;
 }
 
 // FUN_003009a0. Return the number of equipments with the effect
-u8 Unit_CountEquipmentWithEffect(UnitData* unit, u16 effect)
+u8 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect)
 {
     if (unit->flags & UNIT_FLAG_ENEMY)
     {
         return 0;
     }
 
-    return Unit_CountEquipmentWithEffectById(unit->id, effect); // was probably inlined
+    return datCalcCountEquipmentWithEffectById(unit->id, effect); // was probably inlined
 }
 
 // FUN_0030b5a0
-u8 Unit_IsUnitDead(UnitData* unit, s32 param_2)
+u8 datCalcChkDead(DatUnit* unit, s32 param_2)
 {
     u8 isDead;
 
-    if (!Unit_HasBattleFlags(unit, UNIT_STATUS_FLAG_DEAD))
+    if (!datCalcChkStatusFlags(unit, UNIT_STATUS_FLAG_DEAD))
     {
         isDead = unit->status.health < 1;
     }
@@ -205,13 +203,4 @@ u8 Unit_IsUnitDead(UnitData* unit, s32 param_2)
     }
 
     return isDead;
-}
-
-void FUN_0030c440()
-{
-    // TODO
-    for (u16 i = CHARACTER_HERO; i < CHARACTER_MAX; i++)
-    {
-        // FUN_0030c490
-    }
 }

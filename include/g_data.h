@@ -185,8 +185,8 @@ typedef struct
 
 typedef struct
 {
-    s16 equippedPersona;      // 0 to 11
-    PersonaData personas[12];
+    s16 equippedPersona;         // 0 to 11
+    DatPersonaWork personas[12];
 } PlayerPersonaData;
 
 typedef struct
@@ -201,14 +201,14 @@ typedef struct
 // 868 bytes
 typedef struct
 {
-    UnitData unit;
+    DatUnit unit;
     SocialStats socialStats;
     u8 unkData1[0x06];
     PhysicalState physicalState;
     u16 equipmentsIdx[4];         // always 0, 1, 2, 3
     EquipmentData equipments[4];
     u8 unkData2[0x4C];
-    PersonaData persona;
+    DatPersonaWork persona;
     u8 unkData3[0x297]; // TODO
 } CharacterData;
 
@@ -216,59 +216,59 @@ extern CharacterData gCharacters[CHARACTER_MAX - 1];
 
 extern PlayerPersonaData gPlayerPersonaData;
 
-void Global_SetScenarioMode(u32 scenario);
-u32 Global_GetScenarioMode();
+void datSetScenarioMode(u32 scenario);
+u32 datGetScenarioMode();
 
 void FUN_0016f3e0(u32 idx, u32 value);
 
-UnitData* Character_GetUnit(u16 characterId);
-void Character_InitUnitData(u16 characterId);
-u8 Character_GetLevel(u16 characterId);
-u16 Persona_GetPersonaId(u16 characterId);
-u32 Character_GetBattleFlagsNoDown(u16 characterId);
-void Character_AddBattleFlags(u16 characterId, u32 flags);
-void Character_SetOldFatigueCounter(u16 characterId, u16 oldFatigueCounter);
-void Character_RemoveBattleFlags(u16 characterId, u32 flags);
-u32 Character_GetExpUntilNextLevel(u16 characterId);
-u8 Character_DidCharacterLevelUp(u16 characterId, u32 expGain);
-void Character_SetAiTactic(u16 characterId, u8 aiTacticId);
-u8 Character_GetAiTactic(u16 characterId);
-void Character_SetPhysicalCondition(u16 characterId, u16 physicalCondition);
-void Character_SetFatigueCounter(u16 characterId, u16 fatigueCounter);
-void Character_SetHealth(u16 characterId, u16 health);
-void Character_SetActiveSocialLink(u16 activeSocialLink);
-u16 CalendarData_GetDaysSinceApr5();
-u8 CalendarData_GetTime();
-u16 CalendarData_GetDaysSkipTarget();
-u8 CalendarData_GetTimeSkipTarget();
-u32 CalendarData_GetSkipToTarget();
-void Character_SetAcademicPoint(u16 characterId, u16 academicPoint);
-void Character_SetCharmPoint(u16 characterId, u16 charmPoint);
-void Character_SetCouragePoint(u16 characterId, u16 couragePoint);
-u16 Character_GetAcademicPoint(u16 characterId);
-u16 Character_GetCharmPoint(u16 characterId);
-u16 Character_GetCouragePoint(u16 characterId);
-u16 Character_GetAcademicLevel(u16 academicPoint);
-u16 Character_GetCharmLevel(u16 charmPoint);
-u16 Character_GetCourageLevel(u16 couragePoint);
-u32 Character_GetNextExp(u16 characterId);
-u16 Character_GetPhysicalCondition(u16 characterId);
-u16 Character_GetEquipmentIdx(u16 characterId, u16 equipmentType);
-void CalendarData_SetDaysSinceApr5(u16 daysSinceApr5);
-void CalendarData_SetTime(u8 time);
-void CalendarData_SetDaysSkipTarget(u16 days);
-void CalendarData_SetTimeSkipTarget(u8 time);
-void CalendarData_SetSkipToTarget(u32 val);
-u8 Global_CheckGlobalFlag(u32 bit);
-void Global_SetGlobalFlag(u32 bit, u8 enabled);
-void Global_ResetGlobalFlags();
-u16 Character_GetEquipmentId(u16 characterId, u16 equipmentIdx);
-u8 Character_GetEquipmentEffect(u16 characterId, u16 equipmentIdx);
-void Character_InitPersona(u32 characterId);
-void Compendium_Init();
-u16 Player_GetActiveSocialLink();
-u8 Player_GetSocialLinkLevel(u16 socialLink);
-PersonaData* Compendium_GetPersonaByIdx(s32 idx);
+DatUnit* datGetUnit(u16 characterId);
+void datInitUnit(u16 characterId);
+u8 datGetLevel(u16 characterId);
+u16 datGetPersonaId(u16 characterId);
+u32 datGetStatusFlagsNoDown(u16 characterId);
+void datAddStatusFlags(u16 characterId, u32 flags);
+void datSetOldFatigueCounter(u16 characterId, u16 oldFatigueCounter);
+void datRemoveStatusFlags(u16 characterId, u32 flags);
+u32 datGetExpUntilNextLevel(u16 characterId);
+u8 datDidCharacterLevelUp(u16 characterId, u32 expGain);
+void datSetAiTactic(u16 characterId, u8 aiTacticId);
+u8 datGetAiTactic(u16 characterId);
+void datSetPhysicalCondition(u16 characterId, u16 physicalCondition);
+void datSetFatigueCounter(u16 characterId, u16 fatigueCounter);
+void datSetHealth(u16 characterId, u16 health);
+void datSetActiveSocialLink(u16 activeSocialLink);
+u16 datGetDaysSinceApr5();
+u8 datGetTime();
+u16 datGetDaysSkipTarget();
+u8 datGetTimeSkipTarget();
+u32 datGetSkipToTarget();
+void datSetAcademicPoint(u16 characterId, u16 academicPoint);
+void datSetCharmPoint(u16 characterId, u16 charmPoint);
+void datSetCouragePoint(u16 characterId, u16 couragePoint);
+u16 datGetAcademicPoint(u16 characterId);
+u16 datGetCharmPoint(u16 characterId);
+u16 datGetCouragePoint(u16 characterId);
+u16 datGetAcademicLevel(u16 academicPoint);
+u16 datGetCharmLevel(u16 charmPoint);
+u16 datGetCourageLevel(u16 couragePoint);
+u32 datGetNextExp(u16 characterId);
+u16 datGetPhysicalCondition(u16 characterId);
+u16 datGetEquipmentIdx(u16 characterId, u16 equipmentType);
+void datSetDaysSinceApr5(u16 daysSinceApr5);
+void datSetTime(u8 time);
+void datSetDaysSkipTarget(u16 days);
+void datSetTimeSkipTarget(u8 time);
+void datSetSkipToTarget(u32 val);
+u8 datGetFlag(u32 bit);
+void datSetFlag(u32 bit, u8 enabled);
+void datClearFlagAll();
+u16 datGetEquipmentId(u16 characterId, u16 equipmentIdx);
+u8 datGetEquipmentEffect(u16 characterId, u16 equipmentIdx);
+void datInitPersona(u32 characterId);
+void datCompendiumInit();
+u16 datGetActiveSocialLink();
+u8 datGetSocialLinkLevel(u16 socialLink);
+DatPersonaWork* datGetPersonaByCompendium(s32 idx);
 
 void FUN_001052b0(const char* fmt, ...);
 void FUN_005225a8(const char* fmt, ...);

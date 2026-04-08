@@ -20,23 +20,23 @@
 #define UNIT_STATUS_FLAG_DOWN     (1 << 20) // 0x100000
 
 // 16 bytes
-typedef struct
+typedef struct DatUnitStatus
 {
     u8 level;
     u16 health;
     u16 sp;
     u32 flags;   // See 'UNIT_STATUS_FLAG_*'
     u8 aiTactic; // See enum AiTactic
-} UnitStatus;
+} DatUnitStatus;
 
 // 60 bytes
-typedef struct UnitData
+typedef struct DatUnit
 {
     u16 flags; // See 'UNIT_FLAG_*'
     u16 id;
     u16 id2;
-    UnitStatus status;
+    DatUnitStatus status;
     u8 unkData1[0x28];
-} UnitData; 
+} DatUnit; 
 
 #endif

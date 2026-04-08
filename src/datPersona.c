@@ -4,44 +4,44 @@
 #include "Kosaka/k_assert.h"
 
 // FUN_001732f0
-u8 Persona_GetPersonaLevel(PersonaData* persona)
+u8 datPersonaGetLevel(DatPersonaWork* persona)
 {
     return persona->level;
 }
 
 // FUN_00173300
-u8 Persona_GetPersonaLevelCharacterId(u16 characterId)
+u8 datPersonaGetLevelCharacterId(u16 characterId)
 {
-    PersonaData* persona = Persona_GetPersonaByCharacterId(characterId);
+    DatPersonaWork* persona = datPersonaGetPersonaByCharacterId(characterId);
     return persona->level;
 }
 
 // FUN_00173330
-u32 Persona_GetPersonaNextExp(PersonaData* persona)
+u32 datPersonaGetNextExp(DatPersonaWork* persona)
 {
     return persona->nextExp;
 }
 
 // FUN_00173370
-u16* Persona_GetSkills(PersonaData* persona)
+u16* datPersonaGetSkills(DatPersonaWork* persona)
 {
     return persona->skills;
 }
 
 // FUN_00173380
-u16* Persona_GetSkillsByCharacterId(u16 characterId)
+u16* datPersonaGetSkillsByCharacterId(u16 characterId)
 {
-    PersonaData* persona = Persona_GetPersonaByCharacterId(characterId);
+    DatPersonaWork* persona = datPersonaGetPersonaByCharacterId(characterId);
 
     return persona->skills;
 }
 
 // FUN_00173580
-u16 Persona_GetTotalStat(PersonaData* persona, u16 statId)
+u16 datPersonaGetTotalStat(DatPersonaWork* persona, u16 statId)
 {
-    u16 naturalStat = Persona_GetNaturalStat(persona, statId);
-    u16 bonusStat = Persona_GetBonusStat(persona, statId);
-    u16 stat3 = Persona_GetStat3(persona, statId);
+    u16 naturalStat = datPersonaGetNaturalStat(persona, statId);
+    u16 bonusStat = datPersonaGetBonusStat(persona, statId);
+    u16 stat3 = datPersonaGetStat3(persona, statId);
 
     u16 total = naturalStat + bonusStat + stat3;
 
@@ -54,7 +54,7 @@ u16 Persona_GetTotalStat(PersonaData* persona, u16 statId)
 }
 
 // was probably inlined
-u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
+u8 datPersonaGetNaturalStat(DatPersonaWork* persona, u16 statId)
 {
     K_ASSERT(statId < PERSONA_STAT_MAX, 316);
 
@@ -62,7 +62,7 @@ u8 Persona_GetNaturalStat(PersonaData* persona, u16 statId)
 }
 
 // FUN_00173b00
-u8 Persona_GetBonusStat(PersonaData* persona, u16 statId)
+u8 datPersonaGetBonusStat(DatPersonaWork* persona, u16 statId)
 {
     K_ASSERT(statId < PERSONA_STAT_MAX, 454);
 
@@ -70,23 +70,23 @@ u8 Persona_GetBonusStat(PersonaData* persona, u16 statId)
 }
 
 // FUN_00173b60
-void Persona_SetBonusStatByCharacterId(u16 characterId, u16 statId, u8 amount)
+void datPersonaSetBonusStatByCharacterId(u16 characterId, u16 statId, u8 amount)
 {
-    PersonaData* persona = Persona_GetPersonaByCharacterId(characterId);
+    DatPersonaWork* persona = datPersonaGetPersonaByCharacterId(characterId);
 
     persona->bonusStats[statId] = amount;
 }
 
 // FUN_00173bb0
-void Persona_AddToBonusStatByCharacterId(u16 characterId, u16 statId, s8 amount)
+void datPersonaAddToBonusStatByCharacterId(u16 characterId, u16 statId, s8 amount)
 {
-    PersonaData* persona = Persona_GetPersonaByCharacterId(characterId);
+    DatPersonaWork* persona = datPersonaGetPersonaByCharacterId(characterId);
 
     persona->bonusStats[statId] += amount;
 }
 
 // FUN_00173c00
-u8 Persona_GetStat3(PersonaData* persona, u16 statId)
+u8 datPersonaGetStat3(DatPersonaWork* persona, u16 statId)
 {
     K_ASSERT(statId <= PERSONA_STAT_LUCK, 503);
 
@@ -94,7 +94,7 @@ u8 Persona_GetStat3(PersonaData* persona, u16 statId)
 }
 
 // FUN_00174650
-u16 Persona_AddToNaturalStat(PersonaData* persona, u16 statId, s8 amount)
+u16 datPersonaAddToNaturalStat(DatPersonaWork* persona, u16 statId, s8 amount)
 {
     u8 statTotal;
 
@@ -119,24 +119,24 @@ u16 Persona_AddToNaturalStat(PersonaData* persona, u16 statId, s8 amount)
 }
 
 // FUN_00174710
-u16 Persona_AddToNaturalStatHeroPersonaIdx(u16 heroPersonaIdx, u16 statId, s8 amount)
+u16 datPersonaAddToNaturalStatHeroPersona(u16 heroPersonaIdx, u16 statId, s8 amount)
 {
     u8 statTotal;
-    PersonaData* heroPersona = Persona_GetHeroPersona(heroPersonaIdx);
+    DatPersonaWork* heroPersona = datPersonaGetHeroPersona(heroPersonaIdx);
 
     K_ASSERT(heroPersona != NULL, 747);
 
-    return Persona_AddToNaturalStat(heroPersona, statId, amount); // was inlined
+    return datPersonaAddToNaturalStat(heroPersona, statId, amount); // was inlined
 }
 
 // FUN_00174800
-PersonaData* Persona_GetPersonaByCharacterId(u16 characterId)
+DatPersonaWork* datPersonaGetByCharacterId(u16 characterId)
 {
-    PersonaData* persona;
+    DatPersonaWork* persona;
 
     if (IS_HERO(characterId))
     {
-        persona = Persona_GetHeroPersona(gPlayerPersonaData.equippedPersona);
+        persona = datPersonaGetHeroPersona(gPlayerPersonaData.equippedPersona);
     }
     else 
     {
@@ -151,23 +151,23 @@ PersonaData* Persona_GetPersonaByCharacterId(u16 characterId)
 }
 
 // FUN_00174960
-u8 Persona_IsHeroPersonaValid(u16 heroPersonaIdx)
+u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx)
 {
     return (gPlayerPersonaData.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
 }
 
 // FUN_00174a90
-PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
+DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx)
 {
-    PersonaData* persona;
+    DatPersonaWork* persona;
 
     /* TODO
     if (((long)heroPersonaIdx < 0) || (uVar3 = FUN_00175410(), (long)(uVar3 & 0xffff) <= (long)heroPersonaIdx)) 
     {
-        P3FES_ASSERT("datPersona.c", 848);
+        K_Assert("datPersona.c", 848);
     }*/
 
-    if (!Persona_IsHeroPersonaValid(heroPersonaIdx))
+    if (!datPersonaIsHeroPersonaValid(heroPersonaIdx))
     {
         persona = NULL;
     }
@@ -180,13 +180,13 @@ PersonaData* Persona_GetHeroPersona(u16 heroPersonaIdx)
 }
 
 // FUN_001757f0
-void Persona_ClearHeroPersonas()
+void datPersonaClearHeroPersonas()
 {
     memset(gPlayerPersonaData.personas, 0, sizeof(gPlayerPersonaData.personas));
 }
 
 // FUN_001764b0
-void Persona_AddExp(PersonaData* persona, u32 exp)
+void datPersonaAddExp(DatPersonaWork* persona, u32 exp)
 {
     K_ASSERT(exp > 0, 1458);
 
@@ -194,7 +194,7 @@ void Persona_AddExp(PersonaData* persona, u32 exp)
 }
 
 // FUN_00176510
-void Persona_MoveValidSkillsOnTop(PersonaData* persona)
+void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona)
 {
     u32 skillIdx;
     u32 nextSkillIdx = 0;
@@ -225,7 +225,7 @@ void Persona_MoveValidSkillsOnTop(PersonaData* persona)
 }
 
 // FUN_00176840
-u8 Persona_SetSkill(PersonaData* persona, u16 skillId)
+u8 datPersonaSetSkill(DatPersonaWork* persona, u16 skillId)
 {
     s32 skillIdx;
     u16* skillSlot;
@@ -246,7 +246,7 @@ u8 Persona_SetSkill(PersonaData* persona, u16 skillId)
 }
 
 // FUN_001768e0
-u8 Persona_ResetSkill(PersonaData* persona, u16 skillId)
+u8 datPersonaResetSkill(DatPersonaWork* persona, u16 skillId)
 {
     u32 skillIdx;
 
@@ -257,7 +257,7 @@ u8 Persona_ResetSkill(PersonaData* persona, u16 skillId)
         if (persona->skills[skillIdx] == skillId)
         {
             persona->skills[skillIdx] = PERSONA_SKILL_SLASH_ATTACK;
-            Persona_MoveValidSkillsOnTop(persona);
+            datPersonaMoveValidSkillsOnTop(persona);
             return true;
         }
     }
@@ -265,7 +265,7 @@ u8 Persona_ResetSkill(PersonaData* persona, u16 skillId)
 }
 
 // FUN_00176990
-s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId)
+s32 datPersonaFindSkillIdx(DatPersonaWork* persona, u16 skillId)
 {
     s32 skillIdx = 0;
 
@@ -281,7 +281,7 @@ s32 Persona_FindPersonaSkillIdx(PersonaData* persona, u16 skillId)
 }
 
 // FUN_00176a30
-u32 Persona_CountValidSkills(PersonaData* persona)
+u32 datPersonaCountValidSkills(DatPersonaWork* persona)
 {
     u32 skillIdx;
     u32 validSkills = 0;
