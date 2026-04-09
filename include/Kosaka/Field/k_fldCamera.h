@@ -4,6 +4,8 @@
 #include "Utils.h"
 #include "rw/rwcore.h"
 
+#define FLDCAMERA_FLAG_DRAWDEADZONE (1 << 31) // 0x80000000. Draw a cylinder that represents the current deadzone
+
 typedef struct ResrcModelParty ResrcModelParty;
 
 typedef enum
@@ -37,7 +39,10 @@ typedef struct FldCamera
     u32 type;                     // 0x08
     RwFrame* frame;               // 0x0c. Main frame of the field camera
     RwFrame* frame2;              // 0x10. Parent of the parent of RwCamera (idk why)
-    u8 unkData2[0xb8];
+    RwV3d offset;                 // 0x14
+    f32 xzDeadZone;               // 0x20. Horizontal deadzone
+    f32 yDeadZone;                // 0x24. Vertical deadzone
+    u8 unkData3[0xa4];
     ResrcModelParty* playerResrc; // 0xcc
 } FldCamera;
 
