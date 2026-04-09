@@ -59,39 +59,39 @@ void datCalcSetSp(DatUnit* unit, u16 sp)
 }
 
 // FUN_003004f0
-void datCalcAddStatusFlags(DatUnit* unit, u32 flags)
+void datCalcSetBadStatus(DatUnit* unit, u32 badStatus)
 {
-    if (!(flags & 0x000FFFFF))
+    if (!(badStatus & 0x000FFFFF))
     {
-        unit->status.flags = (unit->status.flags & 0xFFF00000) |
-                                       (flags & 0x000FFFFF);
+        unit->status.bad = (unit->status.bad & 0xFFF00000) |
+                                       (badStatus & 0x000FFFFF);
     }
 
-    unit->status.flags |= (flags & 0xFFF00000);
+    unit->status.bad |= (badStatus & 0xFFF00000);
 }
 
 // FUN_00300530
-u32 datCalcGetStatusFlagsNoDown(DatUnit* unit)
+u32 datCalcGetBadStatusNoDown(DatUnit* unit)
 {
-    return unit->status.flags & 0x000FFFFF;
+    return unit->status.bad & 0x000FFFFF;
 }
 
 // FUN_00300550
-u32 datCalcGetStatusFlags(DatUnit* unit)
+u32 datCalcGetBadStatus(DatUnit* unit)
 {
-    return unit->status.flags;
+    return unit->status.bad;
 }
 
 // FUN_00300560
-void datCalcRemoveStatusFlags(DatUnit* unit, u32 flags)
+void datCalcClearBadStatus(DatUnit* unit, u32 badStatus)
 {
-    unit->status.flags &= ~flags;
+    unit->status.bad &= ~badStatus;
 }
 
 // FUN_00300580
-u8 datCalcChkStatusFlags(DatUnit* unit, u32 flags)
+u8 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
 {
-    return (unit->status.flags & flags);
+    return (unit->status.bad & badStatus);
 }
 
 // FUN_00308c60
@@ -193,7 +193,7 @@ u8 datCalcChkDead(DatUnit* unit, s32 param_2)
 {
     u8 isDead;
 
-    if (!datCalcChkStatusFlags(unit, UNIT_STATUS_FLAG_DEAD))
+    if (!datCalcChkStatusFlags(unit, UNIT_BADSTATUS_DEAD))
     {
         isDead = unit->status.health < 1;
     }

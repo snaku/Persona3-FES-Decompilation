@@ -36,8 +36,8 @@ const char* Day_GetCurrentDayString(u32 month, u32 day)
     const char* dayString;
     u32 currentDay;
 
-    currentDay = Calendar_GetDaysSinceStartFromDate(month, day);
-    currentDay = Calendar_GetWeekDay(currentDay);
+    currentDay = clndGetDaysSinceStartFromDate(month, day);
+    currentDay = clndGetWeekDay(currentDay);
 
     switch(currentDay)
     {

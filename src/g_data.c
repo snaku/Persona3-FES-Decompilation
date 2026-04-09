@@ -45,11 +45,11 @@ CharacterData gCharacters[CHARACTER_MAX - 1];
 static DatUnit sPlayerUnit;                  // 00836224
 static PlayerStatusData sPlayerStatusData;   // 00836260
 static PlayerEquipmentData sPlayerEquipData; // 0083678c
-static CalendarData sCalendarData;           // 0083679c
+static CalendarWork sCalendarWork;           // 0083679c
 PlayerPersonaData gPlayerPersonaData;        // 00836ba8
 static DatPersonaWork sCompendium[256];      // 00836e1c
 
-static u32 gGlobalFlags[176]; // 0083a21c. See 'g_flags.h' !!!
+static u32 gFlags[176]; // 0083a21c. See 'flags.h' !!!
 static u32 gIUnkArr[128];     // 0083a4dc
 
 
@@ -126,26 +126,26 @@ u8 datGetLevel(u16 characterId)
 }
 
 // FUN_0016c970
-u32 datGetStatusFlagsNoDown(u16 characterId)
+u32 datGetBadStatusNoDown(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return datCalcGetStatusFlagsNoDown(&sPlayerUnit);
+        return datCalcGetBadStatusNoDown(&sPlayerUnit);
     }
 
-    return datCalcGetStatusFlagsNoDown(&gCharacters[characterId].unit);
+    return datCalcGetBadStatusNoDown(&gCharacters[characterId].unit);
 }
 
 // FUN_0016d8b0
-void datAddStatusFlags(u16 characterId, u32 flags)
+void datSetBadStatus(u16 characterId, u32 flags)
 {
     if (IS_HERO(characterId))
     {
-        datCalcAddStatusFlags(&sPlayerUnit, flags);
+        datCalcSetBadStatus(&sPlayerUnit, flags);
         return;
     }
 
-    datCalcAddStatusFlags(&gCharacters[characterId].unit, flags);
+    datCalcSetBadStatus(&gCharacters[characterId].unit, flags);
 }
 
 // FUN_0016d980
@@ -161,14 +161,15 @@ void datSetOldFatigueCounter(u16 characterId, u16 oldFatigueCounter)
 }
 
 // FUN_0016d9d0
-void datRemoveStatusFlags(u16 characterId, u32 flags)
+void datClearBadStatus(u16 characterId, u32 flags)
 {
     if (IS_HERO(characterId))
     {
-        datCalcRemoveStatusFlags(&sPlayerUnit, flags);
+        datCalcClearBadStatus(&sPlayerUnit, flags);
+        return;
     }
 
-    datCalcRemoveStatusFlags(&gCharacters[characterId].unit, flags);
+    datCalcClearBadStatus(&gCharacters[characterId].unit, flags);
 }
 
 // FUN_0016d2f0
@@ -353,31 +354,31 @@ void datSetActiveSocialLink(u16 activeSocialLink)
 // FUN_0016ef20
 u16 datGetDaysSinceApr5()
 {
-    return sCalendarData.daysSinceApr5;
+    return sCalendarWork.daysSinceApr5;
 }
 
 // FUN_0016ef30
 u8 datGetTime()
 {
-    return sCalendarData.time;
+    return sCalendarWork.time;
 }
 
 // FUN_0016ef40
 u16 datGetDaysSkipTarget()
 {
-    return sCalendarData.daysSkipTarget;
+    return sCalendarWork.daysSkipTarget;
 }
 
 // FUN_0016ef50
 u8 datGetTimeSkipTarget()
 {
-    return sCalendarData.timeSkipTarget;
+    return sCalendarWork.timeSkipTarget;
 }
 
 // FUN_0016ef60
 u32 datGetSkipToTarget()
 {
-    return sCalendarData.skipToTarget;
+    return sCalendarWork.skipToTarget;
 }
 
 // FUN_0016cfe0
@@ -549,71 +550,71 @@ u16 datGetEquipmentIdx(u16 characterId, u16 equipmentType)
     return gCharacters[characterId].equipmentsIdx[equipmentType];
 }
 
-// FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'G_FLAG_DAY_*' flags
+// FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags
 void datSetDaysSinceApr5(u16 daysSinceApr5)
 {
     u32 currentWeekDay;
     u8 holidayOrSunday;
 
-    datSetFlag(G_FLAG_DAY_IS_MONDAY, false);
-    datSetFlag(G_FLAG_DAY_IS_TUESDAY, false);
-    datSetFlag(G_FLAG_DAY_IS_WEDNESDAY, false);
-    datSetFlag(G_FLAG_DAY_IS_THURSDAY, false);
-    datSetFlag(G_FLAG_DAY_IS_FRIDAY, false);
-    datSetFlag(G_FLAG_DAY_IS_SATURDAY, false);
-    datSetFlag(G_FLAG_DAY_IS_SUNDAY, false);
-    datSetFlag(G_FLAG_DAY_IS_DAYOFF, false);
+    datSetFlag(FLG_DAY_IS_MONDAY, false);
+    datSetFlag(FLG_DAY_IS_TUESDAY, false);
+    datSetFlag(FLG_DAY_IS_WEDNESDAY, false);
+    datSetFlag(FLG_DAY_IS_THURSDAY, false);
+    datSetFlag(FLG_DAY_IS_FRIDAY, false);
+    datSetFlag(FLG_DAY_IS_SATURDAY, false);
+    datSetFlag(FLG_DAY_IS_SUNDAY, false);
+    datSetFlag(FLG_DAY_IS_DAYOFF, false);
 
-    if (daysSinceApr5 != sCalendarData.daysSinceApr5)
+    if (daysSinceApr5 != sCalendarWork.daysSinceApr5)
     {
         FUN_00172890(); 
         FUN_00172e10();
         datSetFlag(2444, false);
     }
 
-    sCalendarData.daysSinceApr5 = daysSinceApr5;
+    sCalendarWork.daysSinceApr5 = daysSinceApr5;
 
     currentWeekDay = datGetCurrentWeekDay();
     switch (currentWeekDay)
     {
-        case CALENDAR_DAY_SUNDAY:    datSetFlag(G_FLAG_DAY_IS_SUNDAY, true);    break;
-        case CALENDAR_DAY_MONDAY:    datSetFlag(G_FLAG_DAY_IS_MONDAY, true);    break;
-        case CALENDAR_DAY_TUESDAY:   datSetFlag(G_FLAG_DAY_IS_TUESDAY, true);   break;
-        case CALENDAR_DAY_WEDNESDAY: datSetFlag(G_FLAG_DAY_IS_WEDNESDAY, true); break;
-        case CALENDAR_DAY_THURSDAY:  datSetFlag(G_FLAG_DAY_IS_THURSDAY, true);  break;
-        case CALENDAR_DAY_FRIDAY:    datSetFlag(G_FLAG_DAY_IS_FRIDAY, true);    break;
-        case CALENDAR_DAY_SATURDAY:  datSetFlag(G_FLAG_DAY_IS_SATURDAY, true);  break;
+        case CALENDAR_DAY_SUNDAY:    datSetFlag(FLG_DAY_IS_SUNDAY, true);    break;
+        case CALENDAR_DAY_MONDAY:    datSetFlag(FLG_DAY_IS_MONDAY, true);    break;
+        case CALENDAR_DAY_TUESDAY:   datSetFlag(FLG_DAY_IS_TUESDAY, true);   break;
+        case CALENDAR_DAY_WEDNESDAY: datSetFlag(FLG_DAY_IS_WEDNESDAY, true); break;
+        case CALENDAR_DAY_THURSDAY:  datSetFlag(FLG_DAY_IS_THURSDAY, true);  break;
+        case CALENDAR_DAY_FRIDAY:    datSetFlag(FLG_DAY_IS_FRIDAY, true);    break;
+        case CALENDAR_DAY_SATURDAY:  datSetFlag(FLG_DAY_IS_SATURDAY, true);  break;
     }
 
-    holidayOrSunday = Calendar_IsHolidayOrSunday();
+    holidayOrSunday = clndIsHolidayOrSunday();
     if (holidayOrSunday)
     {
-        datSetFlag(G_FLAG_DAY_IS_DAYOFF, true);
+        datSetFlag(FLG_DAY_IS_DAYOFF, true);
     }
 }
 
 // FUN_0016f150
 void datSetTime(u8 time)
 {
-    sCalendarData.time = time;
+    sCalendarWork.time = time;
 }
 
 // FUN_0016f160
 void datSetDaysSkipTarget(u16 days)
 {
-    sCalendarData.daysSkipTarget = days;
+    sCalendarWork.daysSkipTarget = days;
 }
 
 // FUN_0016f170
 void datSetTimeSkipTarget(u8 time)
 {
-    sCalendarData.timeSkipTarget = time;
+    sCalendarWork.timeSkipTarget = time;
 }
 
 // FUN_0016f180
 void datSetSkipToTarget(u32 val)
 {
-    sCalendarData.skipToTarget = val;
+    sCalendarWork.skipToTarget = val;
 }
 
 // FUN_0016f190
@@ -654,11 +655,11 @@ void datSetFlag(u32 bit, u8 enabled)
     bitField = 1 << (bitField & 0x1f);
     if (enabled)
     {
-        gGlobalFlags[idx] |= bitField;
+        gFlags[idx] |= bitField;
         return;
     }
     
-    gGlobalFlags[idx] &= ~bitField;
+    gFlags[idx] &= ~bitField;
 }
 
 // FUN_0016f2e0
@@ -666,9 +667,9 @@ void datClearFlagAll()
 {
     u32 i;
 
-    for (i = 0; i < ARRAY_SIZE(gGlobalFlags); i++)
+    for (i = 0; i < ARRAY_SIZE(gFlags); i++)
     {
-        gGlobalFlags[i] = 0;
+        gFlags[i] = 0;
     }
 }
 

@@ -81,14 +81,14 @@ typedef enum
     MOON_PHASE_NEW_MOON
 } MoonPhases;
 
-typedef struct
+typedef struct CalendarWork
 {
     u16 daysSinceApr5;  // days since start of the game
     u8 time;
     u32 skipToTarget;   // 0 no skip, 1 skip
     u16 daysSkipTarget; // in days since april 5th (for example: daysSkipTarget = 40 -> will skip to may 15th)
     u8 timeSkipTarget;  // see enum 'CalendarTime'
-} CalendarData;
+} CalendarWork;
 
 // TODO
 typedef enum
@@ -98,28 +98,29 @@ typedef enum
 } CalendarTaskState;
 
 // 44 bytes
-typedef struct CalendarWorkData
+typedef struct CalendarTaskWork
 {
-    u32 state;        // See enum 'CalendarTaskState'
+    u32 state;        // 0x00. See enum 'CalendarTaskState'
     u8 unkData[0x28];
-} CalendarWorkData;
+} CalendarTaskWork;
 
 extern const u16 numOfDaysInMonths[12];
 
-u32 Calendar_GetMonthFromDaysSinceApr5(u16 daysSinceApr5);
-u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day);
-u32 Calendar_GetCurrentMonth();
-u32 Calendar_GetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5);
-u32 Calendar_GetCurrentDay();
-u32 Calendar_GetWeekDay(u32 daysSinceApr5);
-u32 Calendar_GetCurrentWeekDay();
-u8 Calendar_IsHolidayOrSunday();
-u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
-u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
-u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range);
-KwlnTask* Calendar_CreateTask();
-u8 Calendar_GetCurrentMoonPhase();
-u8 Calendar_GetMoonPhase(u32 daysSinceApr5);
-u8 Calendar_ScrCmdSetDate();
+u32 clndGetMonthFromDaysSinceApr5(u16 daysSinceApr5);
+u32 clndGetDaysSinceStartFromDate(u32 month, u32 day);
+u32 clndGetCurrentMonth();
+u32 clndGetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5);
+u32 clndGetCurrentDay();
+u32 clndGetWeekDay(u32 daysSinceApr5);
+u32 clndGetCurrentWeekDay();
+u8 clndIsHolidayOrSunday();
+u8 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
+u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
+u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range);
+KwlnTask* clndCreateTask();
+u8 clndGetCurrentMoonPhase();
+u8 clndGetMoonPhase(u32 daysSinceApr5);
+
+u8 clndScrCmd_SET_DATE();
 
 #endif

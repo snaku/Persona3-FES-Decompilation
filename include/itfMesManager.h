@@ -20,8 +20,8 @@ typedef struct ItfMes
     u8 unkData[0x1e8];
 } ItfMes;
 
-s32 ItfMesMng_Initialize(BmdHeader* bmdHeader);
-void ItfMesMng_DestroyHandle(s32 mesHandleIdx);
-void ItfMesMng_ChangeWindowType(s32 mesHandleIdx, u16 type, u32 param_3);
+s32 itfMesMngInitialize(BmdHeader* bmdHeader);
+void itfMesMngDestroyHandle(s32 mesHandleIdx);
+void itfMesMngChangeWindowType(s32 mesHandleIdx, u16 type, u32 param_3);
 
 #endif

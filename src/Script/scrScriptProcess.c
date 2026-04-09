@@ -109,10 +109,10 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
 
     if (msg != NULL)
     {
-        mesHandleIdx = ItfMesMng_Initialize(msg);
+        mesHandleIdx = itfMesMngInitialize(msg);
         scr->mesHandleIdx = mesHandleIdx;
 
-        ItfMesMng_ChangeWindowType(mesHandleIdx, 4, 0);
+        itfMesMngChangeWindowType(mesHandleIdx, 4, 0);
     }
 
     if (sScrHead == NULL)
@@ -263,7 +263,7 @@ void scrDestroy(ScrData* scr)
 
     if (scr->mesHandleIdx >= 0)
     {
-        ItfMesMng_DestroyHandle(scr->mesHandleIdx);
+        itfMesMngDestroyHandle(scr->mesHandleIdx);
         FUN_005225a8("free message handle\n");
     }
 

@@ -87,10 +87,10 @@ static const u8 daysMoonPhases[] =
 
 static KwlnTask* sClndTask; // 007cdfec. Task name = "CalenderDraw"
 
-s32 Calendar_FindAndExecSiteibiEvents();
+s32 clndFindAndExecSiteibiEvents();
 
 // FUN_0017d830
-u32 Calendar_GetMonthFromDaysSinceApr5(u16 daysSinceApr5)
+u32 clndGetMonthFromDaysSinceApr5(u16 daysSinceApr5)
 {
     u16 month = CALENDAR_MONTH_APRIL;
 
@@ -111,7 +111,7 @@ u32 Calendar_GetMonthFromDaysSinceApr5(u16 daysSinceApr5)
 }
 
 // FUN_0017d8b0
-u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
+u32 clndGetDaysSinceStartFromDate(u32 month, u32 day)
 {
     u32 m = CALENDAR_MONTH_APRIL;
     u32 dayAccumulator = 0;
@@ -136,7 +136,7 @@ u32 Calendar_GetDaysSinceStartFromDate(u32 month, u32 day)
 }
 
 // FUN_0017d920
-u32 Calendar_GetCurrentMonth()
+u32 clndGetCurrentMonth()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
@@ -156,7 +156,7 @@ u32 Calendar_GetCurrentMonth()
 }
 
 // FUN_0017d9c0
-u32 Calendar_GetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
+u32 clndGetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
 {
     u16 month = CALENDAR_MONTH_APRIL;
 
@@ -177,7 +177,7 @@ u32 Calendar_GetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
 }
 
 // FUN_0017da40. Return the current day of the month
-u32 Calendar_GetCurrentDay()
+u32 clndGetCurrentDay()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
@@ -197,13 +197,13 @@ u32 Calendar_GetCurrentDay()
 }
 
 // FUN_0017dae0
-u32 Calendar_GetWeekDay(u32 daysSinceApr5)
+u32 clndGetWeekDay(u32 daysSinceApr5)
 {
     return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
 }
 
 // FUN_0017db00
-u32 Calendar_GetCurrentWeekDay()
+u32 clndGetCurrentWeekDay()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5();
 
@@ -211,7 +211,7 @@ u32 Calendar_GetCurrentWeekDay()
 }
 
 // FUN_0017dcf0
-u8 Calendar_IsHolidayOrSunday()
+u8 clndIsHolidayOrSunday()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5();
     u32 currDayOfMonth;
@@ -219,13 +219,13 @@ u8 Calendar_IsHolidayOrSunday()
     u16 i;
 
     // was inlined
-    if (Calendar_GetWeekDay(daysSinceApr5) == CALENDAR_DAY_SUNDAY)
+    if (clndGetWeekDay(daysSinceApr5) == CALENDAR_DAY_SUNDAY)
     {
         return true;
     }
 
-    currMonth = Calendar_GetMonthFromDaysSinceApr5(daysSinceApr5);
-    currDayOfMonth = Calendar_GetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
+    currMonth = clndGetMonthFromDaysSinceApr5(daysSinceApr5);
+    currDayOfMonth = clndGetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
 
     for (i = 0; i < 0x164; i++)
     {
@@ -240,10 +240,10 @@ u8 Calendar_IsHolidayOrSunday()
 }
 
 // FUN_0017e480
-u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
+u8 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
 {
-    u32 startDate = Calendar_GetDaysSinceStartFromDate(startMonth, startDay);
-    u32 endDate = Calendar_GetDaysSinceStartFromDate(endMonth, endDay);
+    u32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
+    u32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
     u16 currDaysSinceApr5 = datGetDaysSinceApr5();
 
     if (currDaysSinceApr5 < startDate || endDate < currDaysSinceApr5)
@@ -255,13 +255,13 @@ u8 Calendar_IsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay
 }
 
 // FUN_0017e520
-u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
+u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
                                   u32 startMonth, u32 startDay,
                                   u32 endMonth, u32 endDay)
 {
-    u32 startDate = Calendar_GetDaysSinceStartFromDate(startMonth, startDay);
-    u32 endDate = Calendar_GetDaysSinceStartFromDate(endMonth, endDay);
-    u32 testDate = Calendar_GetDaysSinceStartFromDate(monthToTest, dayToTest);
+    u32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
+    u32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
+    u32 testDate = clndGetDaysSinceStartFromDate(monthToTest, dayToTest);
 
     if (testDate < startDate || endDate < testDate)
     {
@@ -272,7 +272,7 @@ u8 Calendar_IsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
 }
 
 // FUN_0017e5d0
-u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
+u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
 {
     u32 startDate;
     u32 endDate;
@@ -284,7 +284,7 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
         return false;
     }
 
-    startDate = Calendar_GetDaysSinceStartFromDate(month, day);
+    startDate = clndGetDaysSinceStartFromDate(month, day);
     endDate = startDate + range - 1;
     daysSinceApr5 = datGetDaysSinceApr5();
 
@@ -297,7 +297,7 @@ u8 Calendar_IsDateInRangeFromStart(u32 month, u32 day, u32 range)
 }
 
 // FUN_0017e680
-void* Calendar_UpdateTask(KwlnTask* clndTask)
+void* clndUpdateTask(KwlnTask* clndTask)
 {
     // TODO
 
@@ -305,25 +305,30 @@ void* Calendar_UpdateTask(KwlnTask* clndTask)
 }
 
 // FUN_0017faa0
-void Calendar_DestroyTask(KwlnTask* clndTask)
+void clndDestroyTask(KwlnTask* clndTask)
 {
     RW_FREE(clndTask->workData);
     sClndTask = NULL;
 }
 
 // FUN_0017fb90
-KwlnTask* Calendar_CreateTask()
+KwlnTask* clndCreateTask()
 {
     KwlnTask* clndTask;
-    CalendarWorkData* clndWork;
+    CalendarTaskWork* work;
 
-    clndWork = RW_CALLOC(1, sizeof(CalendarWorkData), 0x40000);
-    if (clndWork == NULL)
+    work = RW_CALLOC(1, sizeof(CalendarTaskWork), 0x40000);
+    if (work == NULL)
     {
         return NULL;
     }
 
-    clndTask = kwlnTaskCreateWithAutoPriority(NULL, 4207, "CalenderDraw", Calendar_UpdateTask, Calendar_DestroyTask, clndWork);
+    clndTask = kwlnTaskCreateWithAutoPriority(NULL,
+                                              4207,
+                                              "CalenderDraw", // no
+                                              clndUpdateTask,
+                                              clndDestroyTask,
+                                              work);
     if (clndTask == NULL)
     {
         return NULL;
@@ -331,14 +336,14 @@ KwlnTask* Calendar_CreateTask()
 
     sClndTask = clndTask;
 
-    clndWork->state = 3;
+    work->state = 3;
     H_SfdPlay_CreateTask(clndTask);
 
     return clndTask;
 }
 
 // FUN_00181720. Check if a siteibi event can be executed. If found, return its index. Return -1 if no event was found
-s32 Calendar_FindAndExecSiteibiEvents()
+s32 clndFindAndExecSiteibiEvents()
 {
     SiteibiEventTable* siteibiTable;
     u32 i;
@@ -353,12 +358,12 @@ s32 Calendar_FindAndExecSiteibiEvents()
     for (i = 0; i < siteibiTable->total; i++)
     {
         daysSinceApr5 = datGetDaysSinceApr5();
-        month = Calendar_GetMonthFromDaysSinceApr5(daysSinceApr5);
+        month = clndGetMonthFromDaysSinceApr5(daysSinceApr5);
 
         if (siteibiTable->events[i].startMonth == month)
         {
             daysSinceApr5 = datGetDaysSinceApr5();
-            dayOfMonth = Calendar_GetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
+            dayOfMonth = clndGetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
 
             if (siteibiTable->events[i].startDay == dayOfMonth)
             {
@@ -368,23 +373,23 @@ s32 Calendar_FindAndExecSiteibiEvents()
                 {
                     foundEvt = true;
 
-                    if (siteibiTable->events[i].gflagReqOn1 != 0 &&
-                       (!datGetFlag(siteibiTable->events[i].gflagReqOn1)))
+                    if (siteibiTable->events[i].flagReqOn1 != 0 &&
+                       (!datGetFlag(siteibiTable->events[i].flagReqOn1)))
                     {
                         foundEvt = false;
                     }
-                    if (siteibiTable->events[i].gflagReqOn2 != 0 &&
-                       (!datGetFlag(siteibiTable->events[i].gflagReqOn2)))
+                    if (siteibiTable->events[i].flagReqOn2 != 0 &&
+                       (!datGetFlag(siteibiTable->events[i].flagReqOn2)))
                     {
                         foundEvt = false;
                     }
-                    if (siteibiTable->events[i].gflagReqOff1 != 0 &&
-                       (datGetFlag(siteibiTable->events[i].gflagReqOff1)))
+                    if (siteibiTable->events[i].flagReqOff1 != 0 &&
+                       (datGetFlag(siteibiTable->events[i].flagReqOff1)))
                     {
                         foundEvt = false;
                     }
-                    if (siteibiTable->events[i].gflagReqOff2 != 0 &&
-                       (datGetFlag(siteibiTable->events[i].gflagReqOff2)))
+                    if (siteibiTable->events[i].flagReqOff2 != 0 &&
+                       (datGetFlag(siteibiTable->events[i].flagReqOff2)))
                     {
                         foundEvt = false;
                     }
@@ -402,7 +407,7 @@ s32 Calendar_FindAndExecSiteibiEvents()
                     {
                         FUN_005225a8("## EXEC EVENT = %d ##\n", i);
 
-                        datSetFlag(siteibiTable->events[i].gflagToActivate, true);
+                        datSetFlag(siteibiTable->events[i].flagToActivate, true);
                         return i;
                     }
                 }
@@ -415,7 +420,7 @@ s32 Calendar_FindAndExecSiteibiEvents()
 }
 
 // FUN_00181b10
-u8 Calendar_GetCurrentMoonPhase()
+u8 clndGetCurrentMoonPhase()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5();
 
@@ -423,13 +428,13 @@ u8 Calendar_GetCurrentMoonPhase()
 }
 
 // FUN_00181b50
-u8 Calendar_GetMoonPhase(u32 daysSinceApr5)
+u8 clndGetMoonPhase(u32 daysSinceApr5)
 {
     return daysMoonPhases[daysSinceApr5];
 }
 
 // FUN_00188510
-u8 Calendar_ScrCmdSetDate()
+u8 clndScrCmd_SET_DATE()
 {
     u32 month;
     u32 day;
@@ -440,7 +445,7 @@ u8 Calendar_ScrCmdSetDate()
     day = scrGetIntPara(1);
     time = scrGetIntPara(2);
 
-    daysSinceApr5 = Calendar_GetDaysSinceStartFromDate(month, day);
+    daysSinceApr5 = clndGetDaysSinceStartFromDate(month, day);
 
     datSetDaysSinceApr5(daysSinceApr5);
     datSetTime(time);

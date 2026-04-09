@@ -17,7 +17,7 @@ u8 K_Cmd_IsDateInRange()
     endMonth = scrGetIntPara(2);
     endDay = scrGetIntPara(3);
 
-    isInRange = Calendar_IsDateInRange(startMonth, startDay, endMonth, endDay);
+    isInRange = clndIsDateInRange(startMonth, startDay, endMonth, endDay);
     if (isInRange)
     {
         scrSetIntReturnVal(1);
