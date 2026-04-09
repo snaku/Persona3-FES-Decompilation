@@ -53,5 +53,6 @@ typedef struct FldCamera
 
 u32 K_FldCamera_GetType(KwlnTask* fldCameraTask);
 RwV3d* K_FldCamera_GetPos(KwlnTask* fldCameraTask);
+void K_FldCamera_SetPlayerResrcByTypeid(KwlnTask* fldCameraTask, u16 resTypeId);
 
 #endif
