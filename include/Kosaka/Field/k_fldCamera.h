@@ -12,6 +12,12 @@ typedef enum
     FLDCAMERA_TYPE_0
 } FldCameraType;
 
+typedef enum
+{
+    FLDCAMERA_STATE_UPDATE,
+    FLDCAMERA_STATE_IDLE
+} FldCameraState;
+
 // 112 bytes. Content of a '.CMR' file
 typedef struct CmrFile
 {
@@ -26,7 +32,8 @@ typedef struct CmrFile
 // 208 bytes. Work Data for "field camera controler" task
 typedef struct FldCamera
 {
-    u8 unkData1[0x08];
+    u32 state;                    // 0x00. See 'FldCameraState' enum
+    u32 flags;                    // 0x04. See 'FLDCAMERA_FLAG_*'
     u32 type;                     // 0x08
     RwFrame* frame;               // 0x0c. Main frame of the field camera
     RwFrame* frame2;              // 0x10. Parent of the parent of RwCamera (idk why)
