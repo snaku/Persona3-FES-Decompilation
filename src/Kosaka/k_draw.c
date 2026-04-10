@@ -33,3 +33,15 @@ KwlnTask* K_Draw_CreateCylinderTask(KwlnTask* parent)
                                           K_Draw_DestroyCylinderTask,
                                           work);
 }
+
+// FUN_001a48e0
+void K_Draw_SetCylinderDrawEnabled(KwlnTask* cylinderTask, u32 drawEnabled)
+{
+    ((CylinderDrawWork*)cylinderTask->workData)->drawEnabled = drawEnabled;
+}
+
+// FUN_001a48f0
+void K_Draw_SetCylinderPos(KwlnTask* cylinderTask, const RwV3d* pos)
+{
+    ((CylinderDrawWork*)cylinderTask->workData)->pos = *pos;
+}

@@ -9,12 +9,14 @@ typedef struct KwlnTask KwlnTask;
 // 24 bytes
 typedef struct CylinderDrawWork
 {
-    u32 shouldDraw; // 0x00
-    RwV3d pos;      // 0x04
-    f32 radius;     // 0x10
-    f32 height;     // 0x14
+    u32 drawEnabled; // 0x00
+    RwV3d pos;       // 0x04
+    f32 radius;      // 0x10
+    f32 height;      // 0x14
 } CylinderDrawWork;
 
 KwlnTask* K_Draw_CreateCylinderTask(KwlnTask* parent);
+void K_Draw_SetCylinderDrawEnabled(KwlnTask* cylinderTask, u32 drawEnabled);
+void K_Draw_SetCylinderPos(KwlnTask* cylinderTask, const RwV3d* pos);
 
 #endif

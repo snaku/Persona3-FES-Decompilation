@@ -38,7 +38,7 @@ typedef struct FldFrame
 // 4 bytes. Task data for a 'collis sphere' task
 typedef struct CollisSphereDebug
 {
-    u32 debugDraw; // 0x00
+    u32 drawEnabled; // 0x00
 } CollisSphereDebug;
 
 f32 K_FldFrame_GetSphereCollisRadius(KwlnTask* collisCtlTask);
