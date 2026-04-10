@@ -57,3 +57,45 @@ void K_Draw_SetCylinderHeight(KwlnTask* cylinderTask, f32 height)
 {
     ((CylinderDrawWork*)cylinderTask->workData)->height = height;
 }
+
+// FUN_001a4c10
+void* K_Draw_UpdatePositionTask(KwlnTask* positionTask)
+{
+    // TODO
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001a4ca0
+void K_Draw_DestroyPositionTask(KwlnTask* positionTask)
+{
+    RW_FREE(positionTask->workData);
+}
+
+// FUN_001a4cd0
+KwlnTask* K_Draw_CreatePositionTask(KwlnTask* parent)
+{
+    PositionDrawWork* work;
+    KwlnTask* positionTask;
+
+    work = RW_CALLOC(1, sizeof(PositionDrawWork), 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    positionTask = kwlnTaskCreate(parent,
+                                  "position draw",
+                                  4174,
+                                  K_Draw_UpdatePositionTask,
+                                  K_Draw_DestroyPositionTask,
+                                  work);
+
+    RwMatrixSetIdentity(&work->mat);
+    work->color.r = 255;
+    work->color.g = 0;
+    work->color.b = 0;
+    work->color.a = 255;
+
+    return positionTask;
+}

@@ -15,10 +15,20 @@ typedef struct CylinderDrawWork
     f32 height;      // 0x14
 } CylinderDrawWork;
 
+// 80 bytes
+typedef struct PositionDrawWork
+{
+    RwMatrix mat;     // 0x00
+    RwRGBA color;     // 0x44
+    u8 unkData[0x0c];
+} PositionDrawWork;
+
 KwlnTask* K_Draw_CreateCylinderTask(KwlnTask* parent);
 void K_Draw_SetCylinderDrawEnabled(KwlnTask* cylinderTask, u32 drawEnabled);
 void K_Draw_SetCylinderCenter(KwlnTask* cylinderTask, const RwV3d* center);
 void K_Draw_SetCylinderRadius(KwlnTask* cylinderTask, f32 radius);
 void K_Draw_SetCylinderHeight(KwlnTask* cylinderTask, f32 height);
+
+KwlnTask* K_Draw_CreatePositionTask(KwlnTask* parent);
 
 #endif
