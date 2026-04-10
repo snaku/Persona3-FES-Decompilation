@@ -30,5 +30,8 @@ void K_Draw_SetCylinderRadius(KwlnTask* cylinderTask, f32 radius);
 void K_Draw_SetCylinderHeight(KwlnTask* cylinderTask, f32 height);
 
 KwlnTask* K_Draw_CreatePositionTask(KwlnTask* parent);
+void K_Draw_SetPositionColor(KwlnTask* positionTask, const RwRGBA* color);
+void K_Draw_CopyPositionCenter(RwV3d* dst, KwlnTask* positionTask);
+RwMatrix* K_Draw_GetPositionMatrix(KwlnTask* positionTask);
 
 #endif

@@ -99,3 +99,24 @@ KwlnTask* K_Draw_CreatePositionTask(KwlnTask* parent)
 
     return positionTask;
 }
+
+// FUN_001a4dc0
+void K_Draw_SetPositionColor(KwlnTask* positionTask, const RwRGBA* color)
+{
+    ((PositionDrawWork*)positionTask->workData)->color = *color;
+}
+
+// FUN_001a4df0
+void K_Draw_CopyPositionCenter(RwV3d* dst, KwlnTask* positionTask)
+{
+    PositionDrawWork* work = (PositionDrawWork*)positionTask->workData;
+    RwV3d unsused = {0};
+
+    *dst = work->mat.pos;
+}
+
+// FUN_001a4e50
+RwMatrix* K_Draw_GetPositionMatrix(KwlnTask* positionTask)
+{
+    return &((PositionDrawWork*)positionTask->workData)->mat;
+}
