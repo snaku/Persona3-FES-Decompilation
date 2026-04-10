@@ -52,7 +52,7 @@ void K_FldFrame_CopyPos(RwV3d* dst, KwlnTask* collisCtlTask)
 }
 
 // FUN_001addf0
-void K_FldFrame_MoveInDir(f32 speed, KwlnTask* collisCtlTask, const RwV3d* normalizedDir)
+void K_FldFrame_MoveInDir(f32 dist, KwlnTask* collisCtlTask, const RwV3d* normalizedDir)
 {
     FldFrame* fldFrame;
     RwV3d velocity;
@@ -62,11 +62,11 @@ void K_FldFrame_MoveInDir(f32 speed, KwlnTask* collisCtlTask, const RwV3d* norma
 
     if (fldFrame->state == FLDFRAME_STATE_NOTDIRTY)
     {
-        velocity.x *= speed;
-        velocity.y *= speed;
-        velocity.z *= speed;
+        velocity.x *= dist;
+        velocity.y *= dist;
+        velocity.z *= dist;
         
-        fldFrame->totalDist += (u32)speed;
+        fldFrame->totalDist += (u32)dist;
         fldFrame->velocity = velocity;
 
         fldFrame->state = FLDFRAME_STATE_DIRTY;
@@ -74,7 +74,7 @@ void K_FldFrame_MoveInDir(f32 speed, KwlnTask* collisCtlTask, const RwV3d* norma
 }
 
 // FUN_001adec0
-void K_FldFrame_MoveForward(f32 speed, KwlnTask* collisCtlTask)
+void K_FldFrame_MoveForward(f32 dist, KwlnTask* collisCtlTask)
 {
     FldFrame* fldFrame = FLDFRAME_GET(collisCtlTask);
     RwV3d velocity = {0};
@@ -84,11 +84,11 @@ void K_FldFrame_MoveForward(f32 speed, KwlnTask* collisCtlTask)
         velocity = mdlGetMatrix(fldFrame->mdl)->at;
         RwV3dNormalize(&velocity, &velocity);
         
-        velocity.x *= speed;
-        velocity.y *= speed;
-        velocity.z *= speed;
+        velocity.x *= dist;
+        velocity.y *= dist;
+        velocity.z *= dist;
 
-        fldFrame->totalDist += (u32)speed;
+        fldFrame->totalDist += (u32)dist;
         fldFrame->velocity = velocity;
 
         fldFrame->state = FLDFRAME_STATE_DIRTY;

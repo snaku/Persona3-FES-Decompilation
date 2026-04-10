@@ -41,7 +41,19 @@ void K_Draw_SetCylinderDrawEnabled(KwlnTask* cylinderTask, u32 drawEnabled)
 }
 
 // FUN_001a48f0
-void K_Draw_SetCylinderPos(KwlnTask* cylinderTask, const RwV3d* pos)
+void K_Draw_SetCylinderCenter(KwlnTask* cylinderTask, const RwV3d* center)
 {
-    ((CylinderDrawWork*)cylinderTask->workData)->pos = *pos;
+    ((CylinderDrawWork*)cylinderTask->workData)->center = *center;
+}
+
+// FUN_001a4920
+void K_Draw_SetCylinderRadius(KwlnTask* cylinderTask, f32 radius)
+{
+    ((CylinderDrawWork*)cylinderTask->workData)->radius = radius;
+}
+
+// FUN_001a4930
+void K_Draw_SetCylinderHeight(KwlnTask* cylinderTask, f32 height)
+{
+    ((CylinderDrawWork*)cylinderTask->workData)->height = height;
 }
