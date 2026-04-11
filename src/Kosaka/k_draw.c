@@ -1,10 +1,21 @@
 #include "Kosaka/k_draw.h"
 #include "kwln/kwlnTask.h"
+#include "kwln/kwln.h"
+#include "Primitive/primitive.h"
+
+static RwRGBA sCylinderColor = {0, 168, 168, 168}; // 007cc1b8
 
 // FUN_001a47e0
 void* K_Draw_UpdateCylinderTask(KwlnTask* cylinderTask)
 {
-    // TODO
+    CylinderDrawWork* work;
+
+    work = (CylinderDrawWork*)cylinderTask->workData;
+
+    if (work->drawEnabled)
+    {
+        primCylinderLine3D(&work->center, work->radius, work->height, &sCylinderColor, 1);
+    }
 
     return KWLNTASK_CONTINUE;
 }
