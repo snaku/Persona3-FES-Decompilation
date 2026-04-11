@@ -2,12 +2,9 @@
 #define KWLN_H
 
 #include "Utils.h"
+#include "rw/rpworld.h"
 
 typedef struct KwlnTask KwlnTask;
-
-typedef struct RpLight RpLight;
-typedef struct RwCamera RwCamera;
-typedef struct RwRGBA RwRGBA;
 
 extern u32 gFogEnabled;
 extern u8 gFogRed;
@@ -20,5 +17,15 @@ RpLight* kwlnGetDirectionalLight();
 RwCamera* kwlnGetMainCamera();
 RwRGBA* kwlnGetClearColor();
 void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a);
+
+inline RwCamera* kwlnCameraBeginUpdate()
+{
+    return RwCameraBeginUpdate(kwlnGetMainCamera());
+}
+
+inline RwCamera* kwlnCameraEndUpdate()
+{
+    return RwCameraEndUpdate(kwlnGetMainCamera());
+}
 
 #endif

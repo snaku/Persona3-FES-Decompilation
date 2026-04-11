@@ -237,7 +237,7 @@ void scrSetFloatReturnVal(f32 retVal)
 u32 scrGetCurrScriptLabelOffset(s32 lblIdx)
 {
     K_ASSERT(lblIdx > 0, 1067);
-    K_ASSERT(gCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount > lblIdx, 1067);
+    K_ASSERT(gCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount > lblIdx, 1068);
 
     return gCurrScript->labelsContent[lblIdx].offset;
 }

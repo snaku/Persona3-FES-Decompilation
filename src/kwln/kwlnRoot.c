@@ -69,8 +69,7 @@ void* kwlnRootUpdate2DDrawPreEndTask(KwlnTask* drawBegin2dPETask)
 // FUN_00198b20
 void* kwlnRootUpdate2DDrawEndTask(KwlnTask* drawEnd2dTask)
 {
-    RwCamera* camera = kwlnGetMainCamera();
-    RwCameraEndUpdate(camera);
+    kwlnCameraEndUpdate();
 
     return KWLNTASK_CONTINUE;
 }
@@ -107,8 +106,6 @@ void* kwlnRootUpdate3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
 // FUN_00198d20
 void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 {
-    RwCamera* camera;
-
     if (gFogEnabled)
     {
         RWRENDERSTATE_SET(rwRENDERSTATEFOGENABLE, true);
@@ -116,8 +113,7 @@ void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
         RWRENDERSTATE_SET(rwRENDERSTATEFOGTYPE, rwFOGTYPE1);
     }
 
-    camera = kwlnGetMainCamera();
-    RwCameraEndUpdate(camera);
+    kwlnCameraEndUpdate();
 
     return KWLNTASK_CONTINUE;
 }
