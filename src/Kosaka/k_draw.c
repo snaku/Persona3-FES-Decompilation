@@ -72,7 +72,17 @@ void K_Draw_SetCylinderHeight(KwlnTask* cylinderTask, f32 height)
 // FUN_001a4c10
 void* K_Draw_UpdatePositionTask(KwlnTask* positionTask)
 {
-    // TODO
+    PositionDrawWork* work;
+
+    work = (PositionDrawWork*)positionTask->workData;
+
+    if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+    {
+        primAxisLine3D(60.0f, &work->mat, 1);
+        primSphereLine3D(20.0f, &work->mat.pos, &work->color, 1);
+
+        RwCameraEndUpdate(kwlnGetMainCamera());
+    }
 
     return KWLNTASK_CONTINUE;
 }
