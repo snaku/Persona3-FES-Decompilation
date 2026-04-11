@@ -33,5 +33,7 @@ KwlnTask* K_Draw_CreatePositionTask(KwlnTask* parent);
 void K_Draw_SetPositionColor(KwlnTask* positionTask, const RwRGBA* color);
 void K_Draw_CopyPositionCenter(RwV3d* dst, KwlnTask* positionTask);
 RwMatrix* K_Draw_GetPositionMatrix(KwlnTask* positionTask);
+void K_Draw_MovePositionInDir(f32 dist, KwlnTask* positionTask, const RwV3d* dir);
+void K_Draw_RotatePosition(f32 angle, KwlnTask* positionTask, const RwV3d* axis);
 
 #endif

@@ -120,3 +120,37 @@ RwMatrix* K_Draw_GetPositionMatrix(KwlnTask* positionTask)
 {
     return &((PositionDrawWork*)positionTask->workData)->mat;
 }
+
+// FUN_001a4ed0
+void K_Draw_MovePositionInDir(f32 dist, KwlnTask* positionTask, const RwV3d* dir)
+{
+    PositionDrawWork* work;
+    RwV3d translation;
+
+    work = (PositionDrawWork*)positionTask->workData;
+
+    translation.x = dir->x * dist;
+    translation.y = dir->y * dist;
+    translation.z = dir->z * dist;
+
+    RwMatrixTranslate(&work->mat, &translation, rwCOMBINEPOSTCONCAT);
+}
+
+// FUN_001a4f40
+void K_Draw_RotatePosition(f32 angle, KwlnTask* positionTask, const RwV3d* axis)
+{
+    PositionDrawWork* work;
+    RwV3d originalPos;
+    RwV3d negPos;
+
+    work = (PositionDrawWork*)positionTask->workData;
+    originalPos = work->mat.pos;
+
+    negPos.x = originalPos.x * -1.0f;
+    negPos.y = originalPos.y * -1.0f;
+    negPos.z = originalPos.z * -1.0f;
+
+    RwMatrixTranslate(&work->mat, &negPos, rwCOMBINEPOSTCONCAT);
+    RwMatrixRotate(&work->mat, axis, angle, rwCOMBINEPOSTCONCAT);
+    RwMatrixTranslate(&work->mat, &originalPos, rwCOMBINEPOSTCONCAT);
+}
