@@ -46,6 +46,23 @@ KwlnTask* K_Draw_CreatePointTask(KwlnTask* parent)
                                           work);
 }
 
+// FUN_001a4770
+void K_Draw_SetPointDrawEnabled(KwlnTask* pointTask, u32 drawEnabled)
+{
+    ((PointDrawWork*)pointTask->workData)->drawEnabled = drawEnabled;
+}
+
+// FUN_001a4780
+void K_Draw_SetPointCenter(KwlnTask* pointTask, const RwV3d* center)
+{
+    ((PointDrawWork*)pointTask->workData)->center = *center;
+}
+
+// FUN_001a47e0
+void K_Draw_SetPointColor(KwlnTask* pointTask, const RwRGBA* color)
+{
+    ((PointDrawWork*)pointTask->workData)->color = *color;
+}
 
 // FUN_001a47e0
 void* K_Draw_UpdateCylinderTask(KwlnTask* cylinderTask)

@@ -32,6 +32,9 @@ typedef struct PositionDrawWork
 } PositionDrawWork;
 
 KwlnTask* K_Draw_CreatePointTask(KwlnTask* parent);
+void K_Draw_SetPointDrawEnabled(KwlnTask* pointTask, u32 drawEnabled);
+void K_Draw_SetPointCenter(KwlnTask* pointTask, const RwV3d* center);
+void K_Draw_SetPointColor(KwlnTask* pointTask, const RwRGBA* color);
 
 KwlnTask* K_Draw_CreateCylinderTask(KwlnTask* parent);
 void K_Draw_SetCylinderDrawEnabled(KwlnTask* cylinderTask, u32 drawEnabled);
