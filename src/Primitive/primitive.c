@@ -1,13 +1,13 @@
 #include "Primitive/primitive.h"
 
 // FUN_00359380. Draw 3 lines representing the XYZ axis
-void primAxisLine3D(f32 scaleFactor, RwMatrix* mat, u32 param_3)
+void primAxisLine3D(const RwMatrix* mat, f32 scaleFactor, u32 param_3)
 {
     // TODO
 }
 
 // FUN_00359b40. Draw a wireframe sphere
-void primSphereLine3D(f32 radius, const RwV3d* center, const RwRGBA* color, u32 param_4)
+void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 param_4)
 {
     // TODO
 }

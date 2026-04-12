@@ -78,8 +78,8 @@ void* K_Draw_UpdatePositionTask(KwlnTask* positionTask)
 
     if (kwlnCameraBeginUpdate() != NULL)
     {
-        primAxisLine3D(60.0f, &work->mat, 1);
-        primSphereLine3D(20.0f, &work->mat.pos, &work->color, 1);
+        primAxisLine3D(&work->mat, 60.0f, 1);
+        primSphereLine3D(&work->mat.pos, 20.0f, &work->color, 1);
 
         kwlnCameraEndUpdate();
     }
