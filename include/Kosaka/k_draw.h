@@ -6,6 +6,14 @@
 
 typedef struct KwlnTask KwlnTask;
 
+// 20 bytes
+typedef struct PointDrawWork
+{
+    u32 drawEnabled; // 0x00
+    RwV3d center;    // 0x04
+    RwRGBA color;    // 0x10
+} PointDrawWork;
+
 // 24 bytes
 typedef struct CylinderDrawWork
 {
@@ -22,6 +30,8 @@ typedef struct PositionDrawWork
     RwRGBA color;     // 0x44
     u8 unkData[0x0c];
 } PositionDrawWork;
+
+KwlnTask* K_Draw_CreatePointTask(KwlnTask* parent);
 
 KwlnTask* K_Draw_CreateCylinderTask(KwlnTask* parent);
 void K_Draw_SetCylinderDrawEnabled(KwlnTask* cylinderTask, u32 drawEnabled);

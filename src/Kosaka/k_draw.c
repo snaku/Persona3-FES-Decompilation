@@ -5,6 +5,48 @@
 
 static RwRGBA sCylinderColor = {0, 168, 168, 168}; // 007cc1b8
 
+// FUN_001a4660
+void* K_Draw_UpdatePointTask(KwlnTask* pointTask)
+{
+    PointDrawWork* work;    
+
+    work = (PointDrawWork*)pointTask->workData;
+
+    if (!work->drawEnabled)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    primSphereLine3D(&work->center, 10.0f, &work->color, 1);
+
+    return KWLNTASK_CONTINUE;
+}
+
+void K_Draw_DestroyPointTask(KwlnTask* pointTask)
+{
+    RW_FREE(pointTask->workData);
+}
+
+// FUN_001a46f0. Tiny sphere
+KwlnTask* K_Draw_CreatePointTask(KwlnTask* parent)
+{
+    PointDrawWork* work;
+
+    work = RW_CALLOC(1, sizeof(PointDrawWork), 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    return kwlnTaskCreateWithAutoPriority(parent,
+                                          2109,
+                                          "draw point",
+                                          K_Draw_UpdatePointTask,
+                                          K_Draw_DestroyPointTask,
+                                          work);
+}
+
+
 // FUN_001a47e0
 void* K_Draw_UpdateCylinderTask(KwlnTask* cylinderTask)
 {
