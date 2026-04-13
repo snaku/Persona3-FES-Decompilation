@@ -9,8 +9,6 @@ const f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where
 
 static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
 
-u8 mdlStreamRead(Model* mdl);
-
 void mdlStreamInit(Model* mdl);
 void mdlStreamSetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd);
 void mdlStreamRequestCdvd(Model* mdl, const char* path);
@@ -135,6 +133,12 @@ u8 mdlStreamRead(Model* mdl)
     // TODO
 
     return true;
+}
+
+// FUN_003174e0
+void mdlDestroy(Model* mdl)
+{
+    // TODO
 }
 
 // FUN_00318870

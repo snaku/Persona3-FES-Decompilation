@@ -15,14 +15,14 @@ typedef struct HCdvd HCdvd;
 #define MDL_READASYNC 0x00
 #define MDL_READSYNC  0x01
 
-#define MDL_FLAG_FULLSHADOW   (1 << 0)  // 0x01
-#define MDL_FLAG_NODRAW       (1 << 1)  // 0x02.   Don't draw the model
-#define MDL_FLAG_ZTEST        (1 << 3)  // 0x08.   Depth testing
-#define MDL_FLAG_ZWRITE       (1 << 4)  // 0x10
-#define MDL_FLAG_CULLFRONT    (1 << 6)  // 0x40.   Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
-#define MDL_FLAG_FOG          (1 << 8)  // 0x100.  Enable fog for the model
-#define MDL_FLAG_STREAMDONE   (1 << 12) // 0x1000
-#define MDL_FLAG_STREAMSYNC (1 << 14) // 0x4000. Synchronous stream read 
+#define MDL_FLAG_FULLSHADOW  (1 << 0)  // 0x01
+#define MDL_FLAG_NODRAW      (1 << 1)  // 0x02.   Don't draw the model
+#define MDL_FLAG_ZTEST       (1 << 3)  // 0x08.   Depth testing
+#define MDL_FLAG_ZWRITE      (1 << 4)  // 0x10
+#define MDL_FLAG_CULLFRONT   (1 << 6)  // 0x40.   Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
+#define MDL_FLAG_FOG         (1 << 8)  // 0x100.  Enable fog for the model
+#define MDL_FLAG_STREAMDONE  (1 << 12) // 0x1000
+#define MDL_FLAG_STREAMSYNC  (1 << 14) // 0x4000. Synchronous stream read
 
 #define MDL_LOOKAT_FLAG_XYZCS    (1 << 5) // 0x20. Cutscenes
 #define MDL_LOOKAT_FLAG_XYZ      (1 << 6) // 0x40
@@ -169,6 +169,10 @@ Model* mdlMngSearch(u16 type, u16 id, u16 flags);
 Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead);
 Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 cdvdRead);
 Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead);
+
+u8 mdlStreamRead(Model* mdl);
+
+void mdlDestroy(Model* mdl);
 
 f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx);
 f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
