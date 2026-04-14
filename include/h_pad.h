@@ -3,6 +3,21 @@
 
 #include "Utils.h"
 
+#define HPAD_PORT1   HPAD_PROCESSED_PORT1
+#define HPAD_PORT2   HPAD_PROCESSED_PORT2 // Debug only
+#define HPAD_MAXPORT 2
+
+typedef enum
+{
+    HPAD_PROCESSED_PORT1,
+    HPAD_PROCESSED_PORT2,
+
+    HPAD_WORK_PORT1,
+    HPAD_WORK_PORT2,
+
+    HPAD_INDEX_MAX
+} HPadIndex;
+
 typedef enum
 {
     // TODO
@@ -36,6 +51,8 @@ typedef struct HPad
     u8 unkData3[0x12];
 } HPad;
 
-extern HPad gPads[4];
+extern HPad gPads[HPAD_INDEX_MAX];
+
+void H_Pad_Init();
 
 #endif
