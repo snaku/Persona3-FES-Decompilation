@@ -3,6 +3,30 @@
 // 00960070
 RwGlobals rwGlobals;
 
+// FUN_004c2cc0
+RwBool RwEngineGetMatrixTolerances(RwMatrixTolerance* const tolerance)
+{
+    // TODO
+
+    return true;
+}
+
+// FUN_004c2d20
+RwMatrix* RwMatrixOptimize(RwMatrix* matrix, const RwMatrixTolerance* tolerance)
+{
+    // TODO
+
+    return NULL;
+}
+
+// FUN_004c2f10
+RwMatrix* RwMatrixUpdate(RwMatrix* matrix)
+{
+    // TODO
+
+    return NULL;
+}
+
 // FUN_004c2f30
 RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2)
 {

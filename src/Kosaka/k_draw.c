@@ -201,6 +201,21 @@ RwMatrix* K_Draw_GetPositionMatrix(KwlnTask* positionTask)
     return &((PositionDrawWork*)positionTask->workData)->mat;
 }
 
+// FUN_001a4e60. Dumb name ngl
+void K_Draw_SetPositionPos(KwlnTask* positionTask, const RwV3d* pos)
+{
+    PositionDrawWork* work;
+    RwMatrixTolerance matTolerance;
+
+    work = (PositionDrawWork*)positionTask->workData;
+
+    work->mat.pos = *pos;
+
+    RwEngineGetMatrixTolerances(&matTolerance);
+    RwMatrixOptimize(&work->mat, &matTolerance);
+    RwMatrixUpdate(&work->mat);
+}
+
 // FUN_001a4ed0
 void K_Draw_MovePositionInDir(f32 dist, KwlnTask* positionTask, const RwV3d* dir)
 {

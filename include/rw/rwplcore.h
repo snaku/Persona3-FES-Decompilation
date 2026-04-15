@@ -112,6 +112,14 @@ typedef struct RwMatrixTag
     RwUInt32 pad3;  // 0x3c
 } RwMatrix;
 
+// 12 bytes
+typedef struct RwMatrixTolerance
+{
+    RwReal normal;     // 0x00
+    RwReal orthogonal; // 0x04
+    RwReal identity;   // 0x08
+} RwMatrixTolerance;
+
 typedef enum
 {
     rwCOMBINEREPLACE = 0,
@@ -265,6 +273,9 @@ typedef struct
 
 extern RwGlobals rwGlobals; // not sure where to place this
 
+RwBool RwEngineGetMatrixTolerances(RwMatrixTolerance* const tolerance);
+RwMatrix* RwMatrixOptimize(RwMatrix* matrix, const RwMatrixTolerance* tolerance);
+RwMatrix* RwMatrixUpdate(RwMatrix* matrix);
 RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2);
 RwMatrix* RwMatrixRotate(RwMatrix* matrix, const RwV3d* axis, RwReal angle, RwOpCombineType combineOp);
 RwMatrix* RwMatrixTranslate(RwMatrix* matrix, const RwV3d* translation, RwOpCombineType combineOp);
