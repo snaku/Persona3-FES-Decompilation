@@ -1,8 +1,8 @@
 #include "h_pad.h"
 #include "temporary.h"
 
-static HPad sWorkPads[HPAD_PORT_MAX]; // 007e09b0
-HPad gPads[HPAD_PORT_MAX];            // 007e0940
+HPad gWorkPads[HPAD_PORT_MAX]; // 007e09b0
+HPad gPads[HPAD_PORT_MAX];     // 007e0940
 
 static u_long128 sAddrPort1[scePadDmaBufferMax] __attribute__((aligned(64))); // 007e0840
 static u_long128 sAddrPort2[scePadDmaBufferMax] __attribute__((aligned(64))); // 007e0740
@@ -15,8 +15,8 @@ void H_Pad_Init()
     s32 i;
     HPad* workPads;
 
-    memset(&sWorkPads[HPAD_PORT_1], 0, sizeof(HPad));
-    memset(&sWorkPads[HPAD_PORT_2], 0, sizeof(HPad));
+    memset(&gWorkPads[HPAD_PORT_1], 0, sizeof(HPad));
+    memset(&gWorkPads[HPAD_PORT_2], 0, sizeof(HPad));
 
     memset(&gPads[HPAD_PORT_1], 0, sizeof(HPad));
     memset(&gPads[HPAD_PORT_2], 0, sizeof(HPad));
@@ -27,7 +27,7 @@ void H_Pad_Init()
     
     // TODO: Find a way to force i in a3 reg and 3 in a0 reg
     i = 0;
-    workPads = sWorkPads;
+    workPads = gWorkPads;
     for (; i < HPAD_PORT_MAX; i++)
     {
         workPads[i].port = i;

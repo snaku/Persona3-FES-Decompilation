@@ -1,23 +1,28 @@
 #include "kwln/kwlnTask.h"
+#include "kwln/kwln.h"
 #include "Kosaka/k_assert.h"
 #include "g_data.h"
 #include "h_malloc.h"
+#include "h_pad.h"
 #include "temporary.h"
 
-static KwlnTask* sStagedTaskHead;    // 007ce064. Head of tasks in 'KWLNTASK_STATE_STAGED' state
-static KwlnTask* sStagedTaskTail;    // 007ce068. Tail of tasks in 'KWLNTASK_STATE_STAGED' state
-static u32 sNumTaskStaged;           // 007ce06c. Total number of task in 'KWLNTASK_STATE_STAGED' state
+static KwlnTask* sTaskUpdating; // 007ce088. Current task updating
 
-static KwlnTask* sDestroyTaskHead;   // 007ce070. Head of tasks in 'KWLNTASK_STATE_DESTROY' state
-static KwlnTask* sDestroyTaskTail;   // 007ce074. Tail of tasks in 'KWLNTASK_STATE_DESTROY' state
-static u32 sNumTaskDestroy;          // 007ce078. Total number of task in 'KWLNTASK_STATE_DESTROY' state
-
-static KwlnTask* sRunningTaskHead;   // 007ce07c. Head of tasks in 'KWLNTASK_STATE_RUNNING' state
-static KwlnTask* sRunningTaskTail;   // 007ce080. Tail of tasks in 'KWLNTASK_STATE_RUNNING' state
 static u32 sNumTaskRunning;          // 007ce084. Total number of task in 'KWLNTASK_STATE_RUNNING' state
+static KwlnTask* sRunningTaskTail;   // 007ce080. Tail of tasks in 'KWLNTASK_STATE_RUNNING' state
+static KwlnTask* sRunningTaskHead;   // 007ce07c. Head of tasks in 'KWLNTASK_STATE_RUNNING' state
+
+static u32 sNumTaskDestroy;          // 007ce078. Total number of task in 'KWLNTASK_STATE_DESTROY' state
+static KwlnTask* sDestroyTaskTail;   // 007ce074. Tail of tasks in 'KWLNTASK_STATE_DESTROY' state
+static KwlnTask* sDestroyTaskHead;   // 007ce070. Head of tasks in 'KWLNTASK_STATE_DESTROY' state
+
+static u32 sNumTaskStaged;           // 007ce06c. Total number of task in 'KWLNTASK_STATE_STAGED' state
+static KwlnTask* sStagedTaskTail;    // 007ce068. Tail of tasks in 'KWLNTASK_STATE_STAGED' state
+static KwlnTask* sStagedTaskHead;    // 007ce064. Head of tasks in 'KWLNTASK_STATE_STAGED' state
 
 void kwlnTaskDestroy(KwlnTask* task);
 void kwlnTaskDetachAllChildren(KwlnTask* task);
+void kwlnTaskDestroyHierarchy(KwlnTask* task);
 
 // FUN_001939d0. Remove a task from a list by its current state
 void kwlnTaskRemoveFromList(KwlnTask* task)
@@ -218,16 +223,14 @@ void kwlnTaskUpdateAll()
     KwlnTask* currTask = sRunningTaskHead;
     KwlnTask* cursor;
     KwlnTask* prevTask;
-    u8 updateRes;
 
     if (sRunningTaskHead != NULL)
     {
         while (currTask != NULL)
         {
             prevTask = currTask->prev;
-            updateRes = kwlnTaskUpdate(currTask);
 
-            if (!updateRes)
+            if (!kwlnTaskUpdate(currTask))
             {
                 currTask = sRunningTaskHead;
 

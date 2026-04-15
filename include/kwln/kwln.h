@@ -6,11 +6,11 @@
 
 typedef struct KwlnTask KwlnTask;
 
-extern u32 gFogEnabled;
-extern u8 gFogRed;
-extern u8 gFogBlue;
-extern u8 gFogGreen;
 extern u8 gFogAlpha;
+extern u8 gFogGreen;
+extern u8 gFogBlue;
+extern u8 gFogRed;
+extern u32 gFogEnabled;
 
 RpLight* kwlnGetAmbientLight();
 RpLight* kwlnGetDirectionalLight();

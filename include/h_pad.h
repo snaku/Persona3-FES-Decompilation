@@ -64,6 +64,7 @@ typedef struct HPad
     u8 unkData3[0x12];
 } HPad;
 
+extern HPad gWorkPads[HPAD_PORT_MAX];
 extern HPad gPads[HPAD_PORT_MAX];
 
 void H_Pad_Init();
