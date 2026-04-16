@@ -4,6 +4,7 @@
 #include "Utils.h"
 
 void H_Free(void* memory);
-void* H_Malloc(u32 size);
+void* H_Malloc(size_t size);
+void* H_Calloc(u32 count, size_t size);
 
 #endif
