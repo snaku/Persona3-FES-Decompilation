@@ -224,7 +224,7 @@ KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scrip
     ScrData* scr;
     KwlnTask* scrTask;
 
-    script = (void*)H_Malloc(scriptSize);
+    script = H_Malloc(scriptSize);
     memset(script, 0, scriptSize);
     memcpy(script, scrMemory, scriptSize);
 
@@ -251,13 +251,13 @@ void scrDestroy(ScrData* scr)
 
     if (scr->localInt != NULL)
     {
-        H_Free((uintptr_t)scr->localInt);
+        H_Free(scr->localInt);
         FUN_005225a8("free local int  memory\n");
     }
 
     if (scr->localFloat != NULL)
     {
-        H_Free((uintptr_t)scr->localFloat);
+        H_Free(scr->localFloat);
         FUN_005225a8("free local float  memory\n");
     }
 
@@ -269,7 +269,7 @@ void scrDestroy(ScrData* scr)
 
     if (scr->scriptMemory != NULL)
     {
-        H_Free((uintptr_t)scr->scriptMemory);
+        H_Free(scr->scriptMemory);
         FUN_005225a8("free script memory\n");
     }
 
@@ -295,7 +295,7 @@ void scrDestroy(ScrData* scr)
     scr->next = NULL;
     sScrNum--;
 
-    H_Free((uintptr_t)scr);
+    H_Free(scr);
 }
 
 // FUN_0035c200

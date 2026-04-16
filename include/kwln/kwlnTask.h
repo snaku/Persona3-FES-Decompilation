@@ -30,12 +30,12 @@ typedef void  (*KwlnTaskDestroyFunc)(KwlnTask* task);
 // 104 bytes
 struct KwlnTask
 {
-    char taskName[24];            // 0x00
-    u32 nameChkSum;               // 0x18. Sum of each char in 'taskName'
+    char name[24];                // 0x00
+    u32 nameHash;                 // 0x18. Sum of each char of the name
     u32 stateAndFlags;            // 0x1c. bits 0 to 3 are for state, bits 4 to 31 are maybe for flags. See enum 'KwlnTaskState'
     u32 priority;                 // 0x20
     u32 unk_24;                   // 0x24
-    u32 taskTimer;                // 0x28. Number of frames since the creation of the task
+    u32 timer;                    // 0x28. Number of frames since the creation of the task
     s32 runningDelay;             // 0x2c. Number of frames until the task can transition from state 'CREATED' to 'RUNNING'
     s32 destroyDelay;             // 0x30. Number of frames until task can be destroyed
     KwlnTaskUpdateFunc update;    // 0x34. return KWLN_TASK_CONTINUE to continue, return KWLN_TASK_STOP to destroy
@@ -55,10 +55,10 @@ struct KwlnTask
 
 void kwlnTaskUpdateAll();
 u8 kwlnTaskMain();
-KwlnTask* kwlnTaskCreate(KwlnTask* parentTask, const char* taskName, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);
+KwlnTask* kwlnTaskCreate(KwlnTask* parentTask, const char* name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);
 KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask, u32 priority, const char* name, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);
-KwlnTask* kwlnTaskInit(const char* taskName, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);
-KwlnTask* kwlnTaskInitEx(const char* taskName, u32 priority, s32 runningDelay, s32 destroyDelay, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);
+KwlnTask* kwlnTaskInit(const char* name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);
+KwlnTask* kwlnTaskInitEx(const char* name, u32 priority, s32 runningDelay, s32 destroyDelay, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);
 u8 kwlnTaskDestroyWithHierarchyByName(const char* name);
 u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task);
 u32 kwlnTaskGetState(KwlnTask* task);

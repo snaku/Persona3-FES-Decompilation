@@ -6,19 +6,24 @@
 #include "h_pad.h"
 #include "temporary.h"
 
+#define KWLNTASK_MAXINLIST 10000
+
 static KwlnTask* sTaskUpdating; // 007ce088. Current task updating
 
-static u32 sNumTaskRunning;          // 007ce084. Total number of task in 'KWLNTASK_STATE_RUNNING' state
-static KwlnTask* sRunningTaskTail;   // 007ce080. Tail of tasks in 'KWLNTASK_STATE_RUNNING' state
-static KwlnTask* sRunningTaskHead;   // 007ce07c. Head of tasks in 'KWLNTASK_STATE_RUNNING' state
+// for 'KWLNTASK_STATE_RUNNING' state
+static u32 sNumTaskRunning;          // 007ce084
+static KwlnTask* sRunningTaskTail;   // 007ce080
+static KwlnTask* sRunningTaskHead;   // 007ce07c
 
-static u32 sNumTaskDestroy;          // 007ce078. Total number of task in 'KWLNTASK_STATE_DESTROY' state
-static KwlnTask* sDestroyTaskTail;   // 007ce074. Tail of tasks in 'KWLNTASK_STATE_DESTROY' state
-static KwlnTask* sDestroyTaskHead;   // 007ce070. Head of tasks in 'KWLNTASK_STATE_DESTROY' state
+// for 'KWLNTASK_STATE_DESTROY' state
+static u32 sNumTaskDestroy;          // 007ce078
+static KwlnTask* sDestroyTaskTail;   // 007ce074
+static KwlnTask* sDestroyTaskHead;   // 007ce070
 
-static u32 sNumTaskStaged;           // 007ce06c. Total number of task in 'KWLNTASK_STATE_STAGED' state
-static KwlnTask* sStagedTaskTail;    // 007ce068. Tail of tasks in 'KWLNTASK_STATE_STAGED' state
-static KwlnTask* sStagedTaskHead;    // 007ce064. Head of tasks in 'KWLNTASK_STATE_STAGED' state
+// for 'KWLNTASK_STATE_STAGED' state
+static u32 sNumTaskStaged;           // 007ce06c
+static KwlnTask* sStagedTaskTail;    // 007ce068
+static KwlnTask* sStagedTaskHead;    // 007ce064
 
 void kwlnTaskDestroy(KwlnTask* task);
 void kwlnTaskDetachAllChildren(KwlnTask* task);
@@ -110,10 +115,12 @@ void kwlnTaskAddToList(KwlnTask* task)
                 sStagedTaskHead = task;
                 sStagedTaskTail = task;
                 break;
+
             case KWLNTASK_STATE_RUNNING:
                 sRunningTaskHead = task;
                 sRunningTaskTail = task;
                 break;
+
             case KWLNTASK_STATE_DESTROY:
                 sDestroyTaskHead = task;
                 sDestroyTaskTail = task;
@@ -171,12 +178,14 @@ void kwlnTaskAddToList(KwlnTask* task)
                     task->prev = sStagedTaskTail;
                     sStagedTaskTail = task;
                     break;
+
                 case KWLNTASK_STATE_RUNNING: 
                     sRunningTaskTail->next = task;
                     task->unk_48 = sRunningTaskTail;
                     task->prev = sRunningTaskTail;
                     sRunningTaskTail = task;
                     break;
+
                 case KWLNTASK_STATE_DESTROY: 
                     sDestroyTaskTail->next = task;
                     task->unk_48 = sDestroyTaskTail;
@@ -194,17 +203,17 @@ void kwlnTaskAddToList(KwlnTask* task)
     {
         case KWLNTASK_STATE_STAGED:
             sNumTaskStaged++;
-            K_ASSERT(sNumTaskStaged < 10000, 226);
+            K_ASSERT(sNumTaskStaged < KWLNTASK_MAXINLIST, 226);
             break;
 
         case KWLNTASK_STATE_RUNNING:
             sNumTaskRunning++;
-            K_ASSERT(sNumTaskRunning < 10000, 230);
+            K_ASSERT(sNumTaskRunning < KWLNTASK_MAXINLIST, 230);
             break;
 
         case KWLNTASK_STATE_DESTROY:
             sNumTaskDestroy++;
-            K_ASSERT(sNumTaskDestroy < 10000, 234);
+            K_ASSERT(sNumTaskDestroy < KWLNTASK_MAXINLIST, 234);
             break;
     }
 }
@@ -274,7 +283,7 @@ u8 kwlnTaskUpdate(KwlnTask* task)
         }
     }
 
-    task->taskTimer++;
+    task->timer++;
     sTaskUpdating = NULL;
 
     return true;
@@ -390,7 +399,7 @@ void kwlnTaskDestroy(KwlnTask* task)
 
                 kwlnTaskDetachParent(task);
                 kwlnTaskDetachAllChildren(task);
-                H_Free((uintptr_t)task);
+                H_Free(task);
             }
             break;
     }
@@ -419,7 +428,7 @@ u8 kwlnTaskMain()
             kwlnTaskAddToList(currTask);
 
             currTask->unk_24 = 0;
-            currTask->taskTimer = 0;
+            currTask->timer = 0;
         }
     }
 
@@ -448,7 +457,7 @@ u8 kwlnTaskMain()
             kwlnTaskDetachParent(currTask);
             kwlnTaskDetachAllChildren(currTask);
 
-            H_Free((uintptr_t)currTask);
+            H_Free(currTask);
         }
     }
 
@@ -457,13 +466,13 @@ u8 kwlnTaskMain()
 
 // FUN_00194b20. Create a new task. 'parentTask' can be NULL
 KwlnTask* kwlnTaskCreate(KwlnTask* parentTask,
-                          const char* taskName,
+                          const char* name,
                           u32 priority,
                           KwlnTaskUpdateFunc update,
                           KwlnTaskDestroyFunc destroy,
                           void* workData)
 {
-    KwlnTask* task = kwlnTaskInit(taskName, priority, update, destroy, workData);
+    KwlnTask* task = kwlnTaskInit(name, priority, update, destroy, workData);
     kwlnTaskAddChild(parentTask, task);
 
     return task;
@@ -511,7 +520,7 @@ KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
 }
 
 // FUN_00194c50. Init a new task. See 'kwlnTaskInitEx' for adjustable 'runningDelay' and 'destroyDelay'
-KwlnTask* kwlnTaskInit(const char* taskName,
+KwlnTask* kwlnTaskInit(const char* name,
                        u32 priority,
                        KwlnTaskUpdateFunc update,
                        KwlnTaskDestroyFunc destroy,
@@ -521,7 +530,7 @@ KwlnTask* kwlnTaskInit(const char* taskName,
     char currChar;
     s32 i;
 
-    K_ASSERT(taskName[0] != '\0', 1022);
+    K_ASSERT(name[0] != '\0', 1022);
 
     task = (KwlnTask*)H_Malloc(sizeof(KwlnTask));
     K_ASSERT(task != NULL, 1032);
@@ -531,29 +540,30 @@ KwlnTask* kwlnTaskInit(const char* taskName,
         return NULL;
     }
     
-    task->nameChkSum = 0;
+    task->nameHash = 0;
     i = 0;
     goto nameLoop;
+
 copyName:
-    currChar = taskName[i];
-    task->nameChkSum += currChar;
+    currChar = name[i];
+    task->nameHash += currChar;
     i++;
     
 nameLoop:
-    currChar = taskName[i];
-    task->taskName[i] = currChar;
+    currChar = name[i];
+    task->name[i] = currChar;
     if (currChar == '\0')
         goto continueInit;
     if (i < 24)
         goto copyName;
     
 continueInit:
-    task->taskName[23] = '\0';
+    task->name[23] = '\0';
     task->stateAndFlags = KWLNTASK_STATE_NULL;
     task->stateAndFlags |= KWLNTASK_STATE_STAGED;
     task->priority = priority;
     task->unk_24 = 0;
-    task->taskTimer = 0;
+    task->timer = 0;
     task->runningDelay = 0;
     task->destroyDelay = 2;
     task->update = update;
@@ -579,14 +589,14 @@ continueInit:
         kwlnTaskAddToList(task);
 
         task->unk_24 = 0;
-        task->taskTimer = 0;
+        task->timer = 0;
     }
 
     return task;
 }
 
 // FUN_00194e10. Init a new task with adjustable 'runningDelay' and 'destroyDelay'
-KwlnTask* kwlnTaskInitEx(const char* taskName,
+KwlnTask* kwlnTaskInitEx(const char* name,
                          u32 priority,
                          s32 runningDelay,
                          s32 destroyDelay,
@@ -598,7 +608,7 @@ KwlnTask* kwlnTaskInitEx(const char* taskName,
     char currChar;
     u32 i;
 
-    K_ASSERT(taskName[0] != '\0', 1101);
+    K_ASSERT(name[0] != '\0', 1101);
 
     task = (KwlnTask*)H_Malloc(sizeof(KwlnTask));
     K_ASSERT(task != NULL, 1109);
@@ -608,30 +618,30 @@ KwlnTask* kwlnTaskInitEx(const char* taskName,
         return NULL;
     }
 
-    task->nameChkSum = 0;
+    task->nameHash = 0;
     i = 0;
     goto nameLoop;
 
 copyName:
-    currChar = taskName[i];
-    task->nameChkSum += currChar;
+    currChar = name[i];
+    task->nameHash += currChar;
     i++;
     
 nameLoop:
-    currChar = taskName[i];
-    task->taskName[i] = currChar;
+    currChar = name[i];
+    task->name[i] = currChar;
     if (currChar == '\0')
         goto continueInit;
     if (i < 24)
         goto copyName;
     
 continueInit:
-    task->taskName[23] = '\0';
+    task->name[23] = '\0';
     task->stateAndFlags = KWLNTASK_STATE_NULL;
     task->stateAndFlags |= KWLNTASK_STATE_STAGED;
     task->priority = priority;
     task->unk_24 = 0;
-    task->taskTimer = 0;
+    task->timer = 0;
     task->runningDelay = runningDelay;
     task->destroyDelay = destroyDelay;
     task->update = update;
@@ -657,7 +667,7 @@ continueInit:
         kwlnTaskAddToList(task);
 
         task->unk_24 = 0;
-        task->taskTimer = 0;
+        task->timer = 0;
     }
 
     return task;
@@ -717,9 +727,10 @@ u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
 
                         kwlnTaskDetachParent(task);
                         kwlnTaskDetachAllChildren(task);
-                        H_Free((uintptr_t)task);
+                        H_Free(task);
                     }
                     break;
+
                 case KWLNTASK_STATE_DESTROY: break;
                 case KWLNTASK_STATE_NULL:    // fallthrough
                 default: 
@@ -740,9 +751,11 @@ u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
                 }
             }
             break;
+
         case KWLNTASK_STATE_DESTROY: 
-            task->destroyDelay = 2; 
+            task->destroyDelay = 2;
             break;
+
         case KWLNTASK_STATE_NULL: // fallthrough
         default:
             K_Abort("ProcessID invalid!!\n", "kwlnTask.c", 1204);
@@ -783,11 +796,12 @@ KwlnTask* kwlnTaskGetTaskByName(const char* name)
     u32 i;
     u32 j;
     u32 k;
-    u32 nameChkSum = 0;
+    u32 nameHash;
     
+    nameHash = 0;
     for (i = 0; name[i] != '\0'; i++)
     {
-        nameChkSum += name[i];
+        nameHash += name[i];
     }
 
     for (j = 0; j < 3; j++)
@@ -803,9 +817,9 @@ KwlnTask* kwlnTaskGetTaskByName(const char* name)
         {
             k = i;
 
-            if (list->nameChkSum == nameChkSum)
+            if (list->nameHash == nameHash)
             {
-                while (k > 0 && name[k-1] == list->taskName[k-1])
+                while (k > 0 && name[k-1] == list->name[k-1])
                 {
                     k--;
                 }
@@ -860,7 +874,7 @@ u8 kwlnTaskExists(KwlnTask* task)
 // FUN_00195520
 u32 kwlnTaskGetTimer(KwlnTask* task)
 {
-    return task->taskTimer;
+    return task->timer;
 }
 
 // FUN_00195530

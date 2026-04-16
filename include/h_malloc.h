@@ -3,7 +3,7 @@
 
 #include "Utils.h"
 
-void H_Free(uintptr_t addr);
-uintptr_t H_Malloc(u32 size);
+void H_Free(void* memory);
+void* H_Malloc(u32 size);
 
 #endif
