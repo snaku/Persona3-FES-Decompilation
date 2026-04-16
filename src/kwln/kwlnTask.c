@@ -212,7 +212,70 @@ void kwlnTaskAddToList(KwlnTask* task)
 // FUN_00193ec0
 u8 kwlnTaskUpdate(KwlnTask* task)
 {
-    // !! TODO !!
+    s32 i;
+    HPad* pad;
+    KwlnTaskUpdateFunc updateFunc;
+    void* updateRes;
+
+    // WIP: Need to do the first if
+
+    sTaskUpdating = task;
+
+    if (task->stateAndFlags & (1 << 4))
+    {
+        memset(gPads, 0, HPAD_PORT_MAX * sizeof(HPad));
+
+        i = 0;
+        pad = gPads;
+        // ???
+        for (; i < HPAD_PORT_MAX; i++)
+        {
+            pad[i].btn[1].justPressed = HPAD_BTN_SQUARE;
+            pad[i].btn[1].released = HPAD_BTN_SQUARE;
+            pad[i].btn[1].justReleased = HPAD_BTN_SQUARE;
+
+            pad[i].lstickX = 128;
+            pad[i].lstickY = 128;
+            pad[i].rstickX = 128;
+            pad[i].rstickY = 128;
+        }
+    }
+    else
+    {
+        memcpy(gPads, &gWorkPads, HPAD_PORT_MAX * sizeof(HPad));
+    }
+
+    updateFunc = task->update;
+    // i don't think 0xFFFFFFFF is KWLNTASK_STOP here
+    if (updateFunc != NULL && updateFunc != (KwlnTaskUpdateFunc)0xFFFFFFFF) 
+    {
+        updateRes = updateFunc(task);
+        if (updateRes != KWLNTASK_CONTINUE)
+        {
+            task->update = updateRes;
+        }
+
+        if (updateRes == KWLNTASK_STOP && 
+           (KWLNTASK_GET_STATE(task) == KWLNTASK_STATE_RUNNING))
+        {
+            kwlnTaskDestroy(task);
+            kwlnTaskDestroyHierarchy(task->child);
+            sTaskUpdating = NULL;
+
+            return false;
+        }
+
+        // no it doesn't use KWLNTASK_GET_STATE here
+        if (task->stateAndFlags == KWLNTASK_STATE_DESTROY)
+        {
+            sTaskUpdating = NULL;
+            
+            return false;
+        }
+    }
+
+    task->taskTimer++;
+    sTaskUpdating = NULL;
 
     return true;
 }
