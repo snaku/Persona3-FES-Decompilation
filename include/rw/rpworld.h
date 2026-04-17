@@ -3,6 +3,8 @@
 
 #include "rw/rwcore.h"
 
+typedef struct RpWorld RpWorld; // TODO
+
 #define rpCLUMP 2
 
 typedef struct RpClump RpClump;

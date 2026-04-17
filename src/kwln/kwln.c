@@ -11,9 +11,18 @@ static u8 sbssPad1[0x03];
 u8 gFogRed;                        // 007ce0d8
 u32 gFogEnabled;                   // 007ce0d4
 static KwlnTask* sRootProcTask;    // 007ce0d0
+u32 gCurrWorldIdx;                 // 007ce0cc. always 0
+static s32 sMainThreadId;          // 007ce0c8
 static RwCamera* sMainCamera;      // 007ce0c0
 static RpLight* sDirectionalLight; // 007ce0ac
 static RpLight* sAmbientLight;     // 007ce0a8
+static RpWorld* sWorlds[2];        // 007ce0a0. Only the first index is used
+
+// FUN_00198540
+RpWorld* kwlnGetWorld(u32 worldIdx)
+{
+    return sWorlds[worldIdx];
+}
 
 // FUN_00198560
 RpLight* kwlnGetAmbientLight()

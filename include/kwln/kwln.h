@@ -12,6 +12,9 @@ extern u8 gFogBlue;
 extern u8 gFogRed;
 extern u32 gFogEnabled;
 
+extern u32 gCurrWorldId;
+
+RpWorld* kwlnGetWorld(u32 worldIdx);
 RpLight* kwlnGetAmbientLight();
 RpLight* kwlnGetDirectionalLight();
 RwCamera* kwlnGetMainCamera();
