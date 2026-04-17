@@ -1,4 +1,5 @@
 #include "h_pad.h"
+#include "sce/libpad.h"
 #include "temporary.h"
 
 HPad gWorkPads[HPAD_PORT_MAX]; // 007e09b0
