@@ -63,6 +63,7 @@ u8 kwlnTaskDestroyWithHierarchyByName(const char* name);
 u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task);
 u32 kwlnTaskGetState(KwlnTask* task);
 KwlnTask* kwlnTaskGetTaskByName(const char* name);
+KwlnTask* kwlnTaskGetUpdating();
 u8 kwlnTaskExists(KwlnTask* task);
 u32 kwlnTaskGetTimer(KwlnTask* task);
 void kwlnTaskSetWorkData(KwlnTask* task, void* workData);

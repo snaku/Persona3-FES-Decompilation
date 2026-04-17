@@ -837,6 +837,12 @@ KwlnTask* kwlnTaskGetTaskByName(const char* name)
     return NULL;
 }
 
+// FUN_00195450. Get the current task updating
+KwlnTask* kwlnTaskGetUpdating()
+{
+    return sTaskUpdating;
+}
+
 // FUN_00195460. Return true if 'task' is in a list
 u8 kwlnTaskExists(KwlnTask* task)
 {
