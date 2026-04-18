@@ -2,23 +2,24 @@
 #define H_PAD_H
 
 #include "Utils.h"
+#include "sce/libpad.h"
 
-#define HPAD_BTN_L2       (1 << 0)  // 0x01
-#define HPAD_BTN_R2       (1 << 1)  // 0x02
-#define HPAD_BTN_L1       (1 << 2)  // 0x04
-#define HPAD_BTN_R1       (1 << 3)  // 0x08
-#define HPAD_BTN_TRIANGLE (1 << 4)  // 0x10
-#define HPAD_BTN_CIRCLE   (1 << 5)  // 0x20
-#define HPAD_BTN_CROSS    (1 << 6)  // 0x40
-#define HPAD_BTN_SQUARE   (1 << 7)  // 0x80
-#define HPAD_BTN_SELECT   (1 << 8)  // 0x100
-#define HPAD_BTN_L3       (1 << 9)  // 0x200
-#define HPAD_BTN_R3       (1 << 10) // 0x400
-#define HPAD_BTN_START    (1 << 11) // 0x800
-#define HPAD_BTN_UP       (1 << 12) // 0x1000
-#define HPAD_BTN_RIGHT    (1 << 13) // 0x2000
-#define HPAD_BTN_DOWN     (1 << 14) // 0x4000
-#define HPAD_BTN_LEFT     (1 << 15) // 0x8000
+#define HPAD_BTN_L2       SCE_PADL2     // 0x01
+#define HPAD_BTN_R2       SCE_PADR2     // 0x02
+#define HPAD_BTN_L1       SCE_PADL1     // 0x04
+#define HPAD_BTN_R1       SCE_PADR1     // 0x08
+#define HPAD_BTN_TRIANGLE SCE_PADRup    // 0x10
+#define HPAD_BTN_CIRCLE   SCE_PADRright // 0x20
+#define HPAD_BTN_CROSS    SCE_PADRdown  // 0x40
+#define HPAD_BTN_SQUARE   SCE_PADRleft  // 0x80
+#define HPAD_BTN_SELECT   SCE_PADselect // 0x100
+#define HPAD_BTN_L3       SCE_PADi      // 0x200
+#define HPAD_BTN_R3       SCE_PADj      // 0x400
+#define HPAD_BTN_START    SCE_PADstart  // 0x800
+#define HPAD_BTN_UP       SCE_PADLup    // 0x1000
+#define HPAD_BTN_RIGHT    SCE_PADLright // 0x2000
+#define HPAD_BTN_DOWN     SCE_PADLdown  // 0x4000
+#define HPAD_BTN_LEFT     SCE_PADLleft  // 0x8000
 
 #define HPAD_CHKBTN_PRESSED(port, btns)     ((gPads[(port)].btn[0].pressed & (btns)) != 0)
 #define HPAD_CHKBTN_JUSTPRESSED(port, btns) ((gPads[(port)].btn[0].justPressed & (btns)) != 0)
