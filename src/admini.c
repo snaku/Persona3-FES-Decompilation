@@ -3,7 +3,6 @@
 #include "Battle/btlMain.h"
 #include "Kosaka/k_assert.h"
 #include "admini.h"
-#include "g_data.h"
 #include "temporary.h"
 
 typedef struct
@@ -247,7 +246,7 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
         if (admini->oldTaskIds[admini->oldTaskIdx] >= ADMINI_TASK_ID_NULL &&
            (admini->oldTasksFlags[admini->oldTaskIdx] & ADMINI_FLAG_CHANGING_TASK))
         {
-            FUN_005225a8("restore sequence!!\n");
+            printf("restore sequence!!\n");
 
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_RESTORE_PREV);
@@ -337,13 +336,13 @@ KwlnTask* Admini_CreateTask()
 // FUN_0027c9e0
 void Admini_TestCall(u8 isRestored, void* workData)
 {
-    FUN_005225a8("+++ call\n");
+    printf("+++ call\n");
 }
 
 // FUN_0027ca10
 s32 Admini_TestExit()
 {
-    FUN_005225a8("+++ exit\n");
+    printf("+++ exit\n");
 
     return 0;
 }
@@ -351,7 +350,7 @@ s32 Admini_TestExit()
 // FUN_0027ca40
 u8 Admini_TestCheck()
 {
-    FUN_005225a8("+++ check\n");
+    printf("+++ check\n");
 
     return true;
 }

@@ -62,17 +62,17 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
 }
 
 // FUN_003b63c0
-u16 MT_Scene_CreateResLightParty(u16 id)
+u16 MT_Scene_CreateResLightParty(u16 resId)
 {
     ResrcManager* resManager;
     u16 resTypeId;
 
-    resTypeId = RESRC_MAKE_TYPEID(id, RESRC_TYPE_LIGHTPARTY);
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTPARTY);
     resManager = gMtScene->resManager;
 
     if (resManager == NULL)
     {
-        FUN_005225a8("not found active resmanager\n");
+        printf("not found active resmanager\n");
         return 0;
     }
 

@@ -3,8 +3,8 @@
 #include "Script/scrTraceCode.h"
 #include "Kosaka/k_assert.h"
 #include "itfMesManager.h"
+#include "h_dbprt.h"
 #include "h_malloc.h"
-#include "g_data.h"
 #include "temporary.h"
 
 static u32 sScrNum;       // 007ce57c
@@ -132,9 +132,9 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
     sScrNum++;
 
     prcdName = prcd->name;
-    FUN_005225a8("procedure start <%s>\n", prcdName);
-    FUN_005225a8("start <%s>\n", prcdName);
-    FUN_001052b0("procedure start <%s>\n", prcdName);
+    printf("procedure start <%s>\n", prcdName);
+    printf("start <%s>\n", prcdName);
+    H_Dbprt_FmtLog("procedure start <%s>\n", prcdName);
 
     return scr;
 }
@@ -245,32 +245,32 @@ KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scrip
 // FUN_0035be30
 void scrDestroy(ScrData* scr)
 {
-    FUN_005225a8(scr->proceduresContent[scr->prcdIdx].name);
-    FUN_005225a8("end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
-    FUN_001052b0("procedure end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
+    printf(scr->proceduresContent[scr->prcdIdx].name);
+    printf("end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
+    H_Dbprt_FmtLog("procedure end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
 
     if (scr->localInt != NULL)
     {
         H_Free(scr->localInt);
-        FUN_005225a8("free local int  memory\n");
+        printf("free local int  memory\n");
     }
 
     if (scr->localFloat != NULL)
     {
         H_Free(scr->localFloat);
-        FUN_005225a8("free local float  memory\n");
+        printf("free local float  memory\n");
     }
 
     if (scr->mesHandleIdx >= 0)
     {
         itfMesMngDestroyHandle(scr->mesHandleIdx);
-        FUN_005225a8("free message handle\n");
+        printf("free message handle\n");
     }
 
     if (scr->scriptMemory != NULL)
     {
         H_Free(scr->scriptMemory);
-        FUN_005225a8("free script memory\n");
+        printf("free script memory\n");
     }
 
     if (sScrHead == scr)

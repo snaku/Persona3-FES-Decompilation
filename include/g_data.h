@@ -270,7 +270,4 @@ u16 datGetActiveSocialLink();
 u8 datGetSocialLinkLevel(u16 socialLink);
 DatPersonaWork* datGetPersonaByCompendium(s32 idx);
 
-void FUN_001052b0(const char* fmt, ...);
-void FUN_005225a8(const char* fmt, ...);
-
 #endif // G_DATA_H

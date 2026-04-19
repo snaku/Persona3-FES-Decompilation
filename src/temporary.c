@@ -23,10 +23,24 @@ void* memset(void* dst, u8 value, u32 size)
     return dst;
 }
 
+// FUN_005225a8
+void printf(const char* fmt, ...)
+{
+
+}
+
 // FUN_00523ac8
 void sprintf(char* buffer, const char* fmt, ...)
 {
     // TODO
+}
+
+// FUN_00524128
+s32 strcmp(const char* str1, const char* str2)
+{
+    // TODO
+
+    return 0;
 }
 
 // FUN_00524270

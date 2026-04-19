@@ -637,7 +637,7 @@ void datSetFlag(u32 bit, u8 enabled)
 
     if (bit == 4982)
     {
-        FUN_005225a8("hit \n");
+        printf("hit \n");
     }
 
     idx = bit >> 5;
@@ -795,20 +795,4 @@ void datSetScenarioMode(u32 scenario)
 u32 datGetScenarioMode()
 {
     return sScenarioMode;
-}
-
-
-
-// !! FUNCTIONS TO MOVE LATER !!
-
-// FUN_001052b0
-void FUN_001052b0(const char* fmt, ...)
-{
-    // ...
-}
-
-// FUN_005225a8
-void FUN_005225a8(const char* fmt, ...)
-{
-    // ...
 }

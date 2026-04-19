@@ -280,7 +280,7 @@ u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
 
     if (range == 0)
     {
-        FUN_001052b0("Calender chk range is 0");
+        H_Dbprt_FmtLog("Calender chk range is 0");
         return false;
     }
 
@@ -405,7 +405,7 @@ s32 clndFindAndExecSiteibiEvents()
 
                     if (foundEvt)
                     {
-                        FUN_005225a8("## EXEC EVENT = %d ##\n", i);
+                        printf("## EXEC EVENT = %d ##\n", i);
 
                         datSetFlag(siteibiTable->events[i].flagToActivate, true);
                         return i;
@@ -415,7 +415,7 @@ s32 clndFindAndExecSiteibiEvents()
         }
     }
 
-    FUN_005225a8("## NO EVENT ##\n");
+    printf("## NO EVENT ##\n");
     return -1;
 }
 
