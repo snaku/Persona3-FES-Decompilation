@@ -18,6 +18,12 @@ static RpLight* sDirectionalLight; // 007ce0ac
 static RpLight* sAmbientLight;     // 007ce0a8
 static RpWorld* sWorlds[2];        // 007ce0a0. Only the first index is used
 
+// FUN_001984c0. Initialize everything + main loop
+void kwlnMain()
+{
+    // TODO
+}
+
 // FUN_00198540
 RpWorld* kwlnGetWorld(u32 worldIdx)
 {

@@ -14,6 +14,8 @@ extern u32 gFogEnabled;
 
 extern u32 gCurrWorldId;
 
+void kwlnMain();
+
 RpWorld* kwlnGetWorld(u32 worldIdx);
 RpLight* kwlnGetAmbientLight();
 RpLight* kwlnGetDirectionalLight();
