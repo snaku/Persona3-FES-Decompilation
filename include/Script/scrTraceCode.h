@@ -5,7 +5,7 @@
 
 typedef struct ScrData ScrData;
 
-u32 scrExecOpCode(ScrData* scr);
+u32 scrTraceCode(ScrData* scr);
 s32 scrGetIntPara(s32 paramIdx);
 f32 scrGetFloatPara(s32 paramIdx);
 char* scrGetStrPara(s32 paramIdx);

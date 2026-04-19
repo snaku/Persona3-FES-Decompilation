@@ -52,7 +52,7 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
 
     scr->instrIdx = prcd[prcdIdx].offset;
     scr->stackIdx = 0;
-    for (i = 0; i < SCR_MAX_STACK_SIZE; i++)
+    for (i = 0; i < SCR_STACK_MAX; i++)
     {
         scr->stackTypes[i] = 0;
         scr->stackValues[i].iVal = 0;
@@ -316,18 +316,20 @@ void scrDestroyTask(KwlnTask* scrTask)
 void* scrScriptProcess(KwlnTask* scrTask)
 {
     ScrData* scr;
-    u32 execOpCodeRes;
+    u32 codeRes;
 
     scr = scrTaskGetData(scrTask);
-    execOpCodeRes = scrExecOpCode(scr);
 
-    switch (execOpCodeRes)
+    codeRes = scrTraceCode(scr);
+    switch (codeRes)
     {
         case 0:
             K_Abort("scrScriptProcess(..) error script!\n", "scrScriptProcess.c", 1120);
             return KWLNTASK_STOP;
+
         case 1:  // fallthrough
         default: break;
+        
         case 2:  return KWLNTASK_STOP;
     }
 

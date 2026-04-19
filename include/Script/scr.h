@@ -4,9 +4,9 @@
 #include "Utils.h"
 #include "Script/scrTypes.h"
 
-#define SCR_MAX_STACK_SIZE 28 // idx 27 is reserved for return value !!
-#define SCR_STACK_RET_IDX  27
-#define SCR_STACK_USE      26
+#define SCR_STACK_MAX 28
+#define SCR_STACK_RET 27
+#define SCR_STACK_USE 26
 
 typedef struct KwlnTask KwlnTask;
 typedef struct BmdHeader BmdHeader;
@@ -67,29 +67,29 @@ typedef union
 // 252 bytes
 typedef struct ScrData
 {
-    char scrName[24];                          // 0x00. Name of the current procedure (same as task->taskName)
-    u32 instrIdx;                              // 0x18. Index of the curr instruction
-    s32 stackIdx;                              // 0x1c
-    s8 stackTypes[SCR_MAX_STACK_SIZE];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
-    ScrValues stackValues[SCR_MAX_STACK_SIZE]; // 0x3c. Values of each variables in the stack
-    ScrHeader* scrHeader;                      // 0xac
-    ScrContentEntry* entries;                  // 0xb0
-    ScrLblPrcd* proceduresContent;             // 0xb4
-    ScrLblPrcd* labelsContent;                 // 0xb8
-    ScrInstruction* instrContent;              // 0xbc
-    BmdHeader* msgContentHeader;               // 0xc0
-    void* stringsContent;                      // 0xc4
-    u32 prcdIdx;                               // 0xc8. Procedure position in the .BF file
-    s32 mesHandleIdx;                          // 0xcc
-    s32 unk_d0;                                // 0xd0
-    s32 unk_d4;                                // 0xd4
-    void* scriptMemory;                        // 0xd8
-    s32* localInt;                             // 0xdc
-    f32* localFloat;                           // 0xe0
-    KwlnTask* task;                            // 0xe4
-    struct ScrData* prev;                      // 0xe8
-    struct ScrData* next;                      // 0xec
-    s32 unk_f0;                                // 0xf0
+    char scrName[24];                     // 0x00. Name of the current procedure (same as task->taskName)
+    u32 instrIdx;                         // 0x18. Index of the curr instruction
+    s32 stackIdx;                         // 0x1c
+    s8 stackTypes[SCR_STACK_MAX];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
+    ScrValues stackValues[SCR_STACK_MAX]; // 0x3c. Values of each variables in the stack
+    ScrHeader* scrHeader;                 // 0xac
+    ScrContentEntry* entries;             // 0xb0
+    ScrLblPrcd* proceduresContent;        // 0xb4
+    ScrLblPrcd* labelsContent;            // 0xb8
+    ScrInstruction* instrContent;         // 0xbc
+    BmdHeader* msgContentHeader;          // 0xc0
+    void* stringsContent;                 // 0xc4
+    u32 prcdIdx;                          // 0xc8. Procedure position in the .BF file
+    s32 mesHandleIdx;                     // 0xcc
+    s32 unk_d0;                           // 0xd0
+    s32 unk_d4;                           // 0xd4
+    void* scriptMemory;                   // 0xd8
+    s32* localInt;                        // 0xdc
+    f32* localFloat;                      // 0xe0
+    KwlnTask* task;                       // 0xe4
+    struct ScrData* prev;                 // 0xe8
+    struct ScrData* next;                 // 0xec
+    s32 unk_f0;                           // 0xf0
     u8 unkData1[0x08];
 } ScrData;
 
