@@ -316,21 +316,19 @@ void scrDestroyTask(KwlnTask* scrTask)
 void* scrScriptProcess(KwlnTask* scrTask)
 {
     ScrData* scr;
-    u32 codeRes;
 
     scr = scrTaskGetData(scrTask);
 
-    codeRes = scrTraceCode(scr);
-    switch (codeRes)
+    switch (scrTraceCode(scr))
     {
-        case 0:
+        case SCRTRACE_ERROR:
             K_Abort("scrScriptProcess(..) error script!\n", "scrScriptProcess.c", 1120);
             return KWLNTASK_STOP;
 
-        case 1:  // fallthrough
+        case SCRTRACE_YIELD:  // fallthrough
         default: break;
-        
-        case 2:  return KWLNTASK_STOP;
+
+        case SCRTRACE_STOP:  return KWLNTASK_STOP;
     }
 
     return KWLNTASK_CONTINUE;

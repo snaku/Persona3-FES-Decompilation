@@ -30,7 +30,7 @@ typedef enum
     SCR_CODEFUNC_GOTO = 14,
     SCR_CODEFUNC_PUSHS = 29,  // push short
 
-    SCR_OPCODE_MAX = 35
+    SCR_CODEFUNC_MAX = 35
 } ScrOpCode;
 
 #endif

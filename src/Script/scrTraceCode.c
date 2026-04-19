@@ -3,7 +3,8 @@
 #include "Script/scrScriptProcess.h"
 #include "Script/scrCommonCommand.h"
 #include "Kosaka/k_assert.h"
-#include "g_data.h"
+#include "Kosaka/k_data.h"
+#include "h_dbprt.h"
 #include "temporary.h"
 
 u32 CodeFunc_PushI(ScrData* scr);
@@ -54,7 +55,7 @@ u32 CodeFunc_PushI(ScrData* scr)
     scr->stackIdx++;
     scr->instrIdx++;
 
-    return 1;
+    return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c3b0. Push short
@@ -72,7 +73,7 @@ u32 CodeFunc_PushS(ScrData* scr)
     scr->stackIdx++;
     scr->instrIdx++;
     
-    return 1;
+    return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c450. Push float
@@ -90,7 +91,7 @@ u32 CodeFunc_PushF(ScrData* scr)
     scr->stackIdx++;
     scr->instrIdx++;
 
-    return 1;
+    return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c870. Push return value
@@ -99,12 +100,12 @@ u32 CodeFunc_PushREG(ScrData* scr)
     K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 268);
 
     scr->stackTypes[scr->stackIdx] = scr->stackTypes[SCR_STACK_RET];
-    scr->stackValues[scr->stackIdx].fVal = scr->stackValues[SCR_STACK_RET].fVal;
+    scr->stackValues[scr->stackIdx] = scr->stackValues[SCR_STACK_RET];
 
     scr->stackIdx++;
     scr->instrIdx++;
 
-    return 1;
+    return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035cf00. Start procedure
@@ -112,7 +113,7 @@ u32 CodeFunc_Proc(ScrData* scr)
 {
     scr->instrIdx++;
 
-    return 1;
+    return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035cf20. Call a common command (functions that are in the game executable) by index
@@ -135,7 +136,7 @@ u32 CodeFunc_Comm(ScrData* scr)
 
     if (!cmdFunc())
     {
-        return 2;
+        return CODEFUNC_YIELD;
     }
 
     scr->stackIdx -= gScrCmdData.table[cmdIdx].totalParam;
@@ -145,7 +146,7 @@ u32 CodeFunc_Comm(ScrData* scr)
         scr->instrIdx++;
     }
 
-    return 1;
+    return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035d1d0. Jump to a procedure
@@ -156,7 +157,7 @@ u32 CodeFunc_Jmp(ScrData* scr)
     prcdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
     scr->instrIdx = scr->proceduresContent[prcdIdx].offset;
 
-    return 1;
+    return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035d310. Jump to a label
@@ -167,15 +168,51 @@ u32 CodeFunc_Goto(ScrData* scr)
     lblIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
     scr->instrIdx = scr->labelsContent[lblIdx].offset;
 
-    return 1;
+    return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035ebf0
 u32 scrTraceCode(ScrData* scr)
 {
-    // TODO
+    s16 opCode;
+    u32 codeFuncRet;
 
-    return 0;
+    while (true)
+    {
+        opCode = scr->instrContent[scr->instrIdx].opOperand16.opCode;
+        K_ASSERT(opCode >= SCR_CODEFUNC_PUSHI, 895);
+        K_ASSERT(opCode < SCR_CODEFUNC_MAX, 896);
+
+        if (gTraceCode == true)
+        {
+            H_Dbprt_FmtLog(">>>SCRIPT TRACE <0x%X>\n", scr->instrContent[scr->instrIdx].opOperand16.sOperand);
+        }
+
+        codeFuncRet = sCodeFuncTable[opCode](scr);
+
+        if (codeFuncRet == CODEFUNC_STOP)
+        {
+            scr->unk_d4 = 0;
+
+            return SCRTRACE_STOP;
+        }
+
+        if (codeFuncRet != CODEFUNC_YIELD)
+        {
+            if (codeFuncRet == CODEFUNC_NEXTINSTR)
+            {
+                scr->unk_d4 = 0;
+                continue;
+            }
+        }
+        else
+        {
+            scr->unk_d4++;
+            scr->unk_d0++;
+
+            return SCRTRACE_YIELD;
+        }
+    }
 }
 
 // FUN_0035ed20
