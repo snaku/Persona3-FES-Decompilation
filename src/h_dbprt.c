@@ -3,6 +3,8 @@
 #define HDBPRT_LOG_MAXLINE 15
 #define HDBPRT_LOG_MAXCHAR 256
 
+static RwRaster* sFontRaster; // 007cded0
+static RwImage* sFontImage;   // 007cdecc
 static s8 sLogIdx;            // 007cdec4
 static u32 sDrawLogEnabled;   // 007cdec0
 

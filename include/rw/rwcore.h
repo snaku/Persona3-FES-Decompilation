@@ -39,6 +39,18 @@ struct RwRaster
     RwInt32 originalStride;  // 0x30
 };
 
+// 28 bytes
+typedef struct RwImage
+{
+    RwInt32 flags;     // 0x00
+    RwInt32 width;     // 0x04
+    RwInt32 height;    // 0x08
+    RwInt32 depth;     // 0x0c
+    RwInt32 stride;    // 0x10
+    RwUInt8* cpPixels; // 0x14
+    RwRGBA* palette;   // 0x18
+} RwImage;
+
 #define rwFRAME 0
 typedef struct RwFrame RwFrame;
 
