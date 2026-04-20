@@ -13,6 +13,7 @@ typedef struct FldDungeonFloorData
     u8 unkData[0x04];
 } FldDungeonFloorData;
 
+extern u32 gTraceCode;
 extern void* gFldScrMemory;
 extern u32 gFldScrSize;
 

@@ -25,5 +25,6 @@ Resrc* MT_Scene_GetRes(u16 resTypeId);
 Resrc* MT_Scene_GetResListHead(u32 resType);
 u32 MT_Scene_GetTotalResInList(u32 resType);
 u16 MT_Scene_CreateResLightParty(u16 resId);
+u16 MT_Scene_CreateResLightNpc(u16 resId);
 
 #endif

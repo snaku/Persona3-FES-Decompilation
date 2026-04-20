@@ -6,6 +6,7 @@
 #include "g_data.h"
 #include "temporary.h"
 
+u32 gTraceCode;      // 007ce208
 void* gFldScrMemory; // 007ce228
 u32 gFldScrSize;     // 007ce224
 

@@ -1,6 +1,6 @@
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
-#include "g_data.h"
+#include "temporary.h"
 
 static MtScene sMtScene;       // 0095afc0
 MtScene* gMtScene = &sMtScene; // 007cd540
@@ -68,6 +68,29 @@ u16 MT_Scene_CreateResLightParty(u16 resId)
     u16 resTypeId;
 
     resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTPARTY);
+    resManager = gMtScene->resManager;
+
+    if (resManager == NULL)
+    {
+        printf("not found active resmanager\n");
+        return 0;
+    }
+
+    if (resrcMngCreateRes(resManager, resTypeId) == NULL)
+    {
+        return 0;
+    }
+
+    return resTypeId;
+}
+
+// FUN_003b6440
+u16 MT_Scene_CreateResLightNpc(u16 resId)
+{
+    ResrcManager* resManager;
+    u16 resTypeId;
+
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTNPC);
     resManager = gMtScene->resManager;
 
     if (resManager == NULL)
