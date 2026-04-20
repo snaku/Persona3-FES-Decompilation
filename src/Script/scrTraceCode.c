@@ -38,8 +38,6 @@ static const CodeFunc sCodeFuncTable[] =
     CodeFunc_PushS, NULL
 };
 
-u32 scrExecOpCode1(ScrData* scr);
-
 // FUN_0035c300. Push int 
 u32 CodeFunc_PushI(ScrData* scr)
 {
@@ -116,7 +114,7 @@ u32 CodeFunc_Proc(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035cf20. Call a common command (functions that are in the game executable) by index
+// FUN_0035cf20. Call a native function
 u32 CodeFunc_Comm(ScrData* scr)
 {
     ScrCmdFunc cmdFunc;
@@ -126,9 +124,9 @@ u32 CodeFunc_Comm(ScrData* scr)
 
     cmdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
     K_ASSERT(cmdIdx > 0, 342);
-    K_ASSERT(gScrCmdData.total > cmdIdx, 343);
+    K_ASSERT(gScrCmdTable.cmdNo > cmdIdx, 343);
 
-    cmdFunc = gScrCmdData.table[cmdIdx].cmdFunc;
+    cmdFunc = gScrCmdTable.cmds[cmdIdx].func;
     K_ASSERT(cmdFunc != NULL, 344);
 
     savedInstrIdx = scr->instrIdx;
@@ -139,9 +137,9 @@ u32 CodeFunc_Comm(ScrData* scr)
         return CODEFUNC_YIELD;
     }
 
-    scr->stackIdx -= gScrCmdData.table[cmdIdx].totalParam;
+    scr->stackIdx -= gScrCmdTable.cmds[cmdIdx].paramNo;
 
-    if (savedInstrIdx  == scr->instrIdx)
+    if (savedInstrIdx == scr->instrIdx)
     {
         scr->instrIdx++;
     }
