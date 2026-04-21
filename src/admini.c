@@ -1,8 +1,9 @@
+#include "admini.h"
 #include "kwln/kwlnTask.h"
 #include "rw/rwplcore.h"
 #include "Battle/btlMain.h"
 #include "Kosaka/k_assert.h"
-#include "admini.h"
+#include "Kosaka/k_sequence.h"
 #include "temporary.h"
 
 typedef struct
@@ -21,20 +22,20 @@ u8 adminiSeqBtlBossCheck();
 // 0068f020
 static const AdminiSeqEntry gAdminiSeqTable[ADMINI_SEQ_MAX] = 
 {
-    {NULL, NULL, NULL},                                        // ADMINI_SEQ_NULL
-    {adminiSeqTestCall, adminiSeqTestCall, adminiSeqTestCall}, // ADMINI_SEQ_TEST
-    {NULL, NULL, NULL},                                        // ADMINI_SEQ_FIELD_ROOT. TODO
-    {NULL, NULL, NULL},                                        // ADMINI_SEQ_FIELD_ROOT2. TODO
-    {NULL, NULL, NULL},                                        // ADMINI_SEQ_MAP. TODO
-    {NULL, NULL, NULL},                                        // ADMINI_SEQ_DUNGEON. TODO
-    {NULL, adminiSeqBtlBossExit, adminiSeqBtlBossCheck},       // ADMINI_SEQ_BATTLE_BOSS. TODO
-    {NULL, NULL, NULL},                                        // ADMINI_SEQ_FACILITY. TODO
+    {NULL, NULL, NULL},                                         // ADMINI_SEQ_NULL
+    {adminiSeqTestCall, adminiSeqTestExit, adminiSeqTestCheck}, // ADMINI_SEQ_TEST
+    {NULL, NULL, NULL},                                         // ADMINI_SEQ_FIELD. TODO
+    {NULL, NULL, NULL},                                         // ADMINI_SEQ_FIELD2. TODO
+    {NULL, NULL, NULL},                                         // ADMINI_SEQ_MAP. TODO
+    {K_Seq_DungeonCall, K_Seq_DungeonExit, K_Seq_DungeonCheck}, // ADMINI_SEQ_DUNGEON
+    {NULL, adminiSeqBtlBossExit, adminiSeqBtlBossCheck},        // ADMINI_SEQ_BATTLE_BOSS. TODO
+    {NULL, NULL, NULL},                                         // ADMINI_SEQ_FACILITY. TODO
 };
 
 void* adminiUpdateTask_Check(KwlnTask* adminiTask);
 
 // FUN_0027c080
-void adminiChangeTask(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable)
+void adminiChangeSeq(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable)
 {
     KwlnTask* adminiTask;
     AdminiWork* admini;
@@ -91,7 +92,7 @@ void adminiForcePassedCheck()
     adminiTask = kwlnTaskGetTaskByName("admini");
     K_ASSERT(adminiTask != NULL, 46);
 
-    admini = (AdminiWork*)kwlnTaskGetWorkDataData(adminiTask);
+    admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 48);
 
     ADMINI_SET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);
@@ -266,7 +267,7 @@ void* adminiUpdateTask_Check(KwlnTask* adminiTask)
 
         if (!(admini->flags & ADMINI_FLAG_CHANGING_SEQ))
         {
-            adminiChangeTask(ADMINI_SEQ_NULL, NULL, 0, false);
+            adminiChangeSeq(ADMINI_SEQ_NULL, NULL, 0, false);
         }
 
         ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);

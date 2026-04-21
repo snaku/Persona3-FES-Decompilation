@@ -844,7 +844,7 @@ KwlnTask* kwlnTaskGetUpdating()
 }
 
 // FUN_00195460. Return true if 'task' is in a list
-u8 kwlnTaskExists(KwlnTask* task)
+u32 kwlnTaskExists(KwlnTask* task)
 {
     // need to rework a little bit
 

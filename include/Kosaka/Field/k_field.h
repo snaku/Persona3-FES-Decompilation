@@ -3,7 +3,7 @@
 
 #include "Utils.h"
 
-typedef struct Kwlntask KwlnTask;
+typedef struct KwlnTask KwlnTask;
 
 // 4636 bytes
 typedef struct Field
