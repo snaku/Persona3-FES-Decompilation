@@ -3,21 +3,21 @@
 
 #include "Utils.h"
 
-typedef u32 (*ScrCmdFunc)();
+typedef u8 (*ScrCmdFunc)();
 
 // 8 bytes
 typedef struct
 {
-    ScrCmdFunc cmdFunc; // 0x00
-    u32 totalParam;      // 0x04
-} ScrCommonCommand;
+    ScrCmdFunc func; // 0x00
+    u32 paramNo;     // 0x04
+} ScrCommand;
 
 typedef struct
 {
-    ScrCommonCommand table[502];
-    s32 total;
-} ScrCommonCommandData;
+    ScrCommand cmds[502];
+    s32 cmdNo;
+} ScrCommandTable;
 
-extern ScrCommonCommandData gScrCmdData;
+extern ScrCommandTable gScrCmdTable;
 
 #endif
