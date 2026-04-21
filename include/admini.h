@@ -5,11 +5,11 @@
 
 typedef struct KwlnTask KwlnTask;
 
-#define ADMINI_FLAG_CHANGING_TASK (1 << 0)  // 0x1
-#define ADMINI_FLAG_PASSED_CHECK  (1 << 1)  // 0x2. Ptr func 'Admini_Check' of current task returned true
+#define ADMINI_FLAG_CHANGING_SEQ (1 << 0)   // 0x1
+#define ADMINI_FLAG_PASSED_CHECK  (1 << 1)  // 0x2. Ptr func 'adminiCheck' of current sequence returned true
 #define ADMINI_FLAG_RESTORABLE    (1 << 2)  // 0x4. Can be restorable
 #define ADMINI_FLAG_UNK08         (1 << 3)  // 0x8
-#define ADMINI_FLAG_RESTORE_PREV  (1 << 16) // 0x10000. Restore previous task
+#define ADMINI_FLAG_RESTORE_PREV  (1 << 16) // 0x10000. Restore previous sequence
 
 #define ADMINI_RESET_FLAGS(admini, flagsToReset) ((admini)->flags &= ~(flagsToReset))
 #define ADMINI_SET_FLAGS(admini, flagsToSet)     ((admini)->flags |= (flagsToSet))
@@ -18,41 +18,41 @@ typedef struct KwlnTask KwlnTask;
 
 typedef enum
 {
-    ADMINI_TASK_ID_NULL,
-    ADMINI_TASK_ID_TEST,
-    ADMINI_TASK_ID_FIELD_ROOT,
-    ADMINI_TASK_ID_FIELD_ROOT2,
-    ADMINI_TASK_ID_MAP,
-    ADMINI_TASK_ID_DUNGEON,
-    ADMINI_TASK_ID_BATTLE_BOSS,
-    ADMINI_TASK_ID_FACILITY,
-    ADMINI_TASK_ID_MAX,
+    ADMINI_SEQ_NULL,
+    ADMINI_SEQ_TEST,
+    ADMINI_SEQ_FIELD_ROOT,
+    ADMINI_SEQ_FIELD_ROOT2,
+    ADMINI_SEQ_MAP,
+    ADMINI_SEQ_DUNGEON,
+    ADMINI_SEQ_BATTLE_BOSS,
+    ADMINI_SEQ_FACILITY,
+    ADMINI_SEQ_MAX,
 
-    ADMINI_TASK_ID_INVALID = -1
-} AdminiTaskId;
+    ADMINI_SEQ_INVALID = -1
+} AdminiSeqId;
 
 // 36 bytes
-typedef struct Admini
+typedef struct AdminiWork
 {
-    u32 flags;                            // 0x00
-    u32 timer;                            // 0x04. Increments every frame while 'taskId' doesn't change
-    s8 taskId;                            // 0x08. Current task id. See enum 'AdminiTaskId'
-    s8 taskIdToSet;                       // 0x09. See enum 'AdminiTaskId'
-    u8 oldTaskIdx;                        // 0x0a. Idx to access 'oldTaskIds' and 'oldTasksFlags'
-    u8 unk_0b;                            // 0x0b
-    s8 oldTaskIds[ADMINI_TASK_ID_MAX];    // 0x0c. History of task ids
-    s8 oldTasksFlags[ADMINI_TASK_ID_MAX]; // 0x14. History of admini flags
-    void* taskWorkData;                   // 0x1c. Current task work data
-    u8 taskWorkDataSize;                  // 0x20. Current task data size in bytes
-    u8 taskChangeDelay;                   // 0x21. Frames until task transition. Set by 'Admini_Exit' return value + 1
-    u8 unk_22;                            // 0x22
-    u8 unk_23;                            // 0x23
-} Admini;
+    u32 flags;                      // 0x00
+    u32 timer;                      // 0x04. Increments every frame while 'seq' doesn't change
+    s8 nowSeqId;                    // 0x08. Current task id. See enum 'AdminiSeqId'
+    s8 seqIdToSet;                  // 0x09. See enum 'AdminiSeqId'
+    u8 oldSeqIdx;                   // 0x0a. Idx to access 'oldSeqIds' and 'oldSeqFlags'
+    u8 unk_0b;                      // 0x0b
+    s8 oldSeqIds[ADMINI_SEQ_MAX];   // 0x0c. History of sequence ids
+    s8 oldSeqFlags[ADMINI_SEQ_MAX]; // 0x14. History of admini flags
+    void* seqData;                  // 0x1c. Current sequence data
+    u8 seqDataSize;                 // 0x20. Current sequence data size in bytes
+    u8 seqChangeDelay;              // 0x21. Frames until sequence transition. Set by 'adminiExit' return value + 1
+    u8 unk_22;                      // 0x22
+    u8 unk_23;                      // 0x23
+} AdminiWork;
 
-void Admini_ChangeTask(s8 taskId, void* workData, u8 workDataSize, u8 isNotRestorable);
-void Admini_ForcePassedCheck();
-s8 Admini_GetTaskId();
-s8 Admini_GetTaskIdToSet();
-KwlnTask* Admini_CreateTask();
+void adminiChangeTask(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable);
+void adminiForcePassedCheck();
+s8 adminiGetNowSeqId();
+s8 adminiGetSeqIdToSet();
+KwlnTask* adminiCreateTask();
 
 #endif

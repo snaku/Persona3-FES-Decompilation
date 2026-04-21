@@ -7,70 +7,70 @@
 
 typedef struct
 {
-    void (*Admini_Call)(u8 isRestored, void* workData);
-    s32 (*Admini_Exit)();
-    u8 (*Admini_Check)();
-} AdminiTaskEntry;
+    void (*adminiCallFunc)(u8 isRestored, void* seqData);
+    s32 (*adminiExitFunc)();
+    u8 (*adminiCheckFunc)();
+} AdminiSeqEntry;
 
-void Admini_TestCall(u8 isRestored, void* workData);
-s32 Admini_TestExit();
-u8 Admini_TestCheck();
-s32 Admini_BtlBossExit();
-u8 Admini_BtlBossCheck();
+void adminiSeqTestCall(u8 isRestored, void* seqData);
+s32 adminiSeqTestExit();
+u8 adminiSeqTestCheck();
+s32 adminiSeqBtlBossExit();
+u8 adminiSeqBtlBossCheck();
 
 // 0068f020
-static const AdminiTaskEntry gAdminiTasksTable[ADMINI_TASK_ID_MAX] = 
+static const AdminiSeqEntry gAdminiSeqTable[ADMINI_SEQ_MAX] = 
 {
-    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_NULL
-    {Admini_TestCall, Admini_TestExit, Admini_TestCheck}, // ADMINI_TASK_ID_TEST
-    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FIELD_ROOT. TODO
-    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FIELD_ROOT2. TODO
-    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_MAP. TODO
-    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_DUNGEON. TODO
-    {NULL, Admini_BtlBossExit, Admini_BtlBossCheck},      // ADMINI_TASK_ID_BATTLE_BOSS. TODO
-    {NULL, NULL, NULL},                                   // ADMINI_TASK_ID_FACILITY. TODO
+    {NULL, NULL, NULL},                                        // ADMINI_SEQ_NULL
+    {adminiSeqTestCall, adminiSeqTestCall, adminiSeqTestCall}, // ADMINI_SEQ_TEST
+    {NULL, NULL, NULL},                                        // ADMINI_SEQ_FIELD_ROOT. TODO
+    {NULL, NULL, NULL},                                        // ADMINI_SEQ_FIELD_ROOT2. TODO
+    {NULL, NULL, NULL},                                        // ADMINI_SEQ_MAP. TODO
+    {NULL, NULL, NULL},                                        // ADMINI_SEQ_DUNGEON. TODO
+    {NULL, adminiSeqBtlBossExit, adminiSeqBtlBossCheck},       // ADMINI_SEQ_BATTLE_BOSS. TODO
+    {NULL, NULL, NULL},                                        // ADMINI_SEQ_FACILITY. TODO
 };
 
-void* Admini_UpdateTask_Check(KwlnTask* adminiTask);
+void* adminiUpdateTask_Check(KwlnTask* adminiTask);
 
 // FUN_0027c080
-void Admini_ChangeTask(s8 taskId, void* workData, u8 workDataSize, u8 isNotRestorable)
+void adminiChangeTask(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable)
 {
     KwlnTask* adminiTask;
-    Admini* admini;
+    AdminiWork* admini;
 
     adminiTask = kwlnTaskGetTaskByName("admini");
+    K_ASSERT(adminiTask != NULL, 46);
+
+    admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 46);
 
-    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
-    K_ASSERT(admini != NULL, 46);
+    ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_SEQ);
+    ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08, ADMINI_FLAG_CHANGING_SEQ);
+    ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08 | ADMINI_FLAG_RESTORE_PREV, ADMINI_FLAG_CHANGING_SEQ);
 
-    ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
-    ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08, ADMINI_FLAG_CHANGING_TASK);
-    ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08 | ADMINI_FLAG_RESTORE_PREV, ADMINI_FLAG_CHANGING_TASK);
+    admini->seqIdToSet = seqId;
+    admini->seqChangeDelay = 1;
 
-    admini->taskIdToSet = taskId;
-    admini->taskChangeDelay = 1;
-
-    if (admini->taskWorkData != NULL)
+    if (admini->seqData != NULL)
     {
-        RW_FREE(admini->taskWorkData);
-        admini->taskWorkData = NULL;
-        admini->taskWorkDataSize = 0;
+        RW_FREE(admini->seqData);
+        admini->seqData = NULL;
+        admini->seqDataSize = 0;
     }
 
-    if (workData == NULL)
+    if (seqData == NULL)
     {
-        admini->taskWorkData = NULL;
-        admini->taskWorkDataSize = 0;
+        admini->seqData = NULL;
+        admini->seqDataSize = 0;
     }
     else
     {
-        admini->taskWorkData = RW_MALLOC(workDataSize, 0x40000);
-        K_ASSERT(admini->taskWorkData != NULL, 93);
+        admini->seqData = RW_MALLOC(seqDataSize, 0x40000);
+        K_ASSERT(admini->seqData != NULL, 93);
 
-        memcpy(admini->taskWorkData, workData, workDataSize);
-        admini->taskWorkDataSize = workDataSize;
+        memcpy(admini->seqData, seqData, seqDataSize);
+        admini->seqDataSize = seqDataSize;
     }
 
     if (!isNotRestorable)
@@ -83,77 +83,77 @@ void Admini_ChangeTask(s8 taskId, void* workData, u8 workDataSize, u8 isNotResto
 }
 
 // FUN_0027c220. Set flag 'ADMINI_FLAG_PASSED_CHECK'
-void Admini_ForcePassedCheck()
+void adminiForcePassedCheck()
 {
     KwlnTask* adminiTask;
-    Admini* admini;
+    AdminiWork* admini;
 
     adminiTask = kwlnTaskGetTaskByName("admini");
-    K_ASSERT(admini != NULL, 46);
+    K_ASSERT(adminiTask != NULL, 46);
 
-    admini = (Admini*)kwlnTaskGetWorkDataData(adminiTask);
+    admini = (AdminiWork*)kwlnTaskGetWorkDataData(adminiTask);
     K_ASSERT(admini != NULL, 48);
 
     ADMINI_SET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);
 }
 
 // FUN_0027c2b0
-s8 Admini_GetTaskId()
+s8 adminiGetNowSeqId()
 {
     KwlnTask* adminiTask;
-    Admini* admini;
+    AdminiWork* admini;
 
     adminiTask = kwlnTaskGetTaskByName("admini");
-    K_ASSERT(admini != NULL, 46);
+    K_ASSERT(adminiTask != NULL, 46);
 
-    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
+    admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 48);
 
-    return admini->taskId;
+    return admini->nowSeqId;
 }
 
 // FUN_0027c330
-s8 Admini_GetTaskIdToSet()
+s8 adminiGetSeqIdToSet()
 {
     KwlnTask* adminiTask;
-    Admini* admini;
+    AdminiWork* admini;
 
     adminiTask = kwlnTaskGetTaskByName("admini");
-    K_ASSERT(admini != NULL, 46);
+    K_ASSERT(adminiTask != NULL, 46);
 
-    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
+    admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 48);
 
-    return admini->taskIdToSet;
+    return admini->seqIdToSet;
 }
 
 // FUN_0027c3b0
-void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
+void* adminiUpdateTask_Call(KwlnTask* adminiTask)
 {
-    Admini* admini;
+    AdminiWork* admini;
     u8 isRestored;
 
-    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
+    admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 217);
 
-    if (!(admini->flags & ADMINI_FLAG_CHANGING_TASK) ||
-         (admini->taskIdToSet < ADMINI_TASK_ID_NULL))
+    if (!(admini->flags & ADMINI_FLAG_CHANGING_SEQ) ||
+         (admini->seqIdToSet < ADMINI_SEQ_NULL))
     {
-        return Admini_UpdateTask_Check;
+        return adminiUpdateTask_Check;
     }
 
-    if (admini->taskChangeDelay == 0)
+    if (admini->seqChangeDelay == 0)
     {
         admini->timer = 0;
-        admini->taskId = admini->taskIdToSet;
-        admini->taskIdToSet = ADMINI_TASK_ID_INVALID;
+        admini->nowSeqId = admini->seqIdToSet;
+        admini->seqIdToSet = ADMINI_SEQ_INVALID;
 
-        ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
-        ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_PASSED_CHECK);
+        ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_SEQ);
+        ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_SEQ | ADMINI_FLAG_PASSED_CHECK);
 
         if (admini->flags & ADMINI_FLAG_RESTORABLE)
         {
-            admini->oldTasksFlags[admini->oldTaskIdx] |= ADMINI_FLAG_CHANGING_TASK;
+            admini->oldSeqFlags[admini->oldSeqIdx] |= ADMINI_FLAG_CHANGING_SEQ;
             ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
         }
 
@@ -162,7 +162,7 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
             isRestored = false;
             if (!(admini->flags & ADMINI_FLAG_UNK08))
             {
-                admini->oldTaskIdx = (admini->oldTaskIdx + 1) % ADMINI_TASK_ID_MAX;
+                admini->oldSeqIdx = (admini->oldSeqIdx + 1) % ADMINI_SEQ_MAX;
             }
             else
             {
@@ -172,64 +172,64 @@ void* Admini_UpdateTask_Call(KwlnTask* adminiTask)
         else
         {
             isRestored = true;
-            admini->oldTaskIdx = (admini->oldTaskIdx + (ADMINI_TASK_ID_MAX - 1)) % ADMINI_TASK_ID_MAX;
+            admini->oldSeqIdx = (admini->oldSeqIdx + (ADMINI_SEQ_MAX - 1)) % ADMINI_SEQ_MAX;
             ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORE_PREV);
         }
 
-        admini->oldTaskIds[admini->oldTaskIdx] = admini->taskId;
-        admini->oldTasksFlags[admini->oldTaskIdx] = 0;
+        admini->oldSeqIds[admini->oldSeqIdx] = admini->nowSeqId;
+        admini->oldSeqFlags[admini->oldSeqIdx] = 0;
 
-        if (gAdminiTasksTable[admini->taskId].Admini_Call != NULL)
+        if (gAdminiSeqTable[admini->nowSeqId].adminiCallFunc != NULL)
         {
-            gAdminiTasksTable[admini->taskId].Admini_Call(isRestored, admini->taskWorkData);
+            gAdminiSeqTable[admini->nowSeqId].adminiCallFunc(isRestored, admini->seqData);
         }
 
-        return Admini_UpdateTask_Check;
+        return adminiUpdateTask_Check;
     }
 
-    admini->taskChangeDelay--;
+    admini->seqChangeDelay--;
     return KWLNTASK_CONTINUE;
 }
 
 // FUN_0027c5a0
-void* Admini_UpdateTask_Exit(KwlnTask* adminiTask)
+void* adminiUpdateTask_Exit(KwlnTask* adminiTask)
 {
-    Admini* admini;
-    s32 taskChangeDelay;
+    AdminiWork* admini;
+    s32 seqChangeDelay;
 
-    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
+    admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 296);
 
-    if (admini->taskId >= ADMINI_TASK_ID_NULL &&
-       (gAdminiTasksTable[admini->taskId].Admini_Exit != NULL))
+    if (admini->nowSeqId >= ADMINI_SEQ_NULL &&
+       (gAdminiSeqTable[admini->nowSeqId].adminiExitFunc != NULL))
     {
-        taskChangeDelay = gAdminiTasksTable[admini->taskId].Admini_Exit();
-        if (taskChangeDelay < 0)
+        seqChangeDelay = gAdminiSeqTable[admini->nowSeqId].adminiExitFunc();
+        if (seqChangeDelay < 0)
         {
             return KWLNTASK_CONTINUE;
         }
 
-        admini->taskChangeDelay = taskChangeDelay + 1;
-        admini->taskId = ADMINI_TASK_ID_INVALID;
+        admini->seqChangeDelay = seqChangeDelay + 1;
+        admini->nowSeqId = ADMINI_SEQ_INVALID;
     }
 
-    return Admini_UpdateTask_Call;
+    return adminiUpdateTask_Call;
 }
 
 // FUN_0027c650
-void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
+void* adminiUpdateTask_Check(KwlnTask* adminiTask)
 {
-    Admini* admini;
+    AdminiWork* admini;
 
-    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
+    admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 333);
 
     if (!(admini->flags & ADMINI_FLAG_PASSED_CHECK) &&
-         (admini->taskId >= ADMINI_TASK_ID_NULL))
+         (admini->nowSeqId >= ADMINI_SEQ_NULL))
     {
-        if (gAdminiTasksTable[admini->taskId].Admini_Check != NULL)
+        if (gAdminiSeqTable[admini->nowSeqId].adminiCheckFunc != NULL)
         {
-            if (gAdminiTasksTable[admini->taskId].Admini_Check())
+            if (gAdminiSeqTable[admini->nowSeqId].adminiCheckFunc())
             {
                 ADMINI_SET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);
             }
@@ -239,74 +239,74 @@ void* Admini_UpdateTask_Check(KwlnTask* adminiTask)
     }
 
     if (admini->flags & ADMINI_FLAG_PASSED_CHECK &&
-       (admini->taskId >= ADMINI_TASK_ID_NULL))
+       (admini->nowSeqId >= ADMINI_SEQ_NULL))
     {
-        admini->oldTaskIdx = (admini->oldTaskIdx + (ADMINI_TASK_ID_MAX - 1)) % ADMINI_TASK_ID_MAX;
+        admini->oldSeqIdx = (admini->oldSeqIdx + (ADMINI_SEQ_MAX - 1)) % ADMINI_SEQ_MAX;
 
-        if (admini->oldTaskIds[admini->oldTaskIdx] >= ADMINI_TASK_ID_NULL &&
-           (admini->oldTasksFlags[admini->oldTaskIdx] & ADMINI_FLAG_CHANGING_TASK))
+        if (admini->oldSeqIds[admini->oldSeqIdx] >= ADMINI_SEQ_NULL &&
+           (admini->oldSeqFlags[admini->oldSeqIdx] & ADMINI_FLAG_CHANGING_SEQ))
         {
             printf("restore sequence!!\n");
 
-            ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK);
-            ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_TASK | ADMINI_FLAG_RESTORE_PREV);
+            ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_SEQ);
+            ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_SEQ | ADMINI_FLAG_RESTORE_PREV);
 
-            admini->taskIdToSet = admini->oldTaskIds[admini->oldTaskIdx];
-            admini->taskChangeDelay = 1;
+            admini->seqIdToSet = admini->oldSeqIds[admini->oldSeqIdx];
+            admini->seqChangeDelay = 1;
 
             ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
 
-            if (admini->taskWorkData != NULL)
+            if (admini->seqData != NULL)
             {
-                RW_FREE(admini->taskWorkData);
-                admini->taskWorkData = NULL;
-                admini->taskWorkDataSize = 0;
+                RW_FREE(admini->seqData);
+                admini->seqData = NULL;
+                admini->seqDataSize = 0;
             }
         }
 
-        if (!(admini->flags & ADMINI_FLAG_CHANGING_TASK))
+        if (!(admini->flags & ADMINI_FLAG_CHANGING_SEQ))
         {
-            Admini_ChangeTask(ADMINI_TASK_ID_NULL, NULL, 0, false);
+            adminiChangeTask(ADMINI_SEQ_NULL, NULL, 0, false);
         }
 
         ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_PASSED_CHECK);
     }
 
-    if (!(admini->flags & ADMINI_FLAG_CHANGING_TASK) ||
-         (admini->taskIdToSet < ADMINI_TASK_ID_NULL))
+    if (!(admini->flags & ADMINI_FLAG_CHANGING_SEQ) ||
+         (admini->seqIdToSet < ADMINI_SEQ_NULL))
     {
         return KWLNTASK_CONTINUE;
     }
 
-    return Admini_UpdateTask_Exit;
+    return adminiUpdateTask_Exit;
 }
 
 // FUN_0027c840
-void Admini_DestroyTask(KwlnTask* adminiTask)
+void adminiDestroyTask(KwlnTask* adminiTask)
 {
-    Admini* admini;
+    AdminiWork* admini;
 
-    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
+    admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     
-    if (admini->taskId >= ADMINI_TASK_ID_NULL &&
-       (gAdminiTasksTable[admini->taskId].Admini_Exit != NULL))
+    if (admini->nowSeqId >= ADMINI_SEQ_NULL &&
+       (gAdminiSeqTable[admini->nowSeqId].adminiExitFunc != NULL))
     {
-        gAdminiTasksTable[admini->taskId].Admini_Exit();
+        gAdminiSeqTable[admini->nowSeqId].adminiExitFunc();
     }
 
-    if (admini->taskWorkData != NULL)
+    if (admini->seqData != NULL)
     {
-        RW_FREE(admini->taskWorkData);
+        RW_FREE(admini->seqData);
     }
 
-    admini = (Admini*)kwlnTaskGetWorkData(adminiTask);
+    admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     RW_FREE(admini);
 }
 
 // FUN_0027c8f0
-KwlnTask* Admini_CreateTask()
+KwlnTask* adminiCreateTask()
 {
-    Admini* admini;
+    AdminiWork* admini;
     u32 i;
 
     if (kwlnTaskGetTaskByName("admini") != NULL)
@@ -314,33 +314,33 @@ KwlnTask* Admini_CreateTask()
         return NULL;
     }
 
-    admini = RW_MALLOC(sizeof(Admini), 0x40000);
+    admini = RW_MALLOC(sizeof(AdminiWork), 0x40000);
     K_ASSERT(admini != NULL, 435);
 
     admini->flags = 0;
     admini->timer = 0;
-    admini->taskId = ADMINI_TASK_ID_INVALID;
-    admini->taskIdToSet = ADMINI_TASK_ID_INVALID;
-    admini->oldTaskIdx = 0;
-    for (i = 0; i < ADMINI_TASK_ID_MAX; i++)
+    admini->nowSeqId = ADMINI_SEQ_INVALID;
+    admini->seqIdToSet = ADMINI_SEQ_INVALID;
+    admini->oldSeqIdx = 0;
+    for (i = 0; i < ADMINI_SEQ_MAX; i++)
     {
-        admini->oldTaskIds[i] = ADMINI_TASK_ID_INVALID;
-        admini->oldTasksFlags[i] = 0;
+        admini->oldSeqIds[i] = ADMINI_SEQ_INVALID;
+        admini->oldSeqFlags[i] = 0;
     }
-    admini->taskWorkData = NULL;
-    admini->taskWorkDataSize = 0;
+    admini->seqData = NULL;
+    admini->seqDataSize = 0;
 
-    return kwlnTaskCreate(NULL, "admini", 1, Admini_UpdateTask_Check, Admini_DestroyTask, admini);
+    return kwlnTaskCreate(NULL, "admini", 1, adminiUpdateTask_Check, adminiDestroyTask, admini);
 }
 
 // FUN_0027c9e0
-void Admini_TestCall(u8 isRestored, void* workData)
+void adminiSeqTestCall(u8 isRestored, void* seqData)
 {
     printf("+++ call\n");
 }
 
 // FUN_0027ca10
-s32 Admini_TestExit()
+s32 adminiSeqTestExit()
 {
     printf("+++ exit\n");
 
@@ -348,7 +348,7 @@ s32 Admini_TestExit()
 }
 
 // FUN_0027ca40
-u8 Admini_TestCheck()
+u8 adminiSeqTestCheck()
 {
     printf("+++ check\n");
 
@@ -356,7 +356,7 @@ u8 Admini_TestCheck()
 }
 
 // FUN_0027caa0
-s32 Admini_BtlBossExit()
+s32 adminiSeqBtlBossExit()
 {
     KwlnTask* btlTask;
 
@@ -370,7 +370,7 @@ s32 Admini_BtlBossExit()
 }
 
 // FUN_0027cae0
-u8 Admini_BtlBossCheck()
+u8 adminiSeqBtlBossCheck()
 {
     return BtlMain_GetBtlTask() == NULL;
 }
