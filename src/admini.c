@@ -24,7 +24,7 @@ static const AdminiSeqEntry gAdminiSeqTable[ADMINI_SEQ_MAX] =
 {
     {NULL, NULL, NULL},                                         // ADMINI_SEQ_NULL
     {adminiSeqTestCall, adminiSeqTestExit, adminiSeqTestCheck}, // ADMINI_SEQ_TEST
-    {NULL, NULL, NULL},                                         // ADMINI_SEQ_FIELD. TODO
+    {NULL, K_Seq_FieldExit, K_Seq_FieldCheck},                  // ADMINI_SEQ_FIELD. TODO
     {NULL, NULL, NULL},                                         // ADMINI_SEQ_FIELD2. TODO
     {NULL, NULL, NULL},                                         // ADMINI_SEQ_MAP. TODO
     {K_Seq_DungeonCall, K_Seq_DungeonExit, K_Seq_DungeonCheck}, // ADMINI_SEQ_DUNGEON
