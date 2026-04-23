@@ -1,7 +1,10 @@
 #include "kwln/kwln.h"
 #include "rw/rpworld.h"
+#include "sce/eekernel.h"
+#include "sce/eeregs.h"
 
 static RwRGBA sClearColor;         // 007ce128
+u32 gT0CountVal;                   // 007ce0fc. Current value of T0_COUNT reg
 u8 gFogAlpha;                      // 007ce0e4
 static u8 sbssPad3[0x03];
 u8 gFogGreen;                      // 007ce0e0
@@ -17,6 +20,22 @@ static RwCamera* sMainCamera;      // 007ce0c0
 static RpLight* sDirectionalLight; // 007ce0ac
 static RpLight* sAmbientLight;     // 007ce0a8
 static RpWorld* sWorlds[2];        // 007ce0a0. Only the first index is used
+static u64 sT0Count64;             // 007ce098
+
+// FUN_00196fe0
+s32 kwlnT0OverflowHandler(s32 intc)
+{
+    if (intc == INTC_TIM0 && DGET_T0_MODE() & (1 << T_MODE_OVFF_O))
+    {
+        DGET_T0_MODE() |= (1 << T_MODE_OVFF_O);
+
+        sT0Count64 += 0x10000;
+    }
+
+    ExitHandler();
+
+    return 0;
+}
 
 // FUN_001984c0. Initialize everything + main loop
 void kwlnMain()
