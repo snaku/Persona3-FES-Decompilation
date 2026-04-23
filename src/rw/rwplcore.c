@@ -43,6 +43,14 @@ RwMatrix* RwMatrixRotate(RwMatrix* matrix, const RwV3d* axis, RwReal angle, RwOp
     return matrix;
 }
 
+// FUN_004c33d0
+RwMatrix* RwMatrixScale(RwMatrix* matrix, const RwV3d* scale, RwOpCombineType combineOp)
+{
+    // TODO
+
+    return matrix;
+}
+
 // FUN_004c35d0
 RwMatrix* RwMatrixTranslate(RwMatrix* matrix, const RwV3d* translation, RwOpCombineType combineOp)
 {

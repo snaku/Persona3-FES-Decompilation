@@ -22,10 +22,14 @@ static RpLight* sAmbientLight;     // 007ce0a8
 static RpWorld* sWorlds[2];        // 007ce0a0. Only the first index is used
 static u64 sT0Count64;             // 007ce098
 
+const f32 gAspectRatio = 4.0f / 3.0f; // 007cad1c
+const f32 gPI = 3.14159274;           // 007cae58
+
 // FUN_00196fe0
 s32 kwlnT0OverflowHandler(s32 intc)
 {
-    if (intc == INTC_TIM0 && DGET_T0_MODE() & (1 << T_MODE_OVFF_O))
+    if (intc == INTC_TIM0 && 
+       (DGET_T0_MODE() & (1 << T_MODE_OVFF_O)))
     {
         DGET_T0_MODE() |= (1 << T_MODE_OVFF_O);
 

@@ -48,3 +48,11 @@ RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projTyp
 
     return camera;
 }
+
+// FUN_004c9f90
+RwCamera* RwCameraSetViewWindow(RwCamera* camera, const RwV2d* viewWindow)
+{
+    // TODO
+
+    return camera;
+}

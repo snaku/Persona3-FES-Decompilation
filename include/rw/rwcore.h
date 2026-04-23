@@ -104,5 +104,6 @@ RwCamera* RwCameraBeginUpdate(RwCamera* camera);
 RwCamera* RwCameraEndUpdate(RwCamera* camera);
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode);
 RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projType);
+RwCamera* RwCameraSetViewWindow(RwCamera* camera, const RwV2d* viewWindow);
 
 #endif
