@@ -18,7 +18,7 @@ void kwlnRootFUN_00198610(u32 flags, u8 enabled)
 }
 
 // FUN_00198650
-void* kwlnRootUpdateRootProcTask(KwlnTask* rootProcTask)
+void* kwlnRootUpdateTask(KwlnTask* rootTask)
 {
     // TODO
 
@@ -26,30 +26,30 @@ void* kwlnRootUpdateRootProcTask(KwlnTask* rootProcTask)
 }
 
 // FUN_001988f0
-void kwlnRootDestroyRootProcTask(KwlnTask* rootProcTask)
+void kwlnRootDestroyTask(KwlnTask* rootTask)
 {
     // TODO
 
-    RW_FREE(rootProcTask->workData);
+    RW_FREE(rootTask->workData);
 }
 
 // FUN_00198940
-KwlnTask* kwlnRootCreateRootProcTask()
+KwlnTask* kwlnRootCreateTask()
 {
-    KwlnTask* rootProcTask;
-    KwlnRootWork* root;
+    KwlnTask* rootTask;
+    KwlnRootWork* work;
 
-    root = RW_CALLOC(1, sizeof(KwlnRootWork), 0x40000);
-    if (root == NULL)
+    work = RW_CALLOC(1, sizeof(KwlnRootWork), 0x40000);
+    if (work == NULL)
     {
         return NULL;
     }
 
-    rootProcTask = kwlnTaskInit("rootProc", 0, kwlnRootUpdateRootProcTask, kwlnRootDestroyRootProcTask, root);
+    rootTask = kwlnTaskInit("rootProc", 0, kwlnRootUpdateTask, kwlnRootDestroyTask, work);
     H_Snd_FUN_00109ca0(0, 1);
     H_Snd_FUN_00109ca0(1, 2);
 
-    return rootProcTask;
+    return rootTask;
 }
 
 // FUN_001989e0

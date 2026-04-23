@@ -15,6 +15,6 @@ typedef struct KwlnRootWork
 } KwlnRootWork;
 
 void kwlnRootFUN_00198610(u32 flags, u8 enabled);
-KwlnTask* kwlnRootCreateRootProcTask();
+KwlnTask* kwlnRootCreateTask();
 
 #endif
