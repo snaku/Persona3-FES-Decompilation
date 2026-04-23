@@ -142,7 +142,8 @@ struct Model
 {
     RwMatrix mat;                   // 0x00
     RwMatrix identityMat;           // 0x40
-    u8 unkData1[0x50];
+    RwV3d scale;                    // 0x80
+    u8 unkData1[0x44];
     RwRGBA color;                   // 0xd0
     u16 type;                       // 0xd4. See enum 'ModelType'
     u16 id;                         // 0xd6. Usually, ids are linear. For 'MODEL_TYPE_FLDCHAR', id is composite (see 'MDL_FLDCHAR_*' macros)
@@ -166,9 +167,9 @@ extern const f32 gFrameDuration;
 
 Model* mdlMngInitMdl(u16 type, u16 id);
 Model* mdlMngSearch(u16 type, u16 id, u16 flags);
-Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead);
-Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 cdvdRead);
-Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead);
+Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 readMode);
+Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode);
+Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 readMode);
 
 u8 mdlStreamRead(Model* mdl);
 
@@ -180,7 +181,8 @@ f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx);
 
 void mdlTranslate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp);
 void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp);
-void mdlSetColor(Model* mdl, RwRGBA* color);
+void mdlScale(Model* mdl, const RwV3d* scale, RwOpCombineType combineOp);
+void mdlSetColor(Model* mdl, const RwRGBA* color);
 RwRGBA* mdlGetColor(Model* mdl);
 RwMatrix* mdlGetMatrix(Model* mdl);
 RwFrame* mdlGetClumpFrame(Model* mdl);
@@ -190,11 +192,11 @@ void mdlDisableFullShadow(Model* mdl);
 
 void mdlLookAtSetBlendRotFactor(Model* mdl, f32 blendRotFactor);
 void mdlLookAtSetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle);
-void mdlLookAtSetTargetPosXYZ(Model* mdl, RwV3d* target);
-void mdlLookAtSetTargetPosXYZCS(Model* mdl, RwV3d* target);
+void mdlLookAtSetTargetPosXYZ(Model* mdl, const RwV3d* target);
+void mdlLookAtSetTargetPosXYZCS(Model* mdl, const RwV3d* target);
 void mdlLookAtSetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget);
 void mdlLookAtDisableTarget(Model* mdl);
 u8 mdlLookAtIsActive(Model* mdl);
-void mdlLookAtSetTargetScale(Model* mdl, RwV3d* scale);
+void mdlLookAtSetTargetScale(Model* mdl, const RwV3d* scale);
 
 #endif

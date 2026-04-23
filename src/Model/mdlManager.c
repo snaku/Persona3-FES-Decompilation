@@ -10,7 +10,7 @@ const f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where
 static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
 
 void mdlStreamInit(Model* mdl);
-void mdlStreamSetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd);
+void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd);
 void mdlStreamRequestCdvd(Model* mdl, const char* path);
 void mdlStreamDestroy(Model* mdl);
 
@@ -76,13 +76,13 @@ Model* mdlMngSearch(u16 type, u16 id, u16 flags)
 }
 
 // FUN_00316b40
-Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead)
+Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 readMode)
 {
     Model* mdl;
 
     mdl = mdlMngInitMdl(type, id);
 
-    if (cdvdRead & MDL_READASYNC)
+    if (readMode & MDL_READSYNC)
     {
         mdl->flags |= MDL_FLAG_STREAMSYNC;
     }
@@ -96,14 +96,14 @@ Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 cdvdRead)
 }
 
 // FUN_00316bd0. Create a model with a loaded .RMD file in memory
-Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 cdvdRead)
+Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode)
 {
     Model* mdl;
     MdlRmdFileMemory rmd;
 
     mdl = mdlMngInitMdl(type, id);
 
-    if (cdvdRead & MDL_READASYNC)
+    if (readMode & MDL_READSYNC)
     {
         mdl->flags |= MDL_FLAG_STREAMSYNC;
     }
@@ -120,7 +120,7 @@ Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSi
 }
 
 // FUN_00316e00. Only for .RMD in 'MODEL' folder (See enum 'ModelType')
-Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 cdvdRead)
+Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 readMode)
 {
     // TODO
 
@@ -219,8 +219,16 @@ void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combine
     RwMatrixRotate(&mdl->mat, axis, angle, combineOp);
 }
 
+// FUN_00318a50
+void mdlScale(Model* mdl, const RwV3d* scale, RwOpCombineType combineOp)
+{
+    mdl->scale = *scale;
+
+    RwMatrixScale(&mdl->mat, scale, combineOp);
+}
+
 // FUN_00318ad0
-void mdlSetColor(Model* mdl, RwRGBA* color)
+void mdlSetColor(Model* mdl, const RwRGBA* color)
 {
     mdl->color = *color;
 }
@@ -275,7 +283,7 @@ void mdlLookAtSetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle)
 }
 
 // FUN_003190b0
-void mdlLookAtSetTargetPosXYZ(Model* mdl, RwV3d* target)
+void mdlLookAtSetTargetPosXYZ(Model* mdl, const RwV3d* target)
 {
     mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZ;
     mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XY);
@@ -285,7 +293,7 @@ void mdlLookAtSetTargetPosXYZ(Model* mdl, RwV3d* target)
 }
 
 // FUN_00319100
-void mdlLookAtSetTargetPosXYZCS(Model* mdl, RwV3d* target)
+void mdlLookAtSetTargetPosXYZCS(Model* mdl, const RwV3d* target)
 {
     mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZCS;
     mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZ | MDL_LOOKAT_FLAG_XY);
@@ -321,7 +329,7 @@ u8 mdlLookAtIsActive(Model* mdl)
 }
 
 // FUN_00319210
-void mdlLookAtSetTargetScale(Model* mdl, RwV3d* scale)
+void mdlLookAtSetTargetScale(Model* mdl, const RwV3d* scale)
 {
     mdl->animSlots[0].lookAt.targetScale = *scale;
 }
@@ -337,7 +345,7 @@ void mdlStreamInit(Model* mdl)
 }
 
 // FUN_003198a0
-void mdlStreamSetRmdFileMemory(Model* mdl, MdlRmdFileMemory* rmd)
+void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd)
 {
     MdlStream* stream;
     stream = mdl->stream;
