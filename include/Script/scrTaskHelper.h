@@ -6,6 +6,7 @@
 typedef struct ScrData ScrData;
 
 KwlnTask* scrTaskInit(const char* name, u32 priority, s32 unused1, s32 unused2, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, ScrData* scr);
+void scrTaskDestroyWithHierarchy(KwlnTask* scrTask, s32 unused);
 ScrData* scrTaskGetData(KwlnTask* scrTask);
 void scrTaskSetData(KwlnTask* scrTask, ScrData* scr);
 

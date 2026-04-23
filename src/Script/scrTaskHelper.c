@@ -8,6 +8,12 @@ KwlnTask* scrTaskInit(const char* name, u32 priority, s32 unused1, s32 unused2, 
     return kwlnTaskInit(name, priority, update, destroy, (void*)scr);
 }
 
+// FUN_0035adb0
+void scrTaskDestroyWithHierarchy(KwlnTask* scrTask, s32 unused)
+{
+    kwlnTaskDestroyWithHierarchy(scrTask);
+}
+
 // FUN_0035ae10
 ScrData* scrTaskGetData(KwlnTask* scrTask)
 {

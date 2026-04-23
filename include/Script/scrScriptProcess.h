@@ -11,6 +11,7 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries, ScrLblPrcd*
 ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx);
 KwlnTask* scrCreateTask(u32 priority, ScrHeader* header, u32 prcdIdx);
 KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scriptSize, u32 prcdIdx);
-void scrDestroy(ScrData* scr);
+void scrReleaseScript(ScrData* scr);
+void scrAllReleaseScript();
 
 #endif

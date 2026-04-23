@@ -5,12 +5,14 @@
 #include "itfMesManager.h"
 #include "h_dbprt.h"
 #include "h_malloc.h"
+#include "datScript.h"
 #include "temporary.h"
 
-static u32 sScrNum;       // 007ce57c
-static ScrData* sScrHead; // 007ce580
-static ScrData* sScrTail; // 007ce584
 ScrData* gCurrScript;     // 007ce5a8. Current script being executed
+
+static ScrData* sScrTail; // 007ce584
+static ScrData* sScrHead; // 007ce580
+static u32 sScrNo;        // 007ce57c
 
 void scrDestroyTask(KwlnTask* scrTask);
 void* scrScriptProcess(KwlnTask* scrTask);
@@ -129,7 +131,7 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
         scr->next = NULL;
         sScrTail = scr;
     }
-    sScrNum++;
+    sScrNo++;
 
     prcdName = prcd->name;
     printf("procedure start <%s>\n", prcdName);
@@ -243,10 +245,11 @@ KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scrip
 }
 
 // FUN_0035be30
-void scrDestroy(ScrData* scr)
+void scrReleaseScript(ScrData* scr)
 {
     printf(scr->proceduresContent[scr->prcdIdx].name);
     printf("end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
+
     H_Dbprt_FmtLog("procedure end <%s>\n", scr->proceduresContent[scr->prcdIdx].name);
 
     if (scr->localInt != NULL)
@@ -293,9 +296,44 @@ void scrDestroy(ScrData* scr)
 
     scr->prev = NULL;
     scr->next = NULL;
-    sScrNum--;
+    sScrNo--;
 
     H_Free(scr);
+}
+
+// FUN_0035bfb0
+void scrAllReleaseScript()
+{
+    ScrData* curr;
+    ScrData* next;
+
+    printf("before = %d\n", sScrNo);
+
+    curr = sScrHead;
+    while (curr != NULL)
+    {
+        printf(curr->scrName);
+
+        next = curr->next;
+
+        if (!datScript003112c0(curr)) // ?
+        {
+            if (curr->task != NULL)
+            {
+                printf("dds3KillProcess\n");
+                scrTaskDestroyWithHierarchy(curr->task, 0);
+            }
+            else
+            {
+                printf("scrReleaseScript\n");
+                scrReleaseScript(curr);
+            }
+        }
+
+        curr = next;
+    }
+
+    printf("after = %d\n", sScrNo);
 }
 
 // FUN_0035c200
@@ -306,7 +344,7 @@ void scrDestroyTask(KwlnTask* scrTask)
     scr = scrTaskGetData(scrTask);
     if (scr != NULL)
     {
-        scrDestroy(scr);
+        scrReleaseScript(scr);
     }
 
     scrTaskSetData(scrTask, NULL);
@@ -326,9 +364,9 @@ void* scrScriptProcess(KwlnTask* scrTask)
             return KWLNTASK_STOP;
 
         case SCRTRACE_YIELD:  // fallthrough
-        default: break;
+        default:              break;
 
-        case SCRTRACE_STOP:  return KWLNTASK_STOP;
+        case SCRTRACE_STOP: return KWLNTASK_STOP;
     }
 
     return KWLNTASK_CONTINUE;
