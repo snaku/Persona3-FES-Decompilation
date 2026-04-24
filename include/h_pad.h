@@ -57,12 +57,12 @@ typedef struct HPad
     u16 port;           // 0x08
     u16 slot;           // 0x0a
     HPadButtons btn[2]; // 0x0c. Second index is the same as the first one, but ignoring dpad
-    u8 unkData2[0x04];
-    s8 lstickX;         // 0x20
-    s8 lstickY;         // 0x21
-    s8 rstickX;         // 0x22
-    s8 rstickY;         // 0x23
-    u8 unkData3[0x12];
+    u16 unk_1c;         // 0x1c
+    s8 lstickX;         // 0x1e
+    s8 lstickY;         // 0x1f
+    s8 rstickX;         // 0x20
+    s8 rstickY;         // 0x21
+    u8 unkData[0x14];
 } HPad;
 
 extern HPad gWorkPads[HPAD_PORT_MAX];
