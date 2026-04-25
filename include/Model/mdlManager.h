@@ -34,7 +34,7 @@ typedef enum
     MODEL_TYPE_BTLCHAR = 1, // BC*.RMD    - "MODEL/PACK/"    (in .pac)
     MODEL_TYPE_ENEMY,       // EM*.RMD    - "MODEL/PACK/"    (in .pac)
     MODEL_TYPE_PERSONA,     // PS*.RMD    - "MODEL/PERSONA/"
-    MODEL_TYPE_FLDOBJ,      // FOBJ*.RMD  - "FIELD/GRMD/"
+    MODEL_TYPE_FLD,         // Every field models
     MODEL_TYPE_NPC,         // N*.RMD     - "MODEL/NPC/"
     MODEL_TYPE_WEAPON = 7,  // WP*.RMD    - "MODEL/WEAPON/"
     MODEL_TYPE_ENEMYSYMBOL, // ES*.RMD    - "MODEL/SYMBOL/"

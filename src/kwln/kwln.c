@@ -29,7 +29,7 @@ static u64 sT0Count64;             // 007ce098
 
 const f32 gAspectRatio = 4.0f / 3.0f;     // 007cad1c
 const f32 gPI = 3.14159274;               // 007cae58
-const f32 gRadToDegFactor = 180.0f / gPI; // 007ceaea8
+const f32 gRadToDegFactor = 180.0f / gPI; // 007caea8
 
 // FUN_00195de0
 void kwlnInitGameData()

@@ -17,6 +17,7 @@ void* memcpy(void* dst, void* src, u32 size);
 void* memset(void* dst, u8 value, u32 size);
 int printf(const char* fmt, ...);
 int sprintf(char* buffer, const char* fmt, ...);
+char* strcat(char*, char*);
 int strcmp(const char* str1, const char* str2);
 char* strcpy(char* dst, const char* src);
 size_t strlen(const char* str);

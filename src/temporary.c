@@ -33,6 +33,12 @@ void sprintf(char* buffer, const char* fmt, ...)
     // TODO
 }
 
+// FUN_00523e68
+char* strcat(char* str1, char* str2)
+{
+    return str1;
+}
+
 // FUN_00524128
 int strcmp(const char* str1, const char* str2)
 {

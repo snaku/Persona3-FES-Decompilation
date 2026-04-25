@@ -3,6 +3,7 @@
 #include "Model/mdlManager.h"
 #include "datCalendar.h"
 #include "g_data.h"
+#include "temporary.h"
 
 // FUN_001c26c0
 u8 K_Cmd_GET_MONTH()
@@ -57,6 +58,44 @@ u8 K_Cmd_DATE_IN_RANGE()
     {
         scrSetIntReturnVal(0);
     }
+
+    return true;
+}
+
+// FUN_001c45e0
+u8 K_Cmd_CREATE_FLD_MDL()
+{
+    char path[64];
+    char buff[64];
+    s32 majorId;
+    u32 minorId;
+    Model* mdl;
+
+    majorId = scrGetIntPara(0);
+    minorId = scrGetIntPara(1);
+
+    if (majorId > -1)
+    {
+        strcpy(path, "field/rmd/m");
+
+        sprintf(buff, "%03d_", majorId);
+        strcat(path, buff);
+
+        sprintf(buff, "%03d.RMD", minorId);
+        strcat(path, buff);
+    }
+    else
+    {
+        strcpy(path, "field/grmd/fobj");
+        sprintf(buff, "%03d.RMD", minorId);
+        strcat(path, buff);
+    }
+
+    mdl = mdlMngCreateMdlFromPath(MODEL_TYPE_FLD,
+                                  minorId,
+                                  path,
+                                  MDL_READASYNC);
+    scrSetIntReturnVal((s32)mdl);
 
     return true;
 }
