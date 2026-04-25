@@ -3,8 +3,8 @@
 
 #include "Utils.h"
 
-#define H_SND_BGM_PLAYING     1
-#define H_SND_BGM_NOT_PLAYING 0
+#define HSND_BGM_PLAYING     1
+#define HSND_BGM_NOT_PLAYING 0
 
 typedef enum
 {
@@ -68,25 +68,25 @@ typedef enum
     BGM_ID_UNK_58,                         // 92.ADX
     BGM_ID_VELVET_ROOM_FINAL,              // 93.ADX
     BGM_ID_MAIN_MENU = 115,                // 115.ADX
-    BGM_ID_NONE = 0xFFFF,
+    BGM_ID_NONE = -1,
 } BgmId;
 
-// 007e4430
-typedef struct 
+// ?? bytes
+typedef struct BgmWork
 {
-    u32 isBgmPlaying;
+    u32 isBgmPlaying;     // See 'HSND_BGM_*'
     u32 unk2;
-    u16 currBgmId;
+    s16 id;               // See 'BgmId' enum
     u16 unk3;
     u16 unk4;
     u32 unk5;
     u16 unk6;
-    char* currBgmAdxString;
-} BgmData;
+    char* currAdxString;
+} BgmWork;
 
-u16 H_Snd_GetCurrentBgmId();
+s16 H_Snd_GetCurrentBgmId();
 void H_Snd_StopPlayingBgm();
-u32 H_Snd_PlayBgm(u16 bgmId, u8 param_2);
+u8 H_Snd_PlayBgm(u16 id, s32 unused);
 u8 H_Snd_FUN_00109ca0(s16 param_1, s16 param_2);
 
 #endif

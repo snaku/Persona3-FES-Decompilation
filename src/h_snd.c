@@ -1,7 +1,9 @@
 #include "h_snd.h"
+#include "g_data.h"
+#include "temporary.h"
 
 // 007cb2a8. See enum BgmId
-static const char* bgmStrings[82] = 
+static const char* sBgmAdxStrings[82] = 
 {
     "01.ADX", "26.ADX", "19.ADX", "20.ADX", "21.ADX",
     "22.ADX", "23.ADX", "24.ADX", "25.ADX", "27.ADX",
@@ -22,54 +24,67 @@ static const char* bgmStrings[82] =
     "114.ADX", "115.ADX"
 };
 
-static BgmData bgm;
+static BgmWork sBgmWork;  // 007e4430
+static char sBuffer[256]; // 007e4446
 
 // FUN_00108e50
-u16 H_Snd_GetCurrentBgmId()
+s16 H_Snd_GetCurrentBgmId()
 {
-    if (bgm.isBgmPlaying == H_SND_BGM_NOT_PLAYING)
+    if (sBgmWork.isBgmPlaying == HSND_BGM_NOT_PLAYING)
     {
         return BGM_ID_NONE;
     }
 
-    return bgm.currBgmId;
+    return sBgmWork.id;
 }
 
 // FUN_00108e50
 void H_Snd_StopPlayingBgm()
 {
-    if (bgm.isBgmPlaying != H_SND_BGM_NOT_PLAYING)
+    if (sBgmWork.isBgmPlaying != HSND_BGM_NOT_PLAYING)
     {
         // FUN_0054d100(bgm.unk5);
-        bgm.isBgmPlaying = H_SND_BGM_NOT_PLAYING;
-        bgm.unk4 = 0;
-        bgm.currBgmId = BGM_ID_NONE;
+        sBgmWork.isBgmPlaying = HSND_BGM_NOT_PLAYING;
+        sBgmWork.unk4 = 0;
+        sBgmWork.id = BGM_ID_NONE;
     }
 }
 
-// FUN_001099d0
-u32 H_Snd_PlayBgm(u16 bgmId, u8 param_2)
+// FUN_00109180
+void H_Snd_00109180(s32 param_1)
 {
     // TODO
-    u16 currBgmId = bgm.currBgmId;
+}
 
-    if (bgm.isBgmPlaying == H_SND_BGM_NOT_PLAYING)
+// FUN_001099d0
+u8 H_Snd_PlayBgm(u16 id, s32 unused)
+{
+    // WIP
+
+    if (sBgmWork.isBgmPlaying == HSND_BGM_NOT_PLAYING)
     {
-        currBgmId = BGM_ID_NONE;
+        sBgmWork.id = BGM_ID_NONE;
     }
 
-    if (bgmId != currBgmId)
+    if (id != sBgmWork.id)
     {
-        bgm.unk2 = 0;
-        bgm.isBgmPlaying = H_SND_BGM_PLAYING;
-        bgm.unk3 = 1;
-        // DAT_007e4560 = bgm.currBgmId;
-        bgm.unk5 = 0;
-        bgm.currBgmId = bgmId;
-        P3FES_LOG2("", bgm.currBgmAdxString, bgmStrings[bgmId]);
+        // FUN_0054d208(DAT_007e4440,1);    ACSSND_SetLpFlg
+        sBgmWork.unk2 = 0;
+        sBgmWork.isBgmPlaying = HSND_BGM_PLAYING;
+        sBgmWork.unk3 = 1;
+        // DAT_007e4560 = sBgmWork.id;
+        sBgmWork.unk5 = 0;
+        sBgmWork.id = id;
+
+        sprintf(sBuffer, "%s", sBgmAdxStrings[id]);
+
+        if (!datGetFlag(5150))
+        {
+            H_Snd_00109180(0);
+        }
     }
 
-    return H_SND_BGM_PLAYING;
+    return true;
 }
 
 // FUN_00109ca0
@@ -78,10 +93,4 @@ u8 H_Snd_FUN_00109ca0(s16 param_1, s16 param_2)
     // TODO
 
     return true;
-}
-
-// FUN_00523ac8. TEMPORARY IN THIS FILE !
-void P3FES_LOG2(const char* fmt, ...)
-{
-    // TODO
 }
