@@ -4,6 +4,38 @@
 #include "datCalendar.h"
 #include "g_data.h"
 
+// FUN_001c26c0
+u8 K_Cmd_GET_MONTH()
+{
+    scrSetIntReturnVal(clndGetCurrentMonth());
+
+    return true;
+}
+
+// FUN_001c26f0
+u8 K_Cmd_GET_DAY()
+{
+    scrSetIntReturnVal(clndGetCurrentDay());
+
+    return true;
+}
+
+// FUN_001c2720
+u8 K_Cmd_GET_DAY_OF_WEEK()
+{
+    scrSetIntReturnVal(clndGetCurrentWeekDay());
+
+    return true;
+}
+
+// FUN_001c2750
+u8 K_Cmd_GET_TIME()
+{
+    scrSetIntReturnVal(datGetTime());
+
+    return true;
+}
+
 // FUN_001c2780
 u8 K_Cmd_DATE_IN_RANGE()
 {
