@@ -90,6 +90,7 @@ typedef struct RwCamera
     RwMatrix viewMatrix;                 // 0x20
     RwRaster* frameBuffer;               // 0x60
     RwRaster* zBuffer;                   // 0x64
+    RwV2d viewWindow;                    // 0x68
 } RwCamera;
 
 typedef enum

@@ -7,7 +7,7 @@
 typedef struct KwlnTask KwlnTask;
 
 #define DEG_TO_RAD(deg) (gPI * (deg) / 180.0f)
-#define RAD_TO_DEG(rad) ((rad) * 180.0f / gPI)
+#define RAD_TO_DEG(rad) (gRadToDegFactor * (rad))
 
 extern u32 gT0CountVal;
 extern u8 gFogAlpha;
@@ -20,6 +20,7 @@ extern u32 gCurrWorldIdx;
 
 extern const f32 gAspectRatio;
 extern const f32 gPI;
+extern const f32 gRadToDegFactor;
 
 void kwlnMain();
 

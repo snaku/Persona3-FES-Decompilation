@@ -57,6 +57,12 @@ size_t strlen(const char* str)
     return 0;
 }
 
+// FUN_0052e408
+float atanf(float x)
+{
+    return 0.0f;
+}
+
 // FUN_0052e930
 float tanf(float x)
 {
