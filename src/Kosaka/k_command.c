@@ -1,4 +1,5 @@
 #include "Kosaka/k_command.h"
+#include "Kosaka/Field/k_dungeon.h"
 #include "Script/scrTraceCode.h"
 #include "Model/mdlManager.h"
 #include "datCalendar.h"
@@ -58,6 +59,14 @@ u8 K_Cmd_DATE_IN_RANGE()
     {
         scrSetIntReturnVal(0);
     }
+
+    return true;
+}
+
+// FUN_001c2ea0
+u8 K_Cmd_GET_DUNGEON_FLOOR()
+{
+    scrSetIntReturnVal(K_FldDungeon_GetCurrentFloor());
 
     return true;
 }
