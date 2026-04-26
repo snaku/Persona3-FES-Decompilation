@@ -4,6 +4,7 @@
 #include "Model/mdlManager.h"
 #include "datCalendar.h"
 #include "g_data.h"
+#include "h_snd.h"
 #include "temporary.h"
 
 // FUN_001c26c0
@@ -122,6 +123,22 @@ u8 K_Cmd_CREATE_MDL()
     mdl = mdlMngCreateMdlAndResolvePath(type, id, MDL_READASYNC);
 
     scrSetIntReturnVal((s32)mdl);
+
+    return true;
+}
+
+// FUN_001c54a0
+u8 K_Cmd_PLAY_BGM()
+{
+    s16 currBgm;
+    s32 reqBgm;
+
+    currBgm = H_Snd_GetCurrentBgmId();
+
+    if (currBgm != scrGetIntPara(0))
+    {
+        H_Snd_PlayBgm(scrGetIntPara(0), 1);
+    }
 
     return true;
 }

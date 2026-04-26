@@ -86,7 +86,7 @@ typedef struct BgmWork
 
 s16 H_Snd_GetCurrentBgmId();
 void H_Snd_StopPlayingBgm();
-u8 H_Snd_PlayBgm(u16 id, s32 unused);
+u8 H_Snd_PlayBgm(s16 id, s32 unused);
 u8 H_Snd_FUN_00109ca0(s16 param_1, s16 param_2);
 
 #endif

@@ -57,7 +57,7 @@ void H_Snd_00109180(s32 param_1)
 }
 
 // FUN_001099d0
-u8 H_Snd_PlayBgm(u16 id, s32 unused)
+u8 H_Snd_PlayBgm(s16 id, s32 unused)
 {
     // WIP
 
