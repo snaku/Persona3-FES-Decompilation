@@ -5,6 +5,7 @@
 #include "g_data.h"
 #include "temporary.h"
 #include "h_sfdply.h"
+#include "admini.h"
 
 typedef struct
 {
@@ -13,7 +14,7 @@ typedef struct
 } Holiday;
 
 // 005e3a40
-static Holiday holidays[] = 
+static const Holiday sHolidays[] = 
 {
     {CALENDAR_MONTH_APRIL, 29}, {CALENDAR_MONTH_MAY, 2}, {CALENDAR_MONTH_MAY, 5},
     {CALENDAR_MONTH_JULY, 20}, {CALENDAR_MONTH_JULY, 21}, {CALENDAR_MONTH_JULY, 22},
@@ -229,8 +230,8 @@ u8 clndIsHolidayOrSunday()
 
     for (i = 0; i < 0x164; i++)
     {
-        if (holidays[i].month == -1) break;
-        if (currMonth == holidays[i].month && currDayOfMonth == holidays[i].day)
+        if (sHolidays[i].month == -1) break;
+        if (currMonth == sHolidays[i].month && currDayOfMonth == sHolidays[i].day)
         {
             return true;
         }
@@ -302,6 +303,24 @@ void* clndUpdateTask(KwlnTask* clndTask)
     // TODO
 
     return KWLNTASK_CONTINUE;
+}
+
+// FUN_0017fa10
+void clndReqSkip()
+{
+    if (sClndTask != NULL)
+    {
+        if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+        {
+            ((CalendarTaskWork*)sClndTask->workData)->state = CLNDTASK_STATE_REQSKIP;
+            adminiChangeSeq(ADMINI_SEQ_NULL, NULL, 0, false);
+        }
+        else
+        {
+            ((CalendarTaskWork*)sClndTask->workData)->state = 5;
+            adminiChangeSeq(ADMINI_SEQ_NULL, NULL, 0, false);
+        }
+    }
 }
 
 // FUN_0017faa0

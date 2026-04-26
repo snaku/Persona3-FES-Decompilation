@@ -16,17 +16,20 @@ typedef struct Field
 } Field;
 
 // 104 bytes. Task data for "field root" task
-typedef struct FldRoot
+typedef struct FldRootWork
 {
-    u8 unkData1[0x10];
-    s16 majorId;       // 0x10
-    s16 minorId;       // 0x12
+    u8 unkData1[0x08];
+    u32 shouldShutdown; // 0x08
+    s32 unk_0c;         // 0x0c
+    s16 majorId;        // 0x10
+    s16 minorId;        // 0x12
     u8 unkData2[0x54];
-} FldRoot;
+} FldRootWork;
 
 void K_Field_Init();
 Field* K_Field_Get();
 
+void K_Field_SetShouldShutdown(KwlnTask* fldRootTask, u32 shouldShutdown);
 s16 K_Field_GetMajorId(KwlnTask* fldRootTask);
 s16 K_Field_GetMinorId(KwlnTask* fldRootTask);
 

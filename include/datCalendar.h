@@ -93,8 +93,10 @@ typedef struct CalendarWork
 // TODO
 typedef enum
 {
-    CALENDAR_TASK_STATE_INIT_DEBUG,   // Create a blue rectangle for the bg and a red cursor
-    CALENDAR_TASK_STATE_UPDATE_DEBUG, 
+    CLNDTASK_STATE_DEBUGINIT,    // Create a blue rectangle for the bg and a red cursor
+    CLNDTASK_STATE_DEBUGUPDATE,
+    CLNDTASK_STATE_REQSKIP = 18,
+    CLNDTASK_STATE_SKIP = 22
 } CalendarTaskState;
 
 // 44 bytes
@@ -117,6 +119,7 @@ u8 clndIsHolidayOrSunday();
 u8 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range);
+void clndReqSkip();
 KwlnTask* clndCreateTask();
 u8 clndGetCurrentMoonPhase();
 u8 clndGetMoonPhase(u32 daysSinceApr5);

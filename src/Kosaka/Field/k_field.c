@@ -16,14 +16,25 @@ Field* K_Field_Get()
     return &sField;
 }
 
+// FUN_001ba880
+void K_Field_SetShouldShutdown(KwlnTask* fldRootTask, u32 shouldShutdown)
+{
+    FldRootWork* work;
+
+    work = (FldRootWork*)fldRootTask->workData;
+    printf("shutdown field proc\n");
+
+    work->shouldShutdown = shouldShutdown;
+}
+
 // FUN_001bab20. Get field major id by the root field task. Not really used that much, 'gMtScene' is used instead
 s16 K_Field_GetMajorId(KwlnTask* fldRootTask)
 {
-    return ((FldRoot*)fldRootTask->workData)->majorId;
+    return ((FldRootWork*)fldRootTask->workData)->majorId;
 }
 
 // FUN_001bab30. Get field minor id by the root field task. Not really used that much, 'gMtScene' is used instead
 s16 K_Field_GetMinorId(KwlnTask* fldRootTask)
 {
-    return ((FldRoot*)fldRootTask->workData)->minorId;
+    return ((FldRootWork*)fldRootTask->workData)->minorId;
 }

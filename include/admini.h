@@ -5,7 +5,7 @@
 
 typedef struct KwlnTask KwlnTask;
 
-#define ADMINI_FLAG_CHANGING_SEQ (1 << 0)   // 0x1
+#define ADMINI_FLAG_CHANGING_SEQ  (1 << 0)  // 0x1
 #define ADMINI_FLAG_PASSED_CHECK  (1 << 1)  // 0x2. Ptr func 'adminiCheck' of current sequence returned true
 #define ADMINI_FLAG_RESTORABLE    (1 << 2)  // 0x4. Can be restorable
 #define ADMINI_FLAG_UNK08         (1 << 3)  // 0x8
