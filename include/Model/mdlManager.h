@@ -24,10 +24,12 @@ typedef struct HCdvd HCdvd;
 #define MDL_FLAG_STREAMDONE  (1 << 12) // 0x1000
 #define MDL_FLAG_STREAMSYNC  (1 << 14) // 0x4000. Synchronous stream read
 
-#define MDL_LOOKAT_FLAG_XYZCS    (1 << 5) // 0x20. Cutscenes
-#define MDL_LOOKAT_FLAG_XYZ      (1 << 6) // 0x40
-#define MDL_LOOKAT_FLAG_XY       (1 << 7) // 0x80
-#define MDL_LOOKAT_FLAG_NOTARGET (1 << 8) // 0x100
+#define MDLANIM_FLAG_UNK01 (1 << 0) // 0x01
+
+#define MDLLOOKAT_FLAG_XYZCS    (1 << 5) // 0x20. Cutscenes
+#define MDLLOOKAT_FLAG_XYZ      (1 << 6) // 0x40
+#define MDLLOOKAT_FLAG_XY       (1 << 7) // 0x80
+#define MDLLOOKAT_FLAG_NOTARGET (1 << 8) // 0x100
 
 typedef enum
 {
@@ -171,10 +173,13 @@ Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 readMode)
 Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode);
 Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 readMode);
 
-u8 mdlStreamRead(Model* mdl);
+u32 mdlStreamRead(Model* mdl);
 
 void mdlDestroy(Model* mdl);
 
+u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags);
+s16 mdlAnimGetId(Model* mdl, u16 slotIdx);
+u32 mdlAnim003185b0(Model* mdl, u16 slotIdx);;
 f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx);
 f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
 f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx);
@@ -197,6 +202,8 @@ void mdlLookAtSetTargetPosXYZCS(Model* mdl, const RwV3d* target);
 void mdlLookAtSetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget);
 void mdlLookAtDisableTarget(Model* mdl);
 u8 mdlLookAtIsActive(Model* mdl);
+void mdlLookAtSetFlags(Model* mdl, u16 flags);
+u16 mdlLookAtGetFlags(Model* mdl);
 void mdlLookAtSetTargetScale(Model* mdl, const RwV3d* scale);
 
 #endif

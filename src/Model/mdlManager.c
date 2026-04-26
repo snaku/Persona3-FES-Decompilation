@@ -128,7 +128,7 @@ Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 readMode)
 }
 
 // FUN_00316f70
-u8 mdlStreamRead(Model* mdl)
+u32 mdlStreamRead(Model* mdl)
 {
     // TODO
 
@@ -139,6 +139,39 @@ u8 mdlStreamRead(Model* mdl)
 void mdlDestroy(Model* mdl)
 {
     // TODO
+}
+
+// FUN_003182d0
+u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags)
+{
+    // TODO
+
+    return true;
+}
+
+// FUN_00318540
+s16 mdlAnimGetId(Model* mdl, u16 slotIdx)
+{
+    s16 id;
+
+    if (mdlAnim003185b0(mdl, slotIdx))
+    {
+        id = mdl->animSlots[slotIdx].anim.id;
+    }
+    else
+    {
+        id = -1;
+    }
+    
+    return id;
+}
+
+// FUN_003185b0
+u32 mdlAnim003185b0(Model* mdl, u16 slotIdx)
+{
+    // TODO
+    
+    return true;
 }
 
 // FUN_00318870
@@ -285,9 +318,9 @@ void mdlLookAtSetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle)
 // FUN_003190b0
 void mdlLookAtSetTargetPosXYZ(Model* mdl, const RwV3d* target)
 {
-    mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZ;
-    mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XY);
-    mdl->animSlots[0].lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_XYZ;
+    mdl->animSlots[0].lookAt.flags &= ~(MDLLOOKAT_FLAG_XYZCS | MDLLOOKAT_FLAG_XY);
+    mdl->animSlots[0].lookAt.flags &= ~MDLLOOKAT_FLAG_NOTARGET;
 
     mdl->animSlots[0].lookAt.targetPos = *target;
 }
@@ -295,9 +328,9 @@ void mdlLookAtSetTargetPosXYZ(Model* mdl, const RwV3d* target)
 // FUN_00319100
 void mdlLookAtSetTargetPosXYZCS(Model* mdl, const RwV3d* target)
 {
-    mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XYZCS;
-    mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZ | MDL_LOOKAT_FLAG_XY);
-    mdl->animSlots[0].lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_XYZCS;
+    mdl->animSlots[0].lookAt.flags &= ~(MDLLOOKAT_FLAG_XYZ | MDLLOOKAT_FLAG_XY);
+    mdl->animSlots[0].lookAt.flags &= ~MDLLOOKAT_FLAG_NOTARGET;
 
     mdl->animSlots[0].lookAt.targetPos = *target;
 }
@@ -305,9 +338,9 @@ void mdlLookAtSetTargetPosXYZCS(Model* mdl, const RwV3d* target)
 // FUN_00319150
 void mdlLookAtSetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget)
 {
-    mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_XY;
-    mdl->animSlots[0].lookAt.flags &= ~(MDL_LOOKAT_FLAG_XYZCS | MDL_LOOKAT_FLAG_XYZ);
-    mdl->animSlots[0].lookAt.flags &= ~MDL_LOOKAT_FLAG_NOTARGET;
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_XY;
+    mdl->animSlots[0].lookAt.flags &= ~(MDLLOOKAT_FLAG_XYZCS | MDLLOOKAT_FLAG_XYZ);
+    mdl->animSlots[0].lookAt.flags &= ~MDLLOOKAT_FLAG_NOTARGET;
 
     mdl->animSlots[0].lookAt.targetPos.x = xTarget;
     mdl->animSlots[0].lookAt.targetPos.y = yTarget;
@@ -316,16 +349,28 @@ void mdlLookAtSetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget)
 // FUN_00319190
 void mdlLookAtDisableTarget(Model* mdl)
 {
-    mdl->animSlots[0].lookAt.flags |= MDL_LOOKAT_FLAG_NOTARGET;
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_NOTARGET;
 }
 
 // FUN_003191d0
 u8 mdlLookAtIsActive(Model* mdl)
 {
-    return (mdl->animSlots[0].lookAt.flags & (MDL_LOOKAT_FLAG_XYZCS |
-                                              MDL_LOOKAT_FLAG_XYZ   |
-                                              MDL_LOOKAT_FLAG_XY    | 
-                                              MDL_LOOKAT_FLAG_NOTARGET)) != 0;
+    return (mdl->animSlots[0].lookAt.flags & (MDLLOOKAT_FLAG_XYZCS |
+                                              MDLLOOKAT_FLAG_XYZ   |
+                                              MDLLOOKAT_FLAG_XY    | 
+                                              MDLLOOKAT_FLAG_NOTARGET)) != 0;
+}
+
+// FUN_003191f0
+void mdlLookAtSetFlags(Model* mdl, u16 flags)
+{
+    mdl->animSlots[0].lookAt.flags = flags;
+}
+
+// FUN_00319200
+u16 mdlLookAtGetFlags(Model* mdl)
+{
+    return mdl->animSlots[0].lookAt.flags;
 }
 
 // FUN_00319210
