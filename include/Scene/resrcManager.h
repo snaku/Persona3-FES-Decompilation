@@ -22,6 +22,7 @@ typedef enum
     RESRC_TYPE_MODELNPC,
     RESRC_TYPE_LIGHTPARTY,
     RESRC_TYPE_LIGHTNPC,
+    RESRC_TYPE_MODELFLD = 10,
     RESRC_TYPE_FLD = 12,
     RESRC_TYPE_MAX = 22
 } ResrcType;
@@ -72,7 +73,7 @@ typedef struct ResrcLightParty
     u8 unkData1[0x50];
 } ResrcLightParty;
 
-// 432 bytes. Lighting parameters resource for npc's
+// 432 bytes. Lighting parameters resource for npcs
 typedef struct ResrcLightNpc
 {
     Resrc base;          // 0x00
@@ -81,6 +82,15 @@ typedef struct ResrcLightNpc
     RwMatrix dirMat;     // 0x120
     u8 unkData1[0x50];
 } ResrcLightNpc;
+
+// 304 bytes
+typedef struct ResrcModelFld
+{
+    Resrc base;       // 0x00
+    s32 unk_100;      // 0x100
+    Model* mdl;       // 0x104
+    u8 unkData[0x28];
+} ResrcModelFld;
 
 // 368 bytes. Field resource
 typedef struct ResrcFld

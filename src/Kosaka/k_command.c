@@ -1,7 +1,10 @@
 #include "Kosaka/k_command.h"
+#include "Kosaka/k_assert.h"
 #include "Kosaka/Field/k_dungeon.h"
 #include "Script/scrTraceCode.h"
 #include "Model/mdlManager.h"
+#include "Scene/resrcManager.h"
+#include "Scene/mt_scene.h"
 #include "datCalendar.h"
 #include "g_data.h"
 #include "h_snd.h"
@@ -59,6 +62,50 @@ u8 K_Cmd_DATE_IN_RANGE()
     else
     {
         scrSetIntReturnVal(0);
+    }
+
+    return true;
+}
+
+// FUN_001c2c80
+u8 K_Cmd_RESRC_MODEL_SCALE()
+{
+    u32 resTypeId;
+    RwV3d scale;
+    Resrc* res;
+
+    resTypeId = scrGetIntPara(0);
+    scale.x = scrGetFloatPara(1);
+    scale.y = scrGetFloatPara(1);
+    scale.z = scrGetFloatPara(1);
+
+    switch (RESRC_GET_TYPE(resTypeId))
+    {
+        case RESRC_TYPE_MODELPARTY:
+            res = MT_Scene_GetRes(resTypeId);
+            if (res != NULL)
+            {
+                mdlScale(((ResrcModelParty*)res)->mdl, &scale, rwCOMBINEPOSTCONCAT);
+            }
+            break;
+        
+        case RESRC_TYPE_MODELNPC:
+            res = MT_Scene_GetRes(resTypeId);
+            if (res != NULL)
+            {
+                mdlScale(((ResrcModelNpc*)res)->mdl, &scale, rwCOMBINEPOSTCONCAT);
+            }
+            break;
+        
+        case RESRC_TYPE_MODELFLD:
+            res = MT_Scene_GetRes(resTypeId);
+            if (res != NULL)
+            {
+                mdlScale(((ResrcModelFld*)res)->mdl, &scale, rwCOMBINEPOSTCONCAT);
+            }
+            break;
+
+        default: K_Assert("k_command.c", 623);
     }
 
     return true;
@@ -139,6 +186,25 @@ u8 K_Cmd_PLAY_BGM()
     {
         H_Snd_PlayBgm(scrGetIntPara(0), 1);
     }
+
+    return true;
+}
+
+// FUN_001c56a0
+u8 K_Cmd_GET_NPC_NO()
+{
+    ResrcModelNpc* npc;
+    s32 no;
+
+    npc = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
+    no = 0;
+    while (npc != NULL)
+    {
+        no++;
+        npc = (ResrcModelNpc*)npc->base.next;
+    }
+
+    scrSetIntReturnVal(no);
 
     return true;
 }
