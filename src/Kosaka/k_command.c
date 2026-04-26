@@ -142,3 +142,19 @@ u8 K_Cmd_PLAY_BGM()
 
     return true;
 }
+
+// FUN_001c5e60
+u8 K_Cmd_CHK_SCENARIO_ANSWER()
+{
+    s32 isAnswer;
+
+    isAnswer = false;
+    if (datGetScenarioMode() == SCENARIO_MODE_ANSWER)
+    {
+        isAnswer = true;
+    }
+
+    scrSetIntReturnVal(isAnswer);
+
+    return true;
+}
