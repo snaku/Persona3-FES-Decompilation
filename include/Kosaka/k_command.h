@@ -3,6 +3,8 @@
 
 #include "Utils.h"
 
+u8 K_Cmd_SKIP_TO_DARK_HOUR();
+u8 K_Cmd_REQ_CLND_SKIP();
 u8 K_Cmd_GET_MONTH();
 u8 K_Cmd_GET_DAY();
 u8 K_Cmd_GET_DAY_OF_WEEK();

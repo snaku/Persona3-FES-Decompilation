@@ -1,6 +1,7 @@
 #include "Kosaka/k_command.h"
 #include "Kosaka/k_assert.h"
 #include "Kosaka/Field/k_dungeon.h"
+#include "Kosaka/Field/k_field.h"
 #include "Script/scrTraceCode.h"
 #include "Model/mdlManager.h"
 #include "Scene/resrcManager.h"
@@ -9,6 +10,31 @@
 #include "g_data.h"
 #include "h_snd.h"
 #include "temporary.h"
+
+// FUN_001c2480
+u8 K_Cmd_SKIP_TO_DARK_HOUR()
+{
+    if (K_Field_Get()->rootTask != NULL)
+    {
+        datSetTimeSkipTarget(CALENDAR_TIME_DARK_HOUR);
+        datSetSkipToTarget(true);
+        datSetDaysSkipTarget(datGetDaysSinceApr5());
+
+        K_Field_SetShouldShutdown(K_Field_Get()->rootTask, true);
+
+        clndReqSkip();
+    }
+
+    return true;
+}
+
+// FUN_001c2550
+u8 K_Cmd_REQ_CLND_SKIP()
+{
+    clndReqSkip();
+
+    return true;
+}
 
 // FUN_001c26c0
 u8 K_Cmd_GET_MONTH()
