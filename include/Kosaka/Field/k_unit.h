@@ -12,7 +12,9 @@ typedef struct ResrcModelParty ResrcModelParty;
 // 448 bytes
 typedef struct FldUnit
 {
-    u8 unkData1[0x50];
+    u8 unkData1[0x48];
+    void* unk_48;           // 0x48
+    s32 unk_4c;             // 0x4c
     Model* mdl;             // 0x50
     ResrcModelParty* resrc; // 0x54
     u8 unkData2[0x168];

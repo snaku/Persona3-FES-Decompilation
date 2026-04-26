@@ -1,13 +1,37 @@
 #include "Kosaka/Field/k_event.h"
+#include "Kosaka/Field/k_unit.h"
+#include "Model/mdlManager.h"
 #include "kwln/kwlnTask.h"
 
 KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 
+// FUN_001c7130
+u32 K_FldEvent_IsUnitWithinDistOfHero(const FldUnit* fldUnit, f32 maxDist)
+{
+    return K_FldEvent_AreUnitsWithinDist(fldUnit, &gFldUnits[FLDUNIT_HERO], maxDist);
+}
+
+// FUN_001c7160
+u32 K_FldEvent_AreUnitsWithinDist(const FldUnit* fldUnitA, const FldUnit* fldUnitB, f32 maxDist)
+{
+    u32 withinDist;
+
+    withinDist = false;
+    if (fldUnitA->unk_48 != NULL && fldUnitB->unk_48 != NULL)
+    {
+        withinDist = K_FldEvent_ArePosWithinDist(&mdlGetMatrix(fldUnitA->mdl)->pos,
+                                                 &mdlGetMatrix(fldUnitB->mdl)->pos,
+                                                 maxDist);
+    }
+
+    return withinDist;
+}
+
 // FUN_001c71f0
-RwBool K_FldEvent_IsWithinDistance(f32 maxDist, RwV3d* posA, RwV3d* posB)
+u32 K_FldEvent_ArePosWithinDist(const RwV3d* posA, const RwV3d* posB, f32 maxDist)
 {
     RwV3d diff;
-    RwBool withinDist;
+    u32 withinDist;
 
     withinDist = false;
 
