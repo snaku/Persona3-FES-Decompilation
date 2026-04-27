@@ -3,6 +3,8 @@
 
 #include "Utils.h"
 
+typedef struct Model Model;
+
 // 16 bytes
 typedef struct FldDungeonFloorData
 {
@@ -13,13 +15,16 @@ typedef struct FldDungeonFloorData
     u8 unkData[0x04];
 } FldDungeonFloorData;
 
-extern u32 gTraceCode;
 extern void* gFldScrMemory;
 extern u32 gFldScrSize;
+extern Model* gFldBaseMdl;
+extern u32 gTraceCode;
 
 extern FldDungeonFloorData gFldDngFloorsData[500];
 
 void K_Data_LoadFldMainScript();
 void K_Data_LoadDngFloorsData(u32 scenarioMode);
+void K_Data_CreateFldBaseMdl();
+u32 K_Data_ChkFldBaseMdlStream();
 
 #endif

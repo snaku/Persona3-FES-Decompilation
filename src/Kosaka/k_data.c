@@ -2,13 +2,15 @@
 #include "Kosaka/Field/k_dungeon.h"
 #include "Kosaka/k_assert.h"
 #include "kwln/kwlnTask.h"
+#include "Model/mdlManager.h"
 #include "h_cdvd.h"
 #include "g_data.h"
 #include "temporary.h"
 
-u32 gTraceCode;      // 007ce208
 void* gFldScrMemory; // 007ce228
 u32 gFldScrSize;     // 007ce224
+Model* gFldBaseMdl;  // 007ce21c
+u32 gTraceCode;      // 007ce208
 
 FldDungeonFloorData gFldDngFloorsData[500]; // 00867f60
 
@@ -62,4 +64,27 @@ void K_Data_LoadDngFloorsData(u32 scenarioMode)
     memcpy((u8*)gFldDngFloorsData, (u8*)cdvd->fileMemory, fileSize);
 
     H_Cdvd_Destroy(cdvd);
+}
+
+// FUN_001b7dc0
+void K_Data_CreateFldBaseMdl()
+{
+    HCdvd* cdvd;
+
+    cdvd = H_Cdvd_Request("field/base.RMD", H_CDVD_FILENORMAL);
+    H_Cdvd_SyncRead(cdvd);
+
+    gFldBaseMdl = mdlMngCreateMdlFromRmdMemory(MODEL_TYPE_FLD,
+                                               2000,
+                                               cdvd->fileMemory,
+                                               cdvd->fileSize,
+                                               MDL_READASYNC);
+
+    // ??? never destroying the cdvd
+}
+
+// FUN_001b7e30
+u32 K_Data_ChkFldBaseMdlStream()
+{
+    return mdlStreamRead(gFldBaseMdl) != false;
 }
