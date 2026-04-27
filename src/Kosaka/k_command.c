@@ -93,6 +93,45 @@ u8 K_Cmd_DATE_IN_RANGE()
     return true;
 }
 
+// FUN_001c2b80
+u8 K_Cmd_RESRC_MODEL_ANIM_SYNC()
+{
+    u32 resTypeId;
+    Resrc* res;
+
+    resTypeId = scrGetIntPara(0);
+    switch (RESRC_GET_TYPE(resTypeId))
+    {
+        case RESRC_TYPE_MODELPARTY:
+            res = MT_Scene_GetRes(resTypeId);
+            if (res != NULL)
+            {
+                return ((ResrcModelParty*)res)->mdl->animSlots[0].anim.isAnimEnd == true;
+            }
+            break;
+            
+        case RESRC_TYPE_MODELNPC:
+            res = MT_Scene_GetRes(resTypeId);
+            if (res != NULL)
+            {
+                return ((ResrcModelNpc*)res)->mdl->animSlots[0].anim.isAnimEnd == true;
+            }
+            break;
+
+        case RESRC_TYPE_MODELFLD:
+            res = MT_Scene_GetRes(resTypeId);
+            if (res != NULL)
+            {
+                return ((ResrcModelFld*)res)->mdl->animSlots[0].anim.isAnimEnd == true;
+            }
+            break;
+        
+        default: K_Assert("k_command.c", 577);
+    }
+
+    return true;
+}
+
 // FUN_001c2c80
 u8 K_Cmd_RESRC_MODEL_SCALE()
 {

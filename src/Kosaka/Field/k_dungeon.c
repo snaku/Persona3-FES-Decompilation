@@ -10,7 +10,7 @@
 KwlnTask* gDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
 Model* gDungeonTpMdl;   // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?
 
-#define DUNGEON_GET_WORK ((FldDungeon*)gDungeonTask->workData)
+#define DUNGEON_GET_WORK() ((FldDungeon*)gDungeonTask->workData)
 
 HCdvd* K_FldDungeon_RequestScript();
 void K_FldDungeon_DestroyScrMemory();
@@ -74,7 +74,7 @@ void K_FldDungeon_RequestShutdown()
 {
     if (gDungeonTask != NULL)
     {
-        DUNGEON_GET_WORK->shouldShutdown = true;
+        DUNGEON_GET_WORK()->shouldShutdown = true;
     }
 }
 
@@ -86,7 +86,7 @@ u32 K_FldDungeon_GetCurrentFloor()
         return 0;
     }
 
-    return DUNGEON_GET_WORK->currFloor;
+    return DUNGEON_GET_WORK()->currFloor;
 }
 
 // FUN_001bff50
@@ -100,7 +100,7 @@ u8 K_FldDungeon_IsCurrentFloorExplorable()
     }
     else 
     {
-        currFloor = DUNGEON_GET_WORK->currFloor;
+        currFloor = DUNGEON_GET_WORK()->currFloor;
     }
 
     if (currFloor < 2 || currFloor >= 400)
@@ -119,7 +119,7 @@ FldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
         return 0;
     }
 
-    return &DUNGEON_GET_WORK->floorsData[DUNGEON_GET_WORK->currFloor];
+    return &DUNGEON_GET_WORK()->floorsData[DUNGEON_GET_WORK()->currFloor];
 }
 
 // FUN_001bffe0
@@ -130,7 +130,7 @@ void* K_FldDungeon_GetScrMemory()
         return NULL;
     }
 
-    return DUNGEON_GET_WORK->scrMemory;
+    return DUNGEON_GET_WORK()->scrMemory;
 }
 
 // FUN_001c0010
@@ -141,7 +141,7 @@ u32 K_FldDungeon_GetScrSize()
         return 0;
     }
 
-    return DUNGEON_GET_WORK->scrSize;
+    return DUNGEON_GET_WORK()->scrSize;
 }
 
 // FUN_001c0190. Request a cdvd stream to load main tartarus script
@@ -155,7 +155,7 @@ HCdvd* K_FldDungeon_RequestScript()
         return NULL;
     }
 
-    if (DUNGEON_GET_WORK->scrMemory == NULL)
+    if (DUNGEON_GET_WORK()->scrMemory == NULL)
     {
         if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
         {
@@ -180,7 +180,7 @@ u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
         return true;
     }
 
-    dungeon = DUNGEON_GET_WORK;
+    dungeon = DUNGEON_GET_WORK();
     if (scrCdvd == NULL)
     {
         return true;
@@ -209,7 +209,7 @@ void K_FldDungeon_DestroyScrMemory()
 
     if (gDungeonTask != NULL)
     {
-        dungeon = DUNGEON_GET_WORK;
+        dungeon = DUNGEON_GET_WORK();
         if (dungeon->scrMemory != NULL)
         {
             RW_FREE(dungeon->scrMemory);

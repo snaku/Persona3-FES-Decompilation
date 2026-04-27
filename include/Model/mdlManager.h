@@ -71,7 +71,7 @@ typedef struct MdlAnimEntryTable
 typedef struct MdlAnim
 {
     u16 flags;                      // 0x00
-    u8 unk_02;                      // 0x02
+    u8 isAnimEnd;                   // 0x02
     s16 id;                         // 0x04
     f32 speed;                      // 0x08. How fast the animation is playing
     f32 currTime;                   // 0x0c
