@@ -45,7 +45,7 @@ u32 CodeFunc_PushI(ScrData* scr)
 
     operand = scr->instrContent[++scr->instrIdx].iOperand;
 
-    K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 43);
+    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 43);
 
     scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_INTEGER;
     scr->stackValues[scr->stackIdx].iVal = operand;
@@ -63,7 +63,7 @@ u32 CodeFunc_PushS(ScrData* scr)
 
     operand = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
 
-    K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 43);
+    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 43);
 
     scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_INTEGER;
     scr->stackValues[scr->stackIdx].iVal = operand;
@@ -81,7 +81,7 @@ u32 CodeFunc_PushF(ScrData* scr)
 
     operand = scr->instrContent[++scr->instrIdx].fOperand;
 
-    K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 55);
+    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 55);
 
     scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_FLOAT;
     scr->stackValues[scr->stackIdx].fVal = operand;
@@ -95,7 +95,7 @@ u32 CodeFunc_PushF(ScrData* scr)
 // FUN_0035c870. Push return value
 u32 CodeFunc_PushREG(ScrData* scr)
 {
-    K_ASSERT(scr->stackIdx <= SCR_STACK_USE, 268);
+    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 268);
 
     scr->stackTypes[scr->stackIdx] = scr->stackTypes[SCR_STACK_RET];
     scr->stackValues[scr->stackIdx] = scr->stackValues[SCR_STACK_RET];
@@ -123,8 +123,8 @@ u32 CodeFunc_Comm(ScrData* scr)
     s32 cmdIdx;
 
     cmdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
-    K_ASSERT(cmdIdx > 0, 342);
-    K_ASSERT(gScrCmdTable.cmdNo > cmdIdx, 343);
+    K_ASSERT(cmdIdx >= 0, 342);
+    K_ASSERT(cmdIdx < gScrCmdTable.cmdNo, 343);
 
     cmdFunc = gScrCmdTable.cmds[cmdIdx].func;
     K_ASSERT(cmdFunc != NULL, 344);
@@ -270,8 +270,8 @@ void scrSetFloatReturnVal(f32 retVal)
 // FUN_0035f0a0
 u32 scrGetCurrScriptLabelOffset(s32 lblIdx)
 {
-    K_ASSERT(lblIdx > 0, 1067);
-    K_ASSERT(gCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount > lblIdx, 1068);
+    K_ASSERT(lblIdx >= 0, 1067);
+    K_ASSERT(lblIdx < gCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount, 1068);
 
     return gCurrScript->labelsContent[lblIdx].offset;
 }
