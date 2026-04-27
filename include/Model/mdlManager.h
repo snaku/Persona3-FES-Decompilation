@@ -26,10 +26,11 @@ typedef struct HCdvd HCdvd;
 
 #define MDLANIM_FLAG_UNK01 (1 << 0) // 0x01
 
-#define MDLLOOKAT_FLAG_XYZCS    (1 << 5) // 0x20. Cutscenes
-#define MDLLOOKAT_FLAG_XYZ      (1 << 6) // 0x40
-#define MDLLOOKAT_FLAG_XY       (1 << 7) // 0x80
-#define MDLLOOKAT_FLAG_NOTARGET (1 << 8) // 0x100
+#define MDLLOOKAT_FLAG_XYZCS    (1 << 5)  // 0x20. Cutscenes
+#define MDLLOOKAT_FLAG_XYZ      (1 << 6)  // 0x40
+#define MDLLOOKAT_FLAG_XY       (1 << 7)  // 0x80
+#define MDLLOOKAT_FLAG_NOTARGET (1 << 8)  // 0x100
+#define MDLLOOKAT_FLAG_UNK1000  (1 << 12) // 0x1000
 
 typedef enum
 {
@@ -69,7 +70,8 @@ typedef struct MdlAnimEntryTable
 // 76 bytes
 typedef struct MdlAnim
 {
-    u32 flags;                      // 0x00
+    u16 flags;                      // 0x00
+    u8 unk_02;                      // 0x02
     s16 id;                         // 0x04
     f32 speed;                      // 0x08. How fast the animation is playing
     f32 currTime;                   // 0x0c
