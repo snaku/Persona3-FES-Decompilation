@@ -10,11 +10,11 @@ typedef struct DungeonSeq
     u32 unk_04; // 0x04
 } SeqDungeon;
 
-s32 K_Seq_FieldExit();
-u8 K_Seq_FieldCheck();
+s32 K_Seq_ExitField();
+u8 K_Seq_CheckField();
 
-void K_Seq_DungeonCall(u8 isRestored, void* seqData);
-s32 K_Seq_DungeonExit();
-u8 K_Seq_DungeonCheck();
+void K_Seq_CallDungeon(u8 isRestored, void* seqData);
+s32 K_Seq_ExitDungeon();
+u8 K_Seq_CheckDungeon();
 
 #endif

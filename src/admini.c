@@ -13,22 +13,22 @@ typedef struct
     u8 (*adminiCheckFunc)();
 } AdminiSeqEntry;
 
-void adminiSeqTestCall(u8 isRestored, void* seqData);
-s32 adminiSeqTestExit();
-u8 adminiSeqTestCheck();
-s32 adminiSeqBtlBossExit();
-u8 adminiSeqBtlBossCheck();
+void adminiSeqCallTest(u8 isRestored, void* seqData);
+s32 adminiSeqExitTest();
+u8 adminiSeqCheckTest();
+s32 adminiSeqExitBtlBoss();
+u8 adminiSeqCheckBtlBoss();
 
 // 0068f020
 static const AdminiSeqEntry gAdminiSeqTable[ADMINI_SEQ_MAX] = 
 {
     {NULL, NULL, NULL},                                         // ADMINI_SEQ_NULL
-    {adminiSeqTestCall, adminiSeqTestExit, adminiSeqTestCheck}, // ADMINI_SEQ_TEST
-    {NULL, K_Seq_FieldExit, K_Seq_FieldCheck},                  // ADMINI_SEQ_FIELD. TODO
+    {adminiSeqCallTest, adminiSeqExitTest, adminiSeqCheckTest}, // ADMINI_SEQ_TEST
+    {NULL, K_Seq_ExitField, K_Seq_CheckField},                  // ADMINI_SEQ_FIELD. TODO
     {NULL, NULL, NULL},                                         // ADMINI_SEQ_FIELD2. TODO
     {NULL, NULL, NULL},                                         // ADMINI_SEQ_MAP. TODO
-    {K_Seq_DungeonCall, K_Seq_DungeonExit, K_Seq_DungeonCheck}, // ADMINI_SEQ_DUNGEON
-    {NULL, adminiSeqBtlBossExit, adminiSeqBtlBossCheck},        // ADMINI_SEQ_BATTLE_BOSS. TODO
+    {K_Seq_CallDungeon, K_Seq_ExitDungeon, K_Seq_CheckDungeon}, // ADMINI_SEQ_DUNGEON
+    {NULL, adminiSeqExitBtlBoss, adminiSeqCheckBtlBoss},        // ADMINI_SEQ_BATTLE_BOSS. TODO
     {NULL, NULL, NULL},                                         // ADMINI_SEQ_FACILITY. TODO
 };
 
@@ -335,13 +335,13 @@ KwlnTask* adminiCreateTask()
 }
 
 // FUN_0027c9e0
-void adminiSeqTestCall(u8 isRestored, void* seqData)
+void adminiSeqCallTest(u8 isRestored, void* seqData)
 {
     printf("+++ call\n");
 }
 
 // FUN_0027ca10
-s32 adminiSeqTestExit()
+s32 adminiSeqExitTest()
 {
     printf("+++ exit\n");
 
@@ -349,7 +349,7 @@ s32 adminiSeqTestExit()
 }
 
 // FUN_0027ca40
-u8 adminiSeqTestCheck()
+u8 adminiSeqCheckTest()
 {
     printf("+++ check\n");
 
@@ -357,7 +357,7 @@ u8 adminiSeqTestCheck()
 }
 
 // FUN_0027caa0
-s32 adminiSeqBtlBossExit()
+s32 adminiSeqExitBtlBoss()
 {
     KwlnTask* btlTask;
 
@@ -371,7 +371,7 @@ s32 adminiSeqBtlBossExit()
 }
 
 // FUN_0027cae0
-u8 adminiSeqBtlBossCheck()
+u8 adminiSeqCheckBtlBoss()
 {
     return BtlMain_GetBtlTask() == NULL;
 }

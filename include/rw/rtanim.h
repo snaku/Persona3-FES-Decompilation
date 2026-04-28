@@ -40,7 +40,7 @@ struct RtAnimInterpolator
     RwInt32 currentAnimKeyFrameSize;                         // 0x28
     RwInt32 numNodes;                                        // 0x2c
     RwBool isSubInterpoaltor;                                // 0x30
-    RwInt32 offsetInParnet;                                  // 0x34
+    RwInt32 offsetInParent;                                  // 0x34
     RtAnimInterpolator* parentAnimation;                     // 0x38
     RtAnimKeyFrameApplyCallBack keyFrameApplyCB;             // 0x3c
     RtAnimKeyFrameBlendCallBack keyFrameBlendCB;             // 0x40

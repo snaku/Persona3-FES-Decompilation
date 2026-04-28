@@ -4,7 +4,7 @@
 #include "kwln/kwlnTask.h"
 
 // FUN_001b7850
-s32 K_Seq_FieldExit()
+s32 K_Seq_ExitField()
 {
     if (K_Field_Get()->rootTask != NULL)
     {
@@ -17,7 +17,7 @@ s32 K_Seq_FieldExit()
 }
 
 // FUN_001b78a0
-u8 K_Seq_FieldCheck()
+u8 K_Seq_CheckField()
 {
     if (kwlnTaskExists(K_Field_Get()->rootTask) == true)
     {
@@ -30,7 +30,7 @@ u8 K_Seq_FieldCheck()
 }
 
 // FUN_001b7a50
-void K_Seq_DungeonCall(u8 isRestored, void* seqData)
+void K_Seq_CallDungeon(u8 isRestored, void* seqData)
 {
     SeqDungeon* seq = (SeqDungeon*)seqData;
 
@@ -38,7 +38,7 @@ void K_Seq_DungeonCall(u8 isRestored, void* seqData)
 }
 
 // FUN_001b7a90
-s32 K_Seq_DungeonExit()
+s32 K_Seq_ExitDungeon()
 {
     if (gDungeonTask != NULL)
     {
@@ -49,7 +49,7 @@ s32 K_Seq_DungeonExit()
 }
 
 // FUN_001b7ac0
-u8 K_Seq_DungeonCheck()
+u8 K_Seq_CheckDungeon()
 {
     if (kwlnTaskExists(gDungeonTask) == true)
     {
