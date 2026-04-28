@@ -18,10 +18,10 @@ void* K_SPipe_Update3DDrwBeginTask(KwlnTask* draw3DBeginTask)
 // FUN_001995f0
 void* K_SPipe_Update3DDrwEndTask(KwlnTask* draw3DEndTask)
 {
-    RWRENDERSTATE_SET(rwRENDERSTATEFOGENABLE, false);
-    RWRENDERSTATE_SET(rwRENDERSTATEFOGENABLE, true);  // ??
-    RWRENDERSTATE_SET(rwRENDERSTATEFOGCOLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
-    RWRENDERSTATE_SET(rwRENDERSTATEFOGTYPE, rwFOGTYPE1);
+    RwRenderStateSet(rwRENDERSTATEFOGENABLE, false);
+    RwRenderStateSet(rwRENDERSTATEFOGENABLE, true);  // ??
+    RwRenderStateSet(rwRENDERSTATEFOGCOLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
+    RwRenderStateSet(rwRENDERSTATEFOGTYPE, rwFOGTYPE1);
 
     kwlnCameraEndUpdate();
     

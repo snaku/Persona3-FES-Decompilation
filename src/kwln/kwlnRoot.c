@@ -108,9 +108,9 @@ void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 {
     if (gFogEnabled)
     {
-        RWRENDERSTATE_SET(rwRENDERSTATEFOGENABLE, true);
-        RWRENDERSTATE_SET(rwRENDERSTATEFOGCOLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
-        RWRENDERSTATE_SET(rwRENDERSTATEFOGTYPE, rwFOGTYPE1);
+        RwRenderStateSet(rwRENDERSTATEFOGENABLE, true);
+        RwRenderStateSet(rwRENDERSTATEFOGCOLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
+        RwRenderStateSet(rwRENDERSTATEFOGTYPE, rwFOGTYPE1);
     }
 
     kwlnCameraEndUpdate();
