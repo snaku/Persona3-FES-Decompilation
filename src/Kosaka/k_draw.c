@@ -24,7 +24,7 @@ void* K_Draw_UpdatePointTask(KwlnTask* pointTask)
 
 void K_Draw_DestroyPointTask(KwlnTask* pointTask)
 {
-    RW_FREE(pointTask->workData);
+    RwFree(pointTask->workData);
 }
 
 // FUN_001a46f0. Tiny sphere
@@ -32,7 +32,7 @@ KwlnTask* K_Draw_CreatePointTask(KwlnTask* parent)
 {
     PointDrawWork* work;
 
-    work = RW_CALLOC(1, sizeof(PointDrawWork), 0x40000);
+    work = RwCalloc(1, sizeof(PointDrawWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;
@@ -82,7 +82,7 @@ void* K_Draw_UpdateCylinderTask(KwlnTask* cylinderTask)
 // FUN_001a4830
 void K_Draw_DestroyCylinderTask(KwlnTask* cylinderTask)
 {
-    RW_FREE(cylinderTask->workData);
+    RwFree(cylinderTask->workData);
 }
 
 // FUN_001a4860
@@ -90,7 +90,7 @@ KwlnTask* K_Draw_CreateCylinderTask(KwlnTask* parent)
 {
     CylinderDrawWork* work;
 
-    work = RW_CALLOC(1, sizeof(CylinderDrawWork), 0x40000);
+    work = RwCalloc(1, sizeof(CylinderDrawWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;
@@ -149,7 +149,7 @@ void* K_Draw_UpdatePositionTask(KwlnTask* positionTask)
 // FUN_001a4ca0
 void K_Draw_DestroyPositionTask(KwlnTask* positionTask)
 {
-    RW_FREE(positionTask->workData);
+    RwFree(positionTask->workData);
 }
 
 // FUN_001a4cd0
@@ -158,7 +158,7 @@ KwlnTask* K_Draw_CreatePositionTask(KwlnTask* parent)
     PositionDrawWork* work;
     KwlnTask* positionTask;
 
-    work = RW_CALLOC(1, sizeof(PositionDrawWork), 0x40000);
+    work = RwCalloc(1, sizeof(PositionDrawWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;

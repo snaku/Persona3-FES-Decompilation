@@ -55,7 +55,7 @@ void adminiChangeSeq(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable
 
     if (admini->seqData != NULL)
     {
-        RW_FREE(admini->seqData);
+        RwFree(admini->seqData);
         admini->seqData = NULL;
         admini->seqDataSize = 0;
     }
@@ -67,7 +67,7 @@ void adminiChangeSeq(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable
     }
     else
     {
-        admini->seqData = RW_MALLOC(seqDataSize, 0x40000);
+        admini->seqData = RwMalloc(seqDataSize, rwMEMHINTDUR_GLOBAL);
         K_ASSERT(admini->seqData != NULL, 93);
 
         memcpy(admini->seqData, seqData, seqDataSize);
@@ -259,7 +259,7 @@ void* adminiUpdateTask_Check(KwlnTask* adminiTask)
 
             if (admini->seqData != NULL)
             {
-                RW_FREE(admini->seqData);
+                RwFree(admini->seqData);
                 admini->seqData = NULL;
                 admini->seqDataSize = 0;
             }
@@ -297,11 +297,11 @@ void adminiDestroyTask(KwlnTask* adminiTask)
 
     if (admini->seqData != NULL)
     {
-        RW_FREE(admini->seqData);
+        RwFree(admini->seqData);
     }
 
     admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
-    RW_FREE(admini);
+    RwFree(admini);
 }
 
 // FUN_0027c8f0
@@ -315,7 +315,7 @@ KwlnTask* adminiCreateTask()
         return NULL;
     }
 
-    admini = RW_MALLOC(sizeof(AdminiWork), 0x40000);
+    admini = RwMalloc(sizeof(AdminiWork), rwMEMHINTDUR_GLOBAL);
     K_ASSERT(admini != NULL, 435);
 
     admini->flags = 0;

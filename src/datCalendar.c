@@ -326,7 +326,7 @@ void clndReqSkip()
 // FUN_0017faa0
 void clndDestroyTask(KwlnTask* clndTask)
 {
-    RW_FREE(clndTask->workData);
+    RwFree(clndTask->workData);
     sClndTask = NULL;
 }
 
@@ -336,7 +336,7 @@ KwlnTask* clndCreateTask()
     KwlnTask* clndTask;
     CalendarTaskWork* work;
 
-    work = RW_CALLOC(1, sizeof(CalendarTaskWork), 0x40000);
+    work = RwCalloc(1, sizeof(CalendarTaskWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;

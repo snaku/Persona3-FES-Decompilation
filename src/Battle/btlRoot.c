@@ -14,7 +14,7 @@ BattleActor* BtlRoot_CreateActor()
 
     BattleActor* btlActor;
 
-    btlActor = RW_MALLOC(sizeof(BattleActor), 0x40000);
+    btlActor = RwMalloc(sizeof(BattleActor), rwMEMHINTDUR_GLOBAL);
     memset(btlActor, 0, sizeof(BattleActor));
 
     // FUN_002d1570(btlActor + 0x38);
@@ -102,7 +102,7 @@ void BtlRoot_UpdateActors()
                     actorToUpdate->next->prev = actorToUpdate->prev;
                 }
 
-                RW_FREE(actorToUpdate);
+                RwFree(actorToUpdate);
             }
             else
             {
@@ -136,7 +136,7 @@ void BtlRoot_DestroyAllActors()
             currActor->next->prev = currActor->prev;
         }
 
-        RW_FREE(currActor);
+        RwFree(currActor);
 
         currActor = prevActor;
     }

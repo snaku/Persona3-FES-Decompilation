@@ -22,7 +22,7 @@ MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
     u32 i;
 
     size = animCount * sizeof(MdlAnimEntry) + sizeof(MdlAnimEntryTable);
-    table = (MdlAnimEntryTable*)RW_MALLOC(size, 0x40000);
+    table = (MdlAnimEntryTable*)RwMalloc(size, rwMEMHINTDUR_GLOBAL);
     memset(table, 0, size);
 
     table->entries = (MdlAnimEntry*)((u8*)table + sizeof(MdlAnimEntryTable));
@@ -384,7 +384,7 @@ void mdlStreamInit(Model* mdl)
 {
     MdlStream* stream;
 
-    stream = RW_MALLOC(sizeof(MdlStream), 0x40000);
+    stream = RwMalloc(sizeof(MdlStream), rwMEMHINTDUR_GLOBAL);
     mdl->stream = stream;
     memset(stream, 0, sizeof(MdlStream));
 }
@@ -414,9 +414,9 @@ void mdlStreamDestroy(Model* mdl)
 {
     if (mdl->stream->unk_0c != NULL)
     {
-        RW_FREE(mdl->stream->unk_0c);
+        RwFree(mdl->stream->unk_0c);
     }
 
-    RW_FREE(mdl->stream);
+    RwFree(mdl->stream);
     mdl->stream = NULL;
 }

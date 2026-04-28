@@ -83,6 +83,14 @@ RwReal RwV2dLength(const RwV2d* in)
     return 0.0f;
 }
 
+// FUN_004c6be0
+RwV3d* RwV3dTransformPoint(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix* matrix)
+{
+    // TODO
+
+    return pointOut;
+}
+
 // FUN_004ca510
 RwUInt32 RwEngineGetVersion()
 {

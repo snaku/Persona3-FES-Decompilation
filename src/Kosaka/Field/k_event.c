@@ -155,7 +155,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 // FUN_001cd570
 void K_FldEvent_DestroyFldEventTask(KwlnTask* fldEventTask)
 {
-    RW_FREE(fldEventTask->workData);
+    RwFree(fldEventTask->workData);
 }
 
 // FUN_001cd5a0. Create 'field event' and 'draw command' tasks
@@ -164,7 +164,7 @@ KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask)
     FldEvent* fldEvent;
     KwlnTask* fldEventTask;
 
-    fldEvent = (FldEvent*)RW_CALLOC(1, sizeof(FldEvent), 0x40000);
+    fldEvent = (FldEvent*)RwCalloc(1, sizeof(FldEvent), rwMEMHINTDUR_GLOBAL);
     if (fldEvent == NULL)
     {
         return NULL;
@@ -188,7 +188,7 @@ void* K_FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
 // FUN_001cd6e0
 void K_FldEvent_DestroyDrawCmdTask(KwlnTask* drawCmdTask)
 {
-    RW_FREE(drawCmdTask->workData);
+    RwFree(drawCmdTask->workData);
 }
 
 // FUN_001cd710
@@ -196,7 +196,7 @@ KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask)
 {
     FldDrawCmd* drawCmd;
 
-    drawCmd = (FldDrawCmd*)RW_CALLOC(1, sizeof(FldDrawCmd), 0x40000);
+    drawCmd = (FldDrawCmd*)RwCalloc(1, sizeof(FldDrawCmd), rwMEMHINTDUR_GLOBAL);
     if (drawCmd == NULL)
     {
         return NULL;

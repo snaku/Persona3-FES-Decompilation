@@ -29,7 +29,7 @@ void K_Data_LoadFldMainScript()
 
     // TODO: 'cdvd->fileSize' is being loaded first and i don't know why
     scrSize = cdvd->fileSize;
-    scrMemory = gFldScrMemory = RW_CALLOC(1, scrSize, 0x40000);
+    scrMemory = gFldScrMemory = RwCalloc(1, scrSize, rwMEMHINTDUR_GLOBAL);
     scrSize = gFldScrSize = cdvd->fileSize;
 
     memcpy(scrMemory, cdvd->fileMemory, scrSize);

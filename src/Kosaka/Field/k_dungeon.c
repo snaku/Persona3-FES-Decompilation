@@ -37,7 +37,7 @@ KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
     KwlnTask* dungeonTask;
     FldDungeon* dungeon;
 
-    dungeon = (FldDungeon*)RW_CALLOC(1, sizeof(FldDungeon), 0x40000);
+    dungeon = (FldDungeon*)RwCalloc(1, sizeof(FldDungeon), rwMEMHINTDUR_GLOBAL);
     if (dungeon == NULL)
     {
         return NULL;
@@ -190,7 +190,7 @@ u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
     {
         // TODO: 'cdvd->fileSize' is being loaded first and i don't know why
 
-        dungeon->scrMemory = RW_CALLOC(1, scrCdvd->fileSize, 0x40000);
+        dungeon->scrMemory = RwCalloc(1, scrCdvd->fileSize, rwMEMHINTDUR_GLOBAL);
         dungeon->scrSize = scrCdvd->fileSize;
         memcpy(dungeon->scrMemory, scrCdvd->fileMemory, scrCdvd->fileSize);
 
@@ -212,7 +212,7 @@ void K_FldDungeon_DestroyScrMemory()
         dungeon = DUNGEON_GET_WORK();
         if (dungeon->scrMemory != NULL)
         {
-            RW_FREE(dungeon->scrMemory);
+            RwFree(dungeon->scrMemory);
             dungeon->scrMemory = NULL;
         }
     }

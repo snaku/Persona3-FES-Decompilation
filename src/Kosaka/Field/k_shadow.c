@@ -30,7 +30,7 @@ void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 // FUN_0019d270
 void K_FldShadow_DestroyShadowMapTask(KwlnTask* fldShadowMapTask)
 {
-    RW_FREE(fldShadowMapTask->workData);
+    RwFree(fldShadowMapTask->workData);
 }
 
 // FUN_0019d2a0
@@ -38,7 +38,7 @@ KwlnTask* K_FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask)
 {
     FldShadowMap* fldShadowMap;
 
-    fldShadowMap = (FldShadowMap*)RW_CALLOC(1, sizeof(FldShadowMap), 0x40000);
+    fldShadowMap = (FldShadowMap*)RwCalloc(1, sizeof(FldShadowMap), rwMEMHINTDUR_GLOBAL);
     if (fldShadowMap == NULL)
     {
         return NULL;

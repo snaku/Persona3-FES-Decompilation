@@ -30,7 +30,7 @@ void kwlnRootDestroyTask(KwlnTask* rootTask)
 {
     // TODO
 
-    RW_FREE(rootTask->workData);
+    RwFree(rootTask->workData);
 }
 
 // FUN_00198940
@@ -39,7 +39,7 @@ KwlnTask* kwlnRootCreateTask()
     KwlnTask* rootTask;
     KwlnRootWork* work;
 
-    work = RW_CALLOC(1, sizeof(KwlnRootWork), 0x40000);
+    work = RwCalloc(1, sizeof(KwlnRootWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;

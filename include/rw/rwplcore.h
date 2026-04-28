@@ -29,14 +29,14 @@ typedef RwInt32 RwBool;
 
 // macros to call 'RwGlobals' func ptr
 // memFuncs
-#define RW_MALLOC(size, param_3)          rwGlobals.memFuncs.RwMalloc((size), (param_3))
-#define RW_FREE(ptr)                      rwGlobals.memFuncs.RwFree((ptr))
-#define RW_REALLOC(ptr, newSize, param_3) rwGlobals.memFuncs.RwRealloc((ptr), (newSize), (param_3))
-#define RW_CALLOC(count, size, param_3)   rwGlobals.memFuncs.RwCalloc((count), (size), (param_3))
+#define RwMalloc(size, hint)          rwGlobals.memFuncs.RwMalloc((size), (hint))
+#define RwFree(ptr)                      rwGlobals.memFuncs.RwFree((ptr))
+#define RwRealloc(ptr, newSize, hint) rwGlobals.memFuncs.RwRealloc((ptr), (newSize), (hint))
+#define RwCalloc(count, size, hint)   rwGlobals.memFuncs.RwCalloc((count), (size), (hint))
 
 // device
-#define RWRENDERSTATE_SET(state, val) rwGlobals.device.setRenderState((state), (void*)(val))
-#define RWRENDERSTATE_GET(state, val) rwGlobals.device.getRenderState((state), (void*)(val))
+#define RwRenderStateSet(state, val) rwGlobals.device.setRenderState((state), (void*)(val))
+#define RwRenderStateGet(state, val) rwGlobals.device.getRenderState((state), (void*)(val))
 
 // std func
 #define RWSTDFUNC(type) (rwGlobals.stdFunc[(type)])
@@ -214,6 +214,7 @@ typedef enum
 {
     // TODO
     rwRENDERSTATE0,
+    rwRENDERSTATETEXTURERASTER,
     rwRENDERSTATEFOGENABLE = 14,
     rwRENDERSTATEFOGCOLOR,
     rwRENDERSTATEFOGTYPE,
@@ -248,13 +249,23 @@ typedef struct RwDevice
     u8 unkData2[0x20];
 } RwDevice;
 
+typedef enum
+{
+    rwMEMHINTDUR_NADURATION = 0x00000000,
+    rwMEMHINTDUR_FUNCTION   = 0x00010000,
+    rwMEMHINTDUR_FRAME      = 0x00020000,
+    rwMEMHINTDUR_EVENT      = 0x00030000,
+    rwMEMHINTDUR_GLOBAL     = 0x00040000,
+    rwMEMHINTDUR_MASK       = 0x00FF0000
+} RwMemoryHintDuration;
+
 // 16 bytes
 typedef struct RwMemoryFunctions
 {
-    void* (*RwMalloc)(RwUInt32 size, RwUInt32 param_3);
+    void* (*RwMalloc)(RwUInt32 size, RwUInt32 hint);
     void  (*RwFree)(void* ptr);
-    void* (*RwRealloc)(void* ptr, RwUInt32 newSize, RwUInt32 param_3);
-    void* (*RwCalloc)(RwUInt32 elemCount, RwUInt32 elemSize, RwUInt32 param_3);
+    void* (*RwRealloc)(void* ptr, RwUInt32 newSize, RwUInt32 hint);
+    void* (*RwCalloc)(RwUInt32 elemCount, RwUInt32 elemSize, RwUInt32 hint);
 } RwMemoryFunctions;
 
 // 300 bytes
@@ -284,6 +295,7 @@ RwMatrix* RwMatrixTranslate(RwMatrix* matrix, const RwV3d* translation, RwOpComb
 RwReal RwV3dNormalize(RwV3d* out, const RwV3d* in);
 RwReal RwV3dLength(const RwV3d* in);
 RwReal RwV2dLength(const RwV2d* in);
+RwV3d* RwV3dTransformPoint(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix* matrix);
 
 RwUInt32 RwEngineGetVersion();
 RwBool RwEngineInit(const RwMemoryFunctions* memFuncs, RwUInt32 flags, RwUInt32 resArenaSize);

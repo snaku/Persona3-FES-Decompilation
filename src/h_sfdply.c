@@ -25,7 +25,7 @@ KwlnTask* H_SfdPlay_CreateTask(KwlnTask* calendarTask)
     KwlnTask* sfdPlayTask;
     SfdPlay* sfdPlay;
 
-    sfdPlay = RW_CALLOC(1, sizeof(SfdPlay), 0x40000);
+    sfdPlay = RwCalloc(1, sizeof(SfdPlay), rwMEMHINTDUR_GLOBAL);
     if (sfdPlay == NULL)
     {
         return NULL;

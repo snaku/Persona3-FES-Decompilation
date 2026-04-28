@@ -30,7 +30,7 @@ void* K_Misc_UpdateDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)
 // FUN_001a5e70
 void K_Misc_DestroyDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)
 {
-    RW_FREE(delayMdlFreeTask->workData);
+    RwFree(delayMdlFreeTask->workData);
 }
 
 // FUN_001a5ea0
@@ -39,7 +39,7 @@ KwlnTask* K_Misc_CreateDelayMdlFreeTask(Model* mdlToDestroy)
     DelayMdlFreeWork* work;
     KwlnTask* task;
 
-    work = RW_CALLOC(1, sizeof(DelayMdlFreeWork), 0x40000);
+    work = RwCalloc(1, sizeof(DelayMdlFreeWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;
@@ -68,7 +68,7 @@ void* K_Misc_UpdateScrShutdownTask(KwlnTask* scrShutdownTask)
 // FUN_001a6290
 void K_Misc_DestroyScrShutdownTask(KwlnTask* scrShutdownTask)
 {
-    RW_FREE(scrShutdownTask->workData);
+    RwFree(scrShutdownTask->workData);
 }
 
 // FUN_001a62c0
@@ -77,7 +77,7 @@ KwlnTask* K_Misc_CreateScrShutdownTask(KwlnTask* scrTask)
     ScrShutdownWork* work;
     KwlnTask* task;
 
-    work = RW_CALLOC(1, sizeof(ScrShutdownWork), 0x40000);
+    work = RwCalloc(1, sizeof(ScrShutdownWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;

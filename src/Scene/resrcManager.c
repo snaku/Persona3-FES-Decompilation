@@ -9,7 +9,7 @@ ResrcManager* resrcMngInit()
 {
     ResrcManager* resMgr;
 
-    resMgr = RW_MALLOC(sizeof(ResrcManager), 0x40000);
+    resMgr = RwMalloc(sizeof(ResrcManager), rwMEMHINTDUR_GLOBAL);
     memset(resMgr, 0, sizeof(ResrcManager));
     
     return resMgr;
@@ -35,7 +35,7 @@ void resrcMngDestroy(ResrcManager* resManager)
             }
         }
 
-        RW_FREE(resManager);
+        RwFree(resManager);
     }
 }
 

@@ -67,6 +67,16 @@ struct RwFrame
     RwFrame* root;            // 0xa0
 };
 
+typedef enum
+{
+    rpSKYRENDERSTATENARENDERSTATE = 0,
+    rpSKYRENDERSTATEDITHER,
+    rpSKYRENDERSTATEALPHA_1,
+    rpSKYRENDERSTATEATEST_1,
+    rpSKYRENDERSTATEFARFOGPLANE,
+    rpSKYRENDERSTATEMAXMIPLEVELS
+} RpSkyRenderState;
+
 #define rwCAMERA 4
 
 struct RwCamera;
@@ -106,5 +116,7 @@ RwCamera* RwCameraEndUpdate(RwCamera* camera);
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode);
 RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projType);
 RwCamera* RwCameraSetViewWindow(RwCamera* camera, const RwV2d* viewWindow);
+
+RwBool RpSkyRenderStateSet(RpSkyRenderState nState, void *pParam);
 
 #endif
