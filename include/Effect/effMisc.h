@@ -6,19 +6,16 @@
 // Not really sure about the name of this file
 
 // 16 bytes
-typedef struct EffRandInfo
+typedef struct EffRandState
 {
-    u32 seed;   // 0x00
-    u32 unk_04; // 0x04
-    u32 unk_08; // 0x08
-    u32 unk_0c; // 0x0c
-} EffRandInfo;
+    u32 x[4]; // 0x00
+} EffRandState;
 
 void effMiscNormalizeVU();
 
-u32 effMiscRand(EffRandInfo* randInfo);
-f32 effMiscRandFloat(EffRandInfo* randInfo);
-u32 effMiscRandRange(EffRandInfo* randInfo, u32 max);
-void effMiscRandSeed(EffRandInfo* randInfo, u32 seed);
+u32 effMiscRand(EffRandState* state);
+f32 effMiscRandFloat(EffRandState* state);
+u32 effMiscRandRange(EffRandState* state, u32 max);
+void effMiscRandInit(EffRandState* state, u32 seed);
 
 #endif

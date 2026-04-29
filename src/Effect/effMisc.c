@@ -1,6 +1,6 @@
 #include "Effect/effMisc.h"
 
-static EffRandInfo sBaseRandInfo; // 00957bf0
+static EffRandState sRandState; // 00957bf0
 
 // FUN_00357e00
 void effMiscNormalizeVU()
@@ -22,7 +22,7 @@ void effMiscNormalizeVU()
 }
 
 // FUN_00357fd0. [0;16777215]
-u32 effMiscRand(EffRandInfo* randInfo)
+u32 effMiscRand(EffRandState* state)
 {
     // TODO
 
@@ -30,19 +30,37 @@ u32 effMiscRand(EffRandInfo* randInfo)
 }
 
 // FUN_00358030. [0.0f;1.0f[
-f32 effMiscRandFloat(EffRandInfo* randInfo)
+f32 effMiscRandFloat(EffRandState* state)
 {
-    return (f32)(effMiscRand(randInfo) & 0xFFFFFF) / 16777216.0f;
+    return (f32)(effMiscRand(state) & 0xFFFFFF) / 16777216.0f;
 }
 
 // FUN_003580b0. [0;max[
-u32 effMiscRandRange(EffRandInfo* randInfo, u32 max)
+u32 effMiscRandRange(EffRandState* state, u32 max)
 {
-    return effMiscRand(randInfo) % max;
+    return effMiscRand(state) % max;
 }
 
 // FUN_003580f0
-void effMiscRandSeed(EffRandInfo* randInfo, u32 seed)
+void effMiscRandInit(EffRandState* state, u32 seed)
 {
-    // TODO
+    u32 x;
+
+    if (state == NULL)
+    {
+        state = &sRandState;
+    }
+
+    x = seed ^ 0xAED1A0C;
+    state->x[0] = x;
+
+    x = (x << 0x18) | (x >> 8);
+    state->x[1] = x;
+
+    x = x ^ 0xAA5A02FE;
+    x = (x << 0x18) | (x >> 8);
+    state->x[2] = x;
+
+    x = x ^ 0x11BE81C7;
+    state->x[3] = (x << 0x18) | (x >> 8);
 }
