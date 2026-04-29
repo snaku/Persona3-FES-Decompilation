@@ -1,9 +1,11 @@
 #include "Script/scrCommonCommand.h"
 #include "Script/scrTraceCode.h"
 #include "Kosaka/k_command.h"
+#include "rw/rprandom.h"
 #include "datCalendar.h"
 #include "temporary.h"
 
+u8 scrCommand_RAND();
 u8 scrCommand_PUT();
 u8 scrCommand_PUTSTR();
 
@@ -18,6 +20,14 @@ ScrCommandTable gScrCmdTable =
     // cmdNo
     ARRAY_SIZE(gScrCmdTable.cmds)
 };
+
+// FUN_0035afb0
+u8 scrCommand_RAND()
+{
+    scrSetIntReturnVal(RpRandom() % (scrGetIntPara(0) + 1));
+
+    return true;
+}
 
 // FUN_0035b090
 u8 scrCommand_PUT()

@@ -11,3 +11,11 @@ void RpRandomSeed(RwUInt32 seed)
 {
     // TODO
 }
+
+// FUN_00488f30
+RwUInt32 RpRandom()
+{
+    // TODO
+
+    return 0;
+}
