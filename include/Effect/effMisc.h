@@ -14,6 +14,8 @@ typedef struct EffRandInfo
     u32 unk_0c; // 0x0c
 } EffRandInfo;
 
+void effMiscNormalizeVU();
+
 u32 effMiscRand(EffRandInfo* randInfo);
 f32 effMiscRandFloat(EffRandInfo* randInfo);
 u32 effMiscRandRange(EffRandInfo* randInfo, u32 max);
