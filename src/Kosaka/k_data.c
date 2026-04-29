@@ -25,7 +25,7 @@ void K_Data_LoadFldMainScript()
     sprintf(buffer, "field/script/field.bf");
 
     cdvd = H_Cdvd_Request(buffer, H_CDVD_FILENORMAL);
-    H_Cdvd_SyncRead(cdvd);
+    H_Cdvd_ReadSync(cdvd);
 
     // TODO: 'cdvd->fileSize' is being loaded first and i don't know why
     scrSize = cdvd->fileSize;
@@ -54,7 +54,7 @@ void K_Data_LoadDngFloorsData(u32 scenarioMode)
     }
 
     cdvd = H_Cdvd_Request(buffer, H_CDVD_FILENORMAL);
-    H_Cdvd_SyncRead(cdvd);
+    H_Cdvd_ReadSync(cdvd);
 
     fileSize = cdvd->fileSize;
 
@@ -72,7 +72,7 @@ void K_Data_CreateFldBaseMdl()
     HCdvd* cdvd;
 
     cdvd = H_Cdvd_Request("field/base.RMD", H_CDVD_FILENORMAL);
-    H_Cdvd_SyncRead(cdvd);
+    H_Cdvd_ReadSync(cdvd);
 
     gFldBaseMdl = mdlMngCreateMdlFromRmdMemory(MODEL_TYPE_FLD,
                                                2000,
