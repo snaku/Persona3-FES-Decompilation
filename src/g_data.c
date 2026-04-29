@@ -49,8 +49,8 @@ static CalendarWork sCalendarWork;           // 0083679c
 PlayerPersonaData gPlayerPersonaData;        // 00836ba8
 static DatPersonaWork sCompendium[256];      // 00836e1c
 
-static u32 gFlags[176]; // 0083a21c. See 'flags.h' !!!
-static u32 gIUnkArr[128];     // 0083a4dc
+static u32 gFlags[FLG_ARR_SIZE]; // 0083a21c. See 'flags.h' !!!
+static u32 gIUnkArr[128];        // 0083a4dc
 
 
 void FUN_00172890();
@@ -505,7 +505,7 @@ u32 datGetNextExp(u16 characterId)
     persona = datPersonaGetByCharacterId(characterId);
     K_ASSERT(persona != NULL, 622);
 
-    return datPersonaGetByCharacterId(persona);
+    return datPersonaGetNextExp(persona);
 }
 
 // FUN_0016c920
@@ -618,7 +618,7 @@ void datSetSkipToTarget(u32 val)
 }
 
 // FUN_0016f190
-u8 datGetFlag(u32 bit)
+u8 datGetFlag(s32 bit)
 {
     // TODO
 
@@ -626,50 +626,42 @@ u8 datGetFlag(u32 bit)
 }
 
 // FUN_0016f1f0. See 'g_flags.h' !!!
-void datSetFlag(u32 bit, u8 enabled)
+void datSetFlag(s32 bit, u8 enabled)
 {
-    u32 bitField;
+    s32 mask;
     s32 idx;
 
-    // 5632 is the total number of bit 
-    // (There are 176 u32 in the array. u32 = 4 bytes = 32 bit. 32 * 176 = 5632)
-    K_ASSERT((s32)bit > 0 && (s32)bit < 5632, 1933);
+    K_ASSERT(bit >= 0 && bit < FLG_MAX, 1933);
 
     if (bit == 4982)
     {
         printf("hit \n");
     }
 
-    idx = bit >> 5;
-    if ((s32)bit < 0)
-    {
-        idx = (s32)(bit + 0x1f) >> 5;
-    }
-
-    bitField = bit & 0x1f;
-    if ((s32)bit < 0 && bitField != 0)
-    {
-        bitField -= 32;
-    }
-
-    bitField = 1 << (bitField & 0x1f);
+    idx = bit / 32;
+    mask = bit % 32;
+    mask = 1 << mask;
+    
     if (enabled)
     {
-        gFlags[idx] |= bitField;
+        gFlags[idx] |= mask;
         return;
     }
-    
-    gFlags[idx] &= ~bitField;
+
+    gFlags[idx] &= ~mask;
 }
 
 // FUN_0016f2e0
 void datClearFlagAll()
 {
-    u32 i;
+    s32 i;
+    u32* flags;
 
-    for (i = 0; i < ARRAY_SIZE(gFlags); i++)
+    i = 0;
+    flags = gFlags;
+    for (; i < FLG_ARR_SIZE; i++)
     {
-        gFlags[i] = 0;
+        flags[i] = 0;
     }
 }
 

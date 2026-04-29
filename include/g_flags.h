@@ -25,4 +25,8 @@
 #define FLG_HERO_HANDS_IN_POCKET 3125 // idx 98  (1 << 21)
 #define FLG_BATTLE               5127 // idx 160 (1 << 7)
 
+#define FLG_MAX 5632
+
+#define FLG_ARR_SIZE (FLG_MAX / 32)
+
 #endif
