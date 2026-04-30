@@ -542,22 +542,12 @@ KwlnTask* kwlnTaskInit(const char* name,
     
     task->nameHash = 0;
     i = 0;
-    goto nameLoop;
-
-copyName:
-    currChar = name[i];
-    task->nameHash += currChar;
-    i++;
+    while ((task->name[i] = name[i]) != '\0' && i < 24)
+    {
+        task->nameHash += name[i];
+        i++;
+    }
     
-nameLoop:
-    currChar = name[i];
-    task->name[i] = currChar;
-    if (currChar == '\0')
-        goto continueInit;
-    if (i < 24)
-        goto copyName;
-    
-continueInit:
     task->name[23] = '\0';
     task->stateAndFlags = KWLNTASK_STATE_NULL;
     task->stateAndFlags |= KWLNTASK_STATE_STAGED;
@@ -606,7 +596,7 @@ KwlnTask* kwlnTaskInitEx(const char* name,
 {
     KwlnTask* task;
     char currChar;
-    u32 i;
+    s32 i;
 
     K_ASSERT(name[0] != '\0', 1101);
 
@@ -620,22 +610,12 @@ KwlnTask* kwlnTaskInitEx(const char* name,
 
     task->nameHash = 0;
     i = 0;
-    goto nameLoop;
+    while ((task->name[i] = name[i]) != '\0' && i < 24)
+    {
+        task->nameHash += name[i];
+        i++;
+    }
 
-copyName:
-    currChar = name[i];
-    task->nameHash += currChar;
-    i++;
-    
-nameLoop:
-    currChar = name[i];
-    task->name[i] = currChar;
-    if (currChar == '\0')
-        goto continueInit;
-    if (i < 24)
-        goto copyName;
-    
-continueInit:
     task->name[23] = '\0';
     task->stateAndFlags = KWLNTASK_STATE_NULL;
     task->stateAndFlags |= KWLNTASK_STATE_STAGED;
