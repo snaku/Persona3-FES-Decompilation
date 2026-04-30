@@ -8,6 +8,7 @@
 u8 scrCommand_RAND();
 u8 scrCommand_PUT();
 u8 scrCommand_PUTSTR();
+u8 scrCommand_SQRT();
 
 // 007b92b0
 ScrCommandTable gScrCmdTable =
@@ -49,4 +50,15 @@ u8 scrCommand_PUTSTR()
     printf("PUTSTR -> %s\n", param);
 
     return true;
+}
+
+// FUN_0035b520
+u8 scrCommand_SQRT()
+{
+    f32 param;
+
+    param = scrGetFloatPara(0);
+
+    scrSetFloatReturnVal(sqrtf(param));
+    // no return
 }

@@ -25,5 +25,6 @@ size_t strlen(const char* str);
 float atanf(float x);
 float tanf(float x);
 
+float sqrtf(float x);
 
 #endif
