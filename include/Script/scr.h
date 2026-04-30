@@ -16,7 +16,7 @@ typedef struct
 {
     u32 contentType;  // 0x00. See enum 'ScrContentType'
     u32 unk_04;
-    u32 elementCount; // 0x08
+    s32 elementCount; // 0x08
     u32 offset;       // 0x0c. To get the addr of the content: addr = header + header->entry[type].offset
 } ScrContentEntry;
 
@@ -25,11 +25,11 @@ typedef struct ScrHeader
 {
     s32 unk_00;                                    // 0x00
     u32 scrSize;                                   // 0x04. size of the .BF file (in bytes)
-    u8 magic[4];                                   // 0x08. "FLW0"
+    char magic[4];                                 // 0x08. "FLW0"
     u32 unk_0c;
     u32 totalEntries;                              // 0x10
-    u16 localIntNum;                               // 0x14
-    u16 localFloatNum;                             // 0x16
+    s16 localIntNum;                               // 0x14
+    s16 localFloatNum;                             // 0x16
     s32 unk_18;                                    // 0x18
     s32 unk_1c;                                    // 0x1c
     ScrContentEntry entries[SCR_CONTENT_TYPE_MAX]; // 0x20

@@ -27,6 +27,8 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
     s32 mesHandleIdx;
     s32 i;
     char* prcdName;
+    s32 j;
+    s32 k;
 
     if (header == NULL || entries == NULL || prcd == NULL || instr == NULL)
     {
@@ -34,7 +36,7 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
         return NULL;
     }
 
-    if (prcdIdx < 0 || entries[SCR_CONTENT_TYPE_PROCEDURE].elementCount <= prcdIdx)
+    if (prcdIdx < 0 || prcdIdx >= entries[SCR_CONTENT_TYPE_PROCEDURE].elementCount)
     {
         K_Abort("scrStartScript(..) invalid start procedure!!\n", "scrScriptProcess.c", 159);
         return NULL;
@@ -47,17 +49,21 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
         return NULL;
     }
 
-    for (i = 0; prcd->name[i] != '\0'; i++)
+    i = 0;
+    prcdName = prcd[prcdIdx].name;
+    while ((scr->scrName[i] = prcdName[i]) != '\0')
     {
-        scr->scrName[i] = prcd->name[i];
+        i++;
     }
 
     scr->instrIdx = prcd[prcdIdx].offset;
     scr->stackIdx = 0;
-    for (i = 0; i < SCR_STACK_MAX; i++)
+    for (j = 0; j < SCR_STACK_MAX; j++)
     {
-        scr->stackTypes[i] = 0;
-        scr->stackValues[i].iVal = 0;
+        // TODO: addu v0, s0, v0 instead of addu v0, v0, s0
+
+        scr->stackTypes[j] = 0;
+        scr->stackValues[j].iVal = 0;
     }
 
     scr->scrHeader = header;
@@ -84,9 +90,9 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
         K_ASSERT(header->localIntNum < 256, 202);
 
         scr->localInt = (s32*)H_Malloc(header->localIntNum * sizeof(s32));
-        for (i = 0; i < header->localIntNum; i++)
+        for (k = 0; k < header->localIntNum; k++)
         {
-            scr->localInt[i] = 0;
+            scr->localInt[k] = 0;
         }
     }
     else
@@ -99,9 +105,9 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
         K_ASSERT(header->localFloatNum < 128, 214);
 
         scr->localFloat = (f32*)H_Malloc(header->localFloatNum * sizeof(f32));
-        for (i = 0; i < header->localFloatNum; i++)
+        for (k = 0; k < header->localFloatNum; k++)
         {
-            scr->localFloat[i] = 0.0f;
+            scr->localFloat[k] = 0.0f;
         }
     }
     else
@@ -117,7 +123,7 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
         itfMesMngChangeWindowType(mesHandleIdx, 4, 0);
     }
 
-    if (sScrHead == NULL)
+    if (sScrTail == NULL)
     {
         sScrHead = scr;
         sScrTail = scr;
@@ -133,10 +139,9 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
     }
     sScrNo++;
 
-    prcdName = prcd->name;
-    printf("procedure start <%s>\n", prcdName);
-    printf("start <%s>\n", prcdName);
-    H_Dbprt_FmtLog("procedure start <%s>\n", prcdName);
+    printf("procedure start <%s>\n", prcd[prcdIdx].name);
+    printf("start <%s>\n", prcd[prcdIdx].name);
+    H_Dbprt_FmtLog("procedure start <%s>\n", prcd[prcdIdx].name);
 
     return scr;
 }
