@@ -268,6 +268,32 @@ ScrData* scrStartScriptFirstPrcd(ScrHeader* header)
     return scrStartScript2(header, 0);
 }
 
+// FUN_0035bd50
+KwlnTask* scrCreateTask(u32 priority, ScrHeader* header, ScrContentEntry* entries,
+                        ScrLblPrcd* prcd, ScrLblPrcd* labels, 
+                        ScrInstruction* instr, BmdHeader* msg, 
+                        void* strings, s32 prcdIdx)
+{
+    ScrData* scr;
+    KwlnTask* scrTask;
+
+    scr = scrStartScript(header, entries, prcd, labels, instr, msg, strings, prcdIdx);
+    K_ASSERT(scr != NULL, 784);
+
+    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name,
+                          priority, 
+                          1, 
+                          1,
+                          scrScriptProcess, 
+                          scrDestroyTask, 
+                          scr);
+    K_ASSERT(scrTask != NULL, 395);
+
+    scr->task = scrTask;
+
+    return scrTask;
+}
+
 // FUN_0035be30
 void scrReleaseScript(ScrData* scr)
 {
