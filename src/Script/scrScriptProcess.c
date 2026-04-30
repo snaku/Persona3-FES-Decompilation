@@ -8,6 +8,9 @@
 #include "datScript.h"
 #include "temporary.h"
 
+#define SCR_LOCALINT_MAX   256
+#define SCR_LOCALFLOAT_MAX 128
+
 ScrData* gCurrScript;     // 007ce5a8. Current script being executed
 
 static ScrData* sScrTail; // 007ce584
@@ -87,7 +90,7 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
 
     if (header->localIntNum > 0)
     {
-        K_ASSERT(header->localIntNum < 256, 202);
+        K_ASSERT(header->localIntNum < SCR_LOCALINT_MAX, 202);
 
         scr->localInt = (s32*)H_Malloc(header->localIntNum * sizeof(s32));
         for (k = 0; k < header->localIntNum; k++)
@@ -102,7 +105,7 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
 
     if (header->localFloatNum > 0)
     {
-        K_ASSERT(header->localFloatNum < 128, 214);
+        K_ASSERT(header->localFloatNum < SCR_LOCALFLOAT_MAX, 214);
 
         scr->localFloat = (f32*)H_Malloc(header->localFloatNum * sizeof(f32));
         for (k = 0; k < header->localFloatNum; k++)
@@ -207,7 +210,7 @@ ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
 }
 
 // FUN_0035bb40. Create a script task by a script header
-KwlnTask* scrCreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
+KwlnTask* scrCreateTaskFromHeader(u32 priority, ScrHeader* header, u32 prcdIdx)
 {
     ScrData* scr;
     KwlnTask* scrTask;
@@ -215,8 +218,13 @@ KwlnTask* scrCreateTask(u32 priority, ScrHeader* header, u32 prcdIdx)
     scr = scrStartScript2(header, prcdIdx);
     K_ASSERT(scr != NULL, 666);
 
-    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
-                           scrScriptProcess, scrDestroyTask, scr);
+    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name,
+                          priority, 
+                          1, 
+                          1,
+                          scrScriptProcess, 
+                          scrDestroyTask, 
+                          scr);
     K_ASSERT(scrTask != NULL, 395);
 
     scr->task = scrTask;
@@ -240,13 +248,24 @@ KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scrip
 
     scr->scriptMemory = script;
 
-    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name, priority, 1, 1,
-                           scrScriptProcess, scrDestroyTask, scr);
+    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name,
+                          priority, 
+                          1, 
+                          1,
+                          scrScriptProcess, 
+                          scrDestroyTask, 
+                          scr);
     K_ASSERT(scrTask != NULL, 395);
 
     scr->task = scrTask;
 
     return scrTask;
+}
+
+// FUN_0035bd20
+ScrData* scrStartScriptFirstPrcd(ScrHeader* header)
+{
+    return scrStartScript2(header, 0);
 }
 
 // FUN_0035be30
@@ -353,6 +372,12 @@ void scrDestroyTask(KwlnTask* scrTask)
     }
 
     scrTaskSetData(scrTask, NULL);
+}
+
+// FUN_0035c250
+void scrForceTraceCode(ScrData* scr)
+{
+    scrTraceCode(scr);
 }
 
 // FUN_0035c270
