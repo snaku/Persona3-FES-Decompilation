@@ -1,6 +1,7 @@
 #include "Kosaka/Field/k_event.h"
 #include "Kosaka/Field/k_unit.h"
 #include "Kosaka/Field/k_majorIds.h"
+#include "Kosaka/Field/k_minorIds.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "Model/mdlManager.h"
@@ -92,7 +93,7 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
                     interactableNpc = npc;
                 }
 
-                if (gMtScene->fldMajorId == FIELD_MAJOR_ID_DORM)
+                if (gMtScene->fldMajorId == FLD_MAJOR_DORM)
                 {
                     currAnimId = mdlAnimGetId(npc->mdl, 0);
                     if (currAnimId >= 4)
@@ -108,7 +109,7 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
             {
                 mdlLookAtDisableTarget(npc->mdl);
 
-                if (gMtScene->fldMajorId == FIELD_MAJOR_ID_DORM)
+                if (gMtScene->fldMajorId == FLD_MAJOR_DORM)
                 {
                     currAnimId = mdlAnimGetId(npc->mdl, 0);
                     if (currAnimId >= 4)
@@ -125,7 +126,7 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
         {
             mdlLookAtDisableTarget(npc->mdl);
 
-            if (gMtScene->fldMajorId == FIELD_MAJOR_ID_DORM)
+            if (gMtScene->fldMajorId == FLD_MAJOR_DORM)
             {
                 currAnimId = mdlAnimGetId(npc->mdl, 0);
                 if (currAnimId >= 4)
@@ -142,6 +143,55 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
     }
 
     return interactableNpc;
+}
+
+// FUN_001c7ce0. Temp name maybe
+u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId)
+{
+    u32 ret;
+    s32 i;
+    FldUnit* currUnit;
+    RwV3d distDiff;
+    u32 isNear;
+    u32 fldMajor;
+
+    ret = false;
+    for (i = 0; i < FLDUNIT_MAX; i++)
+    {
+        currUnit = &gFldUnits[i];
+
+        if (currUnit->unk_48 != NULL &&
+           (charId == currUnit->charId))
+        {
+            isNear = false;
+
+            distDiff.x = gFldUnits[FLDUNIT_HERO].matBeforeBtl.pos.x - currUnit->matBeforeBtl.pos.x;
+            distDiff.y = gFldUnits[FLDUNIT_HERO].matBeforeBtl.pos.y - currUnit->matBeforeBtl.pos.y;
+            distDiff.z = gFldUnits[FLDUNIT_HERO].matBeforeBtl.pos.z - currUnit->matBeforeBtl.pos.z;
+
+            if (RwV3dLength(&distDiff) < 1600.0f)
+            {
+                isNear = true;
+            }
+
+            if (isNear == true)
+            {
+                ret = true;
+                break;
+            }
+        }
+    }
+
+    fldMajor = gMtScene->fldMajorId;
+    if (fldMajor == FLD_MAJOR_ADAMAH && gMtScene->fldMinorId == 0x33  ||
+       (fldMajor == FLD_MAJOR_ADAMAH && gMtScene->fldMinorId == 0x34) ||
+       (fldMajor == FLD_MAJOR_ADAMAH && gMtScene->fldMinorId == 0x35) ||
+       (fldMajor == FLD_MAJOR_DUNGEON && gMtScene->fldMinorId == FLD_MINOR_DUNGEON_FIRST_FLOOR))
+    {
+        ret = true;
+    }
+
+    return ret;
 }
 
 // FUN_001c8620

@@ -40,6 +40,8 @@ typedef struct FldEvent
 u32 K_FldEvent_IsUnitWithinDistOfHero(const FldUnit* fldUnit, f32 maxDist);
 u32 K_FldEvent_AreUnitsWithinDist(const FldUnit* fldUnitA, const FldUnit* fldUnitB, f32 maxDist);
 u32 K_FldEvent_ArePosWithinDist(const RwV3d* posA, const RwV3d* posB, f32 maxDist);
+ResrcModelNpc* K_FldEvent_FindInteractableNpc();
+u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId);
 KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask);
 
 #endif
