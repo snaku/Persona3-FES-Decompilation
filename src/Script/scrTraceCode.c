@@ -7,13 +7,19 @@
 #include "h_dbprt.h"
 #include "temporary.h"
 
+static ScrMemory sMemory;
+ScrMemory* gScrMemory = &sMemory;
+
 u32 CodeFunc_PushI(ScrData* scr);
 u32 CodeFunc_PushS(ScrData* scr);
 u32 CodeFunc_PushF(ScrData* scr);
+u32 CodeFunc_PushIX(ScrData* scr);
+u32 CodeFunc_PushIF(ScrData* scr);
 u32 CodeFunc_PushREG(ScrData* scr);
 u32 CodeFunc_Proc(ScrData* scr);
 u32 CodeFunc_Comm(ScrData* scr);
 u32 CodeFunc_Jmp(ScrData* scr);
+u32 CodeFunc_Run(ScrData* scr);
 u32 CodeFunc_Goto(ScrData* scr);
 
 typedef u32 (*CodeFunc)(ScrData* scr);
@@ -22,12 +28,12 @@ typedef u32 (*CodeFunc)(ScrData* scr);
 static const CodeFunc sCodeFuncTable[] =
 {
     CodeFunc_PushI, CodeFunc_PushF,
-    NULL, NULL,
+    CodeFunc_PushIX, CodeFunc_PushIF,
     CodeFunc_PushREG, NULL,
     NULL, CodeFunc_Proc,
     CodeFunc_Comm, NULL,
     CodeFunc_Jmp, NULL,
-    NULL, NULL,
+    CodeFunc_Run, NULL,
     CodeFunc_Goto, NULL,
     NULL, NULL,
     NULL, NULL,
@@ -38,7 +44,7 @@ static const CodeFunc sCodeFuncTable[] =
     CodeFunc_PushS, NULL
 };
 
-// FUN_0035c300. Push int 
+// FUN_0035c300. Push an immediate int value 
 u32 CodeFunc_PushI(ScrData* scr)
 {
     s32 operand;
@@ -56,7 +62,7 @@ u32 CodeFunc_PushI(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035c3b0. Push short
+// FUN_0035c3b0. Push an immediate short value
 u32 CodeFunc_PushS(ScrData* scr)
 {
     s32 operand;
@@ -74,7 +80,7 @@ u32 CodeFunc_PushS(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035c450. Push float
+// FUN_0035c450. Push an immediate float value
 u32 CodeFunc_PushF(ScrData* scr)
 {
     f32 operand;
@@ -85,6 +91,42 @@ u32 CodeFunc_PushF(ScrData* scr)
 
     scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_FLOAT;
     scr->stackValues[scr->stackIdx].fVal = operand;
+
+    scr->stackIdx++;
+    scr->instrIdx++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035c500. Push an int from the VM memory
+u32 CodeFunc_PushIX(ScrData* scr)
+{
+    s32 var;
+
+    var = gScrMemory->i[scr->instrContent[scr->instrIdx].opOperand16.sOperand];
+
+    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 43);
+
+    scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_INTEGER;
+    scr->stackValues[scr->stackIdx].iVal = var;
+
+    scr->stackIdx++;
+    scr->instrIdx++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035c5b0. Push a float from the VM memory
+u32 CodeFunc_PushIF(ScrData* scr)
+{
+    f32 var;
+
+    var = gScrMemory->f[scr->instrContent[scr->instrIdx].opOperand16.sOperand]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
+
+    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 55);
+
+    scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_FLOAT;
+    scr->stackValues[scr->stackIdx].fVal = var;
 
     scr->stackIdx++;
     scr->instrIdx++;
@@ -154,6 +196,16 @@ u32 CodeFunc_Jmp(ScrData* scr)
 
     prcdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
     scr->instrIdx = scr->proceduresContent[prcdIdx].offset;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035d2c0
+u32 CodeFunc_Run(ScrData* scr)
+{
+    K_Abort("CodeFunc_Run(..) Can't running command!!\n", "scrTraceCode.c", 416);
+
+    scr->instrIdx++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -235,7 +287,7 @@ char* scrGetStrPara(s32 paramIdx)
     s32 paramStackIdx;
 
     paramStackIdx = gCurrScript->stackIdx - (paramIdx + 1);
-    K_ASSERT(gCurrScript->stackIdx > (paramIdx + 1), 1005);
+    K_ASSERT((paramIdx + 1) <= gCurrScript->stackIdx, 1005);
 
     switch (gCurrScript->stackTypes[paramStackIdx])
     {
@@ -246,7 +298,7 @@ char* scrGetStrPara(s32 paramIdx)
         case SCR_STACK_TYPE_FLOAT:   // fallthrough
         case 2:                      // fallthrough
         case 3:                      // fallthrough
-        case 4:                      // fallthrough
+        case SCR_STACK_TYPE_PTR:     // fallthrough
         default:
             K_Abort("scrGetStrPara(..) invalid stack type!!\n", "scrTraceCode.c", 1016);
             return NULL;

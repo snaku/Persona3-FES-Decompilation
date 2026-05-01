@@ -3,9 +3,10 @@
 
 typedef enum
 {
-    SCR_STACK_TYPE_INTEGER,   // signed short or int
+    SCR_STACK_TYPE_INTEGER, // signed short or int
     SCR_STACK_TYPE_FLOAT,
-    SCR_STACK_TYPE_STRING = 5
+    SCR_STACK_TYPE_PTR = 4, // Not sure
+    SCR_STACK_TYPE_STRING
 } ScrStackType;
 
 typedef enum
@@ -21,14 +22,17 @@ typedef enum
 // TODO
 typedef enum
 {
-    SCR_CODEFUNC_PUSHI,       // push int 
-    SCR_CODEFUNC_PUSHF,       // push float
-    SCR_CODEFUNC_PUSHREG = 4, // push return value
-    SCR_CODEFUNC_PROC = 7,  // start procedure
-    SCR_CODEFUNC_COMM,      // common command
+    SCR_CODEFUNC_PUSHI,
+    SCR_CODEFUNC_PUSHF,
+    SCR_CODEFUNC_PUSHIX,
+    SCR_CODEFUNC_PUSHIF,
+    SCR_CODEFUNC_PUSHREG = 4,
+    SCR_CODEFUNC_PROC = 7,
+    SCR_CODEFUNC_COMM,
     SCR_CODEFUNC_JMP = 10,
+    SCR_CODEFUNC_RUN = 12,
     SCR_CODEFUNC_GOTO = 14,
-    SCR_CODEFUNC_PUSHS = 29,  // push short
+    SCR_CODEFUNC_PUSHS = 29,
 
     SCR_CODEFUNC_MAX = 35
 } ScrOpCode;

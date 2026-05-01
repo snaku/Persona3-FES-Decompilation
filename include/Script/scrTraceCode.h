@@ -19,6 +19,15 @@ typedef enum
     SCRTRACE_STOP
 } ScrTraceRet;
 
+// 2048 bytes
+typedef struct
+{
+    s32 i[256]; // 0x00
+    f32 f[256]; // 0x400
+} ScrMemory;
+
+extern ScrMemory* gScrMemory;
+
 u32 scrTraceCode(ScrData* scr);
 
 s32 scrGetIntPara(s32 paramIdx);
