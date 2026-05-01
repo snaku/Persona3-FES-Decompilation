@@ -11,6 +11,7 @@ typedef struct EffRandState
     u32 x[4]; // 0x00
 } EffRandState;
 
+void effMiscQuatMultiplyVU();
 void effMiscNormalizeVU();
 
 u32 effMiscRand(EffRandState* state);
