@@ -36,5 +36,7 @@ char* scrGetStrPara(s32 paramIdx);
 void scrSetIntReturnVal(s32 retVal);
 void scrSetFloatReturnVal(f32 retVal);
 u32 scrGetLabelAddr(s32 lblIdx);
+void scrSetPC(u32 pc);
+ScrData* scrGetCurrent();
 
 #endif

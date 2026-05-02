@@ -339,3 +339,15 @@ u32 scrGetLabelAddr(s32 lblIdx)
 
     return sCurrScript->labelsContent[lblIdx].addr;
 }
+
+// FUN_0035f120
+void scrSetPC(u32 pc)
+{
+    sCurrScript->pc = pc;
+}
+
+// FUN_0035f150
+ScrData* scrGetCurrent()
+{
+    return sCurrScript;
+}
