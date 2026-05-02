@@ -19,6 +19,15 @@ typedef enum
     SCRTRACE_STOP
 } ScrTraceRet;
 
+typedef enum
+{
+    // TODO
+    SCR_OPERATION_ADD,
+    SCR_OPERATION_SUB,
+    SCR_OPERATION_MUL,
+    SCR_OPERATION_DIV,
+} ScrOperationType;
+
 // 2048 bytes
 typedef struct
 {

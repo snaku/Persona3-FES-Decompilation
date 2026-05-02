@@ -12,6 +12,10 @@ ScrMemory* gScrMemory = &sMemory; // 007cca5c
 
 static ScrData* sCurrScript; // 007ce5a8. Current script being executed
 
+static s32 sOperationRes;    // 007ce590
+static s32 sOperationRight;  // 007ce58c
+static s32 sOperationLeft;   // 007ce588
+
 u32 CodeFunc_PushI(ScrData* scr);
 u32 CodeFunc_PushS(ScrData* scr);
 u32 CodeFunc_PushF(ScrData* scr);
@@ -24,6 +28,10 @@ u32 CodeFunc_Jmp(ScrData* scr);
 u32 CodeFunc_Call(ScrData* scr);
 u32 CodeFunc_Run(ScrData* scr);
 u32 CodeFunc_Goto(ScrData* scr);
+u32 CodeFunc_Add(ScrData* scr);
+u32 CodeFunc_Sub(ScrData* scr);
+u32 CodeFunc_Mul(ScrData* scr);
+u32 CodeFunc_Div(ScrData* scr);
 
 typedef u32 (*CodeFunc)(ScrData* scr);
 
@@ -32,8 +40,8 @@ static const CodeFunc sCodeFuncTable[SCR_CODEFUNC_MAX] =
 {
     CodeFunc_PushI, CodeFunc_PushF, CodeFunc_PushIX, CodeFunc_PushIF, CodeFunc_PushREG,
     NULL, NULL, CodeFunc_Proc, CodeFunc_Comm, NULL,
-    CodeFunc_Jmp, CodeFunc_Call, CodeFunc_Run, CodeFunc_Goto, NULL,
-    NULL, NULL, NULL, NULL, NULL,
+    CodeFunc_Jmp, CodeFunc_Call, CodeFunc_Run, CodeFunc_Goto, CodeFunc_Add,
+    CodeFunc_Sub, CodeFunc_Mul, CodeFunc_Div, NULL, NULL,
     NULL, NULL, NULL, NULL, NULL,
     NULL, NULL, NULL, NULL, CodeFunc_PushS,
     NULL, NULL, NULL, NULL, NULL
@@ -229,6 +237,48 @@ u32 CodeFunc_Goto(ScrData* scr)
 
     lblIdx = scr->instrContent[scr->pc].opOperand16.sOperand;
     scr->pc = scr->labelsContent[lblIdx].addr;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035d350
+void scrOperation(ScrData* scr, u32 type)
+{
+    // TODO
+}
+
+// FUN_0035dfe0
+u32 CodeFunc_Add(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_ADD);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e020
+u32 CodeFunc_Sub(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_SUB);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e60
+u32 CodeFunc_Mul(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_MUL);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e0a0
+u32 CodeFunc_Div(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_DIV);
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
