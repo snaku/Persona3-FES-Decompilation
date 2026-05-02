@@ -34,6 +34,12 @@ u32 CodeFunc_Add(ScrData* scr);
 u32 CodeFunc_Sub(ScrData* scr);
 u32 CodeFunc_Mul(ScrData* scr);
 u32 CodeFunc_Div(ScrData* scr);
+u32 CodeFunc_Eq(ScrData* scr);
+u32 CodeFunc_Neq(ScrData* scr);
+u32 CodeFunc_S(ScrData* scr);
+u32 CodeFunc_L(ScrData* scr);
+u32 CodeFunc_SE(ScrData* scr);
+u32 CodeFunc_LE(ScrData* scr);
 
 typedef u32 (*CodeFunc)(ScrData* scr);
 
@@ -44,8 +50,8 @@ static const CodeFunc sCodeFuncTable[SCR_CODEFUNC_MAX] =
     CodeFunc_PopIX, CodeFunc_PopFX, CodeFunc_Proc, CodeFunc_Comm, NULL,
     CodeFunc_Jmp, CodeFunc_Call, CodeFunc_Run, CodeFunc_Goto, CodeFunc_Add,
     CodeFunc_Sub, CodeFunc_Mul, CodeFunc_Div, NULL, NULL,
-    NULL, NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, NULL, CodeFunc_PushS,
+    NULL, NULL, CodeFunc_Eq, CodeFunc_Neq, CodeFunc_S,
+    CodeFunc_L, CodeFunc_SE, CodeFunc_LE, NULL, CodeFunc_PushS,
     NULL, NULL, NULL, NULL, NULL
 };
 
@@ -348,6 +354,60 @@ u32 CodeFunc_Mul(ScrData* scr)
 u32 CodeFunc_Div(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_DIV);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e6d0. Equal
+u32 CodeFunc_Eq(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_EQ);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e710. Not equal
+u32 CodeFunc_Neq(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_NEQ);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e750. Smaller
+u32 CodeFunc_S(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_S);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e790. Larger
+u32 CodeFunc_L(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_L);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e7d0. Smaller equal
+u32 CodeFunc_SE(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_SE);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e810. Larger equal
+u32 CodeFunc_LE(ScrData* scr)
+{
+    scrOperation(scr, SCR_OPERATION_LE);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
