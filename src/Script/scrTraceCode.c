@@ -330,7 +330,23 @@ u32 scrTraceCode(ScrData* scr)
 // FUN_0035ed20
 s32 scrGetIntPara(s32 paramIdx)
 {
-    // TODO
+    s32 paramSP;
+    s32 varIdx;
+
+    paramSP = sCurrScript->sp - (paramIdx + 1);
+    K_ASSERT((paramIdx + 1) <= sCurrScript->sp, 943);
+
+    switch (sCurrScript->stackTypes[paramSP])
+    {
+        case SCR_STACK_TYPE_INTEGER: // fallthrough
+        case SCR_STACK_TYPE_ADDR:    return sCurrScript->stackValues[paramSP].iVal;
+        case SCR_STACK_TYPE_FLOAT:   return (s32)sCurrScript->stackValues[paramSP].fVal;
+
+        case 2: return gScrMemory->i[sCurrScript->stackValues[paramSP].iVal];
+        case 3: return (s32)gScrMemory->i[sCurrScript->stackValues[paramSP].iVal]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
+    }
+
+    K_Abort("scrGetIntPara(..) invalid stack type!!\n", "scrTraceCode.c", 956);
 
     return 0;
 }
@@ -338,7 +354,22 @@ s32 scrGetIntPara(s32 paramIdx)
 // FUN_0035ee60
 f32 scrGetFloatPara(s32 paramIdx)
 {
-    // TODO
+    s32 paramSP;
+
+    paramSP = sCurrScript->sp - (paramIdx + 1);
+    K_ASSERT((paramIdx + 1) <= sCurrScript->sp, 975);
+
+    switch (sCurrScript->stackTypes[paramSP])
+    {
+        case SCR_STACK_TYPE_INTEGER: // fallthrough
+        case SCR_STACK_TYPE_ADDR:    return (f32)sCurrScript->stackValues[paramSP].iVal;
+        case SCR_STACK_TYPE_FLOAT:   return sCurrScript->stackValues[paramSP].fVal;
+
+        case 2: return (f32)gScrMemory->i[sCurrScript->stackValues[paramSP].iVal];
+        case 3: return gScrMemory->f[sCurrScript->stackValues[paramSP].iVal]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
+    }
+
+    K_Abort("scrGetFloatPara(..) invalid stack type!!\n", "scrTraceCode.c", 988);
 
     return 0.0f;
 }
