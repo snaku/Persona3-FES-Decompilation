@@ -11,8 +11,6 @@
 #define SCR_LOCALINT_MAX   256
 #define SCR_LOCALFLOAT_MAX 128
 
-ScrData* gCurrScript;     // 007ce5a8. Current script being executed
-
 static ScrData* sScrTail; // 007ce584
 static ScrData* sScrHead; // 007ce580
 static u32 sScrNo;        // 007ce57c
@@ -59,8 +57,8 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
         i++;
     }
 
-    scr->instrIdx = prcd[prcdIdx].offset;
-    scr->stackIdx = 0;
+    scr->pc = prcd[prcdIdx].addr;
+    scr->sp = 0;
     for (j = 0; j < SCR_STACK_MAX; j++)
     {
         // TODO: addu v0, s0, v0 instead of addu v0, v0, s0

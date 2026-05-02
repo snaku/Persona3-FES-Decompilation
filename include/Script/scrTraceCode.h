@@ -35,6 +35,6 @@ f32 scrGetFloatPara(s32 paramIdx);
 char* scrGetStrPara(s32 paramIdx);
 void scrSetIntReturnVal(s32 retVal);
 void scrSetFloatReturnVal(f32 retVal);
-u32 scrGetCurrScriptLabelOffset(s32 lblIdx);
+u32 scrGetLabelAddr(s32 lblIdx);
 
 #endif

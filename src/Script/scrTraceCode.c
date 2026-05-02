@@ -7,8 +7,10 @@
 #include "h_dbprt.h"
 #include "temporary.h"
 
-static ScrMemory sMemory;
-ScrMemory* gScrMemory = &sMemory;
+static ScrMemory sMemory;         // 00957c00
+ScrMemory* gScrMemory = &sMemory; // 007cca5c
+
+static ScrData* sCurrScript; // 007ce5a8. Current script being executed
 
 u32 CodeFunc_PushI(ScrData* scr);
 u32 CodeFunc_PushS(ScrData* scr);
@@ -19,29 +21,22 @@ u32 CodeFunc_PushREG(ScrData* scr);
 u32 CodeFunc_Proc(ScrData* scr);
 u32 CodeFunc_Comm(ScrData* scr);
 u32 CodeFunc_Jmp(ScrData* scr);
+u32 CodeFunc_Call(ScrData* scr);
 u32 CodeFunc_Run(ScrData* scr);
 u32 CodeFunc_Goto(ScrData* scr);
 
 typedef u32 (*CodeFunc)(ScrData* scr);
 
 // 0069d3e0
-static const CodeFunc sCodeFuncTable[] =
+static const CodeFunc sCodeFuncTable[SCR_CODEFUNC_MAX] =
 {
-    CodeFunc_PushI, CodeFunc_PushF,
-    CodeFunc_PushIX, CodeFunc_PushIF,
-    CodeFunc_PushREG, NULL,
-    NULL, CodeFunc_Proc,
-    CodeFunc_Comm, NULL,
-    CodeFunc_Jmp, NULL,
-    CodeFunc_Run, NULL,
-    CodeFunc_Goto, NULL,
-    NULL, NULL,
-    NULL, NULL,
-    NULL, NULL,
-    NULL, NULL,
-    NULL, NULL,
-    NULL, NULL,
-    CodeFunc_PushS, NULL
+    CodeFunc_PushI, CodeFunc_PushF, CodeFunc_PushIX, CodeFunc_PushIF, CodeFunc_PushREG,
+    NULL, NULL, CodeFunc_Proc, CodeFunc_Comm, NULL,
+    CodeFunc_Jmp, CodeFunc_Call, CodeFunc_Run, CodeFunc_Goto, NULL,
+    NULL, NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL, CodeFunc_PushS,
+    NULL, NULL, NULL, NULL, NULL
 };
 
 // FUN_0035c300. Push an immediate int value 
@@ -49,15 +44,15 @@ u32 CodeFunc_PushI(ScrData* scr)
 {
     s32 operand;
 
-    operand = scr->instrContent[++scr->instrIdx].iOperand;
+    operand = scr->instrContent[++scr->pc].iOperand;
 
-    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 43);
+    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
 
-    scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_INTEGER;
-    scr->stackValues[scr->stackIdx].iVal = operand;
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_INTEGER;
+    scr->stackValues[scr->sp].iVal = operand;
 
-    scr->stackIdx++;
-    scr->instrIdx++;
+    scr->sp++;
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -67,15 +62,15 @@ u32 CodeFunc_PushS(ScrData* scr)
 {
     s32 operand;
 
-    operand = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
+    operand = scr->instrContent[scr->pc].opOperand16.sOperand;
 
-    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 43);
+    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
 
-    scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_INTEGER;
-    scr->stackValues[scr->stackIdx].iVal = operand;
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_INTEGER;
+    scr->stackValues[scr->sp].iVal = operand;
     
-    scr->stackIdx++;
-    scr->instrIdx++;
+    scr->sp++;
+    scr->pc++;
     
     return CODEFUNC_NEXTINSTR;
 }
@@ -85,15 +80,15 @@ u32 CodeFunc_PushF(ScrData* scr)
 {
     f32 operand;
 
-    operand = scr->instrContent[++scr->instrIdx].fOperand;
+    operand = scr->instrContent[++scr->pc].fOperand;
 
-    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 55);
+    K_ASSERT(scr->sp < SCR_STACK_RET, 55);
 
-    scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_FLOAT;
-    scr->stackValues[scr->stackIdx].fVal = operand;
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_FLOAT;
+    scr->stackValues[scr->sp].fVal = operand;
 
-    scr->stackIdx++;
-    scr->instrIdx++;
+    scr->sp++;
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -103,15 +98,15 @@ u32 CodeFunc_PushIX(ScrData* scr)
 {
     s32 var;
 
-    var = gScrMemory->i[scr->instrContent[scr->instrIdx].opOperand16.sOperand];
+    var = gScrMemory->i[scr->instrContent[scr->pc].opOperand16.sOperand];
 
-    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 43);
+    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
 
-    scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_INTEGER;
-    scr->stackValues[scr->stackIdx].iVal = var;
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_INTEGER;
+    scr->stackValues[scr->sp].iVal = var;
 
-    scr->stackIdx++;
-    scr->instrIdx++;
+    scr->sp++;
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -121,15 +116,15 @@ u32 CodeFunc_PushIF(ScrData* scr)
 {
     f32 var;
 
-    var = gScrMemory->f[scr->instrContent[scr->instrIdx].opOperand16.sOperand]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
+    var = gScrMemory->f[scr->instrContent[scr->pc].opOperand16.sOperand]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
 
-    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 55);
+    K_ASSERT(scr->sp < SCR_STACK_RET, 55);
 
-    scr->stackTypes[scr->stackIdx] = SCR_STACK_TYPE_FLOAT;
-    scr->stackValues[scr->stackIdx].fVal = var;
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_FLOAT;
+    scr->stackValues[scr->sp].fVal = var;
 
-    scr->stackIdx++;
-    scr->instrIdx++;
+    scr->sp++;
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -137,13 +132,13 @@ u32 CodeFunc_PushIF(ScrData* scr)
 // FUN_0035c870. Push return value
 u32 CodeFunc_PushREG(ScrData* scr)
 {
-    K_ASSERT(scr->stackIdx < SCR_STACK_RET, 268);
+    K_ASSERT(scr->sp < SCR_STACK_RET, 268);
 
-    scr->stackTypes[scr->stackIdx] = scr->stackTypes[SCR_STACK_RET];
-    scr->stackValues[scr->stackIdx] = scr->stackValues[SCR_STACK_RET];
+    scr->stackTypes[scr->sp] = scr->stackTypes[SCR_STACK_RET];
+    scr->stackValues[scr->sp] = scr->stackValues[SCR_STACK_RET];
 
-    scr->stackIdx++;
-    scr->instrIdx++;
+    scr->sp++;
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -151,7 +146,7 @@ u32 CodeFunc_PushREG(ScrData* scr)
 // FUN_0035cf00. Start procedure
 u32 CodeFunc_Proc(ScrData* scr)
 {
-    scr->instrIdx++;
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -160,30 +155,30 @@ u32 CodeFunc_Proc(ScrData* scr)
 u32 CodeFunc_Comm(ScrData* scr)
 {
     ScrCmdFunc cmdFunc;
-    u32 savedInstrIdx;
+    u32 savedPc;
     u32 cmdFuncRes;
     s32 cmdIdx;
 
-    cmdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
+    cmdIdx = scr->instrContent[scr->pc].opOperand16.sOperand;
     K_ASSERT(cmdIdx >= 0, 342);
     K_ASSERT(cmdIdx < gScrCmdTable.cmdNo, 343);
 
     cmdFunc = gScrCmdTable.cmds[cmdIdx].func;
     K_ASSERT(cmdFunc != NULL, 344);
 
-    savedInstrIdx = scr->instrIdx;
-    gCurrScript = scr;
+    savedPc = scr->pc;
+    sCurrScript = scr;
 
     if (!cmdFunc())
     {
         return CODEFUNC_YIELD;
     }
 
-    scr->stackIdx -= gScrCmdTable.cmds[cmdIdx].paramNo;
+    scr->sp -= gScrCmdTable.cmds[cmdIdx].paramNo;
 
-    if (savedInstrIdx == scr->instrIdx)
+    if (savedPc == scr->pc)
     {
-        scr->instrIdx++;
+        scr->pc++;
     }
 
     return CODEFUNC_NEXTINSTR;
@@ -194,8 +189,25 @@ u32 CodeFunc_Jmp(ScrData* scr)
 {
     s16 prcdIdx;
 
-    prcdIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
-    scr->instrIdx = scr->proceduresContent[prcdIdx].offset;
+    prcdIdx = scr->instrContent[scr->pc].opOperand16.sOperand;
+    scr->pc = scr->proceduresContent[prcdIdx].addr;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035d210. Call a procedure + push PC
+u32 CodeFunc_Call(ScrData* scr)
+{
+    u32 savedPC;
+
+    savedPC = scr->pc;
+    K_ASSERT(scr->sp < SCR_STACK_RET, 111);
+
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_ADDR;
+    scr->stackValues[scr->sp].iVal = savedPC;
+    scr->sp++;
+
+    scr->pc = scr->proceduresContent[scr->instrContent[scr->pc].opOperand16.sOperand].addr;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -205,7 +217,7 @@ u32 CodeFunc_Run(ScrData* scr)
 {
     K_Abort("CodeFunc_Run(..) Can't running command!!\n", "scrTraceCode.c", 416);
 
-    scr->instrIdx++;
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -215,8 +227,8 @@ u32 CodeFunc_Goto(ScrData* scr)
 {
     s16 lblIdx;
 
-    lblIdx = scr->instrContent[scr->instrIdx].opOperand16.sOperand;
-    scr->instrIdx = scr->labelsContent[lblIdx].offset;
+    lblIdx = scr->instrContent[scr->pc].opOperand16.sOperand;
+    scr->pc = scr->labelsContent[lblIdx].addr;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -229,13 +241,13 @@ u32 scrTraceCode(ScrData* scr)
 
     while (true)
     {
-        opCode = scr->instrContent[scr->instrIdx].opOperand16.opCode;
+        opCode = scr->instrContent[scr->pc].opOperand16.opCode;
         K_ASSERT(opCode >= SCR_CODEFUNC_PUSHI, 895);
         K_ASSERT(opCode < SCR_CODEFUNC_MAX, 896);
 
         if (gTraceCode == true)
         {
-            H_Dbprt_FmtLog(">>>SCRIPT TRACE <0x%X>\n", scr->instrContent[scr->instrIdx].opOperand16.sOperand);
+            H_Dbprt_FmtLog(">>>SCRIPT TRACE <0x%X>\n", scr->instrContent[scr->pc].opOperand16.sOperand);
         }
 
         codeFuncRet = sCodeFuncTable[opCode](scr);
@@ -284,21 +296,21 @@ f32 scrGetFloatPara(s32 paramIdx)
 // FUN_0035efa0
 char* scrGetStrPara(s32 paramIdx)
 {
-    s32 paramStackIdx;
+    s32 paramSP;
 
-    paramStackIdx = gCurrScript->stackIdx - (paramIdx + 1);
-    K_ASSERT((paramIdx + 1) <= gCurrScript->stackIdx, 1005);
+    paramSP = sCurrScript->sp - (paramIdx + 1);
+    K_ASSERT((paramIdx + 1) <= sCurrScript->sp, 1005);
 
-    switch (gCurrScript->stackTypes[paramStackIdx])
+    switch (sCurrScript->stackTypes[paramSP])
     {
         case SCR_STACK_TYPE_STRING:
-            return gCurrScript->stackValues[paramStackIdx].strVal;
+            return sCurrScript->stackValues[paramSP].strVal;
 
         case SCR_STACK_TYPE_INTEGER: // fallthrough
         case SCR_STACK_TYPE_FLOAT:   // fallthrough
         case 2:                      // fallthrough
         case 3:                      // fallthrough
-        case SCR_STACK_TYPE_PTR:     // fallthrough
+        case SCR_STACK_TYPE_ADDR:    // fallthrough
         default:
             K_Abort("scrGetStrPara(..) invalid stack type!!\n", "scrTraceCode.c", 1016);
             return NULL;
@@ -308,22 +320,22 @@ char* scrGetStrPara(s32 paramIdx)
 // FUN_0035f060. Set 'retType' of the current script to int and set 'iVal' to 'retVal'
 void scrSetIntReturnVal(s32 retVal)
 {
-    gCurrScript->stackTypes[SCR_STACK_RET] = SCR_STACK_TYPE_INTEGER;
-    gCurrScript->stackValues[SCR_STACK_RET].iVal = retVal;
+    sCurrScript->stackTypes[SCR_STACK_RET] = SCR_STACK_TYPE_INTEGER;
+    sCurrScript->stackValues[SCR_STACK_RET].iVal = retVal;
 }
 
 // FUN_0035f080. Set 'retType' of the current script to float and set 'fVal' to 'retVal'
 void scrSetFloatReturnVal(f32 retVal)
 {
-    gCurrScript->stackTypes[SCR_STACK_RET] = SCR_STACK_TYPE_FLOAT;
-    gCurrScript->stackValues[SCR_STACK_RET].fVal = retVal;
+    sCurrScript->stackTypes[SCR_STACK_RET] = SCR_STACK_TYPE_FLOAT;
+    sCurrScript->stackValues[SCR_STACK_RET].fVal = retVal;
 }
 
 // FUN_0035f0a0
-u32 scrGetCurrScriptLabelOffset(s32 lblIdx)
+u32 scrGetLabelAddr(s32 lblIdx)
 {
     K_ASSERT(lblIdx >= 0, 1067);
-    K_ASSERT(lblIdx < gCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount, 1068);
+    K_ASSERT(lblIdx < sCurrScript->entries[SCR_CONTENT_TYPE_LABEL].elementCount, 1068);
 
-    return gCurrScript->labelsContent[lblIdx].offset;
+    return sCurrScript->labelsContent[lblIdx].addr;
 }

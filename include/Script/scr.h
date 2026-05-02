@@ -47,7 +47,7 @@ typedef union
 typedef struct
 {
     char name[24]; // 0x00
-    u32 offset;    // 0x18. Offset in bytes from which the label/procedure starts by instructions base address
+    u32 addr;      // 0x18. Offset in bytes from which the label/procedure starts by instructions base address
     s32 unk_1c;    // 0x1c
 } ScrLblPrcd;
 
@@ -68,8 +68,8 @@ typedef union
 typedef struct ScrData
 {
     char scrName[24];                     // 0x00. Name of the current procedure (same as task->taskName)
-    u32 instrIdx;                         // 0x18. Index of the curr instruction
-    s32 stackIdx;                         // 0x1c
+    u32 pc;                               // 0x18. Program counter
+    s32 sp;                               // 0x1c. Stack pointer
     s8 stackTypes[SCR_STACK_MAX];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
     ScrValues stackValues[SCR_STACK_MAX]; // 0x3c. Values of each variables in the stack
     ScrHeader* scrHeader;                 // 0xac
@@ -79,7 +79,7 @@ typedef struct ScrData
     ScrInstruction* instrContent;         // 0xbc
     BmdHeader* msgContentHeader;          // 0xc0
     void* stringsContent;                 // 0xc4
-    u32 prcdIdx;                          // 0xc8. Procedure position in the .BF file
+    u32 prcdIdx;                          // 0xc8
     s32 mesHandleIdx;                     // 0xcc
     s32 unk_d0;                           // 0xd0
     s32 unk_d4;                           // 0xd4

@@ -5,7 +5,7 @@ typedef enum
 {
     SCR_STACK_TYPE_INTEGER, // signed short or int
     SCR_STACK_TYPE_FLOAT,
-    SCR_STACK_TYPE_PTR = 4, // Not sure
+    SCR_STACK_TYPE_ADDR = 4, // Not sure
     SCR_STACK_TYPE_STRING
 } ScrStackType;
 
@@ -31,7 +31,7 @@ typedef enum
     SCR_CODEFUNC_COMM,
     SCR_CODEFUNC_JMP = 10,
     SCR_CODEFUNC_RUN = 12,
-    SCR_CODEFUNC_GOTO = 14,
+    SCR_CODEFUNC_GOTO = 13,
     SCR_CODEFUNC_PUSHS = 29,
 
     SCR_CODEFUNC_MAX = 35
