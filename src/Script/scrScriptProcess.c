@@ -76,8 +76,8 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
     scr->stringsContent = strings;
     scr->prcdIdx = prcdIdx;
     scr->mesHandleIdx = -1;
-    scr->unk_d0 = 0;
-    scr->unk_d4 = 0;
+    scr->timer = 0;
+    scr->cmdTimer = 0;
     scr->scriptMemory = NULL;
     scr->localInt = NULL;
     scr->localFloat = NULL;

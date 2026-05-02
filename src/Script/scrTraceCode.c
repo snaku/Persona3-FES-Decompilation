@@ -47,6 +47,56 @@ static const CodeFunc sCodeFuncTable[SCR_CODEFUNC_MAX] =
     NULL, NULL, NULL, NULL, NULL
 };
 
+static inline s32 PopInt(ScrData* scr)
+{
+    s32 sp;
+
+    K_ASSERT(scr->sp > 0, 122);
+
+    sp = --scr->sp;
+
+    switch (scr->stackTypes[sp])
+    {
+        case SCR_STACK_TYPE_INTEGER: // fallthrough
+        case SCR_STACK_TYPE_ADDR:    return scr->stackValues[sp].iVal;
+        case SCR_STACK_TYPE_FLOAT:   return (s32)scr->stackValues[sp].fVal;
+
+        case 2: return gScrMemory->i[scr->stackValues[sp].iVal];
+        case 3: return (s32)gScrMemory->f[scr->stackValues[sp].iVal]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
+    }
+
+    K_Abort("PopInt(..) invalid stack type!!\n", "scrTraceCode.c", 135);
+
+    return 0;
+}
+
+static inline f32 PopFloat(ScrData* scr)
+{
+    s32 sp;
+
+    K_ASSERT(scr->sp > 0, 146);
+
+    sp = --scr->sp;
+
+    switch (scr->stackTypes[sp])
+    {
+        case SCR_STACK_TYPE_INTEGER: return (f32)scr->stackValues[sp].iVal;
+
+        case SCR_STACK_TYPE_ADDR:
+            K_Abort("PopFloat(..) invalid stack type(RET)!!\n", "scrTraceCode.c", 152);
+            return 0.0f;
+
+        case SCR_STACK_TYPE_FLOAT:   return scr->stackValues[sp].fVal;
+
+        case 2: return (f32)gScrMemory->i[scr->stackValues[sp].iVal];
+        case 3: return gScrMemory->f[scr->stackValues[sp].iVal]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
+    }
+
+    K_Abort("PopFloat(..) invalid stack type(?)!!\n", "scrTraceCode.c", 161);
+
+    return 0.0f;
+}
+
 // FUN_0035c300. Push an immediate int value 
 u32 CodeFunc_PushI(ScrData* scr)
 {
@@ -304,7 +354,7 @@ u32 scrTraceCode(ScrData* scr)
 
         if (codeFuncRet == CODEFUNC_STOP)
         {
-            scr->unk_d4 = 0;
+            scr->cmdTimer = 0;
 
             return SCRTRACE_STOP;
         }
@@ -313,14 +363,14 @@ u32 scrTraceCode(ScrData* scr)
         {
             if (codeFuncRet == CODEFUNC_NEXTINSTR)
             {
-                scr->unk_d4 = 0;
+                scr->cmdTimer = 0;
                 continue;
             }
         }
         else
         {
-            scr->unk_d4++;
-            scr->unk_d0++;
+            scr->cmdTimer++;
+            scr->timer++;
 
             return SCRTRACE_YIELD;
         }
@@ -343,7 +393,7 @@ s32 scrGetIntPara(s32 paramIdx)
         case SCR_STACK_TYPE_FLOAT:   return (s32)sCurrScript->stackValues[paramSP].fVal;
 
         case 2: return gScrMemory->i[sCurrScript->stackValues[paramSP].iVal];
-        case 3: return (s32)gScrMemory->i[sCurrScript->stackValues[paramSP].iVal]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
+        case 3: return (s32)gScrMemory->f[sCurrScript->stackValues[paramSP].iVal]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
     }
 
     K_Abort("scrGetIntPara(..) invalid stack type!!\n", "scrTraceCode.c", 956);

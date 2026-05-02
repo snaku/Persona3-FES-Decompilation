@@ -81,8 +81,8 @@ typedef struct ScrData
     void* stringsContent;                 // 0xc4
     u32 prcdIdx;                          // 0xc8
     s32 mesHandleIdx;                     // 0xcc
-    s32 unk_d0;                           // 0xd0
-    s32 unk_d4;                           // 0xd4
+    u32 timer;                            // 0xd0
+    u32 cmdTimer;                         // 0xd4
     void* scriptMemory;                   // 0xd8
     s32* localInt;                        // 0xdc
     f32* localFloat;                      // 0xe0
