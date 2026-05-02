@@ -22,6 +22,8 @@ u32 CodeFunc_PushF(ScrData* scr);
 u32 CodeFunc_PushIX(ScrData* scr);
 u32 CodeFunc_PushIF(ScrData* scr);
 u32 CodeFunc_PushREG(ScrData* scr);
+u32 CodeFunc_PopIX(ScrData* scr);
+u32 CodeFunc_PopFX(ScrData* scr);
 u32 CodeFunc_Proc(ScrData* scr);
 u32 CodeFunc_Comm(ScrData* scr);
 u32 CodeFunc_Jmp(ScrData* scr);
@@ -39,7 +41,7 @@ typedef u32 (*CodeFunc)(ScrData* scr);
 static const CodeFunc sCodeFuncTable[SCR_CODEFUNC_MAX] =
 {
     CodeFunc_PushI, CodeFunc_PushF, CodeFunc_PushIX, CodeFunc_PushIF, CodeFunc_PushREG,
-    NULL, NULL, CodeFunc_Proc, CodeFunc_Comm, NULL,
+    CodeFunc_PopIX, CodeFunc_PopFX, CodeFunc_Proc, CodeFunc_Comm, NULL,
     CodeFunc_Jmp, CodeFunc_Call, CodeFunc_Run, CodeFunc_Goto, CodeFunc_Add,
     CodeFunc_Sub, CodeFunc_Mul, CodeFunc_Div, NULL, NULL,
     NULL, NULL, NULL, NULL, NULL,
@@ -196,6 +198,24 @@ u32 CodeFunc_PushREG(ScrData* scr)
     scr->stackValues[scr->sp] = scr->stackValues[SCR_STACK_RET];
 
     scr->sp++;
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035c900
+u32 CodeFunc_PopIX(ScrData* scr)
+{
+    gScrMemory->i[scr->instrContent[scr->pc].opOperand16.sOperand] = PopInt(scr);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035ca70
+u32 CodeFunc_PopFX(ScrData* scr)
+{
+    gScrMemory->f[scr->instrContent[scr->pc].opOperand16.sOperand] = PopFloat(scr); // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
@@ -475,6 +495,12 @@ u32 scrGetLabelAddr(s32 lblIdx)
 void scrSetPC(u32 pc)
 {
     sCurrScript->pc = pc;
+}
+
+// FUN_0035f130
+u32 scrGetCmdTimer()
+{
+    return sCurrScript->cmdTimer;
 }
 
 // FUN_0035f150
