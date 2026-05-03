@@ -21,9 +21,13 @@ u32 CodeFunc_PushS(ScrData* scr);
 u32 CodeFunc_PushF(ScrData* scr);
 u32 CodeFunc_PushIX(ScrData* scr);
 u32 CodeFunc_PushIF(ScrData* scr);
+u32 CodeFunc_PushLIX(ScrData* scr);
+u32 CodeFunc_PushLFX(ScrData* scr);
 u32 CodeFunc_PushREG(ScrData* scr);
 u32 CodeFunc_PopIX(ScrData* scr);
 u32 CodeFunc_PopFX(ScrData* scr);
+u32 CodeFunc_PopLIX(ScrData* scr);
+u32 CodeFunc_PopLFX(ScrData* scr);
 u32 CodeFunc_Proc(ScrData* scr);
 u32 CodeFunc_Comm(ScrData* scr);
 u32 CodeFunc_Jmp(ScrData* scr);
@@ -52,7 +56,7 @@ static const CodeFunc sCodeFuncTable[SCR_CODEFUNC_MAX] =
     CodeFunc_Sub, CodeFunc_Mul, CodeFunc_Div, NULL, NULL,
     NULL, NULL, CodeFunc_Eq, CodeFunc_Neq, CodeFunc_S,
     CodeFunc_L, CodeFunc_SE, CodeFunc_LE, NULL, CodeFunc_PushS,
-    NULL, NULL, NULL, NULL, NULL
+    CodeFunc_PushLIX, CodeFunc_PushLFX, CodeFunc_PopLIX, CodeFunc_PopLFX, NULL
 };
 
 static inline s32 PopInt(ScrData* scr)
@@ -195,6 +199,42 @@ u32 CodeFunc_PushIF(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
+// FUN_0035c660
+u32 CodeFunc_PushLIX(ScrData* scr)
+{
+    s32 localI;
+
+    localI = scr->localInt[scr->instrContent[scr->pc].opOperand16.sOperand];
+
+    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
+
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_INTEGER;
+    scr->stackValues[scr->sp].iVal = localI;
+
+    scr->sp++;
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035c710
+u32 CodeFunc_PushLFX(ScrData* scr)
+{
+    f32 localF;
+
+    localF = scr->localFloat[scr->instrContent[scr->pc].opOperand16.sOperand];
+
+    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
+
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_FLOAT;
+    scr->stackValues[scr->sp].fVal = localF;
+
+    scr->sp++;
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
 // FUN_0035c870. Push return value
 u32 CodeFunc_PushREG(ScrData* scr)
 {
@@ -222,6 +262,24 @@ u32 CodeFunc_PopIX(ScrData* scr)
 u32 CodeFunc_PopFX(ScrData* scr)
 {
     gScrMemory->f[scr->instrContent[scr->pc].opOperand16.sOperand] = PopFloat(scr); // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035cc00
+u32 CodeFunc_PopLIX(ScrData* scr)
+{
+    scr->localInt[scr->instrContent[scr->pc].opOperand16.sOperand] = PopInt(scr);
+    scr->pc++;
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035cd70
+u32 CodeFunc_PopLFX(ScrData* scr)
+{
+    scr->localFloat[scr->instrContent[scr->pc].opOperand16.sOperand] = PopFloat(scr);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
