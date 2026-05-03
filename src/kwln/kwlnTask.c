@@ -547,7 +547,7 @@ KwlnTask* kwlnTaskInit(const char* name,
         task->nameHash += name[i];
         i++;
     }
-    
+
     task->name[23] = '\0';
     task->stateAndFlags = KWLNTASK_STATE_NULL;
     task->stateAndFlags |= KWLNTASK_STATE_STAGED;
@@ -826,31 +826,39 @@ KwlnTask* kwlnTaskGetUpdating()
 // FUN_00195460. Return true if 'task' is in a list
 u32 kwlnTaskExists(KwlnTask* task)
 {
-    // need to rework a little bit
+    KwlnTask* currTask;
+    s32 i;
+    KwlnTask* stagedList;
+    KwlnTask* runningList;
+    KwlnTask* destroyList;
 
-    KwlnTask* list;
-    u32 i;
-
-    if (task != NULL)
+    currTask = NULL;
+    if (task == NULL)
     {
-        for (i = 0; i < 3; i++)
+        return false;
+    }
+
+    i = 0;
+    stagedList = sStagedTaskHead;
+    runningList = sRunningTaskHead;
+    destroyList = sDestroyTaskHead;
+    for (; i < 3; i++)
+    {
+        switch (i)
         {
-            switch (i)
+            case 0: currTask = stagedList;  break;
+            case 1: currTask = runningList; break;
+            case 2: currTask = destroyList; break;
+        }
+
+        while (currTask != NULL)
+        {
+            if (currTask == task)
             {
-                case 0: list = sStagedTaskHead;  break;
-                case 1: list = sRunningTaskHead; break;
-                case 2: list = sDestroyTaskHead; break;
+                return true;
             }
 
-            while (list != NULL)
-            {
-                if (list == task)
-                {
-                    return true;
-                }
-
-                list = list->next;
-            }
+            currTask = currTask->next;
         }
     }
 
@@ -930,10 +938,9 @@ void kwlnTaskDetachParent(KwlnTask* childTask)
     } 
     else 
     {
-        while (currSibling != childTask)
+        while ((currSibling = prevSibling->sibling) != childTask)
         {
             prevSibling = currSibling;
-            currSibling = prevSibling->sibling;
         }
 
         prevSibling->sibling = childTask->sibling;
