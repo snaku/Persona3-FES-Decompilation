@@ -384,6 +384,55 @@ void scrAllReleaseScript()
     printf("after = %d\n", sScrNo);
 }
 
+// FUN_0035c090
+s32 scrFindPrcdIdxByName(ScrHeader* header, const char* name)
+{
+    ScrContentEntry* entries;
+    s32 totalEntries;
+    s32 i;
+    ScrContentEntry* currEntry;
+    ScrLblPrcd* prcd;
+    s32 j;
+    s32 elementCount;
+
+    prcd = NULL;
+    if (header == NULL)
+    {
+        return -1;
+    }
+
+    entries = header->entries;
+    i = 0;
+    totalEntries = header->totalEntries;
+    for (; i < totalEntries; i++)
+    {
+        currEntry = &entries[i];
+
+        if (currEntry->contentType == SCR_CONTENT_TYPE_PROCEDURE)
+        {
+            prcd = (ScrLblPrcd*)((uintptr_t)header + currEntry->offset);
+            break;
+        }
+    }
+
+    if (prcd == NULL)
+    {
+        return -1;
+    }
+
+    j = 0;
+    currEntry = &entries[i];
+    for (; j < currEntry->elementCount; j++)
+    {
+        if (strcmp(prcd[j].name, name) == 0)
+        {
+            return j;
+        }
+    }
+
+    return -1;
+}
+
 // FUN_0035c200
 void scrDestroyTask(KwlnTask* scrTask)
 {

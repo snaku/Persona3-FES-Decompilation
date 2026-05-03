@@ -13,6 +13,7 @@ ScrData* scrStartScriptFirstPrcd(ScrHeader* header);
 KwlnTask* scrCreateTask(u32 priority, ScrHeader* header, ScrContentEntry* entries, ScrLblPrcd* prcd, ScrLblPrcd* labels,  ScrInstruction* instr, BmdHeader* msg,  void* strings, s32 prcdIdx);
 void scrReleaseScript(ScrData* scr);
 void scrAllReleaseScript();
+s32 scrFindPrcdIdxByName(ScrHeader* header, const char* name);
 void scrForceTraceCode(ScrData* scr);
 
 #endif
