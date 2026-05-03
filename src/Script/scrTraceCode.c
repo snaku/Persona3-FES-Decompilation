@@ -30,6 +30,7 @@ u32 CodeFunc_PopLIX(ScrData* scr);
 u32 CodeFunc_PopLFX(ScrData* scr);
 u32 CodeFunc_Proc(ScrData* scr);
 u32 CodeFunc_Comm(ScrData* scr);
+u32 CodeFunc_End(ScrData* scr);
 u32 CodeFunc_Jmp(ScrData* scr);
 u32 CodeFunc_Call(ScrData* scr);
 u32 CodeFunc_Run(ScrData* scr);
@@ -51,7 +52,7 @@ typedef u32 (*CodeFunc)(ScrData* scr);
 static const CodeFunc sCodeFuncTable[SCR_CODEFUNC_MAX] =
 {
     CodeFunc_PushI, CodeFunc_PushF, CodeFunc_PushIX, CodeFunc_PushIF, CodeFunc_PushREG,
-    CodeFunc_PopIX, CodeFunc_PopFX, CodeFunc_Proc, CodeFunc_Comm, NULL,
+    CodeFunc_PopIX, CodeFunc_PopFX, CodeFunc_Proc, CodeFunc_Comm, CodeFunc_End,
     CodeFunc_Jmp, CodeFunc_Call, CodeFunc_Run, CodeFunc_Goto, CodeFunc_Add,
     CodeFunc_Sub, CodeFunc_Mul, CodeFunc_Div, NULL, NULL,
     NULL, NULL, CodeFunc_Eq, CodeFunc_Neq, CodeFunc_S,
@@ -98,7 +99,7 @@ static inline f32 PopFloat(ScrData* scr)
             K_Abort("PopFloat(..) invalid stack type(RET)!!\n", "scrTraceCode.c", 152);
             return 0.0f;
 
-        case SCR_STACK_TYPE_FLOAT:   return scr->stackValues[sp].fVal;
+        case SCR_STACK_TYPE_FLOAT: return scr->stackValues[sp].fVal;
 
         case 2: return (f32)gScrMemory->i[scr->stackValues[sp].iVal];
         case 3: return gScrMemory->f[scr->stackValues[sp].iVal]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
@@ -322,6 +323,22 @@ u32 CodeFunc_Comm(ScrData* scr)
     {
         scr->pc++;
     }
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035d040
+u32 CodeFunc_End(ScrData* scr)
+{
+    if (scr->sp == 0)
+    {
+        return CODEFUNC_STOP;
+    }
+    
+    K_ASSERT(scr->stackTypes[scr->sp - 1] == SCR_STACK_TYPE_ADDR, 383);
+
+    scr->pc = PopInt(scr);
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
