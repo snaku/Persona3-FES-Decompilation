@@ -93,8 +93,85 @@ u8 K_Cmd_DATE_IN_RANGE()
     return true;
 }
 
+// FUN_001c2900
+u8 K_Cmd_RESRC_MDL_ANIM()
+{
+    s32 resTypeId;
+    s32 animId;
+    s32 shouldLoop;
+    s32 blendFrameCount;
+    f32 animSpeed;
+    ResrcModelParty* party;
+    ResrcModelNpc* npc;
+    ResrcModelFld* fld;
+
+    resTypeId = scrGetIntPara(0);
+    animId = scrGetIntPara(1);
+    shouldLoop = scrGetIntPara(2);
+    blendFrameCount = scrGetFloatPara(3); // this shouldn't be scrGetFloatPara
+    animSpeed = scrGetFloatPara(4);
+
+    switch (RESRC_GET_TYPE(resTypeId))
+    {
+        case RESRC_TYPE_MODELPARTY:
+            party = (ResrcModelParty*)MT_Scene_GetRes(resTypeId);
+            if (party != NULL)
+            {
+                if (shouldLoop)
+                {
+                    mdlAnimSet(party->mdl, 0, animId, blendFrameCount, MDLANIM_FLAG_LOOP);
+                }
+                else
+                {
+                    mdlAnimSet(party->mdl, 0, animId, blendFrameCount, 0);
+                }
+
+                mdlAnimSetSpeed(party->mdl, 0, animSpeed);
+            }
+            break;
+            
+        case RESRC_TYPE_MODELNPC:
+            npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
+            if (npc != NULL)
+            {
+                if (shouldLoop)
+                {
+                    mdlAnimSet(npc->mdl, 0, animId, blendFrameCount, MDLANIM_FLAG_LOOP);
+                }
+                else
+                {
+                    mdlAnimSet(npc->mdl, 0, animId, blendFrameCount, 0);
+                }
+
+                mdlAnimSetSpeed(npc->mdl, 0, animSpeed);
+            }
+            break;
+
+        case RESRC_TYPE_MODELFLD:
+            fld = (ResrcModelFld*)MT_Scene_GetRes(resTypeId);
+            if (fld != NULL)
+            {
+                if (shouldLoop)
+                {
+                    mdlAnimSet(fld->mdl, 0, animId, blendFrameCount, MDLANIM_FLAG_LOOP);
+                }
+                else
+                {
+                    mdlAnimSet(fld->mdl, 0, animId, blendFrameCount, 0);
+                }
+
+                mdlAnimSetSpeed(fld->mdl, 0, animSpeed);
+            }
+            break;
+        
+        default: K_Assert("k_command.c", 527);
+    }
+
+    return true;
+}
+
 // FUN_001c2b80
-u8 K_Cmd_RESRC_MODEL_ANIM_SYNC()
+u8 K_Cmd_RESRC_MDL_ANIM_SYNC()
 {
     u32 resTypeId;
     Resrc* res;

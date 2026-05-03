@@ -240,6 +240,12 @@ f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx)
     return currTime / gFrameDuration;
 }
 
+// FUN_003189f0
+void mdlAnimSetSpeed(Model* mdl, u16 slotIdx, f32 speed)
+{
+    // TODO
+}
+
 // FUN_00318a30
 void mdlTranslate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp)
 {

@@ -100,7 +100,7 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
                     {
                         if (currAnimId % 2 == 0)
                         {
-                            mdlAnimSet(npc->mdl, 0, currAnimId + 1, 7, MDLANIM_FLAG_UNK01);
+                            mdlAnimSet(npc->mdl, 0, currAnimId + 1, 7, MDLANIM_FLAG_LOOP);
                         }
                     }
                 }
@@ -116,7 +116,7 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
                     {
                         if (currAnimId % 2 == 1)
                         {
-                            mdlAnimSet(npc->mdl, 0, currAnimId - 1, 7, MDLANIM_FLAG_UNK01);
+                            mdlAnimSet(npc->mdl, 0, currAnimId - 1, 7, MDLANIM_FLAG_LOOP);
                         }
                     }
                 }
@@ -133,7 +133,7 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
                 {
                     if (currAnimId % 2 == 1)
                     {
-                        mdlAnimSet(npc->mdl, 0, currAnimId - 1, 7, MDLANIM_FLAG_UNK01);
+                        mdlAnimSet(npc->mdl, 0, currAnimId - 1, 7, MDLANIM_FLAG_LOOP);
                     }
                 }
             }

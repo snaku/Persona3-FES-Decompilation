@@ -24,7 +24,7 @@ typedef struct HCdvd HCdvd;
 #define MDL_FLAG_STREAMDONE  (1 << 12) // 0x1000
 #define MDL_FLAG_STREAMSYNC  (1 << 14) // 0x4000. Synchronous stream read
 
-#define MDLANIM_FLAG_UNK01 (1 << 0) // 0x01
+#define MDLANIM_FLAG_LOOP (1 << 0) // 0x01
 
 #define MDLLOOKAT_FLAG_XYZCS    (1 << 5)  // 0x20. Cutscenes
 #define MDLLOOKAT_FLAG_XYZ      (1 << 6)  // 0x40
@@ -185,6 +185,7 @@ u32 mdlAnim003185b0(Model* mdl, u16 slotIdx);;
 f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx);
 f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
 f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx);
+void mdlAnimSetSpeed(Model* mdl, u16 slotIdx, f32 speed);
 
 void mdlTranslate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp);
 void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp);
