@@ -42,7 +42,51 @@ static const RwV3d sSphereRotAxis = {1.0f, 0.0f, 0.0f}; // 0069cec8
 // FUN_00359110
 void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
-    // TODO
+    u32 i;
+    const PrimRenderState* currRenderState;
+    RwIm3DVertex vertices[2];
+    RwMatrix identity;
+    u32 savedRenderStates[PRIM_RENDERSTATE_NO];
+    u32* currSavedRenderState;
+    u32 j;
+
+    if (saveAndRestoreRenderState)
+    {
+        for (i = 0; i < PRIM_RENDERSTATE_NO; i++)
+        {
+            currRenderState = &sRenderStates[i];
+            currSavedRenderState = &savedRenderStates[i];
+
+            RwRenderStateGet(currRenderState->renderState, currSavedRenderState); // TODO: load a0 before a1
+            RwRenderStateSet(currRenderState->renderState, currRenderState->val);
+        }
+
+        RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+
+        RpSkyRenderStateSet(rpSKYRENDERSTATEALPHA_1, (void*)SCE_GS_SET_ALPHA_1(0, 2, 0, 1, 0));
+        RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)SCE_GS_SET_TEST_1(1, 0, 128, 1, 0, 0, 1, 3));
+    }
+
+    RwMatrixSetIdentity(&identity);
+
+    RwIm3DVertexSetPos(&vertices[0], startPos->x, startPos->y, startPos->z);
+    RwIm3DVertexSetPos(&vertices[1], endPos->x, endPos->y, endPos->z);
+    RwIm3DVertexSetRGBA(&vertices[0], color->r, color->g, color->b, color->a);
+    RwIm3DVertexSetRGBA(&vertices[1], color->r, color->g, color->b, color->a);
+
+    RwIm3DTransform(vertices, 2, &identity, rwIM3D_ALLOPAQUE);
+    RwIm3DRenderLine(0, 1);
+
+    if (saveAndRestoreRenderState)
+    {
+        for (j = 0; j < PRIM_RENDERSTATE_NO; j++)
+        {
+            currRenderState = &sRenderStates[j];
+            currSavedRenderState = &savedRenderStates[j];
+
+            RwRenderStateSet(currRenderState->renderState, *currSavedRenderState); // TODO: lw a1, 0x60(v0) instead of lw a1, 0x0(v0)
+        }
+    }
 }
 
 // FUN_00359380. Draw 3 lines representing the XYZ axis

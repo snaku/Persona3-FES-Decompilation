@@ -3,6 +3,61 @@
 
 #include "rw/rwplcore.h"
 
+// 4 bytes
+typedef union
+{
+    RwRGBA preLitColor;
+    RwRGBA color;
+} RxColorUnion;
+
+// 36 bytes
+typedef struct RxObjSpace3DVertex
+{
+    RwV3d objVertex; // 0x00
+    RxColorUnion c;  // 0x0c
+    RwV3d objNormal; // 0x10
+    RwReal u;        // 0x1c
+    RwReal v;        // 0x20
+} RxObjSpace3DVertex;
+
+typedef RxObjSpace3DVertex RxObjSpace3DLitVertex;
+typedef RxObjSpace3DLitVertex RwIm3DVertex;
+
+#define RxV3dAssign(_target, _source) (*(_target) = *(_source))
+
+#define RxObjSpace3DVertexSetPos(_vert, _pos) RxV3dAssign(&(_vert)->objVertex, _pos)
+
+#define RwIm3DVertexSetPos(_vert, _imx, _imy, _imz) \
+    do                                              \
+    {                                               \
+        RwV3d _packed;                              \
+        _packed.x = _imx;                           \
+        _packed.y = _imy;                           \
+        _packed.z = _imz;                           \
+        RxObjSpace3DVertexSetPos(_vert, &_packed);  \
+    } while (0)
+    
+#define RwIm3DVertexSetRGBA(_vert, _r, _g, _b, _a) \
+    do                                             \
+    {                                              \
+        RwRGBA * const _col = &(_vert)->c.color;   \
+        _col->r = (_r);                            \
+        _col->g = (_g);                            \
+        _col->b = (_b);                            \
+        _col->a = (_a);                            \
+    } while(0)                                     \
+
+typedef enum
+{
+    rwIM3D_VERTEXUV = 1,
+    rwIM3D_ALLOPAQUE = 2,
+    rwIM3D_NOCLIP = 4,
+    rwIM3D_VERTEXXYZ = 8,
+    rwIM3D_VERTEXRGBA = 16
+} RwIm3DTransformFlags;
+
+
+
 typedef struct RwObjectHasFrame RwObjectHasFrame;
 
 typedef RwObjectHasFrame* (*RwObjectHasFrameSyncFunction)(RwObjectHasFrame* object);
@@ -132,5 +187,8 @@ RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projTyp
 RwCamera* RwCameraSetViewWindow(RwCamera* camera, const RwV2d* viewWindow);
 
 RwBool RpSkyRenderStateSet(RpSkyRenderState nState, void *pParam);
+
+void RwIm3DTransform(RwIm3DVertex* pVerts, RwUInt32 numVerts, RwMatrix* ltm, RwUInt32 flags);
+RwBool RwIm3DRenderLine(RwInt32 vert1, RwInt32 vert2);
 
 #endif
