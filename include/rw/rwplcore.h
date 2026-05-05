@@ -23,10 +23,6 @@ typedef RwInt32 RwBool;
 // pack RGBA components into an unsigned int (ARGB)
 #define PACK_RWRGBA(r,g,b,a) ((RwUInt32)(((a) << 24) | ((r) << 16) | ((g) << 8) | (b)))
 
-// current camera and world
-#define RW_CURRCAMERA rwGlobals.currCamera
-#define RW_CURRWORLD  rwGlobals.currWorld
-
 // macros to call 'RwGlobals' func ptr
 // memFuncs
 #define RwMalloc(size, hint)          rwGlobals.memFuncs.RwMalloc((size), (hint))
@@ -82,6 +78,13 @@ typedef struct RwV4dTag
     RwReal z; // 0x08
     RwReal w; // 0x0c
 } RwV4d;
+
+// 16 bytes
+typedef struct
+{
+    RwV3d center;  // 0x00
+    RwReal radius; // 0x0c
+} RwSphere;
 
 typedef enum
 {

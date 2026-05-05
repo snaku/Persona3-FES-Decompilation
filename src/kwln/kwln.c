@@ -27,9 +27,11 @@ static RpLight* sAmbientLight;     // 007ce0a8
 static RpWorld* sWorlds[2];        // 007ce0a0. Only the first index is used
 static u64 sT0Count64;             // 007ce098
 
-const f32 gAspectRatio = 4.0f / 3.0f;     // 007cad1c
-const f32 gPI = 3.14159274;               // 007cae58
+// a lot of them are probably temporary here
+const f32 g18deg = gPI / 10;              // 007caf00
 const f32 gRadToDegFactor = 180.0f / gPI; // 007caea8
+const f32 gPI = 3.14159274;               // 007cae58
+const f32 gAspectRatio = 4.0f / 3.0f;     // 007cad1c
 
 // FUN_00195de0
 void kwlnInitGameData()

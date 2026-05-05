@@ -67,6 +67,8 @@ struct RwFrame
     RwFrame* root;            // 0xa0
 };
 
+
+
 typedef enum
 {
     rpSKYRENDERSTATENARENDERSTATE = 0,
@@ -77,9 +79,13 @@ typedef enum
     rpSKYRENDERSTATEMAXMIPLEVELS
 } RpSkyRenderState;
 
+
+
 #define rwCAMERA 4
 
-struct RwCamera;
+typedef struct RwCamera RwCamera;
+
+#define RwCameraGetCurrentCamera() (rwGlobals.currCamera)
 
 typedef struct RwCamera* (*RwCameraBeginUpdateFunc)(struct RwCamera* camera);
 typedef struct RwCamera* (*RwCameraEndUpdateFunc)(struct RwCamera* camera);
@@ -91,7 +97,7 @@ typedef enum
 } RwCameraProjection;
 
 // TODO
-typedef struct RwCamera
+struct RwCamera
 {
     RwObjectHasFrame object;             // 0x00
     RwCameraProjection projType;         // 0x14
@@ -101,7 +107,7 @@ typedef struct RwCamera
     RwRaster* frameBuffer;               // 0x60
     RwRaster* zBuffer;                   // 0x64
     RwV2d viewWindow;                    // 0x68
-} RwCamera;
+};
 
 typedef enum
 {
@@ -111,9 +117,17 @@ typedef enum
     rwCAMERACLEARZ  // clear Z buffer
 } RwCameraClearMode;
 
+typedef enum
+{
+    rwSPHEREOUTSIDE,
+    rwSPHEREBOUNDARY,
+    rwSPHEREINSIDE,
+} RwFrustumTestResult;
+
 RwCamera* RwCameraBeginUpdate(RwCamera* camera);
 RwCamera* RwCameraEndUpdate(RwCamera* camera);
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode);
+RwFrustumTestResult RwCameraFrustumTestSphere(const RwCamera* camera, const RwSphere* sphere);
 RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projType);
 RwCamera* RwCameraSetViewWindow(RwCamera* camera, const RwV2d* viewWindow);
 

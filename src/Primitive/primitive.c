@@ -1,7 +1,9 @@
 #include "Primitive/primitive.h"
+#include "kwln/kwln.h"
 #include "sce/eestruct.h"
+#include "temporary.h"
 
-#define PRIM_RENDERSTATE_NO ARRAY_SIZE(sRenderStates)
+#define PRIM_RENDERSTATE_NO 6
 
 // 8 bytes
 typedef struct 
@@ -11,7 +13,7 @@ typedef struct
 } PrimRenderState;
 
 // 0069ce60
-static const PrimRenderState sRenderStates[6] =
+static const PrimRenderState sRenderStates[PRIM_RENDERSTATE_NO] =
 {
     {rwRENDERSTATEFOGENABLE, false}, {12, 1}, {7, 2},
     {20, 1}, {6, 1}, {8, 0}
@@ -32,6 +34,10 @@ static const RwRGBA sAxisColors[3] =
     {0, 255, 0, 255}, // Y (green)
     {0, 0, 255, 255}  // Z (blue)
 };
+
+static const RwV3d sSphereRotAxis = {1.0f, 0.0f, 0.0f}; // 0069cec8
+
+// TODO: maybe 'pushRenderStates' and 'popRenderStates' inline functions
 
 // FUN_00359110
 void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color, u32 saveAndRestoreRenderState)
@@ -58,9 +64,8 @@ void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderSta
             currRenderState = &sRenderStates[i];
             currSavedRenderState = &savedRenderStates[i];
 
-            // TODO: load a0 before a1
             RwRenderStateGet(currRenderState->renderState, currSavedRenderState);
-            RwRenderStateSet(currRenderState->renderState, currRenderState->val);
+            RwRenderStateSet(currRenderState->renderState, currRenderState->val); // TODO: load a0 before a1
         }
 
         RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
@@ -88,17 +93,105 @@ void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderSta
         {
             currRenderState = &sRenderStates[j];
             currSavedRenderState = &savedRenderStates[j];
-            
-            // TODO: lw a1, 0x60(v0) instead of lw a1, 0x0(v0)
-            RwRenderStateSet(currRenderState->renderState, *currSavedRenderState);
+
+            RwRenderStateSet(currRenderState->renderState, *currSavedRenderState); // TODO: lw a1, 0x60(v0) instead of lw a1, 0x0(v0)
         }
     }
+}
+
+// FUN_00359560
+void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, const RwMatrix* mat, u32 saveAndRestoreRenderState)
+{
+    // TODO
 }
 
 // FUN_00359b40. Draw a wireframe sphere
 void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
-    // TODO
+    u32 i;
+    const PrimRenderState* currRenderState;
+    RwMatrix mat;
+    u32 savedRenderStates[PRIM_RENDERSTATE_NO];
+    u32* currSavedRenderState;
+    RwV3d finalCenter;
+    RwSphere rwSphere;
+    RwV3d rotAxis;
+    u32 j;
+    f32 yOffset;
+    f32 circleRadius;
+    f32 angle;
+
+    rotAxis = sSphereRotAxis;
+    rwSphere.radius = radius;
+    rwSphere.center.x = center->x;
+    rwSphere.center.y = center->y;
+    rwSphere.center.z = center->z;
+    if (RwCameraFrustumTestSphere(RwCameraGetCurrentCamera(), &rwSphere) != rwSPHEREOUTSIDE)
+    {
+        if (saveAndRestoreRenderState)
+        {
+            for (i = 0; i < PRIM_RENDERSTATE_NO; i++)
+            {
+                currRenderState = &sRenderStates[i];
+                currSavedRenderState = &savedRenderStates[i];
+
+                RwRenderStateGet(currRenderState->renderState, currSavedRenderState); // TODO: load a0 before a1
+                RwRenderStateSet(currRenderState->renderState, currRenderState->val);
+            }
+
+            RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+
+            RpSkyRenderStateSet(rpSKYRENDERSTATEALPHA_1, (void*)SCE_GS_SET_ALPHA_1(0, 2, 0, 1, 0));
+            RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)SCE_GS_SET_TEST_1(1, 0, 128, 1, 0, 0, 1, 3));
+        }
+
+        mat.right.x = mat.up.y = mat.at.z = 1.0f;
+        angle = 0.0f;
+        mat.right.y = mat.right.z = mat.up.x = 0.0f;
+        mat.up.z = mat.at.x = mat.at.y = 0.0f;
+        mat.pos.x = mat.pos.y = mat.pos.z = 0.0f;
+        mat.flags |= (rwMATRIXINTERNALIDENTITY | rwMATRIXTYPEORTHONORMAL);
+
+        for (j = 0; j < 9; j++)
+        {
+            angle += g18deg;
+            yOffset = radius * cosf(angle);
+            circleRadius = radius * sinf(angle);
+
+            finalCenter.x = center->x;
+            finalCenter.y = center->y + yOffset;
+            finalCenter.z = center->z;
+
+            primCircleLine3D(&finalCenter, circleRadius, color, &mat, false);
+        }
+
+        RwMatrixRotate(&mat, &rotAxis, 90.0f, rwCOMBINEPOSTCONCAT);
+
+        angle = 0.0f; // regswap (f21 but should be f22)
+        for (j = 0; j < 9; j++)
+        {
+            angle += g18deg;
+            yOffset = radius * cosf(angle);
+            circleRadius = radius * sinf(angle);
+
+            finalCenter.x = center->x;
+            finalCenter.y = center->y + yOffset;
+            finalCenter.z = center->z;
+
+            primCircleLine3D(&finalCenter, circleRadius, color, &mat, false);
+        }
+
+        if (saveAndRestoreRenderState)
+        {
+            for (j = 0; j < PRIM_RENDERSTATE_NO; j++)
+            {
+                currRenderState = &sRenderStates[j];
+                currSavedRenderState = &savedRenderStates[j];
+
+                RwRenderStateSet(currRenderState->renderState, *currSavedRenderState); // TODO: lw a1, 0x60(v0) instead of lw a1, 0x0(v0)
+            }
+        }
+    }
 }
 
 // FUN_00359e50. Draw a wireframe cylinder

@@ -11,7 +11,7 @@ static RwCamera* CameraEndUpdate(RwCamera* camera)
         return NULL;
     }
 
-    RW_CURRCAMERA = NULL;
+    RwCameraGetCurrentCamera() = NULL;
     return camera;
 }
 
@@ -39,6 +39,14 @@ RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clea
     }
 
     return NULL;
+}
+
+// FUN_004c9df0
+RwFrustumTestResult RwCameraFrustumTestSphere(const RwCamera* camera, const RwSphere* sphere)
+{
+    // TODO
+
+    return rwSPHEREOUTSIDE;
 }
 
 // FUN_004c9f00
