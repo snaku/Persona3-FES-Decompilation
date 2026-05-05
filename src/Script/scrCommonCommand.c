@@ -7,6 +7,8 @@
 #include "temporary.h"
 
 u8 scrCommand_RAND();
+u8 scrCommand_SYNC();
+u8 scrCommand_WAIT();
 u8 scrCommand_PUT();
 u8 scrCommand_PUTSTR();
 u8 scrCommand_SWITCH();
@@ -30,6 +32,27 @@ u8 scrCommand_RAND()
     scrSetIntReturnVal(RpRandom() % (scrGetIntPara(0) + 1));
 
     return true;
+}
+
+// FUN_0035b000
+u8 scrCommand_SYNC()
+{
+    return scrGetCmdTimer() != 0;
+}
+
+// FUN_0035b030
+u8 scrCommand_WAIT()
+{
+    u32 cmdTimer;
+
+    if (scrGetIntPara(0) < 1)
+    {
+        return true;
+    }
+
+    cmdTimer = scrGetCmdTimer();
+
+    return scrGetIntPara(0) <= cmdTimer;
 }
 
 // FUN_0035b090
