@@ -15,8 +15,12 @@ typedef struct
 // 0069ce60
 static const PrimRenderState sRenderStates[PRIM_RENDERSTATE_NO] =
 {
-    {rwRENDERSTATEFOGENABLE, false}, {12, 1}, {7, 2},
-    {20, 1}, {6, 1}, {8, 0}
+    {rwRENDERSTATEFOGENABLE, false},
+    {rwRENDERSTATEVERTEXALPHAENABLE, true}, 
+    {rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD},
+    {rwRENDERSTATECULLMODE, rwCULLMODECULLNONE},
+    {rwRENDERSTATEZTESTENABLE, true},
+    {rwRENDERSTATEZWRITEENABLE, false}
 };
 
 // 0069ce90

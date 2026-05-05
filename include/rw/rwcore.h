@@ -2,6 +2,7 @@
 #define RWCORE_H
 
 #include "rw/rwplcore.h"
+#include "sce/eetypes.h"
 
 // 4 bytes
 typedef union
@@ -162,6 +163,13 @@ struct RwCamera
     RwRaster* frameBuffer;               // 0x60
     RwRaster* zBuffer;                   // 0x64
     RwV2d viewWindow;                    // 0x68
+    RwV2d recipViewWindow;               // 0x70
+    RwV2d viewOffset;                    // 0x78
+    RwReal nearPlane;                    // 0x80
+    RwReal farPlane;                     // 0x84
+    RwReal fogPlane;                     // 0x88
+    RwReal zScale;                       // 0x8c
+    RwReal zShift;                       // 0x90
 };
 
 typedef enum

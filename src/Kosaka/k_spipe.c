@@ -21,7 +21,7 @@ void* K_SPipe_Update3DDrwEndTask(KwlnTask* draw3DEndTask)
     RwRenderStateSet(rwRENDERSTATEFOGENABLE, false);
     RwRenderStateSet(rwRENDERSTATEFOGENABLE, true);  // ??
     RwRenderStateSet(rwRENDERSTATEFOGCOLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
-    RwRenderStateSet(rwRENDERSTATEFOGTYPE, rwFOGTYPE1);
+    RwRenderStateSet(rwRENDERSTATEFOGTYPE, rwFOGTYPELINEAR);
 
     kwlnCameraEndUpdate();
     

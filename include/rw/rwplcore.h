@@ -2,6 +2,7 @@
 #define RWPLCORE_H
 
 #include "Utils.h"
+#include "sce/eetypes.h"
 
 // RENDERWARE TYPES
 typedef int RwFixed;
@@ -78,6 +79,15 @@ typedef struct RwV4dTag
     RwReal z; // 0x08
     RwReal w; // 0x0c
 } RwV4d;
+
+// 16 bytes
+typedef struct
+{
+    RwInt32 x; // 0x00
+    RwInt32 y; // 0x04
+    RwInt32 w; // 0x08
+    RwInt32 h; // 0x0c
+} RwRect;
 
 // 16 bytes
 typedef struct
@@ -213,22 +223,128 @@ typedef struct RwObject
 
 typedef struct RwStream RwStream; // TODO
 
+
+// 64 bytes
+typedef struct RwSky2DVertexFields
+{
+    RwV3d          scrVertex;   // 0x00
+    RwReal         camVertex_z; // 0x0c
+    RwReal         u;           // 0x10
+    RwReal         v;           // 0x14
+    RwReal         recipZ;      // 0x18
+    RwReal         pad1;        // 0x1c
+    RwRGBAReal     color;       // 0x20
+    RwV3d          objNormal;   // 0x30
+    RwReal         pad2;        // 0x3c
+} RwSky2DVertexFields;
+
+// 64 bytes
+typedef union
+{
+    RwSky2DVertexFields els;
+    u_long128 qWords[4];
+} RwSky2DVertexAlignementOverlay;
+
+// 64 bytes
+typedef struct RwSky2DVertex
+{
+    RwSky2DVertexAlignementOverlay u; // 0x00
+} RwSky2DVertex;
+
+typedef RwSky2DVertex RwIm2DVertex;
+
+#define RwIm2DGetNearScreenZ() (rwGlobals.device.zBufferNear)
+#define RwIm2DRenderPrimitive(_primType, _vertices, _numVertices) (rwGlobals.device.fpIm2DRenderPrimitive(_primType, _vertices, _numVertices))
+
+
 typedef enum
 {
-    // TODO
-    rwRENDERSTATE0,
+    rwRENDERSTATENARENDERSTATE,
+
     rwRENDERSTATETEXTURERASTER,
-    rwRENDERSTATEFOGENABLE = 14,
+    rwRENDERSTATETEXTUREADDRESS,
+    rwRENDERSTATETEXTUREADDRESSU,
+    rwRENDERSTATETEXTUREADDRESSV,
+    rwRENDERSTATETEXTUREPERSPECTIVE,
+    rwRENDERSTATEZTESTENABLE,            // true or false
+    rwRENDERSTATESHADEMODE,              // See enum 'RwShadeMode'
+    rwRENDERSTATEZWRITEENABLE,           // true or false
+    rwRENDERSTATETEXTUREFILTER,          // See enum 'RwTextureFilterMode'
+    rwRENDERSTATESRCBLEND,               // See enum 'RwBlendFunction'
+    rwRENDERSTATEDESTBLEND,              // See enum 'RwBlendFunction'
+    rwRENDERSTATEVERTEXALPHAENABLE,      // true or false
+    rwRENDERSTATEBORDERCOLOR,
+    rwRENDERSTATEFOGENABLE,
     rwRENDERSTATEFOGCOLOR,
-    rwRENDERSTATEFOGTYPE,
+    rwRENDERSTATEFOGTYPE,                // See enum 'RwFogType'
+    rwRENDERSTATEFOGDENSITY,
+    rwRENDERSTATECULLMODE = 20,          // See enum 'RwCullMode'
+    rwRENDERSTATESTENCILENABLE,
+    rwRENDERSTATESTENCILFAIL,
+    rwRENDERSTATESTENCILZFAIL,
+    rwRENDERSTATESTENCILPASS,
+    rwRENDERSTATESTENCILFUNCTION,
+    rwRENDERSTATESTENCILFUNCTIONREF,
+    rwRENDERSTATESTENCILFUNCTIONMASK,
+    rwRENDERSTATESTENCILFUNCTIONWRITEMASK,
+    rwRENDERSTATEALPHATESTFUNCTION,
+    rwRENDERSTATEALPHATESTFUNCTIONREF
 } RwRenderState;
 
 typedef enum
 {
-    // TODO
-    rwFOGTYPE0,
-    rwFOGTYPE1
+    rwSHADEMODENASHADEMODE,
+
+    rwSHADEMODEFLAT,
+    rwSHADEMODEGOURAUD
+} RwShadeMode;
+
+typedef enum
+{
+    rwBLENDNABLEND,
+
+    rwBLENDZERO,
+    rwBLENDONE,
+    rwBLENDSRCCOLOR,
+    rwBLENDINVSRCCOLOR,
+    rwBLENDSRCALPHA,
+    rwBLENDINVSRCALPHA,
+    rwBLENDDESTALPHA,
+    rwBLENDINVDESTALPHA,
+    rwBLENDDESTCOLOR,
+    rwBLENDINVDESTCOLOR,
+    rwBLENDSRCALPHASAT
+} RwBlendFunction;
+
+typedef enum
+{
+    rwFILTERNAFILTERMODE,
+
+    rwFILTERNEAREST,
+    rwFILTERLINEAR,
+    rwFILTERMIPNEAREST,
+    rwFILTERMIPLINEAR,
+    rwFILTERLINEARMIPNEAREST,
+    rwFILTERLINEARMIPLINEAR
+} RwTextureFilterMode;
+
+typedef enum
+{
+    rwFOGTYPENAFOGTYPE,
+
+    rwFOGTYPELINEAR,
+    rwFOGTYPEEXPONENTIAL,
+    rwFOGTYPEEXPONENTIAL2
 } RwFogType;
+
+typedef enum
+{
+    rwCULLMODENACULLMODE,
+
+    rwCULLMODECULLNONE,
+    rwCULLMODECULLBACK,
+    rwCULLMODECULLFRONT
+} RwCullMode;
 
 typedef enum
 {
@@ -237,19 +353,39 @@ typedef enum
     rwSTANDARDMAX = 29
 } RwStdFunc;
 
+typedef enum
+{
+    rwPRIMTYPENAPRIMTYPE,
+    rwPRIMTYPELINELIST,
+    rwPRIMTYPEPOLYLINE,
+    rwPRIMTYPETRILIST,
+    rwPRIMTYPETRISTRIP,
+    rwPRIMTYPETRIFAN,
+    rwPRIMTYPEPOINTLIST,
+} RwPrimitiveType;
+
 typedef RwBool (*RwStandardFunc)(void* out, void* inOut, RwInt32 nI);
+
+typedef RwBool (*RwSystemFunc)(RwInt32 nOption, void* pOut, void* pInOut, RwInt32 nIn);
 
 // See enmu 'RwRenderState'
 typedef RwBool (*RwRenderStateSetFunc)(RwRenderState renderState, void* val);
 typedef RwBool (*RwRenderStateGetFunc)(RwRenderState renderState, void* val);
 
+typedef RwBool (*RwIm2DRenderPrimitiveFunction)(RwPrimitiveType primType, RwIm2DVertex* vertices, RwInt32 numVertices);
+
 // 56 bytes
 typedef struct RwDevice
 {
-    u8 unkData1[0x10];
+    RwReal gammaCorrection;              // 0x00
+    RwSystemFunc fpSystem;               // 0x04
+    RwReal zBufferNear;                  // 0x08
+    RwReal zBufferFar;                   // 0x0c
     RwRenderStateSetFunc setRenderState; // 0x10
-    RwRenderStateGetFunc getRenderState; // 0x14
-    u8 unkData2[0x20];
+    RwRenderStateGetFunc getRenderState; // 0x14                 
+    u8 unkData1[0x08];
+    RwIm2DRenderPrimitiveFunction fpIm2DRenderPrimitive;
+    u8 unkData2[0x00];
 } RwDevice;
 
 typedef enum
