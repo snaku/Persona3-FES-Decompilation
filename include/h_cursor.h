@@ -6,18 +6,25 @@
 
 typedef struct KwlnTask KwlnTask;
 
+typedef enum
+{
+    HCURSOR_STATE_INIT,
+    HCURSOR_STATE_UPDATE,
+    HCURSOR_STATE_STOP
+} HCursorState;
+
 // 336 bytes
 typedef struct HCursorWork
 {
     RwIm2DVertex vertices[4]; // 0x00
-    u8 unkData[0x10];
-    u16 state;                // 0x110
+    u8 unusedData[0x10];
+    s16 state;                // 0x110. See enum 'HCursorState'
     RwV2d pos;                // 0x114
     RwRect rect;              // 0x11c
     f32 zOffset;              // 0x12c
     RwRGBA colors[4];         // 0x130
     u32 shouldDraw;           // 0x140
-    s16 unk_144;              // 0x144
+    s16 unused_144;           // 0x144
 } HCursorWork;
 
 KwlnTask* H_Cursor_CreateTask(KwlnTask* parent, f32 zOffset, RwV2d pos, RwRect rect, RwRGBA color);

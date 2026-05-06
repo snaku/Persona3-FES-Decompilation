@@ -5,7 +5,68 @@
 // FUN_00100230
 void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
 {
-    // TODO
+    // TODO: fix stack frame (should be 0x30 instead of 0x20)
+
+    HCursorWork* work;
+    RwIm2DVertex* vertex;
+    f32 recipZ;
+    f32 zBufferNear;
+    s16 i;
+
+    work = (HCursorWork*)hcursorTask->workData;
+
+    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
+    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
+    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
+    RwRenderStateSet(rwRENDERSTATESRCBLEND, rwBLENDSRCALPHA);
+    RwRenderStateSet(rwRENDERSTATEDESTBLEND, rwBLENDDESTCOLOR);
+    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERLINEAR);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, true);
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+
+    if (!work->shouldDraw)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    switch (work->state)
+    {
+        case HCURSOR_STATE_INIT: // fallthrough
+        case HCURSOR_STATE_UPDATE:
+            recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+            i = 0;
+            zBufferNear = RwIm2DGetNearScreenZ(); // TODO: only 'lui v0, %hi(...)' instead of loading zBufferNear
+            for (; i < 4; i++)
+            {
+                vertex = &work->vertices[i];
+
+                vertex->u.els.scrVertex.z = zBufferNear - work->zOffset;
+                vertex->u.els.recipZ = recipZ;
+                vertex->u.els.color.r = (f32)work->colors[i].r;
+                vertex->u.els.color.g = (f32)work->colors[i].g;
+                vertex->u.els.color.b = (f32)work->colors[i].b;
+                vertex->u.els.color.a = (f32)work->colors[i].a;
+            }
+
+            work->vertices[0].u.els.scrVertex.x = work->pos.x;
+            work->vertices[0].u.els.scrVertex.y = work->pos.y;
+
+            work->vertices[1].u.els.scrVertex.x = work->pos.x + work->rect.w;
+            work->vertices[1].u.els.scrVertex.y = work->pos.y;
+
+            work->vertices[2].u.els.scrVertex.x = work->pos.x;
+            work->vertices[2].u.els.scrVertex.y = work->pos.y + work->rect.h;
+            
+            work->vertices[3].u.els.scrVertex.x = work->pos.x + work->rect.w;
+            work->vertices[3].u.els.scrVertex.y = work->pos.y + work->rect.h;
+
+            RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, work->vertices, 4);
+
+            work->state = HCURSOR_STATE_UPDATE;
+            break;
+        
+        case HCURSOR_STATE_STOP: return KWLNTASK_STOP;
+    }
 
     return KWLNTASK_CONTINUE;
 }
