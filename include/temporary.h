@@ -23,6 +23,8 @@ char* strcpy(char* dst, const char* src);
 size_t strlen(const char* str);
 
 float atanf(float x);
+float cosf(float x);
+float sinf(float x);
 float tanf(float x);
 
 float sqrtf(float x);
