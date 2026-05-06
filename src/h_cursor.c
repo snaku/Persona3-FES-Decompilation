@@ -120,3 +120,33 @@ KwlnTask* H_Cursor_CreateTask(KwlnTask* parent, f32 zOffset, RwV2d pos, RwRect r
 
     return task;
 }
+
+// FUN_00100710
+void H_Cursor_SetPos(KwlnTask* hcursorTask, RwV2d pos)
+{
+    ((HCursorWork*)hcursorTask->workData)->pos = pos;
+}
+
+// FUN_00100740
+void H_Cursor_SetRect(KwlnTask* hcursorTask, RwRect rect)
+{
+    ((HCursorWork*)hcursorTask->workData)->rect = rect;
+}
+
+// FUN_00100770
+void H_Cursor_SetZOffset(KwlnTask* hcursorTask, f32 zOffset)
+{
+    ((HCursorWork*)hcursorTask->workData)->zOffset = zOffset;
+}
+
+// FUN_00100780
+void H_Cursor_SetColor(KwlnTask* hcursorTask, RwRGBA color)
+{
+    HCursorWork* work;
+    work = (HCursorWork*)hcursorTask->workData;
+
+    work->colors[0] = color;
+    work->colors[1] = color;
+    work->colors[2] = color;
+    work->colors[3] = color;
+}
