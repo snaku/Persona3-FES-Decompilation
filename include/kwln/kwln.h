@@ -2,9 +2,24 @@
 #define KWLN_H
 
 #include "Utils.h"
+#include "Kosaka/k_assert.h"
 #include "rw/rpworld.h"
 
 typedef struct KwlnTask KwlnTask;
+
+#define KWLN_FLAG_2DDRAW (1 << 0)  // 0x01
+#define KWLN_FLAG_3DDRAW (1 << 1)  // 0x02
+#define KWLN_FLAG_ERR    (1 << 30) // 0x40000000
+
+#define KWLN_ASSERT(condition, line)          \
+    do                                        \
+    {                                         \
+        if (!(condition))                     \
+        {                                     \
+            K_Assert(__FILE__, (line));       \
+            kwlnSetFlags(KWLN_FLAG_ERR, true); \
+        }                                     \
+    } while (0)
 
 #define DEG_TO_RAD(deg) (gPI * (deg) / 180.0f)
 #define RAD_TO_DEG(rad) (gRadToDegFactor * (rad))
@@ -31,6 +46,8 @@ RpLight* kwlnGetDirectionalLight();
 RwCamera* kwlnGetMainCamera();
 RwRGBA* kwlnGetClearColor();
 void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a);
+void kwlnGetFlags();
+void kwlnSetFlags(u32 flag, u32 enabled);
 
 inline RwCamera* kwlnCameraBeginUpdate()
 {

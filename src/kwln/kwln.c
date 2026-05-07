@@ -7,6 +7,7 @@
 #include "sce/eeregs.h"
 
 static RwRGBA sClearColor;         // 007ce128
+static u32 sFlags;                 // 007ce120
 static u32 sFrameCount2;           // 007ce10c
 static u32 sFrameCount;            // 007ce108
 u32 gT0CountVal;                   // 007ce0fc. Current value of T0_COUNT reg
@@ -142,4 +143,22 @@ void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a)
     sClearColor.g = g;
     sClearColor.b = b;
     sClearColor.a = a;
+}
+
+// FUN_00198600
+void kwlnGetFlags()
+{
+    return sFlags;
+}
+
+// FUN_00198610
+void kwlnSetFlags(u32 flag, u32 enabled)
+{
+    if (enabled == true)
+    {
+        sFlags |= flag;
+        return;
+    }
+
+    sFlags &= ~flag;
 }
