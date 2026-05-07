@@ -68,7 +68,7 @@ typedef union
 typedef struct ScrData
 {
     char scrName[24];                     // 0x00. Name of the current procedure (same as task->taskName)
-    u32 pc;                               // 0x18. Program counter
+    s32 pc;                               // 0x18. Program counter
     s32 sp;                               // 0x1c. Stack pointer
     s8 stackTypes[SCR_STACK_MAX];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
     ScrValues stackValues[SCR_STACK_MAX]; // 0x3c. Values of each variables in the stack
@@ -78,7 +78,7 @@ typedef struct ScrData
     ScrLblPrcd* labelsContent;            // 0xb8
     ScrInstruction* instrContent;         // 0xbc
     BmdHeader* msgContentHeader;          // 0xc0
-    void* stringsContent;                 // 0xc4
+    char* stringsContent;                 // 0xc4
     u32 prcdIdx;                          // 0xc8
     s32 mesHandleIdx;                     // 0xcc
     u32 timer;                            // 0xd0

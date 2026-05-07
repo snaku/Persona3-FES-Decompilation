@@ -22,7 +22,7 @@ void* scrScriptProcess(KwlnTask* scrTask);
 ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
                          ScrLblPrcd* prcd, ScrLblPrcd* labels, 
                          ScrInstruction* instr, BmdHeader* msg, 
-                         void* strings, s32 prcdIdx)
+                         char* strings, s32 prcdIdx)
 {
     ScrData* scr;
     s32 mesHandleIdx;
@@ -147,64 +147,72 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
     return scr;
 }
 
-// FUN_0035b930. (Need to rework a little bit)
+// FUN_0035b930
 ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
 {
-    uintptr_t prcdAddr = 0;
-    uintptr_t labelsAddr = 0;
-    uintptr_t instrAddr = 0;
-    uintptr_t msgAddr = 0;
-    uintptr_t stringsAddr = 0;
-    u32 i;
+    ScrLblPrcd* prcd;
+    ScrLblPrcd* labels;
+    ScrInstruction* instr;
+    BmdHeader* msgs;
+    char* strings;
+    ScrContentEntry* entries;
+    s32 totalEntries;
+    s32 i;
+    ScrContentEntry* currEntry;
+
+    prcd = NULL;
+    labels = NULL;
+    instr = NULL;
+    msgs = NULL;
+    strings = NULL;
 
     K_ASSERT(header != NULL, 271);
 
-    if (header->magic[0] == 'F' && header->magic[1] == 'L' &&
-        header->magic[2] == 'W' && header->magic[3] == '0')
+    entries = header->entries;
+
+    if (header->magic[0] != 'F' || header->magic[1] != 'L' ||
+        header->magic[2] != 'W' || header->magic[3] != '0')
     {
-        for (i = 0; i < header->totalEntries; i++)
-        {
-            ScrContentEntry* currEntry = &header->entries[i];
-
-            if (currEntry->contentType == SCR_CONTENT_TYPE_STRINGS)
-            {
-                stringsAddr = (uintptr_t)header + currEntry->offset;
-            }
-            else if (currEntry->contentType == SCR_CONTENT_TYPE_MSG)
-            {
-                if (currEntry->elementCount != 0)
-                {
-                    msgAddr = (uintptr_t)header + currEntry->offset;
-                }
-            }
-            else if (currEntry->contentType == SCR_CONTENT_TYPE_INSTR)
-            {
-                instrAddr = (uintptr_t)header + currEntry->offset;
-            }
-            else if (currEntry->contentType == SCR_CONTENT_TYPE_LABEL)
-            {
-                labelsAddr = (uintptr_t)header + currEntry->offset;
-            }
-            else
-            {
-                if (currEntry->contentType != SCR_CONTENT_TYPE_PROCEDURE)
-                {
-                    K_Abort("scrStartScript2(..) Invalid type!!\n", "scrScriptProcess.c", 306);
-                    return NULL;
-                }
-                prcdAddr = (uintptr_t)header + currEntry->offset;
-            }
-        }
-
-        return scrStartScript(header, header->entries,
-                              (ScrLblPrcd*)prcdAddr, (ScrLblPrcd*)labelsAddr, 
-                              (ScrInstruction*)instrAddr, (BmdHeader*)msgAddr,
-                              (void*)stringsAddr, prcdIdx);
+        K_Abort("invalid script data!!\n", "scrScriptProcess.c", 280);
+        return NULL;
     }
 
-    K_Abort("invalid script data!!\n", "scrScriptProcess.c", 280);
+    i = 0;
+    totalEntries = header->totalEntries;
+    // TODO: load 1, 2, 3 and 4 in a2, a3, t0 and t1 before the loop
+    for (; i < totalEntries; i++)
+    {
+        currEntry = &entries[i];
 
-    return NULL;
+        switch (currEntry->contentType)
+        {
+            case SCR_CONTENT_TYPE_PROCEDURE:
+                prcd = (ScrLblPrcd*)((uintptr_t)header + currEntry->offset);
+                break;
+            case SCR_CONTENT_TYPE_LABEL:
+                labels = (ScrLblPrcd*)((uintptr_t)header + currEntry->offset);
+                break;
+            case SCR_CONTENT_TYPE_INSTR:
+                instr = (ScrInstruction*)((uintptr_t)header + currEntry->offset);
+                break;
+            case SCR_CONTENT_TYPE_MSG:
+                if (currEntry->elementCount != 0)
+                {
+                    msgs = (BmdHeader*)((uintptr_t)header + currEntry->offset);
+                }
+                break;
+            case SCR_CONTENT_TYPE_STRINGS:
+                strings = (char*)((uintptr_t)header + currEntry->offset);
+                break;
+            
+            default: 
+                K_Abort("scrStartScript2(..) Invalid type!!\n", "scrScriptProcess.c", 306);
+                return NULL;
+        }
+    }
+
+    return scrStartScript(header, entries, prcd, labels,
+                          instr, msgs, strings, prcdIdx);
 }
 
 // FUN_0035bb40. Create a script task by a script header
