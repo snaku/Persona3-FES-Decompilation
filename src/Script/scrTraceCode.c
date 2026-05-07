@@ -379,7 +379,241 @@ static u32 CodeFunc_Goto(ScrData* scr)
 // FUN_0035d350
 static void scrOperation(ScrData* scr, u32 type)
 {
-    // TODO
+    K_ASSERT(scr->sp >= 2, 441);
+
+    sOpLeftType = scr->stackTypes[scr->sp - 1];
+    sOpRightType = scr->stackTypes[scr->sp - 2];
+
+    // int
+    if ((sOpLeftType == SCR_STACK_TYPE_INTEGER || sOpLeftType == 2) &&
+        (sOpRightType == SCR_STACK_TYPE_INTEGER || sOpRightType == 2))
+    {
+        sOpLeftIVal = PopInt(scr);
+        sOpRightIVal = PopInt(scr);
+
+        switch (type)
+        {
+            case SCR_OPERATION_ADD: sOpIRes = sOpLeftIVal + sOpRightIVal; break;
+            case SCR_OPERATION_SUB: sOpIRes = sOpLeftIVal - sOpRightIVal; break;
+            case SCR_OPERATION_MUL: sOpIRes = sOpLeftIVal * sOpRightIVal; break;
+            case SCR_OPERATION_DIV:
+                K_ASSERT(sOpRightIVal != 0, 460);
+                sOpIRes = sOpLeftIVal / sOpRightIVal; 
+                break;
+
+            case SCR_OPERATION_OR:
+                if (sOpLeftIVal != 0 || sOpRightIVal != 0)
+                {
+                    sOpIRes = true;
+                }
+                else
+                {
+                    sOpIRes = false;
+                }
+                break;
+            
+            case SCR_OPERATION_AND:
+                if (sOpLeftIVal != 0 && sOpRightIVal != 0)
+                {
+                    sOpIRes = true;
+                }
+                else
+                {
+                    sOpIRes = false;
+                }
+                break;
+            
+            case SCR_OPERATION_EQ:
+                if (sOpLeftIVal == sOpRightIVal)
+                {
+                    sOpIRes = true;
+                }
+                else
+                {
+                    sOpIRes = false;
+                }
+                break;
+
+            case SCR_OPERATION_NEQ:
+                if (sOpLeftIVal != sOpRightIVal)
+                {
+                    sOpIRes = true;
+                }
+                else
+                {
+                    sOpIRes = false;
+                }
+                break;
+            
+            case SCR_OPERATION_S:
+                if (sOpLeftIVal < sOpRightIVal)
+                {
+                    sOpIRes = true;
+                }
+                else
+                {
+                    sOpIRes = false;
+                }
+                break;
+            
+            case SCR_OPERATION_L:
+                if (sOpLeftIVal > sOpRightIVal)
+                {
+                    sOpIRes = true;
+                }
+                else
+                {
+                    sOpIRes = false;
+                }
+                break;
+
+            case SCR_OPERATION_SE:
+                if (sOpLeftIVal <= sOpRightIVal)
+                {
+                    sOpIRes = true;
+                }
+                else
+                {
+                    sOpIRes = false;
+                }
+                break;
+
+            case SCR_OPERATION_LE:
+                if (sOpLeftIVal >= sOpRightIVal)
+                {
+                    sOpIRes = true;
+                }
+                else
+                {
+                    sOpIRes = false;
+                }
+        }
+
+        PushInt(scr, sOpIRes);
+        return;
+    }
+
+    // float
+
+    sOpLeftFVal = PopFloat(scr);
+    sOpRightFVal = PopFloat(scr);
+
+    switch (type)
+    {
+        case SCR_OPERATION_ADD: sOpFRes = sOpLeftFVal + sOpRightFVal; break; // PushFloat
+        case SCR_OPERATION_SUB: sOpFRes = sOpLeftFVal - sOpRightFVal; break; // PushFloat
+        case SCR_OPERATION_MUL: sOpFRes = sOpLeftFVal * sOpRightFVal; break; // PushFloat
+        case SCR_OPERATION_DIV:
+            K_ASSERT(sOpRightFVal != 0.0f, 527);
+            sOpFRes = sOpLeftFVal / sOpRightFVal; 
+            break; // PushFloat
+
+        case SCR_OPERATION_OR:
+            if (sOpLeftFVal != 0.0f || sOpRightFVal != 0.0f)
+            {
+                sOpIRes = true;
+            }
+            else
+            {
+                sOpIRes = false;
+            }
+
+            PushInt(scr, sOpIRes);
+            return;
+        
+        case SCR_OPERATION_AND:
+            if (sOpLeftFVal != 0.0f && sOpRightFVal != 0.0f)
+            {
+                sOpIRes = true;
+            }
+            else
+            {
+                sOpIRes = false;
+            }
+
+            PushInt(scr, sOpIRes);
+            return;
+
+        case SCR_OPERATION_EQ:
+            if (sOpLeftFVal == sOpRightFVal)
+            {
+                sOpIRes = true;
+            }
+            else
+            {
+                sOpIRes = false;
+            }
+
+            PushInt(scr, sOpIRes);
+            return;
+
+        case SCR_OPERATION_NEQ:
+            if (sOpLeftFVal != sOpRightFVal)
+            {
+                sOpIRes = true;
+            }
+            else
+            {
+                sOpIRes = false;
+            }
+
+            PushInt(scr, sOpIRes);
+            return;
+
+        case SCR_OPERATION_S:
+            if (sOpLeftFVal < sOpRightFVal)
+            {
+                sOpIRes = true;
+            }
+            else
+            {
+                sOpIRes = false;
+            }
+
+            PushInt(scr, sOpIRes);
+            return;
+
+        case SCR_OPERATION_L:
+            if (sOpLeftFVal > sOpRightFVal)
+            {
+                sOpIRes = true;
+            }
+            else
+            {
+                sOpIRes = false;
+            }
+
+            PushInt(scr, sOpIRes);
+            return;
+
+        case SCR_OPERATION_SE:
+            if (sOpLeftFVal <= sOpRightFVal)
+            {
+                sOpIRes = true;
+            }
+            else
+            {
+                sOpIRes = false;
+            }
+
+            PushInt(scr, sOpIRes);
+            return;
+
+        case SCR_OPERATION_LE:
+            if (sOpLeftFVal >= sOpRightFVal)
+            {
+                sOpIRes = true;
+            }
+            else
+            {
+                sOpIRes = false;
+            }
+
+            PushInt(scr, sOpIRes);
+            return;
+    }
+
+    PushFloat(scr, sOpFRes);
 }
 
 // FUN_0035dfe0
