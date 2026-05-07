@@ -12,39 +12,50 @@ ScrMemory* gScrMemory = &sMemory; // 007cca5c
 
 static ScrData* sCurrScript; // 007ce5a8. Current script being executed
 
-static s32 sOperationRes;    // 007ce590
-static s32 sOperationRight;  // 007ce58c
-static s32 sOperationLeft;   // 007ce588
+static s32 sOpRightType; // 007ce5a4
+static s32 sOpLeftType;  // 007ce5a0
+static f32 sOpFRes;      // 007ce59c
+static f32 sOpRightFVal; // 007ce598
+static f32 sOpLeftFVal;  // 007ce594
+static s32 sOpIRes;      // 007ce590
+static s32 sOpRightIVal; // 007ce58c
+static s32 sOpLeftIVal;  // 007ce588
 
-u32 CodeFunc_PushI(ScrData* scr);
-u32 CodeFunc_PushS(ScrData* scr);
-u32 CodeFunc_PushF(ScrData* scr);
-u32 CodeFunc_PushIX(ScrData* scr);
-u32 CodeFunc_PushIF(ScrData* scr);
-u32 CodeFunc_PushLIX(ScrData* scr);
-u32 CodeFunc_PushLFX(ScrData* scr);
-u32 CodeFunc_PushREG(ScrData* scr);
-u32 CodeFunc_PopIX(ScrData* scr);
-u32 CodeFunc_PopFX(ScrData* scr);
-u32 CodeFunc_PopLIX(ScrData* scr);
-u32 CodeFunc_PopLFX(ScrData* scr);
-u32 CodeFunc_Proc(ScrData* scr);
-u32 CodeFunc_Comm(ScrData* scr);
-u32 CodeFunc_End(ScrData* scr);
-u32 CodeFunc_Jmp(ScrData* scr);
-u32 CodeFunc_Call(ScrData* scr);
-u32 CodeFunc_Run(ScrData* scr);
-u32 CodeFunc_Goto(ScrData* scr);
-u32 CodeFunc_Add(ScrData* scr);
-u32 CodeFunc_Sub(ScrData* scr);
-u32 CodeFunc_Mul(ScrData* scr);
-u32 CodeFunc_Div(ScrData* scr);
-u32 CodeFunc_Eq(ScrData* scr);
-u32 CodeFunc_Neq(ScrData* scr);
-u32 CodeFunc_S(ScrData* scr);
-u32 CodeFunc_L(ScrData* scr);
-u32 CodeFunc_SE(ScrData* scr);
-u32 CodeFunc_LE(ScrData* scr);
+static u32 CodeFunc_PushI(ScrData* scr);
+static u32 CodeFunc_PushS(ScrData* scr);
+static u32 CodeFunc_PushF(ScrData* scr);
+static u32 CodeFunc_PushIX(ScrData* scr);
+static u32 CodeFunc_PushIF(ScrData* scr);
+static u32 CodeFunc_PushLIX(ScrData* scr);
+static u32 CodeFunc_PushLFX(ScrData* scr);
+static u32 CodeFunc_PushSTR(ScrData* scr);
+static u32 CodeFunc_PushREG(ScrData* scr);
+static u32 CodeFunc_PopIX(ScrData* scr);
+static u32 CodeFunc_PopFX(ScrData* scr);
+static u32 CodeFunc_PopLIX(ScrData* scr);
+static u32 CodeFunc_PopLFX(ScrData* scr);
+static u32 CodeFunc_Proc(ScrData* scr);
+static u32 CodeFunc_Comm(ScrData* scr);
+static u32 CodeFunc_End(ScrData* scr);
+static u32 CodeFunc_Jmp(ScrData* scr);
+static u32 CodeFunc_Call(ScrData* scr);
+static u32 CodeFunc_Run(ScrData* scr);
+static u32 CodeFunc_Goto(ScrData* scr);
+static u32 CodeFunc_Add(ScrData* scr);
+static u32 CodeFunc_Sub(ScrData* scr);
+static u32 CodeFunc_Mul(ScrData* scr);
+static u32 CodeFunc_Div(ScrData* scr);
+static u32 CodeFunc_Minus(ScrData* scr);
+static u32 CodeFunc_Not(ScrData* scr);
+static u32 CodeFunc_Or(ScrData* scr);
+static u32 CodeFunc_And(ScrData* scr);
+static u32 CodeFunc_Eq(ScrData* scr);
+static u32 CodeFunc_Neq(ScrData* scr);
+static u32 CodeFunc_S(ScrData* scr);
+static u32 CodeFunc_L(ScrData* scr);
+static u32 CodeFunc_SE(ScrData* scr);
+static u32 CodeFunc_LE(ScrData* scr);
+static u32 CodeFunc_If(ScrData* scr);
 
 typedef u32 (*CodeFunc)(ScrData* scr);
 
@@ -54,11 +65,47 @@ static const CodeFunc sCodeFuncTable[SCR_CODEFUNC_MAX] =
     CodeFunc_PushI, CodeFunc_PushF, CodeFunc_PushIX, CodeFunc_PushIF, CodeFunc_PushREG,
     CodeFunc_PopIX, CodeFunc_PopFX, CodeFunc_Proc, CodeFunc_Comm, CodeFunc_End,
     CodeFunc_Jmp, CodeFunc_Call, CodeFunc_Run, CodeFunc_Goto, CodeFunc_Add,
-    CodeFunc_Sub, CodeFunc_Mul, CodeFunc_Div, NULL, NULL,
-    NULL, NULL, CodeFunc_Eq, CodeFunc_Neq, CodeFunc_S,
-    CodeFunc_L, CodeFunc_SE, CodeFunc_LE, NULL, CodeFunc_PushS,
-    CodeFunc_PushLIX, CodeFunc_PushLFX, CodeFunc_PopLIX, CodeFunc_PopLFX, NULL
+    CodeFunc_Sub, CodeFunc_Mul, CodeFunc_Div, CodeFunc_Minus, CodeFunc_Not,
+    CodeFunc_Or, CodeFunc_And, CodeFunc_Eq, CodeFunc_Neq, CodeFunc_S,
+    CodeFunc_L, CodeFunc_SE, CodeFunc_LE, CodeFunc_If, CodeFunc_PushS,
+    CodeFunc_PushLIX, CodeFunc_PushLFX, CodeFunc_PopLIX, CodeFunc_PopLFX, CodeFunc_PushSTR
 };
+
+static inline void PushInt(ScrData* scr, s32 val)
+{
+    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
+
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_INTEGER;
+    scr->stackValues[scr->sp].iVal = val;
+    scr->sp++;
+}
+
+static inline void PushFloat(ScrData* scr, f32 val)
+{
+    K_ASSERT(scr->sp < SCR_STACK_RET, 55);
+
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_FLOAT;
+    scr->stackValues[scr->sp].fVal = val;
+    scr->sp++;
+}
+
+static inline void PushString(ScrData* scr, char* str)
+{
+    K_ASSERT(scr->sp < SCR_STACK_RET, 69);
+
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_STRING;
+    scr->stackValues[scr->sp].strVal = str;
+    scr->sp++;
+}
+
+static inline void PushPC(ScrData* scr, s32 val)
+{
+    K_ASSERT(scr->sp < SCR_STACK_RET, 111);
+
+    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_ADDR;
+    scr->stackValues[scr->sp].iVal = val;
+    scr->sp++;
+}
 
 static inline s32 PopInt(ScrData* scr)
 {
@@ -111,147 +158,92 @@ static inline f32 PopFloat(ScrData* scr)
 }
 
 // FUN_0035c300. Push an immediate int value 
-u32 CodeFunc_PushI(ScrData* scr)
+static u32 CodeFunc_PushI(ScrData* scr)
 {
-    s32 operand;
-
-    operand = scr->instrContent[++scr->pc].iOperand;
-
-    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
-
-    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_INTEGER;
-    scr->stackValues[scr->sp].iVal = operand;
-
-    scr->sp++;
+    PushInt(scr, scr->instrContent[++scr->pc].iOperand);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c3b0. Push an immediate short value
-u32 CodeFunc_PushS(ScrData* scr)
+static u32 CodeFunc_PushS(ScrData* scr)
 {
-    s32 operand;
-
-    operand = scr->instrContent[scr->pc].opOperand16.sOperand;
-
-    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
-
-    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_INTEGER;
-    scr->stackValues[scr->sp].iVal = operand;
-    
-    scr->sp++;
+    PushInt(scr, scr->instrContent[scr->pc].opOperand16.sOperand);
     scr->pc++;
     
     return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c450. Push an immediate float value
-u32 CodeFunc_PushF(ScrData* scr)
+static u32 CodeFunc_PushF(ScrData* scr)
 {
-    f32 operand;
-
-    operand = scr->instrContent[++scr->pc].fOperand;
-
-    K_ASSERT(scr->sp < SCR_STACK_RET, 55);
-
-    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_FLOAT;
-    scr->stackValues[scr->sp].fVal = operand;
-
-    scr->sp++;
+    PushFloat(scr, scr->instrContent[++scr->pc].fOperand);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c500. Push an int from the VM memory
-u32 CodeFunc_PushIX(ScrData* scr)
+static u32 CodeFunc_PushIX(ScrData* scr)
 {
-    s32 var;
-
-    var = gScrMemory->i[scr->instrContent[scr->pc].opOperand16.sOperand];
-
-    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
-
-    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_INTEGER;
-    scr->stackValues[scr->sp].iVal = var;
-
-    scr->sp++;
+    PushInt(scr, gScrMemory->i[scr->instrContent[scr->pc].opOperand16.sOperand]);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c5b0. Push a float from the VM memory
-u32 CodeFunc_PushIF(ScrData* scr)
+static u32 CodeFunc_PushIF(ScrData* scr)
 {
-    f32 var;
-
-    var = gScrMemory->f[scr->instrContent[scr->pc].opOperand16.sOperand]; // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
-
-    K_ASSERT(scr->sp < SCR_STACK_RET, 55);
-
-    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_FLOAT;
-    scr->stackValues[scr->sp].fVal = var;
-
-    scr->sp++;
+    PushFloat(scr, gScrMemory->f[scr->instrContent[scr->pc].opOperand16.sOperand]); // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c660
-u32 CodeFunc_PushLIX(ScrData* scr)
+static u32 CodeFunc_PushLIX(ScrData* scr)
 {
-    s32 localI;
-
-    localI = scr->localInt[scr->instrContent[scr->pc].opOperand16.sOperand];
-
-    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
-
-    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_INTEGER;
-    scr->stackValues[scr->sp].iVal = localI;
-
-    scr->sp++;
+    PushInt(scr, scr->localInt[scr->instrContent[scr->pc].opOperand16.sOperand]);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c710
-u32 CodeFunc_PushLFX(ScrData* scr)
+static u32 CodeFunc_PushLFX(ScrData* scr)
 {
-    f32 localF;
-
-    localF = scr->localFloat[scr->instrContent[scr->pc].opOperand16.sOperand];
-
-    K_ASSERT(scr->sp < SCR_STACK_RET, 43);
-
-    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_FLOAT;
-    scr->stackValues[scr->sp].fVal = localF;
-
-    scr->sp++;
+    PushFloat(scr, scr->localFloat[scr->instrContent[scr->pc].opOperand16.sOperand]);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
 
+// FUN_0035c7c0
+static u32 CodeFunc_PushSTR(ScrData* scr)
+{
+    // TODO
+
+    return CODEFUNC_NEXTINSTR;
+}
+
 // FUN_0035c870. Push return value
-u32 CodeFunc_PushREG(ScrData* scr)
+static u32 CodeFunc_PushREG(ScrData* scr)
 {
     K_ASSERT(scr->sp < SCR_STACK_RET, 268);
 
     scr->stackTypes[scr->sp] = scr->stackTypes[SCR_STACK_RET];
     scr->stackValues[scr->sp] = scr->stackValues[SCR_STACK_RET];
-
     scr->sp++;
+
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035c900
-u32 CodeFunc_PopIX(ScrData* scr)
+static u32 CodeFunc_PopIX(ScrData* scr)
 {
     gScrMemory->i[scr->instrContent[scr->pc].opOperand16.sOperand] = PopInt(scr);
     scr->pc++;
@@ -260,7 +252,7 @@ u32 CodeFunc_PopIX(ScrData* scr)
 }
 
 // FUN_0035ca70
-u32 CodeFunc_PopFX(ScrData* scr)
+static u32 CodeFunc_PopFX(ScrData* scr)
 {
     gScrMemory->f[scr->instrContent[scr->pc].opOperand16.sOperand] = PopFloat(scr); // TODO: addu v0, v0, v1 instead of addu v0, v1, v0
     scr->pc++;
@@ -269,7 +261,7 @@ u32 CodeFunc_PopFX(ScrData* scr)
 }
 
 // FUN_0035cc00
-u32 CodeFunc_PopLIX(ScrData* scr)
+static u32 CodeFunc_PopLIX(ScrData* scr)
 {
     scr->localInt[scr->instrContent[scr->pc].opOperand16.sOperand] = PopInt(scr);
     scr->pc++;
@@ -278,7 +270,7 @@ u32 CodeFunc_PopLIX(ScrData* scr)
 }
 
 // FUN_0035cd70
-u32 CodeFunc_PopLFX(ScrData* scr)
+static u32 CodeFunc_PopLFX(ScrData* scr)
 {
     scr->localFloat[scr->instrContent[scr->pc].opOperand16.sOperand] = PopFloat(scr);
     scr->pc++;
@@ -287,7 +279,7 @@ u32 CodeFunc_PopLFX(ScrData* scr)
 }
 
 // FUN_0035cf00. Start procedure
-u32 CodeFunc_Proc(ScrData* scr)
+static u32 CodeFunc_Proc(ScrData* scr)
 {
     scr->pc++;
 
@@ -295,7 +287,7 @@ u32 CodeFunc_Proc(ScrData* scr)
 }
 
 // FUN_0035cf20. Call a native function
-u32 CodeFunc_Comm(ScrData* scr)
+static u32 CodeFunc_Comm(ScrData* scr)
 {
     ScrCmdFunc cmdFunc;
     u32 savedPc;
@@ -328,7 +320,7 @@ u32 CodeFunc_Comm(ScrData* scr)
 }
 
 // FUN_0035d040
-u32 CodeFunc_End(ScrData* scr)
+static u32 CodeFunc_End(ScrData* scr)
 {
     if (scr->sp == 0)
     {
@@ -344,7 +336,7 @@ u32 CodeFunc_End(ScrData* scr)
 }
 
 // FUN_0035d1d0. Jump to a procedure
-u32 CodeFunc_Jmp(ScrData* scr)
+static u32 CodeFunc_Jmp(ScrData* scr)
 {
     s16 prcdIdx;
 
@@ -355,24 +347,16 @@ u32 CodeFunc_Jmp(ScrData* scr)
 }
 
 // FUN_0035d210. Call a procedure + push PC
-u32 CodeFunc_Call(ScrData* scr)
+static u32 CodeFunc_Call(ScrData* scr)
 {
-    u32 savedPC;
-
-    savedPC = scr->pc;
-    K_ASSERT(scr->sp < SCR_STACK_RET, 111);
-
-    scr->stackTypes[scr->sp] = SCR_STACK_TYPE_ADDR;
-    scr->stackValues[scr->sp].iVal = savedPC;
-    scr->sp++;
-
+    PushPC(scr, scr->pc);
     scr->pc = scr->proceduresContent[scr->instrContent[scr->pc].opOperand16.sOperand].addr;
 
     return CODEFUNC_NEXTINSTR;
 }
 
 // FUN_0035d2c0
-u32 CodeFunc_Run(ScrData* scr)
+static u32 CodeFunc_Run(ScrData* scr)
 {
     K_Abort("CodeFunc_Run(..) Can't running command!!\n", "scrTraceCode.c", 416);
 
@@ -382,7 +366,7 @@ u32 CodeFunc_Run(ScrData* scr)
 }
 
 // FUN_0035d310. Jump to a label
-u32 CodeFunc_Goto(ScrData* scr)
+static u32 CodeFunc_Goto(ScrData* scr)
 {
     s16 lblIdx;
 
@@ -393,13 +377,13 @@ u32 CodeFunc_Goto(ScrData* scr)
 }
 
 // FUN_0035d350
-void scrOperation(ScrData* scr, u32 type)
+static void scrOperation(ScrData* scr, u32 type)
 {
     // TODO
 }
 
 // FUN_0035dfe0
-u32 CodeFunc_Add(ScrData* scr)
+static u32 CodeFunc_Add(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_ADD);
     scr->pc++;
@@ -408,7 +392,7 @@ u32 CodeFunc_Add(ScrData* scr)
 }
 
 // FUN_0035e020
-u32 CodeFunc_Sub(ScrData* scr)
+static u32 CodeFunc_Sub(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_SUB);
     scr->pc++;
@@ -417,7 +401,7 @@ u32 CodeFunc_Sub(ScrData* scr)
 }
 
 // FUN_0035e60
-u32 CodeFunc_Mul(ScrData* scr)
+static u32 CodeFunc_Mul(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_MUL);
     scr->pc++;
@@ -426,7 +410,7 @@ u32 CodeFunc_Mul(ScrData* scr)
 }
 
 // FUN_0035e0a0
-u32 CodeFunc_Div(ScrData* scr)
+static u32 CodeFunc_Div(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_DIV);
     scr->pc++;
@@ -434,8 +418,40 @@ u32 CodeFunc_Div(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
+// FUN_0035e0e0
+static u32 CodeFunc_Minus(ScrData* scr)
+{
+    // TODO
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e250
+static u32 CodeFunc_Not(ScrData* scr)
+{
+    // TODO
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e650
+static u32 CodeFunc_Or(ScrData* scr)
+{
+    // TODO
+
+    return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e650
+static u32 CodeFunc_And(ScrData* scr)
+{
+    // TODO
+
+    return CODEFUNC_NEXTINSTR;
+}
+
 // FUN_0035e6d0. Equal
-u32 CodeFunc_Eq(ScrData* scr)
+static u32 CodeFunc_Eq(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_EQ);
     scr->pc++;
@@ -444,7 +460,7 @@ u32 CodeFunc_Eq(ScrData* scr)
 }
 
 // FUN_0035e710. Not equal
-u32 CodeFunc_Neq(ScrData* scr)
+static u32 CodeFunc_Neq(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_NEQ);
     scr->pc++;
@@ -453,7 +469,7 @@ u32 CodeFunc_Neq(ScrData* scr)
 }
 
 // FUN_0035e750. Smaller
-u32 CodeFunc_S(ScrData* scr)
+static u32 CodeFunc_S(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_S);
     scr->pc++;
@@ -462,7 +478,7 @@ u32 CodeFunc_S(ScrData* scr)
 }
 
 // FUN_0035e790. Larger
-u32 CodeFunc_L(ScrData* scr)
+static u32 CodeFunc_L(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_L);
     scr->pc++;
@@ -471,7 +487,7 @@ u32 CodeFunc_L(ScrData* scr)
 }
 
 // FUN_0035e7d0. Smaller equal
-u32 CodeFunc_SE(ScrData* scr)
+static u32 CodeFunc_SE(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_SE);
     scr->pc++;
@@ -480,12 +496,20 @@ u32 CodeFunc_SE(ScrData* scr)
 }
 
 // FUN_0035e810. Larger equal
-u32 CodeFunc_LE(ScrData* scr)
+static u32 CodeFunc_LE(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_LE);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
+}
+
+// FUN_0035e850
+static u32 CodeFunc_If(ScrData* scr)
+{
+    // TODO
+
+    return CODEFUNC_NEXTINSTR;   
 }
 
 // FUN_0035ebf0
