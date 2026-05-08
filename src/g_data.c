@@ -352,25 +352,25 @@ void datSetActiveSocialLink(u16 activeSocialLink)
 }
 
 // FUN_0016ef20
-u16 datGetDaysSinceApr5()
+s16 datGetDaysSinceApr5()
 {
     return sCalendarWork.daysSinceApr5;
 }
 
 // FUN_0016ef30
-u8 datGetTime()
+s8 datGetTime()
 {
     return sCalendarWork.time;
 }
 
 // FUN_0016ef40
-u16 datGetDaysSkipTarget()
+s16 datGetDaysSkipTarget()
 {
     return sCalendarWork.daysSkipTarget;
 }
 
 // FUN_0016ef50
-u8 datGetTimeSkipTarget()
+s8 datGetTimeSkipTarget()
 {
     return sCalendarWork.timeSkipTarget;
 }
@@ -551,7 +551,7 @@ u16 datGetEquipmentIdx(u16 characterId, u16 equipmentType)
 }
 
 // FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags
-void datSetDaysSinceApr5(u16 daysSinceApr5)
+void datSetDaysSinceApr5(s16 daysSinceApr5)
 {
     u32 currentWeekDay;
     u8 holidayOrSunday;
@@ -594,19 +594,19 @@ void datSetDaysSinceApr5(u16 daysSinceApr5)
 }
 
 // FUN_0016f150
-void datSetTime(u8 time)
+void datSetTime(s8 time)
 {
     sCalendarWork.time = time;
 }
 
 // FUN_0016f160
-void datSetDaysSkipTarget(u16 days)
+void datSetDaysSkipTarget(s16 days)
 {
     sCalendarWork.daysSkipTarget = days;
 }
 
 // FUN_0016f170
-void datSetTimeSkipTarget(u8 time)
+void datSetTimeSkipTarget(s8 time)
 {
     sCalendarWork.timeSkipTarget = time;
 }
@@ -618,7 +618,7 @@ void datSetSkipToTarget(u32 val)
 }
 
 // FUN_0016f190
-u8 datGetFlag(s32 bit)
+u32 datGetFlag(s32 bit)
 {
     // TODO
 
