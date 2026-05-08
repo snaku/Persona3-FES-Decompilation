@@ -8,11 +8,10 @@ static s16 sFadeType;             // 007cdf08
 static s16 sFadeCounter;          // 007cdf04
 static s16 sFadeDuration;         // 007cdf00. In frames
 static s16 sFadeState;            // 007cdefc
-u8 sbssPad1[3];
 static u8 sFadeRed;               // 007cdef8
-u8 sbssPad2[3];
+u8 sbssPad1[3];
 static u8 sFadeBlue;              // 007cdef4
-u8 sbssPad3[3];
+u8 sbssPad1[3];
 static u8 sFadeGreen;             // 007cdef0
 static KwlnTask* sMaestroInTask;  // 007cdedc
 static KwlnTask* sMaestroOutTask; // 007cded8
@@ -86,6 +85,51 @@ void H_Fade_Custom()
     // TODO
 }
 
+// FUN_00108570
+u32 H_Fade_FadeOut()
+{
+    if (!sFadeActive)
+    {
+        sFadeDuration = 15;
+        sFadeActive = true;
+        sFadeState = HFADE_STATE_INIT_OUT;
+        sFadeRed = 0;
+        sFadeBlue = 0;
+        sFadeGreen = 0;
+        sFadeType = HFADE_UNK0;
+    }
+    else
+    {
+        return false;
+    }
+
+    return sFadeActive;
+}
+
+// FUN_001085c0
+u32 H_Fade_FadeIn()
+{
+    if (sFadeActive && sFadeState == HFADE_STATE_HOLD)
+    {
+        sFadeDuration = 15;
+        sFadeActive = true;
+        sFadeState = HFADE_STATE_INIT_IN;
+
+        if (datGetTime() == CALENDAR_TIME_DARK_HOUR && datGetFlag(5138))
+        {
+            datSetFlag(5138, false);
+
+            sFadeDuration = 40;
+            sFadeCounter = 40;
+            sFadeType = HFADE_DAY;
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
 // FUN_00108670
 void H_Fade_SetType(s16 type)
 {
@@ -109,4 +153,26 @@ void H_Fade_SetDuration(s16 duration)
     {
         sFadeCounter = duration;
     }
+}
+
+// FUN_001086d0. Same thing as 'H_Fade_IsFadeOutDone'
+u32 H_Fade_IsHolding()
+{
+    if (sFadeActive && sFadeState == HFADE_STATE_HOLD)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+// FUN_00108710. Same thing as 'H_Fade_IsHolding'
+u32 H_Fade_IsFadeOutDone()
+{
+    if (sFadeActive)
+    {
+        return sFadeState == HFADE_STATE_HOLD;
+    }
+
+    return true;
 }
