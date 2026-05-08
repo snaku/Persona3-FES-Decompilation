@@ -29,5 +29,8 @@ typedef enum
 } HFadeState;
 
 void H_Fade_Main();
+void H_Fade_SetType(s16 type);
+void H_Fade_SetCustomColor(u8 r, u8 g, u8 b);
+void H_Fade_SetDuration(s16 duration);
 
 #endif
