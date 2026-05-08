@@ -28,7 +28,10 @@ typedef enum
     HFADE_STATE_IN = 5,
 } HFadeState;
 
+void H_Fade_ReadPak();
 void H_Fade_Main();
+
+void H_Fade_Clear();
 u32 H_Fade_FadeOut();
 u32 H_Fade_FadeIn();
 void H_Fade_SetType(s16 type);

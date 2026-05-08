@@ -19,11 +19,21 @@ static u32 sFadeActive;           // 007cded4
 
 static HCdvd* cdvds[8]; // 007e39d0
 
-void H_Fade_Transition();
-void H_Fade_001075b0();
-void H_Fade_White();
-void H_Fade_Day();
-void H_Fade_Custom();
+static void H_Fade_Transition();
+static void H_Fade_001075b0();
+static void H_Fade_White();
+static void H_Fade_Day();
+static void H_Fade_Custom();
+
+// FUN_00107020
+void H_Fade_ReadPak()
+{
+    HCdvd* cdvd;
+
+    cdvd = H_Cdvd_Request("camp/fade_pak.pak", H_CDVD_FILEARCHIVE);
+    cdvds[0] = cdvd;
+    H_Cdvd_ReadSync(cdvd);
+}
 
 // FUN_00107060
 void H_Fade_Main()
@@ -55,32 +65,122 @@ void H_Fade_Main()
     }
 }
 
+// FUN_001071b0
+void H_Fade_Clear()
+{
+    if (sFadeActive)
+    {
+        sFadeActive = false;
+
+        if (sMaestroOutTask != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(sMaestroOutTask);
+            sMaestroOutTask = NULL;
+        }
+    }
+}
+
 // FUN_001071f0
-void H_Fade_Transition()
+static void H_Fade_Transition()
 {
     // TODO
 }
 
 // FUN_001075b0
-void H_Fade_001075b0()
+static void H_Fade_001075b0()
 {
     // TODO
 }
 
 // FUN_001078a0
-void H_Fade_White()
+static void H_Fade_White()
 {
-    // TODO
+    // TODO: fix stack frame size (the problem is caused by RwRenderStateSet)
+
+    RwIm2DVertex vertices[4];
+    f32 alpha;
+    f32 recipZ;
+    s16 i;
+    f32 z;
+    f32 col;
+
+    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
+    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
+    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
+    RwRenderStateSet(rwRENDERSTATESRCBLEND, rwBLENDSRCALPHA);
+    RwRenderStateSet(rwRENDERSTATEDESTBLEND, rwBLENDINVSRCALPHA);
+    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERLINEAR);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, true);
+
+    switch (sFadeState)
+    {
+        case HFADE_STATE_INIT_OUT:
+            sFadeState = HFADE_STATE_OUT;
+            sFadeCounter = 0;
+            // fallthrough
+        case HFADE_STATE_OUT:
+            sFadeCounter++;
+            if (sFadeCounter == sFadeDuration)
+            {
+                sFadeState = HFADE_STATE_HOLD;
+            }
+            break;
+
+        case HFADE_STATE_HOLD: break;
+        
+        case HFADE_STATE_INIT_IN: 
+            sFadeCounter = sFadeDuration;
+            sFadeState = HFADE_STATE_IN;
+            break;
+
+        case HFADE_STATE_IN:
+            sFadeCounter--;
+            if (sFadeCounter == 0)
+            {
+                sFadeActive = false;
+            }
+    }
+
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    alpha = (f32)((sFadeCounter * 255) / sFadeDuration);
+    i = 0;
+    z = RwIm2DGetNearScreenZ() - 100.0f;
+    col = 255.0f; // TODO: lui v1, 0x437f here and not in the loop body
+    for(; i < 4; i++)
+    {
+        vertices[i].u.els.scrVertex.z = z;
+        vertices[i].u.els.recipZ = recipZ;
+
+        vertices[i].u.els.color.r = col;
+        vertices[i].u.els.color.g = col;
+        vertices[i].u.els.color.b = col;
+        vertices[i].u.els.color.a = alpha;
+    }
+
+    vertices[0].u.els.scrVertex.x = 0.0f;
+    vertices[0].u.els.scrVertex.y = 0.0f;
+
+    vertices[1].u.els.scrVertex.x = 640.0f;
+    vertices[1].u.els.scrVertex.y = 0.0f;
+
+    vertices[2].u.els.scrVertex.x = 0.0f;
+    vertices[2].u.els.scrVertex.y = 448.0f;
+
+    vertices[3].u.els.scrVertex.x = 640.0f;
+    vertices[3].u.els.scrVertex.y = 448.0f;
+
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
 // FUN_00107b20
-void H_Fade_Day()
+static void H_Fade_Day()
 {
     // TODO
 }
 
 // FUN_001081e0
-void H_Fade_Custom()
+static void H_Fade_Custom()
 {
     // TODO
 }
