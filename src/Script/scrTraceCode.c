@@ -223,7 +223,8 @@ static u32 CodeFunc_PushLFX(ScrData* scr)
 // FUN_0035c7c0
 static u32 CodeFunc_PushSTR(ScrData* scr)
 {
-    // TODO
+    PushString(scr, scr->stringsContent + scr->instrContent[scr->pc].opOperand16.sOperand); // TODO: fix load order
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -386,7 +387,7 @@ static void scrOperation(ScrData* scr, u32 type)
 
     // int
     if ((sOpLeftType == SCR_STACK_TYPE_INTEGER || sOpLeftType == 2) &&
-        (sOpRightType == SCR_STACK_TYPE_INTEGER || sOpRightType == 2))
+       ((sOpRightType == SCR_STACK_TYPE_INTEGER || sOpRightType == 2)))
     {
         sOpLeftIVal = PopInt(scr);
         sOpRightIVal = PopInt(scr);
@@ -655,7 +656,37 @@ static u32 CodeFunc_Div(ScrData* scr)
 // FUN_0035e0e0
 static u32 CodeFunc_Minus(ScrData* scr)
 {
-    // TODO
+    s32 sp;
+
+    K_ASSERT(scr->sp > 0, 642);
+
+    sp = scr->sp;
+    switch (scr->stackTypes[sp - 1])
+    {
+        case SCR_STACK_TYPE_INTEGER:
+            scr->stackValues[sp - 1].iVal = -scr->stackValues[sp - 1].iVal;
+            break;
+
+        case SCR_STACK_TYPE_ADDR:
+            K_Abort("CodeFunc_Minus(..) invalid stack type(RET)!!\n", "scrTraceCode.c", 648); 
+            break;
+
+        case SCR_STACK_TYPE_FLOAT:
+            scr->stackValues[sp - 1].fVal = -scr->stackValues[sp - 1].fVal;
+            break;
+
+        case 2:
+            gScrMemory->i[scr->stackValues[sp - 1].iVal] = -gScrMemory->i[scr->stackValues[sp - 1].iVal];
+            break;
+            
+        case 3:
+            gScrMemory->f[scr->stackValues[sp - 1].iVal] = -gScrMemory->f[scr->stackValues[sp - 1].iVal];
+            break;
+        
+        default: K_Abort("CodeFunc_Minus(..) invalid stack type(?)!!\n", "scrTraceCode.c", 648);
+    }
+
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -671,7 +702,8 @@ static u32 CodeFunc_Not(ScrData* scr)
 // FUN_0035e650
 static u32 CodeFunc_Or(ScrData* scr)
 {
-    // TODO
+    scrOperation(scr, SCR_OPERATION_OR);
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -679,7 +711,8 @@ static u32 CodeFunc_Or(ScrData* scr)
 // FUN_0035e650
 static u32 CodeFunc_And(ScrData* scr)
 {
-    // TODO
+    scrOperation(scr, SCR_OPERATION_AND);
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
