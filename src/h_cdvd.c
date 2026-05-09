@@ -1,7 +1,14 @@
 #include "h_cdvd.h"
 #include "temporary.h"
 
-static HCdvd sCdvdListHead; // 007e0380. Dummy head
+static HCdvd sCdvdListHead;        // 007e0380. Dummy head
+static HCdvdCache sCdvdCache[256]; // 007d6f80
+
+// FUN_001007f0
+void H_Cdvd_001007f0()
+{
+    // stub
+}
 
 // FUN_00100980. Asynchronous read
 void H_Cdvd_Read()
@@ -26,7 +33,7 @@ u8 H_Cdvd_Destroy(HCdvd* cdvd)
 }
 
 // FUN_00101010
-void H_Cdvd_BuildPathUppercase(char* src, char* dst)
+void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 {
     // Need to rework a little bit
 
@@ -113,6 +120,53 @@ void H_Cdvd_ReadSync(HCdvd* cdvd)
         else
         {
             break;
+        }
+    }
+}
+
+// FUN_00102650
+void H_Cdvd_CacheAdd(HCdvd* cdvd, void* fileMemory, u32 fileSize, const char* path)
+{
+    s32 i;
+    HCdvdCache* curr;
+    HCdvdCache* cache;
+
+    i = 0;
+    cache = sCdvdCache; // regswap (t2 instead of t1)
+    for (; i < 256; i++)
+    {
+        curr = &cache[i];
+
+        if (!curr->isValid)
+        {
+            curr->isValid = true;
+            sCdvdCache[i].cdvd = cdvd;
+            sCdvdCache[i].fileMemory = fileMemory;
+            sCdvdCache[i].fileSize = fileSize;
+            sCdvdCache[i].unk_110 = 0;
+            memcpy(&sCdvdCache[i].path, path, 128);
+
+            return;
+        }
+    }
+}
+
+// FUN_00102870
+void H_Cdvd_CacheRemove(HCdvd* cdvd)
+{
+    s32 i;
+    HCdvdCache* cache;
+    HCdvdCache* curr;
+
+    i = 0;
+    cache = sCdvdCache;
+    for (; i < 256; i++)
+    {
+        curr = &cache[i];
+
+        if (curr->isValid && curr->cdvd == cdvd)
+        {
+            curr->isValid = false;
         }
     }
 }

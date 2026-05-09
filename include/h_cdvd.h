@@ -40,12 +40,25 @@ typedef struct ArchiveEntryHeader
     u32 fileSize;       // 0xfc. Size in bytes
 } ArchiveEntryHeader;
 
+// 276 bytes
+typedef struct HCdvdCache
+{
+    u32 isValid;      // 0x00
+    HCdvd* cdvd;      // 0x04
+    char path[128];   // 0x08
+    void* fileMemory; // 0x88
+    u32 fileSize;     // 0x8c
+    u32 unk_110;      // 0x90
+} HCdvdCache;
+
 void H_Cdvd_Read();
 HCdvd* H_Cdvd_Request(const char* path, u32 fileMode);
 u8 H_Cdvd_Destroy(HCdvd* cdvd);
-void H_Cdvd_BuildPathUppercase(char* src, char* dst);
+void H_Cdvd_BuildPathUppercase(const char* src, char* dst);
 u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd);
 void* H_Cdvd_ArchiveGetFile(HCdvd* cdvd, s32 fileIdx, u32* fileSize);
 void H_Cdvd_ReadSync(HCdvd* cdvd);
+void H_Cdvd_CacheAdd(HCdvd* cdvd, void* fileMemory, u32 fileSize, const char* path);
+void H_Cdvd_CacheRemove(HCdvd* cdvd);
 
 #endif
