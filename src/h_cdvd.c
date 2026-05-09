@@ -75,6 +75,12 @@ void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
     }
 }
 
+// FUN_001013f0
+void H_Cdvd_NormalizePath(const char* src, char* dst)
+{
+    // TODO
+}
+
 // FUN_001016b0
 u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd)
 {
@@ -106,6 +112,39 @@ void* H_Cdvd_ArchiveGetFile(HCdvd* cdvd, s32 fileIdx, u32* fileSize)
     *fileSize = entryHeader.fileSize;
 
     return (void*)(fileMemoryAddr + sizeof(ArchiveEntryHeader));
+}
+
+// FUN_001021c0
+void* H_Cdvd_CacheFindFile(const char* path, u32* fileSize)
+{
+    char uppercasePath[256];
+    char normalizedPath[256];
+    char cacheNormalizedPath[256];
+    s32 i;
+
+    if (path == (char*)1)
+    {
+        return NULL;
+    }
+
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    H_Cdvd_NormalizePath(uppercasePath, normalizedPath);
+
+    for (i = 0; i < 256; i++)
+    {
+        if (sCdvdCache[i].isValid)
+        {
+            H_Cdvd_NormalizePath(sCdvdCache[i].path, cacheNormalizedPath);
+
+            if (strcmp(cacheNormalizedPath, normalizedPath) == 0)
+            {
+                *fileSize = sCdvdCache[i].fileSize;
+                return sCdvdCache[i].fileMemory;
+            }
+        }
+    }
+
+    return NULL;
 }
 
 // FUN_001023a0. Synchronous read
