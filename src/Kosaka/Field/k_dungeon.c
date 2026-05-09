@@ -159,11 +159,11 @@ HCdvd* K_FldDungeon_RequestScript()
     {
         if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
         {
-            cdvd = H_Cdvd_Request("field/script/dungeonat.bf", H_CDVD_FILENORMAL);
+            cdvd = H_Cdvd_Request("field/script/dungeonat.bf", HCDVD_FILENORMAL);
         }
         else
         {
-            cdvd = H_Cdvd_Request("field/script/dungeonat_aegis.bf", H_CDVD_FILENORMAL);
+            cdvd = H_Cdvd_Request("field/script/dungeonat_aegis.bf", HCDVD_FILENORMAL);
         }
     }
 
@@ -232,7 +232,7 @@ HCdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
         sprintf(buffer, "field/script/dungeonat%02d_aegis.bf", blockId);
     }
 
-    return H_Cdvd_Request(buffer, H_CDVD_FILENORMAL);
+    return H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
 }
 
 // FUN_001c03f0

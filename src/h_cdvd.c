@@ -1,8 +1,12 @@
 #include "h_cdvd.h"
+#include "h_dbprt.h"
+#include "rw/rwplcore.h"
 #include "temporary.h"
 
 static HCdvd sCdvdListHead;        // 007e0380. Dummy head
 static HCdvdCache sCdvdCache[256]; // 007d6f80
+
+void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst);
 
 // FUN_001007f0
 void H_Cdvd_001007f0()
@@ -19,9 +23,52 @@ void H_Cdvd_Read()
 // FUN_00100d80
 HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 {
-    // TODO
+    HCdvd* curr;
+    HCdvd* cdvd;
+    char uppercasePath[256];
 
-    return NULL;
+    H_Dbprt_FmtLog("REQ CDVD %s", path);
+
+    curr = sCdvdListHead.next;
+
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+
+    if (sCdvdListHead.next != NULL)
+    {
+        while (true)
+        {
+            if (strcmp(uppercasePath, curr->path) == 0)
+            {
+                curr->refCount++;
+                return curr;
+            }
+
+            if (curr->next != NULL)
+            {
+                curr = curr->next;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    cdvd = RwCalloc(1, sizeof(HCdvd), rwMEMHINTDUR_GLOBAL);
+
+    H_Cdvd_BuildPathUppercase(path, cdvd->path);
+    H_Cdvd_BuildVolumePaths(cdvd->path, cdvd->fileName, cdvd->dir);
+
+    cdvd->readState = 0;
+    curr->next = cdvd;
+    cdvd->next = NULL;
+    cdvd->fileMemory = NULL;
+    cdvd->unk_08 = 0;
+    cdvd->fileMode = fileMode;
+    cdvd->refCount = 1;
+    cdvd->adxf = NULL;
+
+    return cdvd;
 }
 
 // FUN_00100ec0
@@ -49,7 +96,7 @@ void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 
     dstPtr = dst + basePathLen;
     i = 0;
-    while (i < MAX_PATH_SIZE)
+    while (i < 256)
     {
         currChar = src[i];
         if (currChar == '\0')
@@ -73,6 +120,12 @@ void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 
         i++;
     }
+}
+
+// FUN_00101240
+void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst)
+{
+    // TODO
 }
 
 // FUN_001013f0

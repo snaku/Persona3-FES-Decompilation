@@ -12,7 +12,7 @@ void K_FldRc_RequestFldArchive(s16 majorId, s16 minorId)
     if (sFldArchiveCdvd == NULL)
     {
         sprintf(buffer, "field/pack/f%03d_%03d.pac", majorId, minorId);
-        sFldArchiveCdvd = H_Cdvd_Request(buffer, H_CDVD_FILEARCHIVE);
+        sFldArchiveCdvd = H_Cdvd_Request(buffer, HCDVD_FILEARCHIVE);
     }
 }
 

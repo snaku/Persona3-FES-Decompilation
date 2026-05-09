@@ -411,7 +411,7 @@ void mdlStreamRequestCdvd(Model* mdl, const char* path)
     MdlStream* stream;
     stream = mdl->stream;
 
-    stream->cdvd = H_Cdvd_Request(path, H_CDVD_FILENORMAL);
+    stream->cdvd = H_Cdvd_Request(path, HCDVD_FILENORMAL);
     stream->rws = NULL;
 }
 

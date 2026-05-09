@@ -1,7 +1,7 @@
 #include "temporary.h"
 
 // FUN_00521250
-void* memcpy(void* dst, void* src, u32 size)
+void* memcpy(void* dst, const void* src, u32 size)
 {
     // TODO
 
@@ -48,7 +48,7 @@ int strcmp(const char* str1, const char* str2)
 }
 
 // FUN_00524270
-char* strcpy(char* dst, const char* src)
+char* strcpy(const char* dst, char* src)
 {
     // TODO
 

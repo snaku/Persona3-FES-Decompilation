@@ -6,14 +6,14 @@
 
 typedef enum
 {
-    HFADE_UNK0,
-    HFADE_TIME,   // on time change
-    HFADE_AREA,   // On area change
-    HFADE_UNK3,
-    HFADE_UNK4,
-    HFADE_UNK5,   // Exactly the same as UNK3
-    HFADE_WHITE,  // idk it's just a white fade
-    HFADE_DAY,    // On day change
+    HFADE_ANMLR,
+    HFADE_ANMTIME,
+    HFADE_ANMAREA,
+    HFADE_TRANSITION,
+    HFADE_ANMMOVE,
+    HFADE_TRANSITION2,
+    HFADE_WHITE,
+    HFADE_DAY,
     HFADE_CUSTOM, // Custom color
 
     HFADE_MAX

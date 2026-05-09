@@ -50,7 +50,7 @@ void adminiChangeSeq(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable
     ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08, ADMINI_FLAG_CHANGING_SEQ);
     ADMINI_SET_RESET_FLAGS(admini, ADMINI_FLAG_UNK08 | ADMINI_FLAG_RESTORE_PREV, ADMINI_FLAG_CHANGING_SEQ);
 
-    admini->seqIdToSet = seqId;
+    admini->nextSeqId = seqId;
     admini->seqChangeDelay = 1;
 
     if (admini->seqData != NULL)
@@ -114,7 +114,7 @@ s8 adminiGetNowSeqId()
 }
 
 // FUN_0027c330
-s8 adminiGetSeqIdToSet()
+s8 adminiGetNextSeqId()
 {
     KwlnTask* adminiTask;
     AdminiWork* admini;
@@ -125,7 +125,7 @@ s8 adminiGetSeqIdToSet()
     admini = (AdminiWork*)kwlnTaskGetWorkData(adminiTask);
     K_ASSERT(admini != NULL, 48);
 
-    return admini->seqIdToSet;
+    return admini->nextSeqId;
 }
 
 // FUN_0027c3b0
@@ -138,7 +138,7 @@ void* adminiUpdateTask_Call(KwlnTask* adminiTask)
     K_ASSERT(admini != NULL, 217);
 
     if (!(admini->flags & ADMINI_FLAG_CHANGING_SEQ) ||
-         (admini->seqIdToSet < ADMINI_SEQ_NULL))
+         (admini->nextSeqId < ADMINI_SEQ_NULL))
     {
         return adminiUpdateTask_Check;
     }
@@ -146,8 +146,8 @@ void* adminiUpdateTask_Call(KwlnTask* adminiTask)
     if (admini->seqChangeDelay == 0)
     {
         admini->timer = 0;
-        admini->nowSeqId = admini->seqIdToSet;
-        admini->seqIdToSet = ADMINI_SEQ_INVALID;
+        admini->nowSeqId = admini->nextSeqId;
+        admini->nextSeqId = ADMINI_SEQ_INVALID;
 
         ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_SEQ);
         ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_CHANGING_SEQ | ADMINI_FLAG_PASSED_CHECK);
@@ -252,7 +252,7 @@ void* adminiUpdateTask_Check(KwlnTask* adminiTask)
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_SEQ);
             ADMINI_SET_FLAGS(admini, ADMINI_FLAG_CHANGING_SEQ | ADMINI_FLAG_RESTORE_PREV);
 
-            admini->seqIdToSet = admini->oldSeqIds[admini->oldSeqIdx];
+            admini->nextSeqId = admini->oldSeqIds[admini->oldSeqIdx];
             admini->seqChangeDelay = 1;
 
             ADMINI_RESET_FLAGS(admini, ADMINI_FLAG_RESTORABLE);
@@ -274,7 +274,7 @@ void* adminiUpdateTask_Check(KwlnTask* adminiTask)
     }
 
     if (!(admini->flags & ADMINI_FLAG_CHANGING_SEQ) ||
-         (admini->seqIdToSet < ADMINI_SEQ_NULL))
+         (admini->nextSeqId < ADMINI_SEQ_NULL))
     {
         return KWLNTASK_CONTINUE;
     }
@@ -321,7 +321,7 @@ KwlnTask* adminiCreateTask()
     admini->flags = 0;
     admini->timer = 0;
     admini->nowSeqId = ADMINI_SEQ_INVALID;
-    admini->seqIdToSet = ADMINI_SEQ_INVALID;
+    admini->nextSeqId = ADMINI_SEQ_INVALID;
     admini->oldSeqIdx = 0;
     for (i = 0; i < ADMINI_SEQ_MAX; i++)
     {

@@ -19,8 +19,8 @@ static u32 sFadeActive;           // 007cded4
 
 static HCdvd* cdvds[8]; // 007e39d0
 
+static void H_Fade_Anim();
 static void H_Fade_Transition();
-static void H_Fade_001075b0();
 static void H_Fade_White();
 static void H_Fade_Day();
 static void H_Fade_Custom();
@@ -30,7 +30,7 @@ void H_Fade_ReadPak()
 {
     HCdvd* cdvd;
 
-    cdvd = H_Cdvd_Request("camp/fade_pak.pak", H_CDVD_FILEARCHIVE);
+    cdvd = H_Cdvd_Request("camp/fade_pak.pak", HCDVD_FILEARCHIVE);
     cdvds[0] = cdvd;
     H_Cdvd_ReadSync(cdvd);
 }
@@ -50,13 +50,13 @@ void H_Fade_Main()
     {
         switch (sFadeType)
         {
-            case HFADE_UNK0: // fallthrough
-            case HFADE_TIME: // fallthrough
-            case HFADE_AREA: // fallthrough
-            case HFADE_UNK4: H_Fade_Transition(); break;
+            case HFADE_ANMLR:   // fallthrough
+            case HFADE_ANMTIME: // fallthrough
+            case HFADE_ANMAREA: // fallthrough
+            case HFADE_ANMMOVE: H_Fade_Anim(); break;
 
-            case HFADE_UNK3: H_Fade_001075b0(); break;
-            case HFADE_UNK5: H_Fade_001075b0(); break;
+            case HFADE_TRANSITION:  H_Fade_Transition(); break;
+            case HFADE_TRANSITION2: H_Fade_Transition(); break;
 
             case HFADE_WHITE:  H_Fade_White();  break;
             case HFADE_DAY:    H_Fade_Day();    break;
@@ -81,13 +81,13 @@ void H_Fade_Clear()
 }
 
 // FUN_001071f0
-static void H_Fade_Transition()
+static void H_Fade_Anim()
 {
     // TODO
 }
 
 // FUN_001075b0
-static void H_Fade_001075b0()
+static void H_Fade_Transition()
 {
     // TODO
 }
@@ -196,7 +196,7 @@ u32 H_Fade_FadeOut()
         sFadeRed = 0;
         sFadeBlue = 0;
         sFadeGreen = 0;
-        sFadeType = HFADE_UNK0;
+        sFadeType = HFADE_ANMLR;
     }
     else
     {

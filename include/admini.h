@@ -37,7 +37,7 @@ typedef struct AdminiWork
     u32 flags;                      // 0x00
     u32 timer;                      // 0x04. Increments every frame while 'seq' doesn't change
     s8 nowSeqId;                    // 0x08. Current sequence id. See enum 'AdminiSeqId'
-    s8 seqIdToSet;                  // 0x09. See enum 'AdminiSeqId'
+    s8 nextSeqId;                   // 0x09. See enum 'AdminiSeqId'
     u8 oldSeqIdx;                   // 0x0a. Idx to access 'oldSeqIds' and 'oldSeqFlags'
     u8 unk_0b;                      // 0x0b
     s8 oldSeqIds[ADMINI_SEQ_MAX];   // 0x0c. History of sequence ids
@@ -52,7 +52,7 @@ typedef struct AdminiWork
 void adminiChangeSeq(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable);
 void adminiForcePassedCheck();
 s8 adminiGetNowSeqId();
-s8 adminiGetSeqIdToSet();
+s8 adminiGetNextSeqId();
 KwlnTask* adminiCreateTask();
 
 #endif
