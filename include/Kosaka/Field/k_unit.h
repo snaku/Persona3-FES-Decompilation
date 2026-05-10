@@ -10,20 +10,30 @@
 typedef struct Model Model;
 typedef struct ResrcModelParty ResrcModelParty;
 
+// 8 bytes
+typedef struct FldUnitMdl
+{
+    u16 type;   // 0x00
+    u16 id;     // 0x02
+    Model* mdl; // 0x04
+} FldUnitMdl;
+
 // 448 bytes
 typedef struct FldUnit
 {
     RwMatrix matBeforeBtl;  // 0x00. Saved matrix before entering a battle
     u8 unkData1[0x08];
     void* unk_48;           // 0x48
-    s32 unk_4c;             // 0x4c
-    Model* mdl;             // 0x50
+    FldUnitMdl unitMdl;     // 0x4c
     ResrcModelParty* resrc; // 0x54
     u8 unkData2[0x150];
     u16 charId;             // 0x1a8
     u8 unkData3[0x16];
 } FldUnit;
 
+extern FldUnitMdl gFldUnitsMdl[FLDUNIT_MAX];
 extern FldUnit gFldUnits[FLDUNIT_MAX];
+
+void K_FldUnit_DestroyMdl(s32 unitId);
 
 #endif

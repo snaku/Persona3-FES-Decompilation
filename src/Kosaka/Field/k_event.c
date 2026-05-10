@@ -29,8 +29,8 @@ u32 K_FldEvent_AreUnitsWithinDist(const FldUnit* fldUnitA, const FldUnit* fldUni
     withinDist = false;
     if (fldUnitA->unk_48 != NULL && fldUnitB->unk_48 != NULL)
     {
-        withinDist = K_FldEvent_ArePosWithinDist(&mdlGetMatrix(fldUnitA->mdl)->pos,
-                                                 &mdlGetMatrix(fldUnitB->mdl)->pos,
+        withinDist = K_FldEvent_ArePosWithinDist(&mdlGetMatrix(fldUnitA->unitMdl.mdl)->pos,
+                                                 &mdlGetMatrix(fldUnitB->unitMdl.mdl)->pos,
                                                  maxDist);
     }
 
@@ -71,18 +71,18 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
     interactableNpc = NULL;
     while (npc != NULL)
     {
-        isWithinFov = K_FldEvent_IsPosWithinFov(mdlGetMatrix(gFldUnits[FLDUNIT_HERO].mdl),
+        isWithinFov = K_FldEvent_IsPosWithinFov(mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl),
                                                 &mdlGetMatrix(npc->mdl)->pos,
                                                 120.0f);
         if (isWithinFov == true)
         {
-            distDiff.x = mdlGetMatrix(npc->mdl)->pos.x - mdlGetMatrix(gFldUnits[FLDUNIT_HERO].mdl)->pos.x;
-            distDiff.y = mdlGetMatrix(npc->mdl)->pos.y - mdlGetMatrix(gFldUnits[FLDUNIT_HERO].mdl)->pos.y;
-            distDiff.z = mdlGetMatrix(npc->mdl)->pos.z - mdlGetMatrix(gFldUnits[FLDUNIT_HERO].mdl)->pos.z;
+            distDiff.x = mdlGetMatrix(npc->mdl)->pos.x - mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl)->pos.x;
+            distDiff.y = mdlGetMatrix(npc->mdl)->pos.y - mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl)->pos.y;
+            distDiff.z = mdlGetMatrix(npc->mdl)->pos.z - mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl)->pos.z;
 
             if (RwV3dLength(&distDiff) < 200.0f)
             {
-                lookAtPos = mdlGetMatrix(gFldUnits[FLDUNIT_HERO].mdl)->pos;
+                lookAtPos = mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl)->pos;
                 lookAtPos.y += 140.0f;
 
                 mdlLookAtSetTargetPosXYZ(npc->mdl, &lookAtPos);
