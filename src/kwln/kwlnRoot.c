@@ -9,13 +9,8 @@ KwlnTask* kwlnRootCreate2DDrawBeginTask();
 KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask();
 KwlnTask* kwlnRootCreate2DDrawEndTask();
 KwlnTask* kwlnRootCreate3DOn2DZClearTask();
+KwlnTask* kwlnRootCreate3DOn2DDrawBeginTask();
 KwlnTask* kwlnRootCreate3DOn2DDrawEndTask();
-
-// FUN_00198610
-void kwlnRootFUN_00198610(u32 flags, u8 enabled)
-{
-    // TODO
-}
 
 // FUN_00198650
 void* kwlnRootUpdateTask(KwlnTask* rootTask)
@@ -95,10 +90,27 @@ KwlnTask* kwlnRootCreate2DDrawEndTask()
 // FUN_00198c10
 void* kwlnRootUpdate3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
 {
-    RwCamera* camera = kwlnGetMainCamera();
-    RwRGBA* clearColor = kwlnGetClearColor();
+    RwCameraClear(kwlnGetMainCamera(), kwlnGetClearColor(), rwCAMERACLEARZ);
 
-    RwCameraClear(camera, clearColor, rwCAMERACLEARZ);
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00198c60
+void* kwlnRootUpdate3DOn2DDrawBeginTask()
+{
+    if (kwlnCameraBeginUpdate() != NULL)
+    {
+        kwlnSetFlags(KWLN_FLAG_ERR | KWLN_FLAG_3DDRAW, false);
+        kwlnSetFlags(KWLN_FLAG_3DDRAW, true);
+
+        RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
+        RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
+    }
+    else
+    {
+        K_Assert("kwlnRoot.c", 719);
+        kwlnSetFlags(KWLN_FLAG_ERR, true);
+    }
 
     return KWLNTASK_CONTINUE;
 }
@@ -106,7 +118,7 @@ void* kwlnRootUpdate3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
 // FUN_00198d20
 void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 {
-    if (gFogEnabled)
+    if (gFogEnabled == true)
     {
         RwRenderStateSet(rwRENDERSTATEFOGENABLE, true);
         RwRenderStateSet(rwRENDERSTATEFOGCOLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
@@ -122,6 +134,12 @@ void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 KwlnTask* kwlnRootCreate3DOn2DZClearTask()
 {
     return kwlnTaskInit("3D on 2D Zclear", 5243, kwlnRootUpdate3DOn2DZClearTask, NULL, NULL);
+}
+
+// FUN_00198e10
+KwlnTask* kwlnRootCreate3DOn2DDrawBeginTask()
+{
+    return kwlnTaskInit("3D on 2D Draw Begin", 5245, kwlnRootUpdate3DOn2DDrawBeginTask, NULL, NULL);
 }
 
 // FUN_00198e50

@@ -11,16 +11,6 @@ typedef struct KwlnTask KwlnTask;
 #define KWLN_FLAG_3DDRAW (1 << 1)  // 0x02
 #define KWLN_FLAG_ERR    (1 << 30) // 0x40000000
 
-#define KWLN_ASSERT(condition, line)          \
-    do                                        \
-    {                                         \
-        if (!(condition))                     \
-        {                                     \
-            K_Assert(__FILE__, (line));       \
-            kwlnSetFlags(KWLN_FLAG_ERR, true); \
-        }                                     \
-    } while (0)
-
 #define DEG_TO_RAD(deg) (gPI * (deg) / 180.0f)
 #define RAD_TO_DEG(rad) (gRadToDegFactor * (rad))
 
