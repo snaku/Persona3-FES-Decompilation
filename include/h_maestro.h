@@ -40,5 +40,11 @@ typedef struct HMaestro
 } HMaestro;
 
 KwlnTask* H_Maestro_CreateTask(KwlnTask* parent, u32 priority, const char* path);
+void H_Maestro_SetAlphaMult(KwlnTask* hmaestroTask, f32 alphaMult);
+u32 H_Maestro_00111cb0(KwlnTask* hmaestroTask);
+u32 H_Maestro_FinishedInit(KwlnTask* hmaestroTask);
+void H_Maestro_RequestDraw(KwlnTask* hmaestroTask);
+void H_Maestro_SetShouldLoop(KwlnTask* hmaestroTask, u32 shouldLoop);
+void H_Maestro_00111f20(KwlnTask* hmaestroTask, u32 param_2);
 
 #endif
