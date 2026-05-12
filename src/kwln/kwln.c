@@ -6,6 +6,8 @@
 #include "sce/eekernel.h"
 #include "sce/eeregs.h"
 
+#define KWLN_COMMON_RENDERSTATES (rwRENDERSTATEFOGDENSITY + 1)
+
 static RwRGBA sClearColor;         // 007ce128
 static u32 sFlags;                 // 007ce120
 static u32 sFrameCount2;           // 007ce10c
@@ -29,15 +31,28 @@ static RpWorld* sWorlds[2];        // 007ce0a0. Only the first index is used
 static u64 sT0Count64;             // 007ce098
 
 // a lot of them are probably temporary here
-const f32 g18deg = gPI / 10;              // 007caf00
-const f32 gRadToDegFactor = 180.0f / gPI; // 007caea8
-const f32 gPI = 3.14159274;               // 007cae58
-const f32 gAspectRatio = 4.0f / 3.0f;     // 007cad1c
+const f32 g18deg = 3.14159274 / 10;              // 007caf00
+const f32 gRadToDegFactor = 180.0f / 3.14159274; // 007caea8
+const f32 gPI = 3.14159274;                      // 007cae58
+const f32 gAspectRatio = 4.0f / 3.0f;            // 007cad1c
+
+u32 sPushedRenderStates[KWLN_COMMON_RENDERSTATES];
 
 // FUN_00195de0
 void kwlnInitGameData()
 {
     // TODO
+}
+
+// FUN_00196770
+void kwlnPushCommonRenderStates()
+{
+    s32 i;
+
+    for (i = 0; i < KWLN_COMMON_RENDERSTATES; i++)
+    {
+        RwRenderStateGet(i, &sPushedRenderStates[i]);
+    }
 }
 
 // FUN_00196fe0
@@ -146,7 +161,7 @@ void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a)
 }
 
 // FUN_00198600
-void kwlnGetFlags()
+u32 kwlnGetFlags()
 {
     return sFlags;
 }

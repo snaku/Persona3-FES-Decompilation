@@ -30,13 +30,14 @@ extern const f32 gAspectRatio;
 
 void kwlnMain();
 
+void kwlnPushCommonRenderStates();
 RpWorld* kwlnGetWorld(u32 worldIdx);
 RpLight* kwlnGetAmbientLight();
 RpLight* kwlnGetDirectionalLight();
 RwCamera* kwlnGetMainCamera();
 RwRGBA* kwlnGetClearColor();
 void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a);
-void kwlnGetFlags();
+u32 kwlnGetFlags();
 void kwlnSetFlags(u32 flag, u32 enabled);
 
 inline RwCamera* kwlnCameraBeginUpdate()
