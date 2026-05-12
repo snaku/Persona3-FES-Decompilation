@@ -21,7 +21,23 @@ void H_Maestro_SetAlphaMult(KwlnTask* hmaestroTask, f32 alphaMult)
 // FUN_00111d60
 void H_Maestro_DestroyTask(KwlnTask* hmaestroTask)
 {
-    // TODO
+    HMaestro* work;
+
+    work = (HMaestro*)hmaestroTask->workData;
+
+    if (work->cdvd != NULL)
+    {
+        H_Cdvd_Destroy(work->cdvd);
+        work->cdvd = NULL;
+    }
+
+    if (work->maestro != NULL)
+    {
+        Rt2dMaestroDestroy(work->maestro);
+        work->maestro = NULL;
+    }
+
+    RwFree(work);
 }
 
 // FUN_00111dd0
