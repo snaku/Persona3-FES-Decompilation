@@ -22,10 +22,12 @@ typedef enum
 typedef enum
 {
     HFADE_STATE_INIT_OUT,
-    HFADE_STATE_OUT = 2,
+    HFADE_STATE_MAESTROOUT,
+    HFADE_STATE_OUT,
     HFADE_STATE_HOLD,
     HFADE_STATE_INIT_IN,
-    HFADE_STATE_IN = 5,
+    HFADE_STATE_IN,
+    HFADE_STATE_MAESTROIN = 7
 } HFadeState;
 
 void H_Fade_ReadPak();

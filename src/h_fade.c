@@ -3,6 +3,7 @@
 #include "kwln/kwln.h"
 #include "g_data.h"
 #include "h_cdvd.h"
+#include "h_maestro.h"
 
 static s16 sFadeType;             // 007cdf08
 static s16 sFadeCounter;          // 007cdf04
@@ -83,7 +84,133 @@ void H_Fade_Clear()
 // FUN_001071f0
 static void H_Fade_Anim()
 {
-    // TODO
+    // TODO: fix stack frame size (the problem is caused by RwRenderStateSet)
+
+    RwIm2DVertex vertices[4];
+    f32 recipZ;
+    f32 z;
+    s32 i;
+
+    switch (sFadeState)
+    {
+        case HFADE_STATE_INIT_OUT:
+            switch (sFadeType)
+            {
+                case HFADE_ANMLR:
+                    sMaestroOutTask = H_Maestro_CreateTask(NULL, 6325, "camp/fade/if_lr_0a.anm");
+                    break;
+                case HFADE_ANMTIME:
+                    sMaestroOutTask = H_Maestro_CreateTask(NULL, 6325, "camp/fade/if_time_1a.anm");
+                    break;
+                case HFADE_ANMAREA:
+                    sMaestroOutTask = H_Maestro_CreateTask(NULL, 6325, "camp/fade/if_area_2a.anm");
+                    break;
+                case HFADE_ANMMOVE:
+                    sMaestroOutTask = H_Maestro_CreateTask(NULL, 6325, "camp/fade/if_move_4a.anm");
+                    break;
+            }
+
+            H_Maestro_00111f20(sMaestroOutTask, true);
+            sFadeState = HFADE_STATE_MAESTROOUT;
+            // fallthrough
+
+        case HFADE_STATE_MAESTROOUT:
+            if (H_Maestro_FinishedInit(sMaestroOutTask))
+            {
+                H_Maestro_RequestDraw(sMaestroOutTask);
+                sFadeState = HFADE_STATE_OUT;
+            }
+            return;
+
+        case HFADE_STATE_OUT:
+            if (H_Maestro_00111cb0(sMaestroOutTask))
+            {
+                sFadeState = HFADE_STATE_HOLD;
+
+                if (sMaestroOutTask != NULL)
+                {
+                    kwlnTaskDestroyWithHierarchy(sMaestroOutTask);
+                    sMaestroOutTask = NULL;
+                }
+            }
+            return;
+
+        case HFADE_STATE_HOLD: break;
+        
+        case HFADE_STATE_INIT_IN: 
+            switch (sFadeType)
+            {
+                case HFADE_ANMLR:
+                    sMaestroInTask = H_Maestro_CreateTask(NULL, 6325, "camp/fade/if_lr_0b.anm");
+                    break;
+                case HFADE_ANMTIME:
+                    sMaestroInTask = H_Maestro_CreateTask(NULL, 6325, "camp/fade/if_time_1b.anm");
+                    break;
+                case HFADE_ANMAREA:
+                    sMaestroInTask = H_Maestro_CreateTask(NULL, 6325, "camp/fade/if_area_2b.anm");
+                    break;
+                case HFADE_ANMMOVE:
+                    sMaestroInTask = H_Maestro_CreateTask(NULL, 6325, "camp/fade/if_move_4b.anm");
+                    break;
+            }
+            H_Maestro_SetShouldLoop(sMaestroInTask, false);
+            sFadeState = HFADE_STATE_MAESTROIN;
+            break;
+
+        case HFADE_STATE_IN:
+            if (kwlnTaskGetState(sMaestroInTask) == KWLNTASK_STATE_DESTROY)
+            {
+                sFadeActive = false;
+                sMaestroInTask = NULL;
+            }
+            return;
+
+        case HFADE_STATE_MAESTROIN:
+            if (H_Maestro_FinishedInit(sMaestroInTask))
+            {
+                H_Maestro_RequestDraw(sMaestroInTask);
+
+                if (sMaestroOutTask != NULL)
+                {
+                    kwlnTaskDestroyWithHierarchy(sMaestroOutTask);
+                    sMaestroOutTask = NULL;
+                }
+            }
+            sFadeState = HFADE_STATE_IN;
+            break;
+
+        default: return;
+    }
+
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    i = 0;
+    z = RwIm2DGetNearScreenZ() - 100.0f;
+    for(; i < 4; i++)
+    {
+        vertices[i].u.els.scrVertex.z = z;
+        vertices[i].u.els.recipZ = recipZ;
+
+        // TODO: load these values before the loop
+        vertices[i].u.els.color.r = 15.0f;
+        vertices[i].u.els.color.g = 31.0f;
+        vertices[i].u.els.color.b = 40.0f;
+        vertices[i].u.els.color.a = 255.0f;
+    }
+
+    vertices[0].u.els.scrVertex.x = 0.0f;
+    vertices[0].u.els.scrVertex.y = 0.0f;
+
+    vertices[1].u.els.scrVertex.x = 640.0f;
+    vertices[1].u.els.scrVertex.y = 0.0f;
+
+    vertices[2].u.els.scrVertex.x = 0.0f;
+    vertices[2].u.els.scrVertex.y = 448.0f;
+
+    vertices[3].u.els.scrVertex.x = 640.0f;
+    vertices[3].u.els.scrVertex.y = 448.0f;
+
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
 // FUN_001075b0
