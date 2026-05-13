@@ -51,7 +51,10 @@ typedef struct HCdvdCache
     u32 unk_110;      // 0x90
 } HCdvdCache;
 
+void H_Cdvd_001007f0();
+void H_Cdvd_Init();
 void H_Cdvd_Read();
+
 HCdvd* H_Cdvd_Request(const char* path, u32 fileMode);
 u8 H_Cdvd_Destroy(HCdvd* cdvd);
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst);

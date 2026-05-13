@@ -1,10 +1,13 @@
 #include "h_cdvd.h"
 #include "h_dbprt.h"
+#include "sce/libcdvd.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
 
-static HCdvd sCdvdListHead;        // 007e0380. Dummy head
-static HCdvdCache sCdvdCache[256]; // 007d6f80
+#define HCDVD_CACHE_MAX 256
+
+static HCdvd sCdvdListHead;                    // 007e0380. Dummy head
+static HCdvdCache sCdvdCache[HCDVD_CACHE_MAX]; // 007d6f80
 
 void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst);
 
@@ -12,6 +15,32 @@ void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst);
 void H_Cdvd_001007f0()
 {
     // stub
+}
+
+// FUN_00100800
+void H_Cdvd_Init()
+{
+    s32 i;
+    HCdvdCache* cache;
+
+    sceCdInit(SCECdINIT);
+    sceCdMmode(SCECdDVD);
+    sceCdDiskReady(0);
+
+    sCdvdListHead.prev = NULL;
+    sCdvdListHead.next = NULL;
+    sCdvdListHead.fileMemory = NULL;
+    sCdvdListHead.fileSize = 0;
+    sCdvdListHead.unk_08 = 0;
+
+    i = 0;
+    cache = sCdvdCache;
+    for (; i < HCDVD_CACHE_MAX; i++)
+    {
+        cache[i].isValid = false;
+    }
+
+    sCdvdListHead.adxf = NULL;
 }
 
 // FUN_00100980. Asynchronous read
@@ -29,7 +58,7 @@ HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 
     H_Dbprt_FmtLog("REQ CDVD %s", path);
 
-    curr = sCdvdListHead.next;
+    curr = sCdvdListHead.next; // TODO: lui s0, %hi(...) instead of lui v0, %hi(...)
 
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
 
@@ -91,7 +120,7 @@ void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
     char currChar;
 
     pathBase = "VOL:\\";
-    strcpy(src, pathBase);
+    strcpy(pathBase, dst);
     basePathLen = strlen(pathBase);
 
     dstPtr = dst + basePathLen;
@@ -183,7 +212,7 @@ void* H_Cdvd_CacheFindFile(const char* path, u32* fileSize)
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
     H_Cdvd_NormalizePath(uppercasePath, normalizedPath);
 
-    for (i = 0; i < 256; i++)
+    for (i = 0; i < HCDVD_CACHE_MAX; i++)
     {
         if (sCdvdCache[i].isValid)
         {
@@ -225,7 +254,7 @@ void H_Cdvd_CacheAdd(HCdvd* cdvd, void* fileMemory, u32 fileSize, const char* pa
 
     i = 0;
     cache = sCdvdCache; // regswap (t2 instead of t1)
-    for (; i < 256; i++)
+    for (; i < HCDVD_CACHE_MAX; i++)
     {
         curr = &cache[i];
 
@@ -252,7 +281,7 @@ void H_Cdvd_CacheRemove(HCdvd* cdvd)
 
     i = 0;
     cache = sCdvdCache;
-    for (; i < 256; i++)
+    for (; i < HCDVD_CACHE_MAX; i++)
     {
         curr = &cache[i];
 

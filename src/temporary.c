@@ -48,7 +48,7 @@ int strcmp(const char* str1, const char* str2)
 }
 
 // FUN_00524270
-char* strcpy(const char* dst, char* src)
+char* strcpy(char* dst, const char* src)
 {
     // TODO
 

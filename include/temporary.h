@@ -19,7 +19,7 @@ int printf(const char* fmt, ...);
 int sprintf(char* buffer, const char* fmt, ...);
 char* strcat(char*, char*);
 int strcmp(const char* str1, const char* str2);
-char* strcpy(const char* dst, char* src);
+char* strcpy(char* dst, const char* src);
 size_t strlen(const char* str);
 
 float atanf(float x);
