@@ -28,7 +28,7 @@ int printf(const char* fmt, ...)
 }
 
 // FUN_00523ac8
-void sprintf(char* buffer, const char* fmt, ...)
+int sprintf(char* buffer, const char* fmt, ...)
 {
     // TODO
 }
