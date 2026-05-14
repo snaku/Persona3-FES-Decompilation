@@ -5,8 +5,20 @@
 #include "rw/rprandom.h"
 #include "sce/eekernel.h"
 #include "sce/eeregs.h"
+#include "sce/sifdev.h"
+#include "sce/sifrpc.h"
+#include "sce/libcdvd.h"
+#include "h_pad.h"
+#include "h_memcard.h"
+#include "temporary.h"
 
 #define KWLN_COMMON_RENDERSTATES (rwRENDERSTATEFOGDENSITY + 1)
+
+#define LOAD_IOP_MODULE(fileName, args, argp)                   \
+    do                                                          \
+    {                                                           \
+    } while (sceSifLoadModule((fileName), (args), (argp)) < 0); \
+    
 
 static RwRGBA sClearColor;         // 007ce128
 static u32 sFlags;                 // 007ce120
@@ -36,7 +48,7 @@ const f32 gRadToDegFactor = 180.0f / 3.14159274; // 007caea8
 const f32 gPI = 3.14159274;                      // 007cae58
 const f32 gAspectRatio = 4.0f / 3.0f;            // 007cad1c
 
-u32 sPushedRenderStates[KWLN_COMMON_RENDERSTATES];
+u32 sPushedRenderStates[KWLN_COMMON_RENDERSTATES]; // 00847eb0
 
 // FUN_00195de0
 void kwlnInitGameData()
@@ -72,9 +84,60 @@ s32 kwlnT0OverflowHandler(s32 intc)
 }
 
 // FUN_00197030. HPad, memcard and IOP module init
-void kwlnInitEE()
+void kwlnInitPS2Systems()
 {
-    // TODO
+    char img[64];
+
+    sceSifInitRpc(0);
+    sceSifInitIopHeap();
+
+    sceCdInit(SCECdINIT);
+    sceCdMmode(SCECdDVD);
+
+    sprintf(img, "cdrom0:\\LIB31\\%s;1", IOP_IMAGE_FILE);
+    while (sceSifRebootIop(img) ? 0 : 1);
+    while (sceSifSyncIop() ? 0 : 1);
+    sceSifInitRpc(0);
+    sceSifInitIopHeap();
+
+    sceCdInit(SCECdINIT);
+    sceCdMmode(SCECdDVD);
+
+    AddIntcHandler(INTC_TIM0, kwlnT0OverflowHandler, 0);
+
+    sT0Count64 = 0;
+
+    DPUT_T0_COUNT(0);
+    DPUT_T0_COMP(0);
+    DPUT_T0_HOLD(0);
+    DPUT_T0_MODE((1 << T_MODE_CLKS_O) | (1 << T_MODE_CUE_O) | (1 << T_MODE_OVFE_O)); //001a0420
+    DPUT_T1_COUNT(0);
+
+    EnableIntc(INTC_TIM0);
+
+    sFrameCount = 0;
+    sFrameCount2 = 0;
+
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\SIO2MAN.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\SIO2D.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\PADMAN.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\DBCMAN.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\MC2_S1.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\LIBSD.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\CRI_ADXI.IRX;1", 20, "sdinit=0 spucore=1");
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\SDRDRV.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\MODHSYN.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\MODMSIN.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\MODSESQ.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\SKSOUND.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\SKHSYNTH.IRX;1", 0, NULL);
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\SKHSYNTH.IRX;1", 0, NULL); // ?
+    LOAD_IOP_MODULE("cdrom0:\\LIB31\\SKSESQ.IRX;1", 24, "maxtrack=16\0maxentry=16");
+
+    H_Pad_Init();
+    H_Memcard_Init();
+
+    sMainThreadId = GetThreadId();
 }
 
 // FUN_00197350. Renderware init (engine, camera, lights etc...)
@@ -100,7 +163,7 @@ u8 kwlnUpdate()
 // FUN_001984c0. Initialize everything + main loop
 void kwlnMain()
 {
-    kwlnInitEE();
+    kwlnInitPS2Systems();
     kwlnInitRenderer();
     kwln00198010();
 

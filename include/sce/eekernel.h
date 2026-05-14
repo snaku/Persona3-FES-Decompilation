@@ -19,4 +19,8 @@
 #define INTC_TIM0  	  9
 #define INTC_TIM1  	  10
 
+int GetThreadId();
+int EnableIntc(int);
+int AddIntcHandler(int, int (*)(int), int);
+
 #endif
