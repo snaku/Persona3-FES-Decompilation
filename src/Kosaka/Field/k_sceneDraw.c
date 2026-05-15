@@ -1,9 +1,12 @@
 #include "Kosaka/Field/k_sceneDraw.h"
 #include "Kosaka/Field/k_shadow.h"
 #include "kwln/kwlnTask.h"
+#include "Scene/mt_scene.h"
+#include "Scene/resrcManager.h"
+#include "rw/rwplcore.h"
 
 // FUN_0019d410. 'draw opac field'
-void* K_FldSceneDraw_UpdateDrwOpcFldTask(KwlnTask* drwOpcFld)
+void* K_SceneDraw_UpdateDrwOpcFldTask(KwlnTask* drwOpcFld)
 {
     // TODO
     
@@ -11,7 +14,7 @@ void* K_FldSceneDraw_UpdateDrwOpcFldTask(KwlnTask* drwOpcFld)
 }
 
 // FUN_0019d4a0. 'draw trans field'
-void* K_FldSceneDraw_UpdateDrwTrnsFldTask(KwlnTask* drwTrnsFldTask)
+void* K_SceneDraw_UpdateDrwTrnsFldTask(KwlnTask* drwTrnsFldTask)
 {
     // TODO
 
@@ -19,7 +22,7 @@ void* K_FldSceneDraw_UpdateDrwTrnsFldTask(KwlnTask* drwTrnsFldTask)
 }
 
 // FUN_0019d530. 'draw trans field(sort)'
-void* K_FldSceneDraw_UpdateDrwTrnsFldSrtTask(KwlnTask* drwTrnsFldSrtTask)
+void* K_SceneDraw_UpdateDrwTrnsFldSrtTask(KwlnTask* drwTrnsFldSrtTask)
 {
     // TODO
 
@@ -27,7 +30,7 @@ void* K_FldSceneDraw_UpdateDrwTrnsFldSrtTask(KwlnTask* drwTrnsFldSrtTask)
 }
 
 // FUN_0019d780. 'draw opac field object'
-void* K_FldSceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldTask)
+void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldTask)
 {
     // TODO
     
@@ -35,7 +38,7 @@ void* K_FldSceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldTask)
 }
 
 // FUN_0019de40. 'draw trans field object'
-void* K_FldSceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
+void* K_SceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
 {
     // TODO
 
@@ -43,7 +46,7 @@ void* K_FldSceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
 }
 
 // FUN_0019e1b0. 'draw trans field obj preChar'
-void* K_FldSceneDraw_UpdateDrwTrnsFldObjPCTask(KwlnTask* drwTrnsFldObjPCTask)
+void* K_SceneDraw_UpdateDrwTrnsFldObjPCTask(KwlnTask* drwTrnsFldObjPCTask)
 {
     // TODO
 
@@ -51,7 +54,7 @@ void* K_FldSceneDraw_UpdateDrwTrnsFldObjPCTask(KwlnTask* drwTrnsFldObjPCTask)
 }
 
 // FUN_0019e330. 'draw character model'
-void* K_FldSceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
+void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 {
     // TODO
 
@@ -59,7 +62,7 @@ void* K_FldSceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 }
 
 // FUN_0019ef80. 'draw trans NPC(sort)'
-void* K_FldSceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
+void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
 {
     // TODO
 
@@ -67,7 +70,7 @@ void* K_FldSceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
 }
 
 // FUN_0019f470. 'draw persona model'
-void* K_FldSceneDraw_UpdateDrwPrsnaMdlTask(KwlnTask* drwPrsnaMdlTask)
+void* K_SceneDraw_UpdateDrwPrsnaMdlTask(KwlnTask* drwPrsnaMdlTask)
 {
     // TODO
 
@@ -75,22 +78,56 @@ void* K_FldSceneDraw_UpdateDrwPrsnaMdlTask(KwlnTask* drwPrsnaMdlTask)
 }
 
 // FUN_0019f730
-KwlnTask* K_FldSceneDraw_CreateTasks(KwlnTask* rootProcTask)
+KwlnTask* K_SceneDraw_CreateTasks(KwlnTask* rootProcTask)
 {
-    KwlnTask* fldSceneDrawTask;
+    KwlnTask* sceneDrawTask;
 
-    fldSceneDrawTask = kwlnTaskCreateWithAutoPriority(rootProcTask, 10, "scene draw CTL", NULL, NULL, NULL);
+    sceneDrawTask = kwlnTaskCreateWithAutoPriority(rootProcTask, 10, "scene draw CTL", NULL, NULL, NULL);
 
-    FldShadow_CreateShadowMapTask(fldSceneDrawTask);
-    kwlnTaskCreate(fldSceneDrawTask, "draw opac field", 2070, K_FldSceneDraw_UpdateDrwOpcFldTask, NULL, NULL);
-    kwlnTaskCreate(fldSceneDrawTask, "draw opac field object", 2071, K_FldSceneDraw_UpdateDrwOpcFldObjTask, NULL, NULL);
-    kwlnTaskCreate(fldSceneDrawTask, "draw character model", 2084, K_FldSceneDraw_UpdateDrwChrMdlTask, NULL, NULL);
-    kwlnTaskCreate(fldSceneDrawTask, "draw trans field obj preChar", 2095, K_FldSceneDraw_UpdateDrwTrnsFldObjPCTask, NULL, NULL);
-    kwlnTaskCreate(fldSceneDrawTask, "draw persona model", 4168, K_FldSceneDraw_UpdateDrwPrsnaMdlTask, NULL, NULL);
-    kwlnTaskCreate(fldSceneDrawTask, "draw trans field object", 4172, K_FldSceneDraw_UpdateDrwTrnsFldObjTask, NULL, NULL);
-    kwlnTaskCreate(fldSceneDrawTask, "draw trans field", 4173, K_FldSceneDraw_UpdateDrwTrnsFldTask, NULL, NULL);
-    kwlnTaskCreate(fldSceneDrawTask, "draw trans field(sort)", 4183, K_FldSceneDraw_UpdateDrwTrnsFldSrtTask, NULL, NULL);
-    kwlnTaskCreate(fldSceneDrawTask, "draw trans NPC(sort)", 4183, K_FldSceneDraw_UpdateDrwTrnsNpcSrtTask, NULL, NULL);
+    FldShadow_CreateShadowMapTask(sceneDrawTask);
+    kwlnTaskCreate(sceneDrawTask, "draw opac field", 2070, K_SceneDraw_UpdateDrwOpcFldTask, NULL, NULL);
+    kwlnTaskCreate(sceneDrawTask, "draw opac field object", 2071, K_SceneDraw_UpdateDrwOpcFldObjTask, NULL, NULL);
+    kwlnTaskCreate(sceneDrawTask, "draw character model", 2084, K_SceneDraw_UpdateDrwChrMdlTask, NULL, NULL);
+    kwlnTaskCreate(sceneDrawTask, "draw trans field obj preChar", 2095, K_SceneDraw_UpdateDrwTrnsFldObjPCTask, NULL, NULL);
+    kwlnTaskCreate(sceneDrawTask, "draw persona model", 4168, K_SceneDraw_UpdateDrwPrsnaMdlTask, NULL, NULL);
+    kwlnTaskCreate(sceneDrawTask, "draw trans field object", 4172, K_SceneDraw_UpdateDrwTrnsFldObjTask, NULL, NULL);
+    kwlnTaskCreate(sceneDrawTask, "draw trans field", 4173, K_SceneDraw_UpdateDrwTrnsFldTask, NULL, NULL);
+    kwlnTaskCreate(sceneDrawTask, "draw trans field(sort)", 4183, K_SceneDraw_UpdateDrwTrnsFldSrtTask, NULL, NULL);
+    kwlnTaskCreate(sceneDrawTask, "draw trans NPC(sort)", 4183, K_SceneDraw_UpdateDrwTrnsNpcSrtTask, NULL, NULL);
 
-    return fldSceneDrawTask;
+    return sceneDrawTask;
+}
+
+// FUN_0019fd40
+RwRGBAReal* K_Scene_GetFldAmbLightColor()
+{
+    ResrcFld* res;
+
+    res = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    return &res->ambLightColor;
+}
+
+// FUN_001a0a10
+RwRGBAReal* K_Scene_GetPartyAmbLightColor()
+{
+    ResrcLightParty* res;
+
+    res = (ResrcLightParty*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTPARTY);
+    return &res->ambientColor;
+}
+
+// FUN_001a0250
+u32 K_Scene_001a0250()
+{
+    s32 fldMajor;
+
+    fldMajor = gMtScene->fldMajorId;
+
+    if ((fldMajor >= 21 && fldMajor <= 28 && gMtScene->fldMinorId == 0) ||
+        (fldMajor >= 41 && fldMajor <= 48 && gMtScene->fldMinorId == 0))
+    {
+        return true;
+    }
+
+    return false;
 }
