@@ -9,7 +9,6 @@ typedef struct Model Model;
 
 #define RESRC_ID_MASK   0x3ff
 #define RESRC_TYPE_MASK 0xffc00
-
 #define RESRC_GET_ID(resTypeId)           ((resTypeId) & RESRC_ID_MASK)
 #define RESRC_GET_TYPE(resTypeId)         (((resTypeId) & RESRC_TYPE_MASK) >> 10)
 #define RESRC_MAKE_TYPEID(resId, resType) (RESRC_GET_ID((resId)) | ((resType) << 10))
@@ -24,6 +23,7 @@ typedef enum
     RESRC_TYPE_LIGHTNPC,
     RESRC_TYPE_MODELFLD = 10,
     RESRC_TYPE_FLD = 12,
+    RESRC_TYPE_FLDHIT,
     RESRC_TYPE_MAX = 22
 } ResrcType;
 
@@ -37,7 +37,8 @@ struct Resrc
     f32 unk_1c;        // 0x1c
     f32 unk_20;        // 0x20
     f32 unk_24;        // 0x24
-    u8 unkData[0xd0];
+    u32 flags;         // 0x28
+    u8 unkData[0xcc];
     Resrc* next;       // 0xf8
     Resrc* prev;       // 0xfc
 };
@@ -51,7 +52,8 @@ typedef struct ResrcModelParty
     u8 unkData2[0xb4];
     KwlnTask* collisCtlTask;       // 0x1e0. Task for a 'FldFrame'
     KwlnTask* renderTexShadowTask; // 0x1e4
-    u8 unkData3[0x08];
+    Model* baseMdl;                // 0x1e8. Base model (field/base.RMD)       
+    Model* unkMdl;                 // 0x1ec
 } ResrcModelParty;
 
 // 544 bytes. NPC resource
@@ -102,6 +104,15 @@ typedef struct ResrcFld
     void* unk_160;            // 0x160
     u8 unkData[0x0c];
 } ResrcFld;
+
+// 336 bytes
+typedef struct ResrcFldHit
+{
+    Resrc base;        // 0x00
+    u8 unkData1[0x1c];
+    RwV3d vertices[4]; // 0x11c
+    s32 unk_14c;       // 0x14c
+} ResrcFldHit;
 
 // 88 bytes
 typedef struct ResrcManager
