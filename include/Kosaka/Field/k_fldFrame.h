@@ -38,6 +38,9 @@ typedef struct CollisSphereDebug
     u32 drawEnabled; // 0x00
 } CollisSphereDebug;
 
+u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal);
+
+// collis ctl
 f32 K_FldFrame_CtlGetSphereCollisRadius(KwlnTask* collisCtlTask);
 void K_FldFrame_CtlSetSphereCollisRadius(KwlnTask* collisCtlTask, f32 radius);
 s32 K_FldFrame_CtlGetXGrid(KwlnTask* collisCtlTask);

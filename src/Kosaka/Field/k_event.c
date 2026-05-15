@@ -2,12 +2,120 @@
 #include "Kosaka/Field/k_unit.h"
 #include "Kosaka/Field/k_majorIds.h"
 #include "Kosaka/Field/k_minorIds.h"
+#include "Kosaka/Field/k_sceneDraw.h"
+#include "Kosaka/Field/k_fldFrame.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "Model/mdlManager.h"
 #include "kwln/kwlnTask.h"
 
 KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
+
+// FUN_001c5ee0
+u16 K_FldEvent_FindFldHitAt(const RwV3d* heroPos, ResrcFldHit** fldHitDst)
+{
+    u16 resTypeId;
+    ResrcFldHit* hit;
+    const RwV3d* tri[3];
+    RwV3d normal;
+    static const RwV3d sFldHitNormal = {0.0f, 1.0f, 0.0f}; // 006836c0
+
+    resTypeId = -1;
+    hit = (ResrcFldHit*)MT_Scene_GetResListHead(RESRC_TYPE_FLDHIT);
+
+    if (K_Scene_001a0250() == true)
+    {
+        return -1;
+    }
+
+    while (hit != NULL)
+    {
+        normal = sFldHitNormal;
+
+        tri[0] = &hit->vertices[0];
+        tri[1] = &hit->vertices[1];
+        tri[2] = &hit->vertices[2];
+        if (K_FldFrame_IsPointInTriangle(heroPos, tri, &normal) == true)
+        {
+            if ((heroPos->y < tri[0]->y + 100.0f) && (heroPos->y > tri[0]->y - 100.0f))
+            {
+                resTypeId = hit->base.resTypeId;
+                *fldHitDst = hit;
+                break;
+            }
+        }
+
+        tri[0] = &hit->vertices[1];
+        tri[1] = &hit->vertices[2];
+        tri[2] = &hit->vertices[3];
+        if (K_FldFrame_IsPointInTriangle(heroPos, tri, &normal) == true)
+        {
+            if ((heroPos->y < tri[0]->y + 100.0f) && (heroPos->y > tri[0]->y - 100.0f))
+            {
+                resTypeId = hit->base.resTypeId;
+                *fldHitDst = hit;
+                break;
+            }
+        }
+
+        hit = (ResrcFldHit*)hit->base.next;
+    }  
+
+    return resTypeId;
+}
+
+// FUN_001c7b30. Temp name ? First condition is weird
+u32 K_FldEvent_IsUnitNearFldHit(const FldUnit* unit)
+{
+    u32 isNear;
+    ResrcFldHit* hit;
+    RwV3d unitPos;
+    const RwV3d* tri[3];
+    RwV3d normal;
+    static const RwV3d sFldHitNormal = {0.0f, 1.0f, 0.0f}; // 006836e0
+
+    isNear = false;
+    hit = (ResrcFldHit*)MT_Scene_GetResListHead(RESRC_TYPE_FLDHIT);
+
+    if (!K_Scene_001a0250())
+    {
+        return false;
+    }
+
+    unitPos = mdlGetMatrix(unit->unitMdl.mdl)->pos;
+    while (hit != NULL)
+    {
+        normal = sFldHitNormal;
+
+        tri[0] = &hit->vertices[0];
+        tri[1] = &hit->vertices[1];
+        tri[2] = &hit->vertices[2];
+        if (K_FldFrame_IsPointInTriangle(&unitPos, tri, &normal) == true)
+        {
+            if ((unitPos.y < tri[0]->y + 100.0f) && (unitPos.y > tri[0]->y - 100.0f))
+            {
+                isNear = true;
+                break;
+            }
+        }
+
+        tri[0] = &hit->vertices[1];
+        tri[1] = &hit->vertices[2];
+        tri[2] = &hit->vertices[3];
+        if (K_FldFrame_IsPointInTriangle(&unitPos, tri, &normal) == true)
+        {
+            if ((unitPos.y < tri[0]->y + 100.0f) && (unitPos.y > tri[0]->y - 100.0f))
+            {
+                isNear = true;
+                break;
+            }
+        }
+
+        hit = (ResrcFldHit*)hit->base.next;
+    }  
+
+    return isNear;
+}
 
 // FUN_001c6200
 u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat, const RwV3d* targetPos, f32 fov)

@@ -3,8 +3,17 @@
 #include "kwln/kwlnTask.h"
 #include "kwln/kwln.h"
 #include "Primitive/primitive.h"
+#include "temporary.h"
 
 static RwRGBA sDebugSphereColor = {0, 168, 168, 168};
+
+// FUN_001aaad0
+u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
+{
+    // TODO
+
+    return true;
+}
 
 // FUN_001ad8b0
 f32 K_FldFrame_CtlGetSphereCollisRadius(KwlnTask* collisCtlTask)
