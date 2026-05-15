@@ -8,6 +8,7 @@
 #include "Scene/mt_scene.h"
 #include "datCalendar.h"
 #include "g_data.h"
+#include "h_fade.h"
 #include "h_snd.h"
 #include "temporary.h"
 
@@ -34,6 +35,47 @@ u8 K_Cmd_REQ_CLND_SKIP()
     clndReqSkip();
 
     return true;
+}
+
+// FUN_001c25b0
+u8 K_Cmd_FADE_IN()
+{
+    s32 duration;
+
+    duration = scrGetIntPara(0);
+
+    H_Fade_FadeIn();
+    if (duration != 0)
+    {
+        H_Fade_SetDuration(duration);
+    }
+
+    return true;
+}
+
+// FUN_001c2610
+u8 K_Cmd_FADE_OUT()
+{
+    s32 type;
+    s32 duration;
+
+    type = scrGetIntPara(0);
+    duration = scrGetIntPara(1);
+
+    H_Fade_FadeOut();
+    H_Fade_SetType(type);
+    if (duration != 0)
+    {
+        H_Fade_SetDuration(duration);
+    }
+
+    return true;
+}
+
+// FUN_001c2690
+u8 K_Cmd_FADE_OUT_SYNC()
+{
+    return H_Fade_IsFadeOutDone() != false;
 }
 
 // FUN_001c26c0
