@@ -50,7 +50,7 @@ typedef struct ResrcModelParty
     u8 unkData1[0x28];
     Model* mdl;                    // 0x128
     u8 unkData2[0xb4];
-    KwlnTask* collisCtlTask;       // 0x1e0. Task for a 'FldFrame'
+    KwlnTask* collisCtlTask;       // 0x1e0
     KwlnTask* renderTexShadowTask; // 0x1e4
     Model* baseMdl;                // 0x1e8. Base model (field/base.RMD)       
     Model* unkMdl;                 // 0x1ec

@@ -1,119 +1,123 @@
 #include "Kosaka/Field/k_fldFrame.h"
 #include "Model/mdlManager.h"
 #include "kwln/kwlnTask.h"
+#include "kwln/kwln.h"
+#include "Primitive/primitive.h"
+
+static RwRGBA sDebugSphereColor = {0, 168, 168, 168};
 
 // FUN_001ad8b0
-f32 K_FldFrame_GetSphereCollisRadius(KwlnTask* collisCtlTask)
+f32 K_FldFrame_CtlGetSphereCollisRadius(KwlnTask* collisCtlTask)
 {
-    return FLDFRAME_GET(collisCtlTask)->sphereCollisRadius;
+    return ((CollisCtl*)collisCtlTask->workData)->sphereCollisRadius;
 }
 
 // FUN_001ad8c0
-void K_FldFrame_SetSphereCollisRadius(KwlnTask* collisCtlTask, f32 radius)
+void K_FldFrame_CtlSetSphereCollisRadius(KwlnTask* collisCtlTask, f32 radius)
 {
-    FldFrame* fldFrame;
+    CollisCtl* ctl;
 
-    fldFrame = FLDFRAME_GET(collisCtlTask);
-    fldFrame->sphereCollisRadius = radius;
+    ctl = (CollisCtl*)collisCtlTask->workData;
+    ctl->sphereCollisRadius = radius;
 
     if (radius == 0.0f)
     {
-        fldFrame->flags |= FLDFRAME_FLAG_NOCOLLIS;
+        ctl->flags |= COLLISCTL_FLAG_NOCOLLIS;
         return;
     }
 
-    fldFrame->flags &= ~FLDFRAME_FLAG_NOCOLLIS;
+    ctl->flags &= ~COLLISCTL_FLAG_NOCOLLIS;
 }
 
 // FUN_001ad910
-s32 K_FldFrame_GetXGrid(KwlnTask* collisCtlTask)
+s32 K_FldFrame_CtlGetXGrid(KwlnTask* collisCtlTask)
 {
-    return FLDFRAME_GET(collisCtlTask)->xGrid;
+    return ((CollisCtl*)collisCtlTask->workData)->xGrid;
 }
 
 // FUN_001ad920
-s32 K_FldFrame_GetZGrid(KwlnTask* collisCtlTask)
+s32 K_FldFrame_CtlGetZGrid(KwlnTask* collisCtlTask)
 {
-    return FLDFRAME_GET(collisCtlTask)->zGrid;
+    return ((CollisCtl*)collisCtlTask->workData)->zGrid;
 }
 
 // FUN_001ad940
-void K_FldFrame_CopyPos(RwV3d* dst, KwlnTask* collisCtlTask)
+void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask)
 {
-    FldFrame* fldFrame = FLDFRAME_GET(collisCtlTask);
+    CollisCtl* ctl = (CollisCtl*)collisCtlTask->workData;
     RwV3d vec = {0};
 
-    if (fldFrame->mdl != NULL)
+    if (ctl->mdl != NULL)
     {
-        vec = mdlGetMatrix(fldFrame->mdl)->pos;
+        vec = mdlGetMatrix(ctl->mdl)->pos;
     }
 
     *dst = vec;
 }
 
 // FUN_001addf0
-void K_FldFrame_MoveInDir(f32 dist, KwlnTask* collisCtlTask, const RwV3d* normalizedDir)
+void K_FldFrame_CtlMoveInDir(f32 dist, KwlnTask* collisCtlTask, const RwV3d* normalizedDir)
 {
-    FldFrame* fldFrame;
+    CollisCtl* ctl;
     RwV3d velocity;
 
-    fldFrame = FLDFRAME_GET(collisCtlTask);
+    ctl = (CollisCtl*)collisCtlTask->workData;
     velocity = *normalizedDir;
 
-    if (fldFrame->state == FLDFRAME_STATE_NOTDIRTY)
+    if (ctl->state == COLLISCTL_STATE_NOTDIRTY)
     {
         velocity.x *= dist;
         velocity.y *= dist;
         velocity.z *= dist;
         
-        fldFrame->totalDist += (u32)dist;
-        fldFrame->velocity = velocity;
+        ctl->totalDist += (u32)dist;
+        ctl->velocity = velocity;
 
-        fldFrame->state = FLDFRAME_STATE_DIRTY;
+        ctl->state = COLLISCTL_STATE_DIRTY;
     }
 }
 
 // FUN_001adec0
-void K_FldFrame_MoveForward(f32 dist, KwlnTask* collisCtlTask)
+void K_FldFrame_CtlMoveForward(f32 dist, KwlnTask* collisCtlTask)
 {
-    FldFrame* fldFrame = FLDFRAME_GET(collisCtlTask);
+    CollisCtl* ctl = (CollisCtl*)collisCtlTask->workData;
     RwV3d velocity = {0};
 
-    if (fldFrame->state == FLDFRAME_STATE_NOTDIRTY)
+    if (ctl->state == COLLISCTL_STATE_NOTDIRTY)
     {
-        velocity = mdlGetMatrix(fldFrame->mdl)->at;
+        velocity = mdlGetMatrix(ctl->mdl)->at;
         RwV3dNormalize(&velocity, &velocity);
         
         velocity.x *= dist;
         velocity.y *= dist;
         velocity.z *= dist;
 
-        fldFrame->totalDist += (u32)dist;
-        fldFrame->velocity = velocity;
+        ctl->totalDist += (u32)dist;
+        ctl->velocity = velocity;
 
-        fldFrame->state = FLDFRAME_STATE_DIRTY;
+        ctl->state = COLLISCTL_STATE_DIRTY;
     }
 }
 
 // FUN_001adff0
-void K_FldFrame_Rotate(KwlnTask* collisCtlTask, const RwV3d* axis, f32 angle)
+void K_FldFrame_CtlRotate(KwlnTask* collisCtlTask, const RwV3d* axis, f32 angle)
 {
-    FldFrame* fldFrame;
+    CollisCtl* ctl;
     RwV3d originalPos;
     RwV3d negPos;
 
-    fldFrame = FLDFRAME_GET(collisCtlTask);
+    ctl = (CollisCtl*)collisCtlTask->workData;
 
-    if (fldFrame->mdl != NULL)
+    if (ctl->mdl != NULL)
     {
-        originalPos = mdlGetMatrix(fldFrame->mdl)->pos;
+        originalPos = mdlGetMatrix(ctl->mdl)->pos;
 
         negPos.x = originalPos.x * -1.0f;
         negPos.y = originalPos.y * -1.0f;
         negPos.z = originalPos.z * -1.0f;
 
-        mdlTranslate(fldFrame->mdl, &negPos, rwCOMBINEPOSTCONCAT); // basically just do pos + (-pos) = (0, 0, 0)
-        mdlRotate(fldFrame->mdl, axis, angle, rwCOMBINEPOSTCONCAT);
-        mdlTranslate(fldFrame->mdl, &originalPos, rwCOMBINEPOSTCONCAT);
+        mdlTranslate(ctl->mdl, &negPos, rwCOMBINEPOSTCONCAT); // basically just do pos + (-pos) = (0, 0, 0)
+        mdlRotate(ctl->mdl, axis, angle, rwCOMBINEPOSTCONCAT);
+        mdlTranslate(ctl->mdl, &originalPos, rwCOMBINEPOSTCONCAT);
     }
 }
