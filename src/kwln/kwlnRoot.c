@@ -4,6 +4,8 @@
 #include "rw/rwcore.h"
 #include "temporary.h"
 #include "h_snd.h"
+#include "h_fade.h"
+#include "h_dbprt.h"
 
 KwlnTask* kwlnRootCreate2DDrawBeginTask();
 KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask();
@@ -11,6 +13,7 @@ KwlnTask* kwlnRootCreate2DDrawEndTask();
 KwlnTask* kwlnRootCreate3DOn2DZClearTask();
 KwlnTask* kwlnRootCreate3DOn2DDrawBeginTask();
 KwlnTask* kwlnRootCreate3DOn2DDrawEndTask();
+KwlnTask* kwlnRootCreateEtcDrawTask();
 
 // FUN_00198650
 void* kwlnRootUpdateTask(KwlnTask* rootTask)
@@ -146,4 +149,21 @@ KwlnTask* kwlnRootCreate3DOn2DDrawBeginTask()
 KwlnTask* kwlnRootCreate3DOn2DDrawEndTask()
 {
     return kwlnTaskInit("3D on 2D Draw End", 6320, kwlnRootUpdate3DOn2DDrawEndTask, NULL, NULL);
+}
+
+// FUN_00198f90
+void* kwlnRootUpdateEtcDrawTask(KwlnTask* etcDrawTask)
+{
+    H_Fade_Main();
+
+    H_Dbprt_Main();
+    H_Dbprt_Flush();
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001990c0
+KwlnTask* kwlnRootCreateEtcDrawTask()
+{
+    return kwlnTaskInit("etc Draw", 6335, kwlnRootUpdateEtcDrawTask, NULL, NULL);
 }
