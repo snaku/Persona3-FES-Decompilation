@@ -1,11 +1,16 @@
 #include "Kosaka/Field/k_fldFrame.h"
+#include "Kosaka/Field/k_unit.h"
 #include "Model/mdlManager.h"
 #include "kwln/kwlnTask.h"
 #include "kwln/kwln.h"
 #include "Primitive/primitive.h"
+#include "Scene/mt_scene.h"
+#include "Scene/resrcManager.h"
 #include "temporary.h"
 
 static RwRGBA sDebugSphereColor = {0, 168, 168, 168};
+
+KwlnTask* K_FldFrame_CreateCollisSphereDbgTask(KwlnTask* parent);
 
 // FUN_001aaad0
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
@@ -13,6 +18,97 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
     // TODO
 
     return true;
+}
+
+// FUN_001ad2f0
+void* K_FldFrame_UpdateCtlTask(KwlnTask* collisCtlTask)
+{
+    // TODO
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001ad630
+void K_FldFrame_DestroyCtlTask(KwlnTask* collisCtlTask)
+{
+    RwFree(collisCtlTask->workData);
+}
+
+// FUN_001ad660
+KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, f32 sphereCollisRadius)
+{
+    KwlnTask* task;
+    CollisCtl* ctl;
+    Resrc* res;
+    FldUnit* units;
+    s32 i;
+    u16 _resTypeId;
+
+    ctl = RwCalloc(1, sizeof(CollisCtl), rwMEMHINTDUR_GLOBAL);
+    if (ctl == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(parent,
+                                          10,
+                                          "collision controler",
+                                          K_FldFrame_UpdateCtlTask,
+                                          K_FldFrame_DestroyCtlTask,
+                                          ctl);
+
+    ctl->state = COLLISCTL_STATE_NOTDIRTY;
+    _resTypeId = resTypeId; // to force andi a0, s2, 0xffff here
+    ctl->resTypeId = _resTypeId;
+    ctl->sphereCollisRadius = sphereCollisRadius;
+    ctl->unk_24 = 0;
+
+    if (RESRC_GET_TYPE(_resTypeId) == RESRC_TYPE_MODELPARTY)
+    {
+        res = MT_Scene_GetRes(_resTypeId);
+        if (res != NULL)
+        {
+            ctl->mdl = ((ResrcModelParty*)res)->mdl;
+        }
+
+        i = 0;
+        units = gFldUnits; // regswap (should be a2 instead of a3)
+        for (; i < FLDUNIT_MAX; i++)
+        {
+            if (units[i].unk_48 != NULL &&
+                units[i].unitMdl.mdl == ((ResrcModelParty*)res)->mdl)
+            {
+                ctl->charId = gFldUnits[i].charId;
+                ctl->fldUnit = &units[i];
+                break;
+            }
+        }
+
+        i = 0;
+        units = gEnFldUnits; // regswap (should be a2 instead of a3)
+        for (; i < FLDUNIT_EN_MAX; i++)
+        {
+            if (units[i].unk_48 != NULL &&
+                units[i].unitMdl.mdl == ((ResrcModelParty*)res)->mdl)
+            {
+                ctl->charId = gEnFldUnits[i].charId;
+                ctl->fldUnit = &units[i];
+                break;
+            }
+        }
+    }
+    else if (RESRC_GET_TYPE(_resTypeId) == RESRC_TYPE_MODELNPC)
+    {
+        res = MT_Scene_GetRes(_resTypeId);
+        if (res != NULL)
+        {
+            ctl->mdl = ((ResrcModelNpc*)res)->mdl;
+        }
+    }
+
+    K_FldFrame_CreateCollisSphereDbgTask(task);
+
+    return task;
 }
 
 // FUN_001ad8b0
@@ -129,4 +225,12 @@ void K_FldFrame_CtlRotate(KwlnTask* collisCtlTask, const RwV3d* axis, f32 angle)
         mdlRotate(ctl->mdl, axis, angle, rwCOMBINEPOSTCONCAT);
         mdlTranslate(ctl->mdl, &originalPos, rwCOMBINEPOSTCONCAT);
     }
+}
+
+// FUN_001ae3f0
+KwlnTask* K_FldFrame_CreateCollisSphereDbgTask(KwlnTask* parent)
+{
+    // TODO
+
+    return NULL;
 }

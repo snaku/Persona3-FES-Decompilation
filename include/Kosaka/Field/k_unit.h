@@ -7,6 +7,8 @@
 #define FLDUNIT_HERO 0
 #define FLDUNIT_MAX  4
 
+#define FLDUNIT_EN_MAX 24
+
 typedef struct Model Model;
 typedef struct ResrcModelParty ResrcModelParty;
 
@@ -26,13 +28,17 @@ typedef struct FldUnit
     void* unk_48;           // 0x48
     FldUnitMdl unitMdl;     // 0x4c
     ResrcModelParty* resrc; // 0x54
-    u8 unkData2[0x150];
+    u8 unkData2[0x138];
+    u32 scaleIdx;           // 0x190. Index for an array of different scale (RwV3d)
+    u8 unkData3[0x14];
     u16 charId;             // 0x1a8
-    u8 unkData3[0x16];
+    u8 unkData4[0x16];
 } FldUnit;
 
 extern FldUnitMdl gFldUnitsMdl[FLDUNIT_MAX];
 extern FldUnit gFldUnits[FLDUNIT_MAX];
+
+extern FldUnit gEnFldUnits[FLDUNIT_EN_MAX];
 
 void K_FldUnit_DestroyMdl(s32 unitId);
 

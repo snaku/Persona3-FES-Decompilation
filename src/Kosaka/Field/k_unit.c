@@ -4,6 +4,8 @@
 FldUnitMdl gFldUnitsMdl[FLDUNIT_MAX]; // 00871ea0
 FldUnit gFldUnits[FLDUNIT_MAX];       // 008717a0
 
+FldUnit gEnFldUnits[FLDUNIT_EN_MAX];  // 0086eda0. Enemies
+
 // FUN_001cd870
 void K_FldUnit_DestroyMdl(s32 unitId)
 {
