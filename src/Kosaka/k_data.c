@@ -74,11 +74,11 @@ void K_Data_CreateFldBaseMdl()
     cdvd = H_Cdvd_Request("field/base.RMD", HCDVD_FILENORMAL);
     H_Cdvd_ReadSync(cdvd);
 
-    gFldBaseMdl = mdlMngCreateMdlFromRmdMemory(MODEL_TYPE_FLD,
-                                               2000,
-                                               cdvd->fileMemory,
-                                               cdvd->fileSize,
-                                               MDL_READASYNC);
+    gFldBaseMdl = mdlCreateFromRmdMemory(MODEL_TYPE_FLD,
+                                         2000,
+                                         cdvd->fileMemory,
+                                         cdvd->fileSize,
+                                         MDL_READASYNC);
 
     // ??? never destroying the cdvd
 }

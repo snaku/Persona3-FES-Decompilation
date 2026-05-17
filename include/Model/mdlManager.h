@@ -22,6 +22,7 @@ typedef struct HCdvd HCdvd;
 #define MDL_FLAG_CULLFRONT   (1 << 6)  // 0x40.   Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
 #define MDL_FLAG_FOG         (1 << 8)  // 0x100.  Enable fog for the model
 #define MDL_FLAG_STREAMDONE  (1 << 12) // 0x1000
+#define MDL_FLAG_STREAMUNK1  (1 << 13) // 0x2000
 #define MDL_FLAG_STREAMSYNC  (1 << 14) // 0x4000. Synchronous stream read
 
 #define MDLANIM_FLAG_LOOP (1 << 0) // 0x01
@@ -169,15 +170,16 @@ struct Model
 
 extern const f32 gFrameDuration;
 
-Model* mdlMngInitMdl(u16 type, u16 id);
-Model* mdlMngSearch(u16 type, u16 id, u16 flags);
-Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 readMode);
-Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode);
-Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 readMode);
+Model* mdlInit(u16 type, u16 id);
+Model* mdlSearch(u16 type, u16 id, u16 flags);
+Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode);
+Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode);
+Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode);
 
 u32 mdlStreamRead(Model* mdl);
 
 void mdlDestroy(Model* mdl);
+void mdl00317730(Model* mdl);
 
 u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags);
 s16 mdlAnimGetId(Model* mdl, u16 slotIdx);

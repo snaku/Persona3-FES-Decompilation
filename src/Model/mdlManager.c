@@ -39,7 +39,7 @@ MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
 }
 
 // FUN_00316690. TODO
-Model* mdlMngInitMdl(u16 type, u16 id)
+Model* mdlInit(u16 type, u16 id)
 {
     // TODO
 
@@ -47,7 +47,7 @@ Model* mdlMngInitMdl(u16 type, u16 id)
 }
 
 // FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter
-Model* mdlMngSearch(u16 type, u16 id, u16 flags)
+Model* mdlSearch(u16 type, u16 id, u16 flags)
 {
     Model* mdl;
 
@@ -76,11 +76,11 @@ Model* mdlMngSearch(u16 type, u16 id, u16 flags)
 }
 
 // FUN_00316b40
-Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 readMode)
+Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode)
 {
     Model* mdl;
 
-    mdl = mdlMngInitMdl(type, id);
+    mdl = mdlInit(type, id);
 
     if (readMode & MDL_READSYNC)
     {
@@ -96,12 +96,12 @@ Model* mdlMngCreateMdlFromPath(u16 type, u16 id, const char* path, u32 readMode)
 }
 
 // FUN_00316bd0. Create a model with a loaded .RMD file in memory
-Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode)
+Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode)
 {
     Model* mdl;
     MdlRmdFileMemory rmd;
 
-    mdl = mdlMngInitMdl(type, id);
+    mdl = mdlInit(type, id);
 
     if (readMode & MDL_READSYNC)
     {
@@ -120,7 +120,7 @@ Model* mdlMngCreateMdlFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSi
 }
 
 // FUN_00316e00. Only for .RMD in 'MODEL' folder (See enum 'ModelType')
-Model* mdlMngCreateMdlAndResolvePath(u16 type, u16 id, u32 readMode)
+Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
 {
     // TODO
 
@@ -137,6 +137,12 @@ u32 mdlStreamRead(Model* mdl)
 
 // FUN_003174e0
 void mdlDestroy(Model* mdl)
+{
+    // TODO
+}
+
+// FUN_00317730
+void mdl00317730(Model* mdl)
 {
     // TODO
 }

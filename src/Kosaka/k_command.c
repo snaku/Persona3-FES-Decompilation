@@ -2,6 +2,7 @@
 #include "Kosaka/k_assert.h"
 #include "Kosaka/Field/k_dungeon.h"
 #include "Kosaka/Field/k_field.h"
+#include "Kosaka/Field/k_fldFrame.h"
 #include "Script/scrTraceCode.h"
 #include "Model/mdlManager.h"
 #include "Scene/resrcManager.h"
@@ -332,10 +333,10 @@ u8 K_Cmd_CREATE_FLD_MDL()
         strcat(path, buff);
     }
 
-    mdl = mdlMngCreateMdlFromPath(MODEL_TYPE_FLD,
-                                  minorId,
-                                  path,
-                                  MDL_READASYNC);
+    mdl = mdlCreateFromPath(MODEL_TYPE_FLD,
+                            minorId,
+                            path,
+                            MDL_READASYNC);
     scrSetIntReturnVal((s32)mdl);
 
     return true;
@@ -351,9 +352,55 @@ u8 K_Cmd_CREATE_MDL()
     type = scrGetIntPara(0);
     id = scrGetIntPara(1);
 
-    mdl = mdlMngCreateMdlAndResolvePath(type, id, MDL_READASYNC);
+    mdl = mdlCreateAndResolvePath(type, id, MDL_READASYNC);
 
     scrSetIntReturnVal((s32)mdl);
+
+    return true;
+}
+
+// FUN_001c4b30
+u8 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
+{
+    s32 resTypeId;
+    f32 sphereCollisRadius;
+    ResrcModelChar* character;
+    ResrcModelNpc* npc;
+    RwV3d baseMdlScale;
+
+    resTypeId = scrGetIntPara(0);
+    sphereCollisRadius = scrGetFloatPara(1);
+
+    switch (RESRC_GET_TYPE(resTypeId))
+    {
+        case RESRC_TYPE_MODELCHAR:
+            character = (ResrcModelChar*)MT_Scene_GetRes(resTypeId);
+            if (character != NULL)
+            {
+                K_FldFrame_CtlSetSphereCollisRadius(character->collisCtlTask, sphereCollisRadius);
+            }
+            break;
+
+        case RESRC_TYPE_MODELNPC:
+            npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
+            if (npc != NULL)
+            {
+                K_FldFrame_CtlSetSphereCollisRadius(npc->collisCtlTask, sphereCollisRadius);
+
+                if (npc->baseMdl != NULL)
+                {
+                    baseMdlScale.x = sphereCollisRadius;
+                    baseMdlScale.y = sphereCollisRadius;
+                    baseMdlScale.z = sphereCollisRadius;
+
+                    mdlScale(npc->baseMdl, &baseMdlScale, rwCOMBINEPOSTCONCAT);
+                    mdl00317730(npc->baseMdl);
+                }
+            }
+            break;
+
+        default: K_Assert("k_command.c", 1598);
+    }
 
     return true;
 }
@@ -375,20 +422,20 @@ u8 K_Cmd_PLAY_BGM()
 }
 
 // FUN_001c56a0
-u8 K_Cmd_GET_NPC_NO()
+u8 K_Cmd_GET_NPC_COUNT()
 {
     ResrcModelNpc* npc;
-    s32 no;
+    s32 count;
 
     npc = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
-    no = 0;
+    count = 0;
     while (npc != NULL)
     {
-        no++;
+        count++;
         npc = (ResrcModelNpc*)npc->base.next;
     }
 
-    scrSetIntReturnVal(no);
+    scrSetIntReturnVal(count);
 
     return true;
 }
