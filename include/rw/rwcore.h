@@ -71,6 +71,46 @@ struct RwObjectHasFrame
     RwObjectHasFrameSyncFunction sync; // 0x10
 };
 
+
+typedef enum
+{
+    rwRASTERTYPENORMAL = 0x00,
+    rwRASTERTYPEZBUFFER = 0x01,
+    rwRASTERTYPECAMERA = 0x02,
+    rwRASTERTYPETEXTURE = 0x04,
+    rwRASTERTYPECAMERATEXTURE = 0x05,
+    rwRASTERTYPEMASK = 0x07,
+
+    rwRASTERPALETTEVOLATILE = 0x40,
+    rwRASTERDONTALLOCATE = 0x80
+} RwRasterType;
+
+typedef enum
+{
+    rwRASTERFORMATDEFAULT = 0x0000,
+
+    rwRASTERFORMAT1555 = 0x0100,
+    rwRASTERFORMAT565 = 0x0200,
+    rwRASTERFORMAT4444 = 0x0300,
+    rwRASTERFORMATLUM8 = 0x0400,
+    rwRASTERFORMAT8888 = 0x0500,
+    rwRASTERFORMAT888 = 0x0600,
+    rwRASTERFORMAT16 = 0x0700,
+    rwRASTERFORMAT24 = 0x0800,
+    rwRASTERFORMAT32 = 0x0900,
+    rwRASTERFORMAT555 = 0x0a00,
+
+    rwRASTERFORMATAUTOMIPMAP = 0x1000,
+
+    rwRASTERFORMATPAL8 = 0x2000,
+    rwRASTERFORMATPAL4 = 0x4000,
+
+    rwRASTERFORMATMIPMAP = 0x8000,  /**<Mip mapping on */
+
+    rwRASTERFORMATPIXELFORMATMASK = 0x0f00,
+    rwRASTERFORMATMASK = 0xff00
+} RwRasterFormat;
+
 typedef struct RwRaster RwRaster;
 
 // 52 bytes
@@ -186,6 +226,12 @@ typedef enum
     rwSPHEREBOUNDARY,
     rwSPHEREINSIDE,
 } RwFrustumTestResult;
+
+RwBool RwImageDestroy(RwImage* image);
+RwImage* RwImageRead(const RwChar* imageName);
+
+RwRaster* RwRasterCreate(RwInt32 width, RwInt32 height, RwInt32 depth, RwInt32 flags);;
+RwRaster* RwRasterSetFromImage(RwRaster* raster, RwImage* image);
 
 RwCamera* RwCameraBeginUpdate(RwCamera* camera);
 RwCamera* RwCameraEndUpdate(RwCamera* camera);

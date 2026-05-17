@@ -23,7 +23,32 @@ static char sLogs[HDBPRT_LOG_MAXLINE][HDBPRT_LOG_MAXCHAR]; // 007e0a30. Strings 
 // FUN_001042e0
 void H_Dbprt_Init()
 {
-    // TODO
+    HCdvd* cdvd;
+    RwRaster* raster;
+
+    cdvd = H_Cdvd_Request("font/size12/f11_001.tmx", HCDVD_FILENORMAL);
+    H_Cdvd_ReadSync(cdvd);
+
+    sFontImage = RwImageRead("font/size12/f11_001.tmx");
+
+    H_Cdvd_Destroy(cdvd);
+
+    raster = RwRasterCreate(sFontImage->width,
+                            sFontImage->height,
+                            4,
+                            rwRASTERTYPETEXTURE |
+                            rwRASTERFORMATPAL4  |
+                            rwRASTERFORMAT8888);
+    sFontRaster = raster;
+    RwRasterSetFromImage(raster, sFontImage);
+
+    RwImageDestroy(sFontImage);
+    sFontImage = NULL;
+
+    H_Cdvd_001007f0();
+
+    memset(sGrid, ' ', sizeof(sGrid));
+    sText3DList = NULL;
 }
 
 // FUN_001043b0
