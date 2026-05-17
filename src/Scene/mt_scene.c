@@ -1,5 +1,9 @@
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
+#include "Kosaka/Field/k_fldFrame.h"
+#include "Kosaka/Field/k_shadow.h"
+#include "Model/mdlManager.h"
+#include "rw/rwplcore.h"
 #include "temporary.h"
 
 static MtScene sMtScene;       // 0095afc0
@@ -62,14 +66,14 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
 }
 
 // FUN_003b63c0
-u16 MT_Scene_CreateResLightParty(u16 resId)
+u16 MT_Scene_CreateResLightChar(u16 resId)
 {
     ResrcManager* resManager;
     u16 resTypeId;
 
-    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTPARTY);
-    resManager = gMtScene->resManager;
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTCHAR);
 
+    resManager = gMtScene->resManager;
     if (resManager == NULL)
     {
         printf("not found active resmanager\n");
@@ -91,8 +95,8 @@ u16 MT_Scene_CreateResLightNpc(u16 resId)
     u16 resTypeId;
 
     resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTNPC);
-    resManager = gMtScene->resManager;
 
+    resManager = gMtScene->resManager;
     if (resManager == NULL)
     {
         printf("not found active resmanager\n");

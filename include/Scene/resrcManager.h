@@ -16,10 +16,10 @@ typedef struct Model Model;
 typedef enum
 {
     // TODO
-    RESRC_TYPE_MODELPARTY = 1,
+    RESRC_TYPE_MODELCHAR = 1,
     RESRC_TYPE_MODELUNK,
     RESRC_TYPE_MODELNPC,
-    RESRC_TYPE_LIGHTPARTY,
+    RESRC_TYPE_LIGHTCHAR,
     RESRC_TYPE_LIGHTNPC,
     RESRC_TYPE_MODELFLD = 10,
     RESRC_TYPE_FLD = 12,
@@ -43,8 +43,8 @@ struct Resrc
     Resrc* prev;       // 0xfc
 };
 
-// 496 bytes. Party resource
-typedef struct ResrcModelParty
+// 496 bytes. Character resource
+typedef struct ResrcModelChar
 {
     Resrc base;                    // 0x00
     u8 unkData1[0x28];
@@ -54,7 +54,7 @@ typedef struct ResrcModelParty
     KwlnTask* renderTexShadowTask; // 0x1e4
     Model* baseMdl;                // 0x1e8. Base model (field/base.RMD)       
     Model* unkMdl;                 // 0x1ec
-} ResrcModelParty;
+} ResrcModelChar;
 
 // 544 bytes. NPC resource
 typedef struct ResrcModelNpc
@@ -65,15 +65,15 @@ typedef struct ResrcModelNpc
     u8 unkData2[0xf4];
 } ResrcModelNpc;
 
-// 432 bytes. Lighting parameters resource for party
-typedef struct ResrcLightParty
+// 432 bytes. Lighting parameters resource for characters
+typedef struct ResrcLightChar
 {
     Resrc base;                  // 0x00
     RwRGBAReal ambientColor;     // 0x100
     RwRGBAReal directionalColor; // 0x110
     RwMatrix directionalMat;     // 0x120
     u8 unkData1[0x50];
-} ResrcLightParty;
+} ResrcLightChar;
 
 // 432 bytes. Lighting parameters resource for npcs
 typedef struct ResrcLightNpc

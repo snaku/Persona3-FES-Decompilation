@@ -6,7 +6,7 @@
 
 #define FLDCAMERA_FLAG_DRAWDEADZONE (1 << 31) // 0x80000000. Draw a cylinder that represents the current deadzone
 
-typedef struct ResrcModelParty ResrcModelParty;
+typedef struct ResrcModelChar ResrcModelChar;
 typedef struct KwlnTask KwlnTask;
 
 typedef enum
@@ -33,22 +33,22 @@ typedef struct CmrFile
     RwV3d posOffset;   // 0x54
     f32 xzDeadZone;    // 0x60
     f32 yDeadZone;     // 0x64
-    u8 unkData2[0x1e];
+    u8 unkData2[0x08];
 } CmrFile;
 
 // 208 bytes. Work Data for "field camera controler" task
 typedef struct FldCamera
 {
-    u32 state;                    // 0x00. See 'FldCameraState' enum
-    u32 flags;                    // 0x04. See 'FLDCAMERA_FLAG_*'
-    u32 type;                     // 0x08
-    RwFrame* frame;               // 0x0c. Main frame of the field camera
-    RwFrame* frame2;              // 0x10. Parent of the parent of RwCamera (idk why)
-    RwV3d posOffset;              // 0x14
-    f32 xzDeadZone;               // 0x20
-    f32 yDeadZone;                // 0x24
+    u32 state;                   // 0x00. See 'FldCameraState' enum
+    u32 flags;                   // 0x04. See 'FLDCAMERA_FLAG_*'
+    u32 type;                    // 0x08
+    RwFrame* frame;              // 0x0c. frame controlling the RwCamera (parent of the RwCamera's frame)
+    RwFrame* parentFrame;        // 0x10
+    RwV3d posOffset;             // 0x14
+    f32 xzDeadZone;              // 0x20
+    f32 yDeadZone;               // 0x24
     u8 unkData3[0xa4];
-    ResrcModelParty* playerResrc; // 0xcc
+    ResrcModelChar* playerResrc; // 0xcc
 } FldCamera;
 
 u32 K_FldCamera_GetType(KwlnTask* fldCameraTask);

@@ -23,8 +23,8 @@ void K_FldCamera_SetPlayerResrcByTypeid(KwlnTask* fldCameraTask, u16 resTypeId)
 
     fldCam = (FldCamera*)fldCameraTask->workData;
 
-    if (RESRC_GET_TYPE(resTypeId) == RESRC_TYPE_MODELPARTY)
+    if (RESRC_GET_TYPE(resTypeId) == RESRC_TYPE_MODELCHAR)
     {
-        fldCam->playerResrc = (ResrcModelParty*)MT_Scene_GetRes(resTypeId);
+        fldCam->playerResrc = (ResrcModelChar*)MT_Scene_GetRes(resTypeId);
     }
 }

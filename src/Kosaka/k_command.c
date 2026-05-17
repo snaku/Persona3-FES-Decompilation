@@ -143,7 +143,7 @@ u8 K_Cmd_RESRC_MDL_ANIM()
     s32 shouldLoop;
     s32 blendFrameCount;
     f32 animSpeed;
-    ResrcModelParty* party;
+    ResrcModelChar* character;
     ResrcModelNpc* npc;
     ResrcModelFld* fld;
 
@@ -155,20 +155,20 @@ u8 K_Cmd_RESRC_MDL_ANIM()
 
     switch (RESRC_GET_TYPE(resTypeId))
     {
-        case RESRC_TYPE_MODELPARTY:
-            party = (ResrcModelParty*)MT_Scene_GetRes(resTypeId);
-            if (party != NULL)
+        case RESRC_TYPE_MODELCHAR:
+            character = (ResrcModelChar*)MT_Scene_GetRes(resTypeId);
+            if (character != NULL)
             {
                 if (shouldLoop)
                 {
-                    mdlAnimSet(party->mdl, 0, animId, blendFrameCount, MDLANIM_FLAG_LOOP);
+                    mdlAnimSet(character->mdl, 0, animId, blendFrameCount, MDLANIM_FLAG_LOOP);
                 }
                 else
                 {
-                    mdlAnimSet(party->mdl, 0, animId, blendFrameCount, 0);
+                    mdlAnimSet(character->mdl, 0, animId, blendFrameCount, 0);
                 }
 
-                mdlAnimSetSpeed(party->mdl, 0, animSpeed);
+                mdlAnimSetSpeed(character->mdl, 0, animSpeed);
             }
             break;
             
@@ -221,11 +221,11 @@ u8 K_Cmd_RESRC_MDL_ANIM_SYNC()
     resTypeId = scrGetIntPara(0);
     switch (RESRC_GET_TYPE(resTypeId))
     {
-        case RESRC_TYPE_MODELPARTY:
+        case RESRC_TYPE_MODELCHAR:
             res = MT_Scene_GetRes(resTypeId);
             if (res != NULL)
             {
-                return ((ResrcModelParty*)res)->mdl->animSlots[0].anim.isAnimEnd == true;
+                return ((ResrcModelChar*)res)->mdl->animSlots[0].anim.isAnimEnd == true;
             }
             break;
             
@@ -265,11 +265,11 @@ u8 K_Cmd_RESRC_MODEL_SCALE()
 
     switch (RESRC_GET_TYPE(resTypeId))
     {
-        case RESRC_TYPE_MODELPARTY:
+        case RESRC_TYPE_MODELCHAR:
             res = MT_Scene_GetRes(resTypeId);
             if (res != NULL)
             {
-                mdlScale(((ResrcModelParty*)res)->mdl, &scale, rwCOMBINEPOSTCONCAT);
+                mdlScale(((ResrcModelChar*)res)->mdl, &scale, rwCOMBINEPOSTCONCAT);
             }
             break;
         

@@ -108,11 +108,11 @@ RwRGBAReal* K_Scene_GetFldAmbLightColor()
 }
 
 // FUN_001a0a10
-RwRGBAReal* K_Scene_GetPartyAmbLightColor()
+RwRGBAReal* K_Scene_GetCharAmbLightColor()
 {
-    ResrcLightParty* res;
+    ResrcLightChar* res;
 
-    res = (ResrcLightParty*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTPARTY);
+    res = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
     return &res->ambientColor;
 }
 

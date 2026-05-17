@@ -63,12 +63,12 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
     ctl->sphereCollisRadius = sphereCollisRadius;
     ctl->unk_24 = 0;
 
-    if (RESRC_GET_TYPE(_resTypeId) == RESRC_TYPE_MODELPARTY)
+    if (RESRC_GET_TYPE(_resTypeId) == RESRC_TYPE_MODELCHAR)
     {
         res = MT_Scene_GetRes(_resTypeId);
         if (res != NULL)
         {
-            ctl->mdl = ((ResrcModelParty*)res)->mdl;
+            ctl->mdl = ((ResrcModelChar*)res)->mdl;
         }
 
         i = 0;
@@ -76,7 +76,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         for (; i < FLDUNIT_MAX; i++)
         {
             if (units[i].unk_48 != NULL &&
-                units[i].unitMdl.mdl == ((ResrcModelParty*)res)->mdl)
+                units[i].unitMdl.mdl == ((ResrcModelChar*)res)->mdl)
             {
                 ctl->charId = gFldUnits[i].charId;
                 ctl->fldUnit = &units[i];
@@ -89,7 +89,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         for (; i < FLDUNIT_EN_MAX; i++)
         {
             if (units[i].unk_48 != NULL &&
-                units[i].unitMdl.mdl == ((ResrcModelParty*)res)->mdl)
+                units[i].unitMdl.mdl == ((ResrcModelChar*)res)->mdl)
             {
                 ctl->charId = gEnFldUnits[i].charId;
                 ctl->fldUnit = &units[i];
