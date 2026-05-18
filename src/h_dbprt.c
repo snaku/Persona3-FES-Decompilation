@@ -54,7 +54,19 @@ void H_Dbprt_Init()
 // FUN_001043b0
 void H_Dbprt_Flush()
 {
-    // TODO
+    HDbText3D* curr;
+    HDbText3D* next;
+
+    memset(sGrid, ' ', sizeof(sGrid));
+    
+    curr = sText3DList;
+    sText3DList = NULL;
+    while (curr != NULL)
+    {
+        next = curr->next;
+        RwFree(curr);
+        curr = next;
+    }
 }
 
 // FUN_00104420
