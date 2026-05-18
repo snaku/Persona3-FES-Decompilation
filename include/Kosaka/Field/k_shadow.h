@@ -12,6 +12,7 @@ typedef struct FldShadowMap
     u8 unkData[0x04];
 } FldShadowMap;
 
+KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 param_3);
 KwlnTask* K_FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask);
 
 #endif

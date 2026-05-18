@@ -82,6 +82,14 @@ u32 K_FldShadow_Draw(f32 xLeft, f32 yTop,
     return true;
 }
 
+// FUN_0019beb0
+KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 param_3)
+{
+    // TODO
+
+    return NULL;
+}
+
 // FUN_0019c4b0
 void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 {

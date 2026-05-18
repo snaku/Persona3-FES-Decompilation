@@ -65,6 +65,82 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
     return total;
 }
 
+// FUN_003b6030
+u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl)
+{
+    ResrcManager* resManager;
+    u16 resTypeId;
+    ResrcModelChar* res;
+    RwV3d translation = {0};
+
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_MODELCHAR);
+    
+    resManager = gMtScene->resManager;
+    if (resManager == NULL)
+    {
+        printf("not found active resmanager\n");
+        return 0;
+    }
+
+    if (mdl == NULL)
+    {
+        return 0;
+    }
+
+    res = (ResrcModelChar*)resrcMngCreateRes(resManager, resTypeId);
+    if (res == NULL)
+    {
+        return 0;
+    }
+
+    res->mdl = mdl;
+    mdlTranslate(res->mdl, &translation, rwCOMBINEREPLACE);
+    RwMatrixUpdate(mdlGetMatrix(res->mdl));
+
+    res->collisCtlTask = K_FldFrame_CreateCtlTask(NULL, resTypeId, 0, 60.0f);
+    res->renderTexShadowTask = K_FldShadow_CreateRenderTexTask(res->collisCtlTask, resTypeId, param_2);
+
+    return resTypeId;
+}
+
+// FUN_003b6270
+u16 MT_Scene_CreateResModelNpc(u32 resId, u16 param_2, Model* mdl)
+{
+    ResrcManager* resManager;
+    u16 resTypeId;
+    ResrcModelNpc* res;
+    RwV3d translation = {0};
+
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_MODELNPC);
+    
+    resManager = gMtScene->resManager;
+    if (resManager == NULL)
+    {
+        printf("not found active resmanager\n");
+        return 0;
+    }
+
+    if (mdl == NULL)
+    {
+        return 0;
+    }
+
+    res = (ResrcModelNpc*)resrcMngCreateRes(resManager, resTypeId);
+    if (res == NULL)
+    {
+        return 0;
+    }
+
+    res->mdl = mdl;
+    mdlTranslate(res->mdl, &translation, rwCOMBINEREPLACE);
+    RwMatrixUpdate(mdlGetMatrix(res->mdl));
+
+    res->collisCtlTask = K_FldFrame_CreateCtlTask(NULL, resTypeId, 0, 60.0f);
+    res->renderTexShadowTask = K_FldShadow_CreateRenderTexTask(res->collisCtlTask, resTypeId, param_2);
+
+    return resTypeId;
+}
+
 // FUN_003b63c0
 u16 MT_Scene_CreateResLightChar(u16 resId)
 {
