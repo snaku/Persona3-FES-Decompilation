@@ -1,7 +1,33 @@
 #include "Kosaka/k_misc.h"
 #include "kwln/kwlnTask.h"
 #include "Model/mdlManager.h"
+#include "Scene/mt_scene.h"
+#include "Scene/resrcManager.h"
 #include "rw/rwplcore.h"
+
+// FUN_001a5c50
+u32 K_Misc_FindNextFreeResId(u16 resType)
+{
+    u32 currId;
+    Resrc* res;
+
+    currId = 0;
+    res = MT_Scene_GetResListHead(resType);
+    while (res != NULL)
+    {
+        if (RESRC_GET_ID(res->resTypeId) == currId)
+        {
+            currId++;
+            res = MT_Scene_GetResListHead(resType);
+        }
+        else
+        {
+            res = res->next;
+        }
+    }
+
+    return currId;
+}
 
 // FUN_001a5de0
 void* K_Misc_UpdateDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)

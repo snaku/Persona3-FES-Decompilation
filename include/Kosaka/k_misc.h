@@ -25,6 +25,8 @@ typedef struct ScrShutdownWork
     KwlnTask* scrTask; // 0x00
 } ScrShutdownWork;
 
+u32 K_Misc_FindNextFreeResId(u16 resType);
+
 KwlnTask* K_Misc_CreateDelayMdlFreeTask(Model* mdlToDestroy);
 KwlnTask* K_Misc_CreateScrShutdownTask(KwlnTask* scrTask);
 
