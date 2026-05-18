@@ -45,9 +45,30 @@ void effMiscNormalizeVU()
 // FUN_00357fd0. [0;16777215]
 u32 effMiscRand(EffRandState* state)
 {
-    // TODO
+    u32 x0;
+    u32 x1;
+    u32 x2;
+    u32 x3;
+    u32 rand;
 
-    return 0;
+    if (state == NULL)
+    {
+        state = &sRandState;
+    }
+
+    x0 = state->x[0];
+    x1 = state->x[1];
+    x2 = state->x[2];
+    x3 = state->x[3];
+
+    rand = ((x1 << 0x02) | (((x0 >> 0x1e)) % 4)) ^ ((x3 << 0x01) | (((x2 >> 0x1f)) % 2));
+
+    state->x[0] = rand;
+    state->x[1] = x0;
+    state->x[2] = x1;
+    state->x[3] = x2;
+
+    return rand;
 }
 
 // FUN_00358030. [0.0f;1.0f[
@@ -75,13 +96,13 @@ void effMiscRandInit(EffRandState* state, u32 seed)
     x = seed ^ 0xAED1A0C;
     state->x[0] = x;
 
-    x = (x << 0x18) | (x >> 8);
+    x = (x << 0x18) | (x >> 0x08);
     state->x[1] = x;
 
     x = x ^ 0xAA5A02FE;
-    x = (x << 0x18) | (x >> 8);
+    x = (x << 0x18) | (x >> 0x08);
     state->x[2] = x;
 
     x = x ^ 0x11BE81C7;
-    state->x[3] = (x << 0x18) | (x >> 8);
+    state->x[3] = (x << 0x18) | (x >> 0x08);
 }
