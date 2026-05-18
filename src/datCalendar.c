@@ -2,10 +2,13 @@
 #include "rw/rwcore.h"
 #include "Script/scrTraceCode.h"
 #include "Event/Comu/comuFunction.h"
-#include "g_data.h"
-#include "temporary.h"
-#include "h_sfdply.h"
 #include "admini.h"
+#include "g_data.h"
+#include "h_cursor.h"
+#include "h_dbprt.h"
+#include "h_pad.h"
+#include "h_sfdply.h"
+#include "temporary.h"
 
 typedef struct
 {
@@ -42,9 +45,9 @@ static const Holiday sHolidays[] =
     {CALENDAR_MONTH_MARCH, 22}, {-1, -1},
 };
 
-const u16 numOfDaysInMonths[12] =
-{ /*JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC*/
-    31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+const s16 gNumOfDaysInMonths[CALENDAR_MONTH_MAX] =
+{    /*JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC*/
+   -1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
 // 005e38d0. Moon phases for every day (april 5th 2009 to march 31st 2010)
@@ -97,9 +100,9 @@ u32 clndGetMonthFromDaysSinceApr5(u16 daysSinceApr5)
 
     daysSinceApr5 += 4;
 
-    while (numOfDaysInMonths[month] <= daysSinceApr5)
+    while (gNumOfDaysInMonths[month] <= daysSinceApr5)
     {
-        daysSinceApr5 -= numOfDaysInMonths[month];
+        daysSinceApr5 -= gNumOfDaysInMonths[month];
         month++;
 
         if (month >= CALENDAR_MONTH_DECEMBER)
@@ -119,7 +122,7 @@ u32 clndGetDaysSinceStartFromDate(u32 month, u32 day)
 
     while (month != CALENDAR_MONTH_APRIL)
     {
-        dayAccumulator += numOfDaysInMonths[m - 1];
+        dayAccumulator += gNumOfDaysInMonths[m - 1];
         m++;
         month--;
 
@@ -142,9 +145,9 @@ u32 clndGetCurrentMonth()
     u16 daysSinceApr5 = datGetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
 
-    while (numOfDaysInMonths[month] <= daysSinceApr5)
+    while (gNumOfDaysInMonths[month] <= daysSinceApr5)
     {
-        daysSinceApr5 -= numOfDaysInMonths[month];
+        daysSinceApr5 -= gNumOfDaysInMonths[month];
         month++;
 
         if (month >= CALENDAR_MONTH_MAX)
@@ -163,9 +166,9 @@ u32 clndGetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
 
     daysSinceApr5 += 4;
 
-    while (numOfDaysInMonths[month] <= daysSinceApr5)
+    while (gNumOfDaysInMonths[month] <= daysSinceApr5)
     {
-        daysSinceApr5 -= numOfDaysInMonths[month];
+        daysSinceApr5 -= gNumOfDaysInMonths[month];
         month++;
 
         if (month >= CALENDAR_MONTH_MAX)
@@ -183,9 +186,9 @@ u32 clndGetCurrentDay()
     u16 daysSinceApr5 = datGetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
 
-    while (numOfDaysInMonths[month] <= daysSinceApr5)
+    while (gNumOfDaysInMonths[month] <= daysSinceApr5)
     {
-        daysSinceApr5 -= numOfDaysInMonths[month];
+        daysSinceApr5 -= gNumOfDaysInMonths[month];
         month++;
 
         if (month >= CALENDAR_MONTH_MAX)
@@ -453,7 +456,7 @@ u8 clndGetMoonPhase(u32 daysSinceApr5)
 }
 
 // FUN_00188510
-u8 clndScrCmd_SET_DATE()
+u32 clndScrCmd_SET_DATE()
 {
     u32 month;
     u32 day;
@@ -469,5 +472,5 @@ u8 clndScrCmd_SET_DATE()
     datSetDaysSinceApr5(daysSinceApr5);
     datSetTime(time);
 
-    return 1;
+    return true;
 }

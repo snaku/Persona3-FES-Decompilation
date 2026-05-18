@@ -59,10 +59,14 @@ typedef struct ResrcModelChar
 // 544 bytes. NPC resource
 typedef struct ResrcModelNpc
 {
-    Resrc base;        // 0x00
+    Resrc base;                    // 0x00
     u8 unkData1[0x28];
-    Model* mdl;        // 0x128
-    u8 unkData2[0xf4];
+    Model* mdl;                    // 0x128
+    u8 unkData2[0xbc];
+    KwlnTask* collisCtlTask;       // 0x1e8
+    Model* baseMdl;                // 0x1ec. Base model (field/base.RMD) 
+    KwlnTask* renderTexShadowTask; // 0x1f0
+    u8 unkData3[0x2c];
 } ResrcModelNpc;
 
 // 432 bytes. Lighting parameters resource for characters

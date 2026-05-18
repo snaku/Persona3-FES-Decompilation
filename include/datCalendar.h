@@ -83,11 +83,11 @@ typedef enum
 
 typedef struct CalendarWork
 {
-    u16 daysSinceApr5;  // days since start of the game
-    u8 time;
+    s16 daysSinceApr5;  // days since start of the game
+    s8 time;
     u32 skipToTarget;   // 0 no skip, 1 skip
-    u16 daysSkipTarget; // in days since april 5th (for example: daysSkipTarget = 40 -> will skip to may 15th)
-    u8 timeSkipTarget;  // see enum 'CalendarTime'
+    s16 daysSkipTarget; // in days since april 5th (for example: daysSkipTarget = 40 -> will skip to may 15th)
+    s8 timeSkipTarget;  // see enum 'CalendarTime'
 } CalendarWork;
 
 // TODO
@@ -102,11 +102,13 @@ typedef enum
 // 44 bytes
 typedef struct CalendarTaskWork
 {
-    u32 state;        // 0x00. See enum 'CalendarTaskState'
-    u8 unkData[0x28];
+    u32 state;              // 0x00. See enum 'CalendarTaskState'
+    KwlnTask* dbgHCursor;   // 0x04. Red cursor for the debug menu
+    KwlnTask* dbgHCursorBg; // 0x08. Blue background for the debug menu
+    u8 unkData[0x20];
 } CalendarTaskWork;
 
-extern const u16 numOfDaysInMonths[12];
+extern const s16 gNumOfDaysInMonths[CALENDAR_MONTH_MAX];
 
 u32 clndGetMonthFromDaysSinceApr5(u16 daysSinceApr5);
 u32 clndGetDaysSinceStartFromDate(u32 month, u32 day);
@@ -124,6 +126,6 @@ KwlnTask* clndCreateTask();
 u8 clndGetCurrentMoonPhase();
 u8 clndGetMoonPhase(u32 daysSinceApr5);
 
-u8 clndScrCmd_SET_DATE();
+u32 clndScrCmd_SET_DATE();
 
 #endif

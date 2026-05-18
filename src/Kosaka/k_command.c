@@ -1,5 +1,7 @@
 #include "Kosaka/k_command.h"
 #include "Kosaka/k_assert.h"
+#include "Kosaka/k_misc.h"
+#include "Kosaka/k_data.h"
 #include "Kosaka/Field/k_dungeon.h"
 #include "Kosaka/Field/k_field.h"
 #include "Kosaka/Field/k_fldFrame.h"
@@ -14,7 +16,7 @@
 #include "temporary.h"
 
 // FUN_001c2480
-u8 K_Cmd_SKIP_TO_DARK_HOUR()
+u32 K_Cmd_SKIP_TO_DARK_HOUR()
 {
     if (K_Field_Get()->rootTask != NULL)
     {
@@ -31,7 +33,7 @@ u8 K_Cmd_SKIP_TO_DARK_HOUR()
 }
 
 // FUN_001c2550
-u8 K_Cmd_REQ_CLND_SKIP()
+u32 K_Cmd_REQ_CLND_SKIP()
 {
     clndReqSkip();
 
@@ -39,7 +41,7 @@ u8 K_Cmd_REQ_CLND_SKIP()
 }
 
 // FUN_001c25b0
-u8 K_Cmd_FADE_IN()
+u32 K_Cmd_FADE_IN()
 {
     s32 duration;
 
@@ -55,7 +57,7 @@ u8 K_Cmd_FADE_IN()
 }
 
 // FUN_001c2610
-u8 K_Cmd_FADE_OUT()
+u32 K_Cmd_FADE_OUT()
 {
     s32 type;
     s32 duration;
@@ -74,13 +76,13 @@ u8 K_Cmd_FADE_OUT()
 }
 
 // FUN_001c2690
-u8 K_Cmd_FADE_OUT_SYNC()
+u32 K_Cmd_FADE_OUT_SYNC()
 {
     return H_Fade_IsFadeOutDone() != false;
 }
 
 // FUN_001c26c0
-u8 K_Cmd_GET_MONTH()
+u32 K_Cmd_GET_MONTH()
 {
     scrSetIntReturnVal(clndGetCurrentMonth());
 
@@ -88,7 +90,7 @@ u8 K_Cmd_GET_MONTH()
 }
 
 // FUN_001c26f0
-u8 K_Cmd_GET_DAY()
+u32 K_Cmd_GET_DAY()
 {
     scrSetIntReturnVal(clndGetCurrentDay());
 
@@ -96,7 +98,7 @@ u8 K_Cmd_GET_DAY()
 }
 
 // FUN_001c2720
-u8 K_Cmd_GET_DAY_OF_WEEK()
+u32 K_Cmd_GET_DAY_OF_WEEK()
 {
     scrSetIntReturnVal(clndGetCurrentWeekDay());
 
@@ -104,7 +106,7 @@ u8 K_Cmd_GET_DAY_OF_WEEK()
 }
 
 // FUN_001c2750
-u8 K_Cmd_GET_TIME()
+u32 K_Cmd_GET_TIME()
 {
     scrSetIntReturnVal(datGetTime());
 
@@ -112,7 +114,7 @@ u8 K_Cmd_GET_TIME()
 }
 
 // FUN_001c2780
-u8 K_Cmd_DATE_IN_RANGE()
+u32 K_Cmd_DATE_IN_RANGE()
 {
     u32 startMonth;
     u32 startDay;
@@ -137,7 +139,7 @@ u8 K_Cmd_DATE_IN_RANGE()
 }
 
 // FUN_001c2900
-u8 K_Cmd_RESRC_MDL_ANIM()
+u32 K_Cmd_RESRC_MDL_ANIM()
 {
     s32 resTypeId;
     s32 animId;
@@ -214,7 +216,7 @@ u8 K_Cmd_RESRC_MDL_ANIM()
 }
 
 // FUN_001c2b80
-u8 K_Cmd_RESRC_MDL_ANIM_SYNC()
+u32 K_Cmd_RESRC_MDL_ANIM_SYNC()
 {
     u32 resTypeId;
     Resrc* res;
@@ -253,7 +255,7 @@ u8 K_Cmd_RESRC_MDL_ANIM_SYNC()
 }
 
 // FUN_001c2c80
-u8 K_Cmd_RESRC_MODEL_SCALE()
+u32 K_Cmd_RESRC_MODEL_SCALE()
 {
     u32 resTypeId;
     RwV3d scale;
@@ -297,7 +299,7 @@ u8 K_Cmd_RESRC_MODEL_SCALE()
 }
 
 // FUN_001c2ea0
-u8 K_Cmd_GET_DUNGEON_FLOOR()
+u32 K_Cmd_GET_DUNGEON_FLOOR()
 {
     scrSetIntReturnVal(K_FldDungeon_GetCurrentFloor());
 
@@ -305,7 +307,7 @@ u8 K_Cmd_GET_DUNGEON_FLOOR()
 }
 
 // FUN_001c45e0
-u8 K_Cmd_CREATE_FLD_MDL()
+u32 K_Cmd_CREATE_FLD_MDL()
 {
     char path[64];
     char buff[64];
@@ -343,7 +345,7 @@ u8 K_Cmd_CREATE_FLD_MDL()
 }
 
 // FUN_001c4a00
-u8 K_Cmd_CREATE_MDL()
+u32 K_Cmd_CREATE_MDL()
 {
     s32 type;
     s32 id;
@@ -359,8 +361,40 @@ u8 K_Cmd_CREATE_MDL()
     return true;
 }
 
+// FUN_001c4a60
+u32 K_Cmd_CREATE_NPC_SYNC()
+{
+    Model* mdl;
+    s32 param2;
+    s32 resTypeId;
+    u32 isNpcCreated;
+    u32 resId;
+    ResrcModelNpc* npc;
+
+    mdl = (Model*)scrGetIntPara(0);
+    param2 = scrGetIntPara(1);
+
+    resTypeId = 0;
+    isNpcCreated = false;
+
+    if (mdlStreamRead(mdl) == true)
+    {
+        resId = K_Misc_FindNextFreeResId(RESRC_TYPE_MODELNPC);
+        resTypeId = MT_Scene_CreateResModelNpc(resId, param2, mdl);
+
+        npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
+        npc->baseMdl = mdlClone(gFldBaseMdl);
+
+        isNpcCreated = true;
+    }
+
+    scrSetIntReturnVal(resTypeId);
+
+    return isNpcCreated;
+}
+
 // FUN_001c4b30
-u8 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
+u32 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
 {
     s32 resTypeId;
     f32 sphereCollisRadius;
@@ -406,7 +440,7 @@ u8 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
 }
 
 // FUN_001c54a0
-u8 K_Cmd_PLAY_BGM()
+u32 K_Cmd_PLAY_BGM()
 {
     s16 currBgm;
     s32 reqBgm;
@@ -422,7 +456,7 @@ u8 K_Cmd_PLAY_BGM()
 }
 
 // FUN_001c56a0
-u8 K_Cmd_GET_NPC_COUNT()
+u32 K_Cmd_GET_NPC_COUNT()
 {
     ResrcModelNpc* npc;
     s32 count;
@@ -441,7 +475,7 @@ u8 K_Cmd_GET_NPC_COUNT()
 }
 
 // FUN_001c5e60
-u8 K_Cmd_CHK_SCENARIO_ANSWER()
+u32 K_Cmd_CHK_SCENARIO_ANSWER()
 {
     s32 isAnswer;
 

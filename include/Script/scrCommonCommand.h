@@ -3,7 +3,7 @@
 
 #include "Utils.h"
 
-typedef u8 (*ScrCmdFunc)();
+typedef u32 (*ScrCmdFunc)();
 
 // 8 bytes
 typedef struct
