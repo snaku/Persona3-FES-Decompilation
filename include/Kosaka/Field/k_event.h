@@ -5,6 +5,7 @@
 #include "rw/rwplcore.h"
 
 typedef struct KwlnTask KwlnTask;
+typedef struct ResrcModelChar ResrcModelChar;
 typedef struct ResrcModelNpc ResrcModelNpc;
 typedef struct FldUnit FldUnit;
 
@@ -29,7 +30,9 @@ typedef struct FldDrawCmd
 typedef struct FldEvent
 {
     u32 eventType;                  // 0x00
-    u8 unkData1[0x18];
+    u8 unkData1[0x10];
+    ResrcModelChar* heroRes;        // 0x14
+    s32 unk_18;                     // 0x18
     ResrcModelNpc* interactableNpc; // 0x1c. Npc the player can currently interact with (in FOV and nearby)
     u8 unkData2[0x3c];
     KwlnTask* drawCmdTask;          // 0x5c
@@ -41,6 +44,7 @@ u32 K_FldEvent_IsUnitWithinDistOfHero(const FldUnit* fldUnit, f32 maxDist);
 u32 K_FldEvent_AreUnitsWithinDist(const FldUnit* fldUnitA, const FldUnit* fldUnitB, f32 maxDist);
 u32 K_FldEvent_ArePosWithinDist(const RwV3d* posA, const RwV3d* posB, f32 maxDist);
 ResrcModelNpc* K_FldEvent_FindInteractableNpc();
+u32 K_FldEvent_IsUnitHero(const FldUnit* fldUnit);
 u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId);
 KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask);
 

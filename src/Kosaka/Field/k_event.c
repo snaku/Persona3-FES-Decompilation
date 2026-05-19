@@ -253,6 +253,12 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
     return interactableNpc;
 }
 
+// FUN_001c7b10
+u32 K_FldEvent_IsUnitHero(const FldUnit* fldUnit)
+{
+    return fldUnit == &gFldUnits[FLDUNIT_HERO];
+}
+
 // FUN_001c7ce0. Temp name maybe
 u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId)
 {
