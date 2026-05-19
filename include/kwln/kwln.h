@@ -7,12 +7,15 @@
 
 typedef struct KwlnTask KwlnTask;
 
-#define KWLN_FLAG_2DDRAW (1 << 0)  // 0x01
-#define KWLN_FLAG_3DDRAW (1 << 1)  // 0x02
-#define KWLN_FLAG_ERR    (1 << 30) // 0x40000000
+#define SCREEN_WIDTH  640
+#define SCREEN_HEIGHT 448
 
 #define DEG_TO_RAD(deg) (gPI * (deg) / 180.0f)
 #define RAD_TO_DEG(rad) (gRadToDegFactor * (rad))
+
+#define KWLN_FLAG_2DDRAW (1 << 0)  // 0x01
+#define KWLN_FLAG_3DDRAW (1 << 1)  // 0x02
+#define KWLN_FLAG_ERR    (1 << 30) // 0x40000000
 
 extern u32 gT0CountVal;
 extern u8 gFogAlpha;

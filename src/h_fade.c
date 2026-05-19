@@ -84,8 +84,6 @@ void H_Fade_Clear()
 // FUN_001071f0
 static void H_Fade_Anim()
 {
-    // TODO: fix stack frame size (the problem is caused by RwRenderStateSet)
-
     RwIm2DVertex vertices[4];
     f32 recipZ;
     f32 z;
@@ -200,14 +198,14 @@ static void H_Fade_Anim()
     vertices[0].u.els.scrVertex.x = 0.0f;
     vertices[0].u.els.scrVertex.y = 0.0f;
 
-    vertices[1].u.els.scrVertex.x = 640.0f;
+    vertices[1].u.els.scrVertex.x = SCREEN_WIDTH;
     vertices[1].u.els.scrVertex.y = 0.0f;
 
     vertices[2].u.els.scrVertex.x = 0.0f;
-    vertices[2].u.els.scrVertex.y = 448.0f;
+    vertices[2].u.els.scrVertex.y = SCREEN_HEIGHT;
 
-    vertices[3].u.els.scrVertex.x = 640.0f;
-    vertices[3].u.els.scrVertex.y = 448.0f;
+    vertices[3].u.els.scrVertex.x = SCREEN_WIDTH;
+    vertices[3].u.els.scrVertex.y = SCREEN_HEIGHT;
 
     RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
     RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
@@ -287,14 +285,14 @@ static void H_Fade_White()
     vertices[0].u.els.scrVertex.x = 0.0f;
     vertices[0].u.els.scrVertex.y = 0.0f;
 
-    vertices[1].u.els.scrVertex.x = 640.0f;
+    vertices[1].u.els.scrVertex.x = SCREEN_WIDTH;
     vertices[1].u.els.scrVertex.y = 0.0f;
 
     vertices[2].u.els.scrVertex.x = 0.0f;
-    vertices[2].u.els.scrVertex.y = 448.0f;
+    vertices[2].u.els.scrVertex.y = SCREEN_HEIGHT;
 
-    vertices[3].u.els.scrVertex.x = 640.0f;
-    vertices[3].u.els.scrVertex.y = 448.0f;
+    vertices[3].u.els.scrVertex.x = SCREEN_WIDTH;
+    vertices[3].u.els.scrVertex.y = SCREEN_HEIGHT;
 
     RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
     RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
