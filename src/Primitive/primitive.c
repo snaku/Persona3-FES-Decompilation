@@ -3,7 +3,7 @@
 #include "sce/eestruct.h"
 #include "temporary.h"
 
-#define PRIM_RENDERSTATE_NO 6
+#define PRIM_RENDERSTATE_COUNT 6
 
 // 8 bytes
 typedef struct 
@@ -13,7 +13,7 @@ typedef struct
 } PrimRenderState;
 
 // 0069ce60
-static const PrimRenderState sRenderStates[PRIM_RENDERSTATE_NO] =
+static const PrimRenderState sRenderStates[PRIM_RENDERSTATE_COUNT] =
 {
     {rwRENDERSTATEFOGENABLE, false},
     {rwRENDERSTATEVERTEXALPHAENABLE, true}, 
@@ -50,18 +50,16 @@ void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color,
     const PrimRenderState* currRenderState;
     RwIm3DVertex vertices[2];
     RwMatrix identity;
-    u32 savedRenderStates[PRIM_RENDERSTATE_NO];
-    u32* currSavedRenderState;
+    u32 savedRenderStates[PRIM_RENDERSTATE_COUNT];
     u32 j;
 
     if (saveAndRestoreRenderState)
     {
-        for (i = 0; i < PRIM_RENDERSTATE_NO; i++)
+        for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
         {
             currRenderState = &sRenderStates[i];
-            currSavedRenderState = &savedRenderStates[i];
 
-            RwRenderStateGet(currRenderState->renderState, currSavedRenderState); // TODO: load a0 before a1
+            RwRenderStateGet(currRenderState->renderState, &savedRenderStates[i]); // TODO: regs stuff match
             RwRenderStateSet(currRenderState->renderState, currRenderState->val);
         }
 
@@ -83,12 +81,11 @@ void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color,
 
     if (saveAndRestoreRenderState)
     {
-        for (j = 0; j < PRIM_RENDERSTATE_NO; j++)
+        for (j = 0; j < PRIM_RENDERSTATE_COUNT; j++)
         {
             currRenderState = &sRenderStates[j];
-            currSavedRenderState = &savedRenderStates[j];
 
-            RwRenderStateSet(currRenderState->renderState, *currSavedRenderState); // TODO: lw a1, 0x60(v0) instead of lw a1, 0x0(v0)
+            RwRenderStateSet(currRenderState->renderState, savedRenderStates[j]); // TODO: regs stuff match
         }
     }
 }
@@ -98,7 +95,7 @@ void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderSta
 {
     u32 i;
     const PrimRenderState* currRenderState;
-    u32 savedRenderStates[PRIM_RENDERSTATE_NO];
+    u32 savedRenderStates[PRIM_RENDERSTATE_COUNT];
     u32* currSavedRenderState;
     u32 j;
     const RwV3d* currAxisDir;
@@ -107,13 +104,12 @@ void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderSta
 
     if (saveAndRestoreRenderState)
     {
-        for (i = 0; i < PRIM_RENDERSTATE_NO; i++)
+        for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
         {
             currRenderState = &sRenderStates[i];
-            currSavedRenderState = &savedRenderStates[i];
 
-            RwRenderStateGet(currRenderState->renderState, currSavedRenderState);
-            RwRenderStateSet(currRenderState->renderState, currRenderState->val); // TODO: load a0 before a1
+            RwRenderStateGet(currRenderState->renderState, &savedRenderStates[i]); // TODO: regs stuff match
+            RwRenderStateSet(currRenderState->renderState, currRenderState->val);
         }
 
         RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
@@ -137,12 +133,11 @@ void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderSta
 
     if (saveAndRestoreRenderState)
     {
-        for (j = 0; j < PRIM_RENDERSTATE_NO; j++)
+        for (j = 0; j < PRIM_RENDERSTATE_COUNT; j++)
         {
             currRenderState = &sRenderStates[j];
-            currSavedRenderState = &savedRenderStates[j];
 
-            RwRenderStateSet(currRenderState->renderState, *currSavedRenderState); // TODO: lw a1, 0x60(v0) instead of lw a1, 0x0(v0)
+            RwRenderStateSet(currRenderState->renderState, savedRenderStates[j]); // TODO: regs stuff match
         }
     }
 }
@@ -159,7 +154,7 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
     u32 i;
     const PrimRenderState* currRenderState;
     RwMatrix mat;
-    u32 savedRenderStates[PRIM_RENDERSTATE_NO];
+    u32 savedRenderStates[PRIM_RENDERSTATE_COUNT];
     u32* currSavedRenderState;
     RwV3d finalCenter;
     RwSphere rwSphere;
@@ -178,12 +173,11 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
     {
         if (saveAndRestoreRenderState)
         {
-            for (i = 0; i < PRIM_RENDERSTATE_NO; i++)
+            for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
             {
                 currRenderState = &sRenderStates[i];
-                currSavedRenderState = &savedRenderStates[i];
 
-                RwRenderStateGet(currRenderState->renderState, currSavedRenderState); // TODO: load a0 before a1
+                RwRenderStateGet(currRenderState->renderState, &savedRenderStates[i]); // TODO: regs stuff match
                 RwRenderStateSet(currRenderState->renderState, currRenderState->val);
             }
 
@@ -231,12 +225,11 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
 
         if (saveAndRestoreRenderState)
         {
-            for (j = 0; j < PRIM_RENDERSTATE_NO; j++)
+            for (j = 0; j < PRIM_RENDERSTATE_COUNT; j++)
             {
                 currRenderState = &sRenderStates[j];
-                currSavedRenderState = &savedRenderStates[j];
 
-                RwRenderStateSet(currRenderState->renderState, *currSavedRenderState); // TODO: lw a1, 0x60(v0) instead of lw a1, 0x0(v0)
+                RwRenderStateSet(currRenderState->renderState, savedRenderStates[j]); // TODO: regs stuff match
             }
         }
     }
