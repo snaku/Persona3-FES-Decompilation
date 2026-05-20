@@ -14,6 +14,9 @@
 #define KWLNTASK_CONTINUE ((void*)0)
 #define KWLNTASK_STOP     ((void*)0xFFFFFFFF)
 
+#define KWLNTASK_FLAG_UNK10 (1 << 4) // 0x10
+#define KWLNTASK_FLAG_UNK20 (1 << 5) // 0x20
+
 typedef enum
 {
     KWLNTASK_STATE_NULL,
@@ -53,8 +56,10 @@ struct KwlnTask
     s32 unk_64;                   // 0x64
 };
 
-void kwlnTaskUpdateAll();
 u8 kwlnTaskMain();
+
+void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth);
+void kwlnTaskPrintTrees();
 KwlnTask* kwlnTaskCreate(KwlnTask* parentTask, const char* name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);
 KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask, u32 priority, const char* name, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);
 KwlnTask* kwlnTaskInit(const char* name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void* workData);

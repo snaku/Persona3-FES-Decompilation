@@ -25,6 +25,8 @@ static u32 sNumTaskStaged;           // 007ce06c
 static KwlnTask* sStagedTaskTail;    // 007ce068
 static KwlnTask* sStagedTaskHead;    // 007ce064
 
+static char sPrintIndent[64]; // 00847e50
+
 void kwlnTaskDestroy(KwlnTask* task);
 void kwlnTaskDetachAllChildren(KwlnTask* task);
 void kwlnTaskDestroyHierarchy(KwlnTask* task);
@@ -230,7 +232,7 @@ u8 kwlnTaskUpdate(KwlnTask* task)
 
     sTaskUpdating = task;
 
-    if (task->stateAndFlags & (1 << 4))
+    if (task->stateAndFlags & KWLNTASK_FLAG_UNK10)
     {
         memset(gPads, 0, HPAD_PORT_MAX * sizeof(HPad));
 
@@ -403,6 +405,70 @@ void kwlnTaskDestroy(KwlnTask* task)
             }
             break;
     }
+}
+
+// FUN_00194750
+void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
+{
+    // TODO
+}
+
+// FUN_001948b0
+void kwlnTaskPrintTrees()
+{
+    s32 i;
+    char* indent;
+    KwlnTask* currTask;
+
+    printf("<<< process tree >>>\n");
+
+    i = 0;
+    indent = sPrintIndent;
+    for (; i < 64; i++)
+    {
+        indent[i] = ' '; // TODO: load 0x20 (' ') before the loop
+    }
+
+    currTask = sStagedTaskHead;
+    while (currTask != NULL)
+    {
+        if (currTask->parent == NULL)
+        {
+            sPrintIndent[0] = '\0';
+
+            kwlnTaskPrintRecursive(currTask, 0);
+        }
+
+        currTask = currTask->next;
+    }
+
+    currTask = sRunningTaskHead;
+    while (currTask != NULL)
+    {
+        if (currTask->parent == NULL)
+        {
+            sPrintIndent[0] = '\0';
+
+            kwlnTaskPrintRecursive(currTask, 0);
+        }
+
+        currTask = currTask->next;
+    }
+
+    currTask = sDestroyTaskHead;
+    while (currTask != NULL)
+    {
+        if (currTask->parent == NULL)
+        {
+            sPrintIndent[0] = '\0';
+
+            kwlnTaskPrintRecursive(currTask, 0);
+        }
+
+        currTask = currTask->next;
+    }
+
+    printf("\n\n");
 }
 
 // FUN_001949e0. Called every frame in the game main loop
