@@ -410,7 +410,46 @@ void kwlnTaskDestroy(KwlnTask* task)
 // FUN_00194750
 void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
 {
-    // TODO
+    printf("%s+-%s [%d]", sPrintIndent, task->name, task->priority);
+
+    if (task->stateAndFlags & KWLNTASK_FLAG_UNK20)
+    {
+        printf(" <S>");
+    }
+
+    if (task->stateAndFlags & KWLNTASK_FLAG_UNK10)
+    {
+        printf(" <!P>");
+    }
+
+    printf("\n");
+
+    if (task->child != NULL)
+    {
+        if (task->parent == NULL)
+        {
+            sPrintIndent[0] = ' ';
+        }
+        else if (task->sibling == NULL)
+        {
+            sPrintIndent[indentDepth * 4] = ' ';
+        }
+        else
+        {
+            sPrintIndent[indentDepth * 4] = '|';
+        }
+
+        sPrintIndent[(indentDepth * 4) + 4] = '\0';
+
+        kwlnTaskPrintRecursive(task->child, indentDepth + 1);
+
+        sPrintIndent[indentDepth * 4] = '\0';
+    }
+
+    if (task->sibling != NULL)
+    {
+        kwlnTaskPrintRecursive(task->sibling, indentDepth);
+    }
 }
 
 // FUN_001948b0
