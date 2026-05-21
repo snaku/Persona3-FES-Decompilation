@@ -176,7 +176,7 @@ Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode);
 Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode);
 Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode);
 u32 mdlStreamRead(Model* mdl);
-Model* mdlClone(Model* mdl);
+Model* mdlClone(const Model* mdl);
 void mdlDestroy(Model* mdl);
 void mdl00317730(Model* mdl);
 

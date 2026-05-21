@@ -135,6 +135,33 @@ u32 mdlStreamRead(Model* mdl)
     return true;
 }
 
+// FUN_003170c0
+void mdlCopy(const Model* src, Model* dst)
+{
+    // TODO
+}
+
+// FUN_00317450
+Model* mdlClone(const Model* mdl)
+{
+    Model* clone;
+
+    clone = mdlInit(mdl->type, mdl->id);
+
+    if (mdl->flags & MDL_FLAG_STREAMDONE)
+    {
+        mdlCopy(mdl, clone);
+
+        clone->flags |= MDL_FLAG_STREAMDONE;
+    }
+    else
+    {
+        clone->flags |= MDL_FLAG_STREAMUNK1;
+    }
+
+    return clone;
+}
+
 // FUN_003174e0
 void mdlDestroy(Model* mdl)
 {
