@@ -1,575 +1,779 @@
+#include "Battle/battle.h"
+#include "Battle/btlUnit.h"
+#include "Battle/btlAction.h"
+#include "rw/rwplcore.h"
 #include "datUnit.h"
 #include "datCalc.h"
-#include "Battle/btlCtx.h"
-#include "Battle/btlActor.h"
-#include "Battle/btlAction.h"
 #include "temporary.h"
 
-void BtlAction_InitStateNon(BattleActor* btlActor);
-void BtlAction_UpdateStateNon(BattleActor* btlActor);
-void BtlAction_InitStateStandBy(BattleActor* btlActor);
-void BtlAction_UpdateStateStandBy(BattleActor* btlActor);
-void BtlAction_InitStateStart(BattleActor* btlActor);
-void BtlAction_UpdateStateStart(BattleActor* btlActor);
-void BtlAction_InitStateStartHome(BattleActor* btlActor);
-void BtlAction_UpdateStateStartHome(BattleActor* btlActor);
-void BtlAction_InitStateChangeFormation(BattleActor* btlActor);
-void BtlAction_UpdateStateChangeFormation(BattleActor* btlActor);
-void BtlAction_InitStateCommand(BattleActor* btlActor);
-void BtlAction_UpdateStateCommand(BattleActor* btlActor);
-void BtlAction_InitStateTarget(BattleActor* btlActor);
-void BtlAction_UpdateStateTarget(BattleActor* btlActor);
-void BtlAction_InitStateAnalyze(BattleActor* btlActor);
-void BtlAction_UpdateStateAnalyze(BattleActor* btlActor);
-void BtlAction_InitStateAI(BattleActor* btlActor);
-void BtlAction_UpdateStateAI(BattleActor* btlActor);
-void BtlAction_InitStateAuto(BattleActor* btlActor);
-void BtlAction_UpdateStateAuto(BattleActor* btlActor);
-void BtlAction_InitStateSupport(BattleActor* btlActor);
-void BtlAction_UpdateStateSupport(BattleActor* btlActor);
-void BtlAction_InitStateBad(BattleActor* btlActor);
-void BtlAction_UpdateStateBad(BattleActor* btlActor);
-void BtlAction_InitStateReady(BattleActor* btlActor);
-void BtlAction_UpdateStateReady(BattleActor* btlActor);
-void BtlAction_InitStateMoveTarget(BattleActor* btlActor);
-void BtlAction_UpdateStateMoveTarget(BattleActor* btlActor);
-void BtlAction_InitStateMoveHome(BattleActor* btlActor);
-void BtlAction_UpdateStateMoveHome(BattleActor* btlActor);
-void BtlAction_InitStateAttack(BattleActor* btlActor);
-void BtlAction_UpdateStateAttack(BattleActor* btlActor);
-void BtlAction_InitStateSkill(BattleActor* btlActor);
-void BtlAction_UpdateStateSkill(BattleActor* btlActor);
-void BtlAction_InitStateReinforce(BattleActor* btlActor);
-void BtlAction_UpdateStateReinforce(BattleActor* btlActor);
-void BtlAction_InitStateSummon(BattleActor* btlActor);
-void BtlAction_UpdateStateSummon(BattleActor* btlActor);
-void BtlAction_InitStateAssist(BattleActor* btlActor);
-void BtlAction_UpdateStateAssist(BattleActor* btlActor);
-void BtlAction_InitStateEvent(BattleActor* btlActor);
-void BtlAction_UpdateStateEvent(BattleActor* btlActor);
-void BtlAction_InitStateError(BattleActor* btlActor);
-void BtlAction_UpdateStateError(BattleActor* btlActor);
-void BtlAction_InitStateEndure(BattleActor* btlActor);
-void BtlAction_UpdateStateEndure(BattleActor* btlActor);
-void BtlAction_InitStateWait(BattleActor* btlActor);
-void BtlAction_UpdateStateWait(BattleActor* btlActor);
-void BtlAction_InitStatePersona(BattleActor* btlActor);
-void BtlAction_UpdateStatePersona(BattleActor* btlActor);
-void BtlAction_InitStateBadDamage(BattleActor* btlActor);
-void BtlAction_UpdateStateBadDamage(BattleActor* btlActor);
-void BtlAction_InitStateEscapeMes(BattleActor* btlActor);
-void BtlAction_UpdateStateEscapeMes(BattleActor* btlActor);
-void BtlAction_InitStateEscape(BattleActor* btlActor);
-void BtlAction_UpdateStateEscape(BattleActor* btlActor);
-void BtlAction_InitStateRoundUpMes(BattleActor* btlActor);
-void BtlAction_UpdateStateRoundUpMes(BattleActor* btlActor);
-void BtlAction_InitStateRoundUp(BattleActor* btlActor);
-void BtlAction_UpdateStateRoundUp(BattleActor* btlActor);
-void BtlAction_InitStatePacket(BattleActor* btlActor);
-void BtlAction_UpdateStatePacket(BattleActor* btlActor);
-void BtlAction_InitStateEnd(BattleActor* btlActor);
-void BtlAction_UpdateStateEnd(BattleActor* btlActor);
-void BtlAction_InitStateEndHome(BattleActor* btlActor);
-void BtlAction_UpdateStateEndHome(BattleActor* btlActor);
-void BtlAction_InitStateDead(BattleActor* btlActor);
-void BtlAction_UpdateStateDead(BattleActor* btlActor);
-void BtlAction_InitStateExit(BattleActor* btlActor);
-void BtlAction_UpdateStateExit(BattleActor* btlActor);
-void BtlAction_InitStateTest(BattleActor* btlActor);
-void BtlAction_UpdateStateTest(BattleActor* btlActor);
+void btlActionInitStateNon(BtlAction* action);
+void btlActionUpdateStateNon(BtlAction* action);
+void btlActionInitStateStandBy(BtlAction* action);
+void btlActionUpdateStateStandBy(BtlAction* action);
+void btlActionInitStateStart(BtlAction* action);
+void btlActionUpdateStateStart(BtlAction* action);
+void btlActionInitStateStartHome(BtlAction* action);
+void btlActionUpdateStateStartHome(BtlAction* action);
+void btlActionInitStateChangeFormation(BtlAction* action);
+void btlActionUpdateStateChangeFormation(BtlAction* action);
+void btlActionInitStateCommand(BtlAction* action);
+void btlActionUpdateStateCommand(BtlAction* action);
+void btlActionInitStateTarget(BtlAction* action);
+void btlActionUpdateStateTarget(BtlAction* action);
+void btlActionInitStateAnalyze(BtlAction* action);
+void btlActionUpdateStateAnalyze(BtlAction* action);
+void btlActionInitStateAI(BtlAction* action);
+void btlActionUpdateStateAI(BtlAction* action);
+void btlActionInitStateAuto(BtlAction* action);
+void btlActionUpdateStateAuto(BtlAction* action);
+void btlActionInitStateSupport(BtlAction* action);
+void btlActionUpdateStateSupport(BtlAction* action);
+void btlActionInitStateBad(BtlAction* action);
+void btlActionUpdateStateBad(BtlAction* action);
+void btlActionInitStateReady(BtlAction* action);
+void btlActionUpdateStateReady(BtlAction* action);
+void btlActionInitStateMoveTarget(BtlAction* action);
+void btlActionUpdateStateMoveTarget(BtlAction* action);
+void btlActionInitStateMoveHome(BtlAction* action);
+void btlActionUpdateStateMoveHome(BtlAction* action);
+void btlActionInitStateAttack(BtlAction* action);
+void btlActionUpdateStateAttack(BtlAction* action);
+void btlActionInitStateSkill(BtlAction* action);
+void btlActionUpdateStateSkill(BtlAction* action);
+void btlActionInitStateReinforce(BtlAction* action);
+void btlActionUpdateStateReinforce(BtlAction* action);
+void btlActionInitStateSummon(BtlAction* action);
+void btlActionUpdateStateSummon(BtlAction* action);
+void btlActionInitStateAssist(BtlAction* action);
+void btlActionUpdateStateAssist(BtlAction* action);
+void btlActionInitStateEvent(BtlAction* action);
+void btlActionUpdateStateEvent(BtlAction* action);
+void btlActionInitStateError(BtlAction* action);
+void btlActionUpdateStateError(BtlAction* action);
+void btlActionInitStateEndure(BtlAction* action);
+void btlActionUpdateStateEndure(BtlAction* action);
+void btlActionInitStateWait(BtlAction* action);
+void btlActionUpdateStateWait(BtlAction* action);
+void btlActionInitStatePersona(BtlAction* action);
+void btlActionUpdateStatePersona(BtlAction* action);
+void btlActionInitStateBadDamage(BtlAction* action);
+void btlActionUpdateStateBadDamage(BtlAction* action);
+void btlActionInitStateEscapeMes(BtlAction* action);
+void btlActionUpdateStateEscapeMes(BtlAction* action);
+void btlActionInitStateEscape(BtlAction* action);
+void btlActionUpdateStateEscape(BtlAction* action);
+void btlActionInitStateRoundUpMes(BtlAction* action);
+void btlActionUpdateStateRoundUpMes(BtlAction* action);
+void btlActionInitStateRoundUp(BtlAction* action);
+void btlActionUpdateStateRoundUp(BtlAction* action);
+void btlActionInitStatePacket(BtlAction* action);
+void btlActionUpdateStatePacket(BtlAction* action);
+void btlActionInitStateEnd(BtlAction* action);
+void btlActionUpdateStateEnd(BtlAction* action);
+void btlActionInitStateEndHome(BtlAction* action);
+void btlActionUpdateStateEndHome(BtlAction* action);
+void btlActionInitStateDead(BtlAction* action);
+void btlActionUpdateStateDead(BtlAction* action);
+void btlActionInitStateExit(BtlAction* action);
+void btlActionUpdateStateExit(BtlAction* action);
+void btlActionInitStateTest(BtlAction* action);
+void btlActionUpdateStateTest(BtlAction* action);
 
-void BtlAction_SetStateWithDelay(BattleActor* btlActor, u16 btlState, u16 delay);
+void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);
 
 // 007cc530
 u32 gUnk_007cc530 = 0;
 
 // 00693410
-BattleActionStateEntry gActionStateTable[] = 
+BtlActionStateEntry gActionStateTable[] = 
 {
-    {BtlAction_InitStateNon, BtlAction_UpdateStateNon, "NON"},
-    {BtlAction_InitStateStandBy, BtlAction_UpdateStateStandBy, "STANDBY"},
-    {BtlAction_InitStateStart, BtlAction_UpdateStateStart, "START"},
-    {BtlAction_InitStateStartHome, BtlAction_UpdateStateStartHome, "START HOME"},
-    {BtlAction_InitStateChangeFormation, BtlAction_UpdateStateChangeFormation, "CHANGE FORMATION"},
-    {BtlAction_InitStateCommand, BtlAction_UpdateStateCommand, "COMMAND"},
-    {BtlAction_InitStateTarget, BtlAction_UpdateStateTarget, "TARGET"},
-    {BtlAction_InitStateAnalyze, BtlAction_UpdateStateAnalyze, "ANALYZE"},
-    {BtlAction_InitStateAI, BtlAction_UpdateStateAI, "AI"},
-    {BtlAction_InitStateAuto, BtlAction_UpdateStateAuto, "AUTO"},
-    {BtlAction_InitStateSupport, BtlAction_UpdateStateSupport, "SUPPORT"},
-    {BtlAction_InitStateBad, BtlAction_UpdateStateBad, "BAD"},
-    {BtlAction_InitStateReady, BtlAction_UpdateStateReady, "READY"},
-    {BtlAction_InitStateMoveTarget, BtlAction_UpdateStateMoveTarget, "MOVE TARGET"},
-    {BtlAction_InitStateMoveHome, BtlAction_UpdateStateMoveHome, "MOVE HOME"},
-    {BtlAction_InitStateAttack, BtlAction_UpdateStateAttack, "ATTACK"},
-    {BtlAction_InitStateSkill, BtlAction_UpdateStateSkill, "SKILL"},
-    {BtlAction_InitStateReinforce, BtlAction_UpdateStateReinforce, "REINFORCE"},
-    {BtlAction_InitStateSummon, BtlAction_UpdateStateSummon, "SUMMON"},
-    {BtlAction_InitStateAssist, BtlAction_UpdateStateAssist, "ASSIST"},
-    {BtlAction_InitStateEvent, BtlAction_UpdateStateEvent, "EVENT"},
-    {BtlAction_InitStateError, BtlAction_UpdateStateError, "ERROR"},
-    {BtlAction_InitStateEndure, BtlAction_UpdateStateEndure, "ENDURE"},
-    {BtlAction_InitStateWait, BtlAction_UpdateStateWait, "WAIT"},
-    {BtlAction_InitStatePersona, BtlAction_UpdateStatePersona, "PERSONA"},
-    {BtlAction_InitStateBadDamage, BtlAction_UpdateStateBadDamage, "BAD DAMAGE"},
-    {BtlAction_InitStateEscapeMes, BtlAction_UpdateStateEscapeMes, "ESCAPE MES"},
-    {BtlAction_InitStateEscape, BtlAction_UpdateStateEscape, "ESCAPE"},
-    {BtlAction_InitStateRoundUpMes, BtlAction_UpdateStateRoundUpMes, "ROUNDUP MES"},
-    {BtlAction_InitStateRoundUp, BtlAction_UpdateStateRoundUp, "ROUNDUP"},
-    {BtlAction_InitStatePacket, BtlAction_UpdateStatePacket, "PACKET"},
-    {BtlAction_InitStateEnd, BtlAction_UpdateStateEnd, "END"},
-    {BtlAction_InitStateEndHome, BtlAction_UpdateStateEndHome, "END HOME"},
-    {BtlAction_InitStateDead, BtlAction_UpdateStateDead, "DEAD"},
-    {BtlAction_InitStateExit, BtlAction_UpdateStateExit, "EXIT"},
-    {BtlAction_InitStateTest, BtlAction_UpdateStateTest, "TEST"}
+    {btlActionInitStateNon, btlActionUpdateStateNon, "NON"},
+    {btlActionInitStateStandBy, btlActionUpdateStateStandBy, "STANDBY"},
+    {btlActionInitStateStart, btlActionUpdateStateStart, "START"},
+    {btlActionInitStateStartHome, btlActionUpdateStateStartHome, "START HOME"},
+    {btlActionInitStateChangeFormation, btlActionUpdateStateChangeFormation, "CHANGE FORMATION"},
+    {btlActionInitStateCommand, btlActionUpdateStateCommand, "COMMAND"},
+    {btlActionInitStateTarget, btlActionUpdateStateTarget, "TARGET"},
+    {btlActionInitStateAnalyze, btlActionUpdateStateAnalyze, "ANALYZE"},
+    {btlActionInitStateAI, btlActionUpdateStateAI, "AI"},
+    {btlActionInitStateAuto, btlActionUpdateStateAuto, "AUTO"},
+    {btlActionInitStateSupport, btlActionUpdateStateSupport, "SUPPORT"},
+    {btlActionInitStateBad, btlActionUpdateStateBad, "BAD"},
+    {btlActionInitStateReady, btlActionUpdateStateReady, "READY"},
+    {btlActionInitStateMoveTarget, btlActionUpdateStateMoveTarget, "MOVE TARGET"},
+    {btlActionInitStateMoveHome, btlActionUpdateStateMoveHome, "MOVE HOME"},
+    {btlActionInitStateAttack, btlActionUpdateStateAttack, "ATTACK"},
+    {btlActionInitStateSkill, btlActionUpdateStateSkill, "SKILL"},
+    {btlActionInitStateReinforce, btlActionUpdateStateReinforce, "REINFORCE"},
+    {btlActionInitStateSummon, btlActionUpdateStateSummon, "SUMMON"},
+    {btlActionInitStateAssist, btlActionUpdateStateAssist, "ASSIST"},
+    {btlActionInitStateEvent, btlActionUpdateStateEvent, "EVENT"},
+    {btlActionInitStateError, btlActionUpdateStateError, "ERROR"},
+    {btlActionInitStateEndure, btlActionUpdateStateEndure, "ENDURE"},
+    {btlActionInitStateWait, btlActionUpdateStateWait, "WAIT"},
+    {btlActionInitStatePersona, btlActionUpdateStatePersona, "PERSONA"},
+    {btlActionInitStateBadDamage, btlActionUpdateStateBadDamage, "BAD DAMAGE"},
+    {btlActionInitStateEscapeMes, btlActionUpdateStateEscapeMes, "ESCAPE MES"},
+    {btlActionInitStateEscape, btlActionUpdateStateEscape, "ESCAPE"},
+    {btlActionInitStateRoundUpMes, btlActionUpdateStateRoundUpMes, "ROUNDUP MES"},
+    {btlActionInitStateRoundUp, btlActionUpdateStateRoundUp, "ROUNDUP"},
+    {btlActionInitStatePacket, btlActionUpdateStatePacket, "PACKET"},
+    {btlActionInitStateEnd, btlActionUpdateStateEnd, "END"},
+    {btlActionInitStateEndHome, btlActionUpdateStateEndHome, "END HOME"},
+    {btlActionInitStateDead, btlActionUpdateStateDead, "DEAD"},
+    {btlActionInitStateExit, btlActionUpdateStateExit, "EXIT"},
+    {btlActionInitStateTest, btlActionUpdateStateTest, "TEST"}
 };
 
 // FUN_00289860
-u8 BtlAction_CheckPlayWeaponIdleAnim(BattleActor* btlActor)
+u8 btlActionCheckPlayWeaponIdleAnim(BtlAction* action)
 {
     // TODO
 
-    if (btlActor->idleWeaponAnimTimer <= 0)
+    if (action->idleWeaponAnimTimer <= 0)
     {
 
     }
-    if (btlActor->idleWeaponAnimTimer == 0)
+    if (action->idleWeaponAnimTimer == 0)
     {
 
     }
 
-    btlActor->idleWeaponAnimTimer--;
+    action->idleWeaponAnimTimer--;
     return false;
 }
 
 // FUN_0028a990
-void BtlAction_InitStateNon(BattleActor* btlActor)
+void btlActionInitStateNon(BtlAction* action)
 {
     // nothing
 }
 // FUN_0028a9a0
-void BtlAction_UpdateStateNon(BattleActor* btlActor)
+void btlActionUpdateStateNon(BtlAction* action)
 {
     // nothing
 }
 
 // FUN_0028a9b0
-void BtlAction_InitStateStandBy(BattleActor* btlActor)
+void btlActionInitStateStandBy(BtlAction* action)
 {
     // nothing
 }
 // FUN_0028a9c0
-void BtlAction_UpdateStateStandBy(BattleActor* btlActor)
+void btlActionUpdateStateStandBy(BtlAction* action)
 {
-    if ((btlActor->actorCore->unkFlag_9c & (1 << 4)))
+    if ((action->unit->unkFlag_9c & (1 << 4)))
     {
-        BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_ENDURE);
+        btlActionSetStateAndInit(action, BTLACTION_STATE_ENDURE);
         return;
     }
 
-    if (btlActor->actorCore->unkFlag_9c & (1 << 0))
+    if (action->unit->unkFlag_9c & (1 << 0))
     {
-        BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_DEAD);
+        btlActionSetStateAndInit(action, BTLACTION_STATE_DEAD);
     }
 }
 
 // FUN_0028aa20
-void BtlAction_InitStateStart(BattleActor* btlActor)
+void btlActionInitStateStart(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028b230
-void BtlAction_UpdateStateStart(BattleActor* btlActor)
+void btlActionUpdateStateStart(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028b800
-void BtlAction_InitStateStartHome(BattleActor* btlActor)
+void btlActionInitStateStartHome(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028b9c0
-void BtlAction_UpdateStateStartHome(BattleActor* btlActor)
+void btlActionUpdateStateStartHome(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028ba50
-void BtlAction_InitStateChangeFormation(BattleActor* btlActor)
+void btlActionInitStateChangeFormation(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028bca0
-void BtlAction_UpdateStateChangeFormation(BattleActor* btlActor)
+void btlActionUpdateStateChangeFormation(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028bd10
-void BtlAction_InitStateCommand(BattleActor* btlActor)
+void btlActionInitStateCommand(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028bf80
-void BtlAction_UpdateStateCommand(BattleActor* btlActor)
+void btlActionUpdateStateCommand(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028c310
-void BtlAction_InitStateTarget(BattleActor* btlActor)
+void btlActionInitStateTarget(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028c590
-void BtlAction_UpdateStateTarget(BattleActor* btlActor)
+void btlActionUpdateStateTarget(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028c9f0
-void BtlAction_InitStateAnalyze(BattleActor* btlActor)
+void btlActionInitStateAnalyze(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028ca00
-void BtlAction_UpdateStateAnalyze(BattleActor* btlActor)
+void btlActionUpdateStateAnalyze(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028cda0
-void BtlAction_InitStateAI(BattleActor* btlActor)
+void btlActionInitStateAI(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028ce50
-void BtlAction_UpdateStateAI(BattleActor* btlActor)
+void btlActionUpdateStateAI(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028cf20
-void BtlAction_InitStateAuto(BattleActor* btlActor)
+void btlActionInitStateAuto(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028cf80
-void BtlAction_UpdateStateAuto(BattleActor* btlActor)
+void btlActionUpdateStateAuto(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028d070
-void BtlAction_InitStateSupport(BattleActor* btlActor)
+void btlActionInitStateSupport(BtlAction* action)
 {
     // nothing
 }
 // FUN_0028d080
-void BtlAction_UpdateStateSupport(BattleActor* btlActor)
+void btlActionUpdateStateSupport(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028d560
-void BtlAction_InitStateBad(BattleActor* btlActor)
+void btlActionInitStateBad(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028d5a0
-void BtlAction_UpdateStateBad(BattleActor* btlActor)
+void btlActionUpdateStateBad(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028dbe0
-void BtlAction_InitStateReady(BattleActor* btlActor)
+void btlActionInitStateReady(BtlAction* action)
 {
     // nothing
 }
 // FUN_0028dbf0
-void BtlAction_UpdateStateReady(BattleActor* btlActor)
+void btlActionUpdateStateReady(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028df00
-void BtlAction_InitStateMoveTarget(BattleActor* btlActor)
+void btlActionInitStateMoveTarget(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028e740
-void BtlAction_UpdateStateMoveTarget(BattleActor* btlActor)
+void btlActionUpdateStateMoveTarget(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028e7f0
-void BtlAction_InitStateMoveHome(BattleActor* btlActor)
+void btlActionInitStateMoveHome(BtlAction* action)
 {
     // TODO
 }
 // FUN_0028ea90
-void BtlAction_UpdateStateMoveHome(BattleActor* btlActor)
+void btlActionUpdateStateMoveHome(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_0028eb40
-void BtlAction_InitStateAttack(BattleActor* btlActor)
+void btlActionInitStateAttack(BtlAction* action)
 {
     // nothing
 }
 // FUN_0028eb50
-void BtlAction_UpdateStateAttack(BattleActor* btlActor)
+void btlActionUpdateStateAttack(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00290bd0
-void BtlAction_InitStateSkill(BattleActor* btlActor)
+void btlActionInitStateSkill(BtlAction* action)
 {
     // nothing
 }
 // FUN_00290be0
-void BtlAction_UpdateStateSkill(BattleActor* btlActor)
+void btlActionUpdateStateSkill(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00294d10
-void BtlAction_InitStateReinforce(BattleActor* btlActor)
+void btlActionInitStateReinforce(BtlAction* action)
 {
     // nothing
 }
 // FUN_00294d40
-void BtlAction_UpdateStateReinforce(BattleActor* btlActor)
+void btlActionUpdateStateReinforce(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00295150
-void BtlAction_InitStateSummon(BattleActor* btlActor)
+void btlActionInitStateSummon(BtlAction* action)
 {
     // nothing
 }
 // FUN_00295160
-void BtlAction_UpdateStateSummon(BattleActor* btlActor)
+void btlActionUpdateStateSummon(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00295a10
-void BtlAction_InitStateAssist(BattleActor* btlActor)
+void btlActionInitStateAssist(BtlAction* action)
 {
     // TODO
 }
 // FUN_00295b20
-void BtlAction_UpdateStateAssist(BattleActor* btlActor)
+void btlActionUpdateStateAssist(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00295b90
-void BtlAction_InitStateEvent(BattleActor* btlActor)
+void btlActionInitStateEvent(BtlAction* action)
 {
     // nothing
 }
 // FUN_00295ba0
-void BtlAction_UpdateStateEvent(BattleActor* btlActor)
+void btlActionUpdateStateEvent(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00295bf0
-void BtlAction_InitStateError(BattleActor* btlActor)
+void btlActionInitStateError(BtlAction* action)
 {
     // nothing
 }
 // FUN_00295c00
-void BtlAction_UpdateStateError(BattleActor* btlActor)
+void btlActionUpdateStateError(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00295f00
-void BtlAction_InitStateEndure(BattleActor* btlActor)
+void btlActionInitStateEndure(BtlAction* action)
 {
     // TODO
 }
 // FUN_00295fa0
-void BtlAction_UpdateStateEndure(BattleActor* btlActor)
+void btlActionUpdateStateEndure(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00296310
-void BtlAction_InitStateWait(BattleActor* btlActor)
+void btlActionInitStateWait(BtlAction* action)
 {
     // nothing
 }
 // FUN_00296320
-void BtlAction_UpdateStateWait(BattleActor* btlActor)
+void btlActionUpdateStateWait(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00297480
-void BtlAction_InitStatePersona(BattleActor* btlActor)
+void btlActionInitStatePersona(BtlAction* action)
 {
     // TODO
 }
 // FUN_002976d0
-void BtlAction_UpdateStatePersona(BattleActor* btlActor)
+void btlActionUpdateStatePersona(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00297750
-void BtlAction_InitStateBadDamage(BattleActor* btlActor)
+void btlActionInitStateBadDamage(BtlAction* action)
 {
     // TODO
 }
 // FUN_00297760
-void BtlAction_UpdateStateBadDamage(BattleActor* btlActor)
+void btlActionUpdateStateBadDamage(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_002964f0
-void BtlAction_InitStateEscapeMes(BattleActor* btlActor)
+void btlActionInitStateEscapeMes(BtlAction* action)
 {
     // TODO
 }
 // FUN_00296660
-void BtlAction_UpdateStateEscapeMes(BattleActor* btlActor)
+void btlActionUpdateStateEscapeMes(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00296880
-void BtlAction_InitStateEscape(BattleActor* btlActor)
+void btlActionInitStateEscape(BtlAction* action)
 {
     // nothing
 }
 // FUN_00296890
-void BtlAction_UpdateStateEscape(BattleActor* btlActor)
+void btlActionUpdateStateEscape(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00297a60
-void BtlAction_InitStateRoundUpMes(BattleActor* btlActor)
+void btlActionInitStateRoundUpMes(BtlAction* action)
 {
     // TODO
 }
 // FUN_00298060
-void BtlAction_UpdateStateRoundUpMes(BattleActor* btlActor)
+void btlActionUpdateStateRoundUpMes(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_002984e0
-void BtlAction_InitStateRoundUp(BattleActor* btlActor)
+void btlActionInitStateRoundUp(BtlAction* action)
 {
     // TODO
 }
 // FUN_00298610
-void BtlAction_UpdateStateRoundUp(BattleActor* btlActor)
+void btlActionUpdateStateRoundUp(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_002990f0
-void BtlAction_InitStatePacket(BattleActor* btlActor)
+void btlActionInitStatePacket(BtlAction* action)
 {
     // nothing
 }
 // FUN_00299100
-void BtlAction_UpdateStatePacket(BattleActor* btlActor)
+void btlActionUpdateStatePacket(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00299170
-void BtlAction_InitStateEnd(BattleActor* btlActor)
+void btlActionInitStateEnd(BtlAction* action)
 {
     // TODO
 }
 // FUN_00299270
-void BtlAction_UpdateStateEnd(BattleActor* btlActor)
+void btlActionUpdateStateEnd(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00299520
-void BtlAction_InitStateEndHome(BattleActor* btlActor)
+void btlActionInitStateEndHome(BtlAction* action)
 {
     // TODO
 }
 // FUN_00299760
-void BtlAction_UpdateStateEndHome(BattleActor* btlActor)
+void btlActionUpdateStateEndHome(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00299800
-void BtlAction_InitStateDead(BattleActor* btlActor)
+void btlActionInitStateDead(BtlAction* action)
 {
     // TODO
 }
 // FUN_00299990
-void BtlAction_UpdateStateDead(BattleActor* btlActor)
+void btlActionUpdateStateDead(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00299aa0
-void BtlAction_InitStateExit(BattleActor* btlActor)
+void btlActionInitStateExit(BtlAction* action)
 {
     // TODO
 }
 // FUN_00299b00
-void BtlAction_UpdateStateExit(BattleActor* btlActor)
+void btlActionUpdateStateExit(BtlAction* action)
 {
     // TODO
 }
 
 // FUN_00299d20
-void BtlAction_InitStateTest(BattleActor* btlActor)
+void btlActionInitStateTest(BtlAction* action)
 {
     // nothing
 }
 // FUN_00299d30
-void BtlAction_UpdateStateTest(BattleActor* btlActor)
+void btlActionUpdateStateTest(BtlAction* action)
 {
-    BtlAction_SetStateAndInit(btlActor, BTL_ACTION_STATE_COMMAND);
+    btlActionSetStateAndInit(action, BTLACTION_STATE_COMMAND);
 }
 
 // FUN_00299d60
-void BtlAction_SetStateAndInit(BattleActor* btlActor, u16 btlState)
+void btlActionSetStateAndInit(BtlAction* action, u16 btlState)
 {
-    btlActor->oldState = btlActor->currState;
-    btlActor->currState = btlState;
-    btlActor->stateTimer = 0;
+    action->oldState = action->currState;
+    action->currState = btlState;
+    action->stateTimer = 0;
 
-    gActionStateTable[btlState].BtlAction_InitState(btlActor);
+    gActionStateTable[btlState].init(action);
 }
 
 // FUN_00299db0. 'delay' = number of frames
-void BtlAction_SetStateWithDelay(BattleActor* btlActor, u16 btlState, u16 delay)
+void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay)
 {
     if (delay == 0)
     {
-        btlActor->pendingState = BTL_ACTION_STATE_NON;
-        btlActor->pendingStateTimer = 0;
-        BtlAction_SetStateAndInit(btlActor, btlState); // was probably inlined ?
+        action->pendingState = BTLACTION_STATE_NON;
+        action->pendingStateTimer = 0;
+
+        action->oldState = action->currState;
+        action->currState = btlState;
+        action->stateTimer = 0;
+
+        gActionStateTable[btlState].init(action);
+
         return;
     }
 
-    btlActor->pendingState = btlState;
-    btlActor->pendingStateTimer = delay;
+    action->pendingState = btlState;
+    action->pendingStateTimer = delay;
 }
 
-// 01604130
+// FUN_00299e90
+BtlAction* btlActionCreate()
+{
+    // WIP
+
+    BtlAction* action;
+
+    action = RwMalloc(sizeof(BtlAction), rwMEMHINTDUR_GLOBAL);
+    memset(action, 0, sizeof(BtlAction));
+
+    // FUN_002d1570(action + 0x38);
+
+    action->pendingState = BTLACTION_STATE_NON;
+    action->unk_14 = 8;
+
+    // uVar3 = FUN_0027cb80();
+
+    // 0xFFFFFFE = u32 max - 1
+    if (gUnk_007cc530 > 0xFFFFFFE)
+    {
+        gUnk_007cc530 = 1;
+    }
+
+    action->id = gUnk_007cc530;
+    action->idleWeaponAnimTimer = -1;
+    gUnk_007cc530++;
+
+    // uVar1 = FUN_002ffbc0(0x3c);
+    // ACTION->unk_36 = uVar1;
+    action->next = NULL;
+    
+    if (gBtl->prevActionCreated == NULL)
+    {
+        action->prev = NULL;
+    }
+    else 
+    {
+        gBtl->prevActionCreated->next = action;
+        action->prev = gBtl->prevActionCreated;
+    }
+    
+    gBtl->prevActionCreated = action;
+
+    action->oldState = action->currState;
+    action->currState = BTLACTION_STATE_NON;
+    action->stateTimer = 0;
+
+    gActionStateTable[BTLACTION_STATE_NON].init(action);
+
+    return action;
+}
+
+// FUN_00299fb0
+void btlActionUpdate()
+{
+    BtlAction* currAction;
+    BtlAction* actionToUpdate;
+    u8 canUpdateAction;
+
+    currAction = gBtl->prevActionCreated;
+    actionToUpdate = currAction;
+    while (actionToUpdate != NULL)
+    {
+        actionToUpdate = currAction;
+        currAction = actionToUpdate->prev;
+        canUpdateAction = true;
+
+        if (actionToUpdate->pendingState != BTLACTION_STATE_NON &&
+            actionToUpdate->pendingStateTimer != 0)
+        {
+            actionToUpdate->pendingStateTimer--;
+            if (actionToUpdate->pendingStateTimer == 0)
+            {
+                actionToUpdate->oldState = actionToUpdate->currState;
+                actionToUpdate->currState = actionToUpdate->pendingState;
+                actionToUpdate->stateTimer = 0;
+
+                gActionStateTable[actionToUpdate->pendingState].init(actionToUpdate);
+
+                actionToUpdate->pendingState = BTLACTION_STATE_NON;
+            }
+            else 
+            {
+                canUpdateAction = false; // do not update/free actor since timer is not finished
+            }
+        }
+
+        if (canUpdateAction && !(actionToUpdate->unk_1a & (1 << 2)))
+        {
+            if (!(actionToUpdate->unk_18 & (1 << 0)) &&
+                 (actionToUpdate->unk_1a & (1 << 1)))
+            {
+                if (actionToUpdate->prev != NULL)
+                {
+                    actionToUpdate->prev->next = actionToUpdate->next;
+                }
+
+                if (actionToUpdate->next == NULL)
+                {
+                    gBtl->prevActionCreated = actionToUpdate->prev;
+                }
+                else 
+                {
+                    actionToUpdate->next->prev = actionToUpdate->prev;
+                }
+
+                RwFree(actionToUpdate);
+            }
+            else
+            {
+                gActionStateTable[actionToUpdate->currState].update(actionToUpdate);
+                actionToUpdate->stateTimer += 2;
+            }
+        }
+    }
+}
+
+// FUN_0029a140
+void btlActionDestroyAll()
+{
+    BtlAction* currAction;
+    BtlAction* prevAction;
+
+    currAction = gBtl->prevActionCreated;
+    while (currAction != NULL)
+    {   
+        prevAction = currAction->prev;
+        if (prevAction != NULL)
+        {
+            prevAction->next = currAction->next;
+        }
+
+        if (currAction->next == NULL)
+        {
+            gBtl->prevActionCreated = currAction->prev;
+        }
+        else
+        {
+            currAction->next->prev = currAction->prev;
+        }
+
+        RwFree(currAction);
+
+        currAction = prevAction;
+    }
+}
+
+// FUN_0029a1d0
+BtlAction* btlActionFindByUnit(BtlUnit* unit)
+{
+    BtlAction* action;
+
+    action = gBtl->prevActionCreated;
+    while (action != NULL)
+    {
+        if (action->unit == unit)
+        {
+            return action;
+        }
+
+        action = action->prev;
+    }
+
+    return NULL;
+}
+
+// FUN_0029a210
+BtlAction* btlActionFindById(u32 id)
+{
+    BtlAction* action;
+
+    action = gBtl->prevActionCreated;
+    while (action != NULL)
+    {
+        if (action->id == id)
+        {
+            return action;
+        }
+
+        action = action->prev;
+    }
+
+    return NULL;
+}
+
+// FUN_0029ad20
+BtlAction* btlActionGetPlaying()
+{
+    BtlAction* action;
+
+    action = gBtl->unk_284;
+    if (action == NULL)
+    {
+        action = gBtl->currActionPlaying;
+    }
+
+    return action;
+}

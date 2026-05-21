@@ -3,54 +3,84 @@
 
 typedef enum
 {
-    BTL_ACTION_STATE_NON,           // base state when a BattleActor is created
-    BTL_ACTION_STATE_STANDBY,       // not his turn
-    BTL_ACTION_STATE_START,         // start of the turn
-    BTL_ACTION_STATE_START_HOME,    // ?
-    BTL_ACTION_STATE_CHANGE_FORMA,  // ?
-    BTL_ACTION_STATE_COMMAND,       // Hero can choose what he wants to do
-    BTL_ACTION_STATE_TARGET,        // target mode
-    BTL_ACTION_STATE_ANALYZE,       // viewing analyze menu
-    BTL_ACTION_STATE_AI,            // ?
-    BTL_ACTION_STATE_AUTO,          // rush
-    BTL_ACTION_STATE_SUPPORT,       // ?
-    BTL_ACTION_STATE_BAD,
-    BTL_ACTION_STATE_READY,
-    BTL_ACTION_STATE_MOVE_TARGET,
-    BTL_ACTION_STATE_MOVE_HOME,
-    BTL_ACTION_STATE_ATTACK,
-    BTL_ACTION_STATE_SKILL,
-    BTL_ACTION_STATE_REINFORCE,
-    BTL_ACTION_STATE_SUMMON,
-    BTL_ACTION_STATE_ASSIST,
-    BTL_ACTION_STATE_EVENT,
-    BTL_ACTION_STATE_ERROR,
-    BTL_ACTION_STATE_ENDURE,
-    BTL_ACTION_STATE_WAIT,
-    BTL_ACTION_STATE_PERSONA,
-    BTL_ACTION_STATE_BAD_DMG,
-    BTL_ACTION_STATE_ESCAPE_MES,
-    BTL_ACTION_STATE_ESCAPE,
-    BTL_ACTION_STATE_ROUNDUP_MES,   // showing all-out attack message
-    BTL_ACTION_STATE_ROUNDUP,       // currently doing an all-out attack
-    BTL_ACTION_STATE_PACKET,
-    BTL_ACTION_STATE_END,
-    BTL_ACTION_STATE_END_HOME,
-    BTL_ACTION_STATE_DEAD,
-    BTL_ACTION_STATE_EXIT,
-    BTL_ACTION_STATE_TEST
+    BTLACTION_STATE_NON,           // base state when a BattleActor is created
+    BTLACTION_STATE_STANDBY,       // not his turn
+    BTLACTION_STATE_START,         // start of the turn
+    BTLACTION_STATE_STARTHOME,    // ?
+    BTLACTION_STATE_CHANGEFORMA,  // ?
+    BTLACTION_STATE_COMMAND,       // Hero can choose what he wants to do
+    BTLACTION_STATE_TARGET,        // target mode
+    BTLACTION_STATE_ANALYZE,       // viewing analyze menu
+    BTLACTION_STATE_AI,            // ?
+    BTLACTION_STATE_AUTO,          // rush
+    BTLACTION_STATE_SUPPORT,       // ?
+    BTLACTION_STATE_BAD,
+    BTLACTION_STATE_READY,
+    BTLACTION_STATE_MOVETARGET,
+    BTLACTION_STATE_MOVEHOME,
+    BTLACTION_STATE_ATTACK,
+    BTLACTION_STATE_SKILL,
+    BTLACTION_STATE_REINFORCE,
+    BTLACTION_STATE_SUMMON,
+    BTLACTION_STATE_ASSIST,
+    BTLACTION_STATE_EVENT,
+    BTLACTION_STATE_ERROR,
+    BTLACTION_STATE_ENDURE,
+    BTLACTION_STATE_WAIT,
+    BTLACTION_STATE_PERSONA,
+    BTLACTION_STATE_BADDMG,
+    BTLACTION_STATE_ESCAPEMES,
+    BTLACTION_STATE_ESCAPE,
+    BTLACTION_STATE_ROUNDUPMES,   // showing all-out attack message
+    BTLACTION_STATE_ROUNDUP,       // currently doing an all-out attack
+    BTLACTION_STATE_PACKET,
+    BTLACTION_STATE_END,
+    BTLACTION_STATE_ENDHOME,
+    BTLACTION_STATE_DEAD,
+    BTLACTION_STATE_EXIT,
+    BTLACTION_STATE_TEST
 } BattleActionState;
 
+typedef struct BtlUnit BtlUnit;
+typedef struct BtlAction BtlAction;
+
+// TODO. 1200 bytes
+struct BtlAction
+{
+    u8 unkData1[0x08];
+    u32 id;                  // 0x08
+    u16 currState;           // 0x0c. See enum 'BattleActionState'
+    u16 pendingState;        // 0x0e. See enum 'BattleActionState'
+    u16 oldState;            // 0x10
+    u16 pendingStateTimer;   // 0x12
+    u16 unk_14;              // 0x14
+    s16 unk_16;              // 0x16
+    u16 unk_18;              // 0x18
+    u16 unk_1a;              // 0x1a
+    u32 stateTimer;          // 0x1c
+    u32 unk_20;              // 0x20
+    u32 idleWeaponAnimTimer; // 0x24
+    u8 unkData2[0x08];
+    BtlUnit* unit;           // 0x30
+    s16 unk_34;              // 0x34
+    u16 unk_36;              // 0x36
+    u8 unkData3[0x46c];
+    BtlAction* next;         // 0x4a4
+    BtlAction* prev;         // 0x4a8
+    s32 unk_4ac;             // 0x4ac
+};
+
+// 12 bytes
 typedef struct
 {
-    void (*BtlAction_InitState)(BattleActor* btlActor);
-    void (*BtlAction_UpdateState)(BattleActor* btlActor);
-    const char* name;
-} BattleActionStateEntry;
+    void (*init)(BtlAction* action);   // 0x00
+    void (*update)(BtlAction* action); // 0x04
+    const char* name;                  // 0x08
+} BtlActionStateEntry;
 
 extern u32 gUnk_007cc530;
-extern BattleActionStateEntry gActionStateTable[];
+extern BtlActionStateEntry gActionStateTable[];
 
-void BtlAction_SetStateAndInit(BattleActor* btlActor, u16 btlState);
+void btlActionSetStateAndInit(BtlAction* action, u16 state);
 
 #endif

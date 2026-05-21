@@ -7,7 +7,6 @@
 #define TEMPORARY_H
 
 #include "Utils.h"
-#include "Battle/btlActor.h"
 #include "rw/rwcore.h"
 
 #define QUARTER_PI ((PI) / 4)
@@ -28,5 +27,6 @@ float sinf(float x);
 float tanf(float x);
 
 float sqrtf(float x);
+float fabsf(float x);
 
 #endif

@@ -1,9 +1,9 @@
 #include "admini.h"
 #include "kwln/kwlnTask.h"
 #include "rw/rwplcore.h"
-#include "Battle/btlMain.h"
 #include "Kosaka/k_assert.h"
 #include "Kosaka/k_sequence.h"
+#include "Battle/battle.h"
 #include "temporary.h"
 
 typedef struct
@@ -361,7 +361,7 @@ s32 adminiSeqExitBtlBoss()
 {
     KwlnTask* btlTask;
 
-    btlTask = BtlMain_GetBtlTask();
+    btlTask = btlGetTask();
     if (btlTask != NULL)
     {
         kwlnTaskDestroyWithHierarchy(btlTask);
@@ -373,5 +373,5 @@ s32 adminiSeqExitBtlBoss()
 // FUN_0027cae0
 u8 adminiSeqCheckBtlBoss()
 {
-    return BtlMain_GetBtlTask() == NULL;
+    return btlGetTask() == NULL;
 }

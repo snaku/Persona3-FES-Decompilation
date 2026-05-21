@@ -3,12 +3,48 @@
 
 #include "Utils.h"
 
-typedef struct KwlnTask KwlnTask;
-typedef struct BattleCtx BattleCtx;
+typedef enum
+{
+    BTL_STATE_NULL,
+    BTL_STATE_NON,
+    BTL_STATE_INIT,
+    BTL_STATE_SCENESET,
+    BTL_STATE_UNITCREATE,
+    BTL_STATE_UNITLOAD,
+    BTL_STATE_START,
+    BTL_STATE_ACTION,
+    BTL_STATE_REVIVALMES,
+    BTL_STATE_REVIVAL,
+    BTL_STATE_WIN,
+    BTL_STATE_ENEMYDEAD,
+    BTL_STATE_CONDITION,
+    BTL_STATE_LOSE,
+    BTL_STATE_FADEOUT,
+    BTL_STATE_END,
+    BTL_STATE_RESULT,
+    BTL_STATE_EXIT,
+    BTL_STATE_TEST,
+    BTL_STATE_MCNOP
+} BattleState;
 
-extern BattleCtx* gBtlCtx;
+typedef struct 
+{
+    u32 currState;  // 0x0. See enum 'BattleState'
+    u32 stateToSet; // 0x4. See enum 'BattleState'
+    u32 stateTimer; // 0x8. Reset on state change
+} BtlStateWork;
 
-KwlnTask* BtlMain_GetBtlTask();
-void BtlMain_SetBossBtlFlag();
+typedef struct 
+{
+    void (*init)(BtlStateWork* work);
+    u32 (*update)(BtlStateWork* work);
+    const char* name;
+} BtlStateEntry;
+
+extern BtlStateEntry gBattleStateTable[];
+
+void btlMainSetStateAndInit(u32 btlState);
+void btlMainUpdateState();
+void btlMainSetStateNon();
 
 #endif
