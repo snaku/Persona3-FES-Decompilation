@@ -2,17 +2,21 @@
 #define BTLUNIT_H
 
 #include "Utils.h"
+#include "rw/rwplcore.h"
 
 typedef struct DatUnit DatUnit;
 
-// TODO. This struct contains the pos, rot and scale (and other unknown things) of the actor
-// temporary name maybe ?
+// 2616 bytes
 typedef struct BtlUnit
 {
-    // data before...
-    u32 unkFlag_9c;      // 0x9c
-    // data inbetween...
-    DatUnit* datUnit;    // 0xa2c
+    u32 flags;          // 0x00
+    RwV3d pos1;         // 0x04
+    RwV3d pos2;         // 0x10
+    u8 unkData1[0x80];
+    u32 unk_9c;         // 0x9c
+    u8 unkData2[0x98c];
+    DatUnit* datUnit;   // 0xa2c
+    u8 unkData3[0x08];
 } BtlUnit;
 
 #endif

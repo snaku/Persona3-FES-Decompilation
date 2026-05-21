@@ -59,8 +59,8 @@ struct BtlAction
     u16 unk_1a;              // 0x1a
     u32 stateTimer;          // 0x1c
     u32 unk_20;              // 0x20
-    u32 idleWeaponAnimTimer; // 0x24
-    u8 unkData2[0x08];
+    s32 idleWeaponAnimTimer; // 0x24
+    s32 unk_2c;              // 0x2c
     BtlUnit* unit;           // 0x30
     s16 unk_34;              // 0x34
     u16 unk_36;              // 0x36
