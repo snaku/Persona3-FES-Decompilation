@@ -162,15 +162,19 @@ void btlActionInitStateStandBy(BtlAction* action)
 // FUN_0028a9c0
 void btlActionUpdateStateStandBy(BtlAction* action)
 {
-    if ((action->unit->unkFlag_9c & (1 << 4)))
+    BtlUnit* unit;
+
+    unit = action->unit;
+
+    if (unit->unk_9c & (1 << 4))
     {
-        btlActionSetStateAndInit(action, BTLACTION_STATE_ENDURE);
+        btlActionSetState(action, BTLACTION_STATE_ENDURE);
         return;
     }
 
-    if (action->unit->unkFlag_9c & (1 << 0))
+    if (unit->unk_9c & (1 << 0))
     {
-        btlActionSetStateAndInit(action, BTLACTION_STATE_DEAD);
+        btlActionSetState(action, BTLACTION_STATE_DEAD);
     }
 }
 
@@ -545,11 +549,11 @@ void btlActionInitStateTest(BtlAction* action)
 // FUN_00299d30
 void btlActionUpdateStateTest(BtlAction* action)
 {
-    btlActionSetStateAndInit(action, BTLACTION_STATE_COMMAND);
+    btlActionSetState(action, BTLACTION_STATE_COMMAND);
 }
 
 // FUN_00299d60
-void btlActionSetStateAndInit(BtlAction* action, u16 btlState)
+void btlActionSetState(BtlAction* action, u16 btlState)
 {
     action->oldState = action->currState;
     action->currState = btlState;
@@ -596,8 +600,8 @@ BtlAction* btlActionCreate()
 
     // uVar3 = FUN_0027cb80();
 
-    // 0xFFFFFFE = u32 max - 1
-    if (gUnk_007cc530 > 0xFFFFFFE)
+    // 0xFFFFFFFE = u32 max - 1
+    if (gUnk_007cc530 > 0xFFFFFFFE)
     {
         gUnk_007cc530 = 1;
     }
@@ -610,17 +614,17 @@ BtlAction* btlActionCreate()
     // ACTION->unk_36 = uVar1;
     action->next = NULL;
     
-    if (gBtl->prevActionCreated == NULL)
+    if (gBtl->actionTail == NULL)
     {
         action->prev = NULL;
     }
     else 
     {
-        gBtl->prevActionCreated->next = action;
-        action->prev = gBtl->prevActionCreated;
+        gBtl->actionTail->next = action;
+        action->prev = gBtl->actionTail;
     }
     
-    gBtl->prevActionCreated = action;
+    gBtl->actionTail = action;
 
     action->oldState = action->currState;
     action->currState = BTLACTION_STATE_NON;
@@ -638,7 +642,7 @@ void btlActionUpdate()
     BtlAction* actionToUpdate;
     u8 canUpdateAction;
 
-    currAction = gBtl->prevActionCreated;
+    currAction = gBtl->actionTail;
     actionToUpdate = currAction;
     while (actionToUpdate != NULL)
     {
@@ -678,7 +682,7 @@ void btlActionUpdate()
 
                 if (actionToUpdate->next == NULL)
                 {
-                    gBtl->prevActionCreated = actionToUpdate->prev;
+                    gBtl->actionTail = actionToUpdate->prev;
                 }
                 else 
                 {
@@ -702,7 +706,7 @@ void btlActionDestroyAll()
     BtlAction* currAction;
     BtlAction* prevAction;
 
-    currAction = gBtl->prevActionCreated;
+    currAction = gBtl->actionTail;
     while (currAction != NULL)
     {   
         prevAction = currAction->prev;
@@ -713,7 +717,7 @@ void btlActionDestroyAll()
 
         if (currAction->next == NULL)
         {
-            gBtl->prevActionCreated = currAction->prev;
+            gBtl->actionTail = currAction->prev;
         }
         else
         {
@@ -731,7 +735,7 @@ BtlAction* btlActionFindByUnit(BtlUnit* unit)
 {
     BtlAction* action;
 
-    action = gBtl->prevActionCreated;
+    action = gBtl->actionTail;
     while (action != NULL)
     {
         if (action->unit == unit)
@@ -750,7 +754,7 @@ BtlAction* btlActionFindById(u32 id)
 {
     BtlAction* action;
 
-    action = gBtl->prevActionCreated;
+    action = gBtl->actionTail;
     while (action != NULL)
     {
         if (action->id == id)
@@ -764,15 +768,46 @@ BtlAction* btlActionFindById(u32 id)
     return NULL;
 }
 
+// FUN_0029a2c0
+u32 btlActionInsert(BtlAction* action)
+{
+    BtlAction** actions;
+    BtlAction* curr;
+    s32 i;
+
+    actions = gBtl->actions;
+    for (i = 0; i < BTL_MAXACTIONS; i++)
+    {
+        curr = *actions;
+        if (curr != NULL)
+        {
+            actions++;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    if (i == BTL_MAXACTIONS)
+    {
+        return false;
+    }
+
+    *actions = action;
+
+    return true;
+}
+
 // FUN_0029ad20
 BtlAction* btlActionGetPlaying()
 {
     BtlAction* action;
 
-    action = gBtl->unk_284;
+    action = gBtl->unk_284[BTL_CURRACTION];
     if (action == NULL)
     {
-        action = gBtl->currActionPlaying;
+        action = gBtl->actions[BTL_CURRACTION];
     }
 
     return action;

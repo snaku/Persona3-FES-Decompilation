@@ -60,6 +60,7 @@ struct BtlAction
     u32 stateTimer;          // 0x1c
     u32 unk_20;              // 0x20
     s32 idleWeaponAnimTimer; // 0x24
+    s32 unk_28;              // 0x28
     s32 unk_2c;              // 0x2c
     BtlUnit* unit;           // 0x30
     s16 unk_34;              // 0x34
@@ -81,6 +82,7 @@ typedef struct
 extern u32 gUnk_007cc530;
 extern BtlActionStateEntry gActionStateTable[];
 
-void btlActionSetStateAndInit(BtlAction* action, u16 state);
+void btlActionSetState(BtlAction* action, u16 state);
+u32 btlActionInsert(BtlAction* action);
 
 #endif

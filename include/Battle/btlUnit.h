@@ -14,9 +14,11 @@ typedef struct BtlUnit
     RwV3d pos2;         // 0x10
     u8 unkData1[0x80];
     u32 unk_9c;         // 0x9c
-    u8 unkData2[0x98c];
+    u8 unkData2[0x02];
+    u8 unk_a2;          // 0xa2
+    u8 unkData3[0x988];
     DatUnit* datUnit;   // 0xa2c
-    u8 unkData3[0x08];
+    u8 unkData4[0x08];
 } BtlUnit;
 
 #endif
