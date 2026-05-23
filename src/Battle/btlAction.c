@@ -1,10 +1,13 @@
 #include "Battle/battle.h"
 #include "Battle/btlUnit.h"
 #include "Battle/btlAction.h"
+#include "Battle/btlSupport.h"
 #include "rw/rwplcore.h"
 #include "datUnit.h"
 #include "datCalc.h"
 #include "temporary.h"
+
+#define BTLACTION_MAXID 0xFFFFFFF
 
 void btlActionInitStateNon(BtlAction* action);
 void btlActionUpdateStateNon(BtlAction* action);
@@ -81,11 +84,16 @@ void btlActionUpdateStateTest(BtlAction* action);
 
 void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);
 
-// 007cc530
-u32 gUnk_007cc530 = 0;
+// 12 bytes
+typedef struct
+{
+    void (*init)(BtlAction* action);   // 0x00
+    void (*update)(BtlAction* action); // 0x04
+    const char* name;                  // 0x08
+} BtlActionStateEntry;
 
 // 00693410
-BtlActionStateEntry gActionStateTable[] = 
+static const BtlActionStateEntry sActionStateTable[] =
 {
     {btlActionInitStateNon, btlActionUpdateStateNon, "NON"},
     {btlActionInitStateStandBy, btlActionUpdateStateStandBy, "STANDBY"},
@@ -124,6 +132,8 @@ BtlActionStateEntry gActionStateTable[] =
     {btlActionInitStateExit, btlActionUpdateStateExit, "EXIT"},
     {btlActionInitStateTest, btlActionUpdateStateTest, "TEST"}
 };
+
+static u32 sNextId = 1; // 007cc530
 
 // FUN_00289860
 u8 btlActionCheckPlayWeaponIdleAnim(BtlAction* action)
@@ -559,7 +569,7 @@ void btlActionSetState(BtlAction* action, u16 btlState)
     action->currState = btlState;
     action->stateTimer = 0;
 
-    gActionStateTable[btlState].init(action);
+    sActionStateTable[btlState].init(action);
 }
 
 // FUN_00299db0. 'delay' = number of frames
@@ -574,7 +584,7 @@ void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay)
         action->currState = btlState;
         action->stateTimer = 0;
 
-        gActionStateTable[btlState].init(action);
+        sActionStateTable[btlState].init(action);
 
         return;
     }
@@ -586,42 +596,38 @@ void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay)
 // FUN_00299e90
 BtlAction* btlActionCreate()
 {
-    // WIP
-
     BtlAction* action;
+    u32 id;
 
     action = RwMalloc(sizeof(BtlAction), rwMEMHINTDUR_GLOBAL);
     memset(action, 0, sizeof(BtlAction));
 
-    // FUN_002d1570(action + 0x38);
+    btlSupport002d1570(&action->unk_38);
 
     action->pendingState = BTLACTION_STATE_NON;
     action->unk_14 = 8;
+    action->uid = btlGetUID();
 
-    // uVar3 = FUN_0027cb80();
-
-    // 0xFFFFFFFE = u32 max - 1
-    if (gUnk_007cc530 > 0xFFFFFFFE)
+    if (sNextId >= BTLACTION_MAXID)
     {
-        gUnk_007cc530 = 1;
+        sNextId = 1;
     }
 
-    action->id = gUnk_007cc530;
+    id = sNextId;
+    sNextId++;
+    action->id = id;
     action->idleWeaponAnimTimer = -1;
-    gUnk_007cc530++;
-
-    // uVar1 = FUN_002ffbc0(0x3c);
-    // ACTION->unk_36 = uVar1;
+    action->rand = datCalcRand(60);
     action->next = NULL;
-    
-    if (gBtl->actionTail == NULL)
-    {
-        action->prev = NULL;
-    }
-    else 
+
+    if (gBtl->actionTail != NULL)
     {
         gBtl->actionTail->next = action;
         action->prev = gBtl->actionTail;
+    }
+    else 
+    {
+        action->prev = NULL;
     }
     
     gBtl->actionTail = action;
@@ -630,7 +636,7 @@ BtlAction* btlActionCreate()
     action->currState = BTLACTION_STATE_NON;
     action->stateTimer = 0;
 
-    gActionStateTable[BTLACTION_STATE_NON].init(action);
+    sActionStateTable[BTLACTION_STATE_NON].init(action);
 
     return action;
 }
@@ -660,7 +666,7 @@ void btlActionUpdate()
                 actionToUpdate->currState = actionToUpdate->pendingState;
                 actionToUpdate->stateTimer = 0;
 
-                gActionStateTable[actionToUpdate->pendingState].init(actionToUpdate);
+                sActionStateTable[actionToUpdate->pendingState].init(actionToUpdate);
 
                 actionToUpdate->pendingState = BTLACTION_STATE_NON;
             }
@@ -693,7 +699,7 @@ void btlActionUpdate()
             }
             else
             {
-                gActionStateTable[actionToUpdate->currState].update(actionToUpdate);
+                sActionStateTable[actionToUpdate->currState].update(actionToUpdate);
                 actionToUpdate->stateTimer += 2;
             }
         }

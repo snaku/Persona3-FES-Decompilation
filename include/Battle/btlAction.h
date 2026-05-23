@@ -47,7 +47,7 @@ typedef struct BtlAction BtlAction;
 // TODO. 1200 bytes
 struct BtlAction
 {
-    u8 unkData1[0x08];
+    u64 uid;                 // 0x00
     u32 id;                  // 0x08
     u16 currState;           // 0x0c. See enum 'BattleActionState'
     u16 pendingState;        // 0x0e. See enum 'BattleActionState'
@@ -64,25 +64,17 @@ struct BtlAction
     s32 unk_2c;              // 0x2c
     BtlUnit* unit;           // 0x30
     s16 unk_34;              // 0x34
-    u16 unk_36;              // 0x36
-    u8 unkData3[0x46c];
+    u16 rand;                // 0x36
+    s32 unk_38;              // 0x38
+    u8 unkData3[0x468];
     BtlAction* next;         // 0x4a4
     BtlAction* prev;         // 0x4a8
     s32 unk_4ac;             // 0x4ac
 };
 
-// 12 bytes
-typedef struct
-{
-    void (*init)(BtlAction* action);   // 0x00
-    void (*update)(BtlAction* action); // 0x04
-    const char* name;                  // 0x08
-} BtlActionStateEntry;
-
-extern u32 gUnk_007cc530;
-extern BtlActionStateEntry gActionStateTable[];
-
+BtlAction* btlActionCreate();
 void btlActionSetState(BtlAction* action, u16 state);
+
 u32 btlActionInsert(BtlAction* action);
 
 #endif

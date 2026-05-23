@@ -3,6 +3,6 @@
 
 #include "Utils.h"
 
-void BtlSupport_PlayBtlMusic();
+void btlSupport002d1570(void* param_1);
 
 #endif

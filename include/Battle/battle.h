@@ -39,6 +39,7 @@ typedef struct Battle
 
 extern Battle* gBtl;
 
+u64 btlGetUID();
 KwlnTask* btlGetTask();
 void btlSetIsBoss();
 
