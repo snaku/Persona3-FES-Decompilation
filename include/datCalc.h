@@ -3,7 +3,11 @@
 
 #include "datPersona.h"
 
+#define DATCALC_RAND_PERCENT 100
+
 typedef struct DatUnit DatUnit;
+
+u32 datCalcRand(u32 max);
 
 u8 datCalcGetLevel(DatUnit* unit);
 u16 datCalcGetHealth(DatUnit* unit);
@@ -18,6 +22,6 @@ u8 datCalcChkBadStatus(DatUnit* unit, u32 flags);
 u32 datCalcGetHeldWeaponType(DatUnit* unit);
 u8 datCalcCountEquipmentWithEffectById(u16 characterId, u16 effect);
 u8 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect);
-u8 datCalcChkDead(DatUnit* unit, s32 param_2);
+u32 datCalcChkDead(const DatUnit* unit, s32 hpDelta);
 
 #endif

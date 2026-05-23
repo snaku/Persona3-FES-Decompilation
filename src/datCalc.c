@@ -1,6 +1,36 @@
 #include "g_data.h"
 #include "datCalc.h"
 #include "Kosaka/k_assert.h"
+#include "Effect/effMisc.h"
+
+static u32 sPrevPercentRand; // 007ce510
+
+// FUN_002ffbc0
+u32 datCalcRand(u32 max)
+{
+    u32 rand;
+
+    K_ASSERT(max != 0, 26);
+
+    if (max == DATCALC_RAND_PERCENT)
+    {
+        rand = (((effMiscRand(NULL) % 4096) + (effMiscRand(NULL) % 4096)) % 4096) / 41;
+        
+        if (sPrevPercentRand >= rand - 3 && 
+            sPrevPercentRand <= rand + 3)
+        {
+            rand = (((effMiscRand(NULL) % 4096) + (effMiscRand(NULL) % 4096)) % 4096) / 41;
+        }
+
+        sPrevPercentRand = rand;
+    }
+    else
+    {
+        rand = effMiscRand(NULL) % max;
+    }
+
+    return rand;
+}
 
 // FUN_002ffcc0
 u8 datCalcGetLevel(DatUnit* unit){
@@ -16,7 +46,7 @@ u8 datCalcGetLevel(DatUnit* unit){
     }
     else 
     {
-        level = unit->status.level;
+        level = unit->level;
     }
 
     K_ASSERT(level != 0, 70);
@@ -27,13 +57,13 @@ u8 datCalcGetLevel(DatUnit* unit){
 // FUN_002ffd70
 u16 datCalcGetHealth(DatUnit* unit)
 {
-    return unit->status.health;
+    return unit->health;
 }
 
 // FUN_002ffd80
 u16 datCalcGetSp(DatUnit* unit)
 {
-    return unit->status.sp;
+    return unit->sp;
 }
 
 // FUN_002ffd90
@@ -44,7 +74,7 @@ void datCalcSetHealth(DatUnit* unit, u16 health)
         health = 999;
     }
 
-    unit->status.health = health;
+    unit->health = health;
 }
 
 // FUN_002ffdc0
@@ -55,7 +85,7 @@ void datCalcSetSp(DatUnit* unit, u16 sp)
         sp = 999;
     }
 
-    unit->status.sp = sp;
+    unit->sp = sp;
 }
 
 // FUN_003004f0
@@ -63,35 +93,35 @@ void datCalcSetBadStatus(DatUnit* unit, u32 badStatus)
 {
     if (!(badStatus & 0x000FFFFF))
     {
-        unit->status.bad = (unit->status.bad & 0xFFF00000) |
+        unit->bad = (unit->bad & 0xFFF00000) |
                                        (badStatus & 0x000FFFFF);
     }
 
-    unit->status.bad |= (badStatus & 0xFFF00000);
+    unit->bad |= (badStatus & 0xFFF00000);
 }
 
 // FUN_00300530
 u32 datCalcGetBadStatusNoDown(DatUnit* unit)
 {
-    return unit->status.bad & 0x000FFFFF;
+    return unit->bad & 0x000FFFFF;
 }
 
 // FUN_00300550
 u32 datCalcGetBadStatus(DatUnit* unit)
 {
-    return unit->status.bad;
+    return unit->bad;
 }
 
 // FUN_00300560
 void datCalcClearBadStatus(DatUnit* unit, u32 badStatus)
 {
-    unit->status.bad &= ~badStatus;
+    unit->bad &= ~badStatus;
 }
 
 // FUN_00300580
 u8 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
 {
-    return (unit->status.bad & badStatus);
+    return (unit->bad & badStatus);
 }
 
 // FUN_00308c60
@@ -189,18 +219,12 @@ u8 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect)
 }
 
 // FUN_0030b5a0
-u8 datCalcChkDead(DatUnit* unit, s32 param_2)
+u32 datCalcChkDead(const DatUnit* unit, s32 hpDelta)
 {
-    u8 isDead;
-
-    if (!datCalcChkStatusFlags(unit, UNIT_BADSTATUS_DEAD))
+    if (unit->bad & UNIT_BADSTATUS_DEAD)// TODO: sltu v0,zero,v0
     {
-        isDead = unit->status.health < 1;
-    }
-    else
-    {
-        isDead = true;
+        return true;
     }
 
-    return isDead;
+    return (unit->health + hpDelta) <= 0;
 }

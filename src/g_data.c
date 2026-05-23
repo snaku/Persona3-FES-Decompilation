@@ -100,7 +100,7 @@ void datInitUnit(u16 characterId)
     {
         memset(&sPlayerUnit, 0, sizeof(DatUnit));
 
-        sPlayerUnit.status.aiTactic = AI_TACTIC_ACT_FREELY;
+        sPlayerUnit.aiTactic = AI_TACTIC_ACT_FREELY;
         sPlayerUnit.id = CHARACTER_HERO;
         sPlayerUnit.flags = UNIT_FLAG_ACTIVE;
 
@@ -110,7 +110,7 @@ void datInitUnit(u16 characterId)
     memset(&gCharacters[characterId], 0, sizeof(DatUnit));
 
     gCharacters[characterId].unit.id = characterId;
-    gCharacters[characterId].unit.status.aiTactic = AI_TACTIC_ACT_FREELY;
+    gCharacters[characterId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
     gCharacters[characterId].unit.flags = UNIT_FLAG_ACTIVE;
 }
 
@@ -247,11 +247,11 @@ void datSetAiTactic(u16 characterId, u8 aiTacticId)
 
     if (IS_HERO(characterId))
     {
-        sPlayerUnit.status.aiTactic = aiTacticId;
+        sPlayerUnit.aiTactic = aiTacticId;
         return;
     }
 
-    gCharacters[characterId].unit.status.aiTactic = aiTacticId;
+    gCharacters[characterId].unit.aiTactic = aiTacticId;
 }
 
 // FUN_0016dd80
@@ -259,10 +259,10 @@ u8 datGetAiTactic(u16 characterId)
 {
     if (IS_HERO(characterId))
     {
-        return sPlayerUnit.status.aiTactic;
+        return sPlayerUnit.aiTactic;
     }
 
-    return gCharacters[characterId].unit.status.aiTactic;
+    return gCharacters[characterId].unit.aiTactic;
 }
 
 // FUN_0016d6b0
@@ -338,11 +338,11 @@ void datSetHealth(u16 characterId, u16 health)
 
     if (!IS_HERO(characterId))
     {
-        gCharacters[characterId].unit.status.health = health;
-        tmp = sPlayerUnit.status.health;
+        gCharacters[characterId].unit.health = health;
+        tmp = sPlayerUnit.health;
     }
 
-    sPlayerUnit.status.health = tmp;
+    sPlayerUnit.health = tmp;
 }
 
 // FUN_0016e920

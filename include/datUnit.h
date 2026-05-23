@@ -19,23 +19,17 @@
 #define UNIT_BADSTATUS_DEAD     (1 << 19) // 0x80000
 #define UNIT_BADSTATUS_DOWN     (1 << 20) // 0x100000
 
-// 16 bytes
-typedef struct DatUnitStatus
-{
-    u8 level;
-    u16 health;
-    u16 sp;
-    u32 bad;     // See 'UNIT_BADSTATUS_*'
-    u8 aiTactic; // See enum AiTactic
-} DatUnitStatus;
-
 // 60 bytes
 typedef struct DatUnit
 {
-    u16 flags; // See 'UNIT_FLAG_*'
-    u16 id;
-    u16 id2;
-    DatUnitStatus status;
+    u16 flags;         // 0x00. See 'UNIT_FLAG_'
+    u16 id;            // 0x02
+    u16 id2;           // 0x04
+    u8 level;          // 0x06
+    u16 health;        // 0x08
+    u16 sp;            // 0x0a
+    u32 bad;           // 0x0c. See 'UNIT_BADSTATUS_*'
+    u8 aiTactic;       // 0x10. See enum 'AiTactic'
     u8 unkData1[0x28];
 } DatUnit; 
 
