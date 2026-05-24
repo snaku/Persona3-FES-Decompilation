@@ -176,13 +176,13 @@ void btlActionUpdateStateStandBy(BtlAction* action)
 
     unit = action->unit;
 
-    if (unit->unk_9c & (1 << 4))
+    if (unit->flags2 & BTLUNIT_FLAG2_ENDURE)
     {
         btlActionSetState(action, BTLACTION_STATE_ENDURE);
         return;
     }
 
-    if (unit->unk_9c & (1 << 0))
+    if (unit->flags2 & BTLUNIT_FLAG2_DEAD)
     {
         btlActionSetState(action, BTLACTION_STATE_DEAD);
     }
@@ -672,7 +672,7 @@ void btlActionUpdate()
             }
             else 
             {
-                canUpdateAction = false; // do not update/free actor since timer is not finished
+                canUpdateAction = false;
             }
         }
 
@@ -817,4 +817,43 @@ BtlAction* btlActionGetPlaying()
     }
 
     return action;
+}
+
+// FUN_0029ad50
+BtlAction* btlActionGetPrevPlaying()
+{
+    return gBtl->prevActionPlaying;
+}
+
+// FUN_0029ad60
+BtlAction* btlActionGetByIdx(u16 idx)
+{
+    if (idx >= BTL_MAXACTIONS)
+    {
+        return NULL;
+    }
+
+    return gBtl->actions[idx];
+}
+
+// FUN_0029ada0
+BtlUnit* btlActionGetUnitByIdx(u16 idx)
+{
+    BtlAction* action;
+
+    if (idx >= BTL_MAXACTIONS)
+    {
+        action = NULL;
+    }
+    else
+    {
+        action = gBtl->actions[idx];
+    }
+
+    if (action == NULL)
+    {
+        return NULL;
+    }
+
+    return action->unit;
 }

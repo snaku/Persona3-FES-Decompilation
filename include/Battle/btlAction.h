@@ -1,6 +1,8 @@
 #ifndef BTLACTION_H
 #define BTLACTION_H
 
+typedef struct BtlUnit BtlUnit;
+
 typedef enum
 {
     BTLACTION_STATE_NON,           // base state when a BattleActor is created
@@ -65,7 +67,7 @@ struct BtlAction
     BtlUnit* unit;           // 0x30
     s16 unk_34;              // 0x34
     u16 rand;                // 0x36
-    s32 unk_38;              // 0x38
+    void* unk_38;            // 0x38
     u8 unkData3[0x468];
     BtlAction* next;         // 0x4a4
     BtlAction* prev;         // 0x4a8
@@ -76,5 +78,8 @@ BtlAction* btlActionCreate();
 void btlActionSetState(BtlAction* action, u16 state);
 
 u32 btlActionInsert(BtlAction* action);
+BtlAction* btlActionGetPrevPlaying();
+BtlAction* btlActionGetByIdx(u16 idx);
+BtlUnit* btlActionGetUnitByIdx(u16 idx);
 
 #endif
