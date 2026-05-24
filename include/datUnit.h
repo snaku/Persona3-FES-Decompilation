@@ -19,6 +19,14 @@
 #define UNIT_BADSTATUS_DEAD     (1 << 19) // 0x80000
 #define UNIT_BADSTATUS_DOWN     (1 << 20) // 0x100000
 
+typedef enum
+{
+    UNIT_GENUS_ENM,
+    UNIT_GENUS_PLAYER,
+
+    UNIT_GENUS_MAX
+} UnitGenus;
+
 // 60 bytes
 typedef struct DatUnit
 {

@@ -1,13 +1,11 @@
 #include "Battle/battle.h"
-#include "Battle/btlUnit.h"
 #include "Battle/btlAction.h"
+#include "Battle/btlUnit.h"
 #include "Battle/btlSupport.h"
-#include "rw/rwplcore.h"
-#include "datUnit.h"
 #include "datCalc.h"
 #include "temporary.h"
 
-#define BTLACTION_MAXID 0xFFFFFFF
+#define BTLACTION_IDMAX 0xFFFFFFF
 
 void btlActionInitStateNon(BtlAction* action);
 void btlActionUpdateStateNon(BtlAction* action);
@@ -608,7 +606,7 @@ BtlAction* btlActionCreate()
     action->unk_14 = 8;
     action->uid = btlGetUID();
 
-    if (sNextId >= BTLACTION_MAXID)
+    if (sNextId >= BTLACTION_IDMAX)
     {
         sNextId = 1;
     }
@@ -620,17 +618,17 @@ BtlAction* btlActionCreate()
     action->rand = datCalcRand(60);
     action->next = NULL;
 
-    if (gBtl->actionTail != NULL)
+    if (gBtl->actionList.tail != NULL)
     {
-        gBtl->actionTail->next = action;
-        action->prev = gBtl->actionTail;
+        gBtl->actionList.tail->next = action;
+        action->prev = gBtl->actionList.tail;
     }
     else 
     {
         action->prev = NULL;
     }
     
-    gBtl->actionTail = action;
+    gBtl->actionList.tail = action;
 
     action->oldState = action->currState;
     action->currState = BTLACTION_STATE_NON;
@@ -648,7 +646,7 @@ void btlActionUpdate()
     BtlAction* actionToUpdate;
     u8 canUpdateAction;
 
-    currAction = gBtl->actionTail;
+    currAction = gBtl->actionList.tail;
     actionToUpdate = currAction;
     while (actionToUpdate != NULL)
     {
@@ -688,7 +686,7 @@ void btlActionUpdate()
 
                 if (actionToUpdate->next == NULL)
                 {
-                    gBtl->actionTail = actionToUpdate->prev;
+                    gBtl->actionList.tail = actionToUpdate->prev;
                 }
                 else 
                 {
@@ -712,7 +710,7 @@ void btlActionDestroyAll()
     BtlAction* currAction;
     BtlAction* prevAction;
 
-    currAction = gBtl->actionTail;
+    currAction = gBtl->actionList.tail;
     while (currAction != NULL)
     {   
         prevAction = currAction->prev;
@@ -723,7 +721,7 @@ void btlActionDestroyAll()
 
         if (currAction->next == NULL)
         {
-            gBtl->actionTail = currAction->prev;
+            gBtl->actionList.tail = currAction->prev;
         }
         else
         {
@@ -741,7 +739,7 @@ BtlAction* btlActionFindByUnit(BtlUnit* unit)
 {
     BtlAction* action;
 
-    action = gBtl->actionTail;
+    action = gBtl->actionList.tail;
     while (action != NULL)
     {
         if (action->unit == unit)
@@ -760,7 +758,7 @@ BtlAction* btlActionFindById(u32 id)
 {
     BtlAction* action;
 
-    action = gBtl->actionTail;
+    action = gBtl->actionList.tail;
     while (action != NULL)
     {
         if (action->id == id)
