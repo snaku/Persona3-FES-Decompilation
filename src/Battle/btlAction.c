@@ -600,7 +600,7 @@ BtlAction* btlActionCreate()
     action = RwMalloc(sizeof(BtlAction), rwMEMHINTDUR_GLOBAL);
     memset(action, 0, sizeof(BtlAction));
 
-    btlSupport002d1570(&action->unk_38);
+    btlTargetInit(&action->target);
 
     action->pendingState = BTLACTION_STATE_NON;
     action->unk_14 = 8;
@@ -808,7 +808,7 @@ BtlAction* btlActionGetPlaying()
 {
     BtlAction* action;
 
-    action = gBtl->unk_284[BTL_CURRACTION];
+    action = gBtl->actions2[BTL_CURRACTION];
     if (action == NULL)
     {
         action = gBtl->actions[BTL_CURRACTION];

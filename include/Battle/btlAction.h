@@ -1,21 +1,23 @@
 #ifndef BTLACTION_H
 #define BTLACTION_H
 
+#include "Battle/btlTarget.h"
+
 typedef struct BtlUnit BtlUnit;
 
 typedef enum
 {
-    BTLACTION_STATE_NON,           // base state when a BattleActor is created
-    BTLACTION_STATE_STANDBY,       // not his turn
-    BTLACTION_STATE_START,         // start of the turn
-    BTLACTION_STATE_STARTHOME,    // ?
-    BTLACTION_STATE_CHANGEFORMA,  // ?
-    BTLACTION_STATE_COMMAND,       // Hero can choose what he wants to do
-    BTLACTION_STATE_TARGET,        // target mode
-    BTLACTION_STATE_ANALYZE,       // viewing analyze menu
-    BTLACTION_STATE_AI,            // ?
-    BTLACTION_STATE_AUTO,          // rush
-    BTLACTION_STATE_SUPPORT,       // ?
+    BTLACTION_STATE_NON,
+    BTLACTION_STATE_STANDBY,
+    BTLACTION_STATE_START,
+    BTLACTION_STATE_STARTHOME,
+    BTLACTION_STATE_CHANGEFORMA,
+    BTLACTION_STATE_COMMAND,
+    BTLACTION_STATE_TARGET,
+    BTLACTION_STATE_ANALYZE,
+    BTLACTION_STATE_AI,
+    BTLACTION_STATE_AUTO,
+    BTLACTION_STATE_SUPPORT,
     BTLACTION_STATE_BAD,
     BTLACTION_STATE_READY,
     BTLACTION_STATE_MOVETARGET,
@@ -33,26 +35,26 @@ typedef enum
     BTLACTION_STATE_BADDMG,
     BTLACTION_STATE_ESCAPEMES,
     BTLACTION_STATE_ESCAPE,
-    BTLACTION_STATE_ROUNDUPMES,   // showing all-out attack message
-    BTLACTION_STATE_ROUNDUP,       // currently doing an all-out attack
+    BTLACTION_STATE_ROUNDUPMES,
+    BTLACTION_STATE_ROUNDUP,
     BTLACTION_STATE_PACKET,
     BTLACTION_STATE_END,
     BTLACTION_STATE_ENDHOME,
     BTLACTION_STATE_DEAD,
     BTLACTION_STATE_EXIT,
     BTLACTION_STATE_TEST
-} BattleActionState;
+} BtlActionState;
 
 typedef struct BtlUnit BtlUnit;
 typedef struct BtlAction BtlAction;
 
-// TODO. 1200 bytes
+// 1200 bytes
 struct BtlAction
 {
     u64 uid;                 // 0x00
     u32 id;                  // 0x08
-    u16 currState;           // 0x0c. See enum 'BattleActionState'
-    u16 pendingState;        // 0x0e. See enum 'BattleActionState'
+    u16 currState;           // 0x0c. See enum 'BtlActionState'
+    u16 pendingState;        // 0x0e. See enum 'BtlActionState'
     u16 oldState;            // 0x10
     u16 pendingStateTimer;   // 0x12
     u16 unk_14;              // 0x14
@@ -67,8 +69,10 @@ struct BtlAction
     BtlUnit* unit;           // 0x30
     s16 unk_34;              // 0x34
     u16 rand;                // 0x36
-    void* unk_38;            // 0x38
-    u8 unkData3[0x468];
+    BtlTarget target;        // 0x38
+    u8 unkData3[0x414];
+    u16 stateAfterEvt;       // 0x49c
+    u32 (*evtFunc)();        // 0x4a0
     BtlAction* next;         // 0x4a4
     BtlAction* prev;         // 0x4a8
     s32 unk_4ac;             // 0x4ac
