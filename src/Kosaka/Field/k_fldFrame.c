@@ -1,5 +1,6 @@
 #include "Kosaka/Field/k_fldFrame.h"
 #include "Kosaka/Field/k_unit.h"
+#include "Kosaka/Field/k_sceneDraw.h"
 #include "Model/mdlManager.h"
 #include "kwln/kwlnTask.h"
 #include "kwln/kwln.h"
@@ -10,14 +11,14 @@
 
 static RwRGBA sDebugSphereColor = {0, 168, 168, 168};
 
-KwlnTask* K_FldFrame_CreateCollisSphereDbgTask(KwlnTask* parent);
+KwlnTask* K_FldFrame_CreateCollisSphereTask(KwlnTask* parent);
 
 // FUN_001aaad0
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
 {
     // TODO
 
-    return true;
+    return false;
 }
 
 // FUN_001ad2f0
@@ -75,7 +76,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         units = gFldUnits; // regswap (should be a2 instead of a3)
         for (; i < FLDUNIT_MAX; i++)
         {
-            if (units[i].unk_48 != NULL &&
+            if (units[i].genusBase != NULL &&
                 units[i].unitMdl.mdl == ((ResrcModelChar*)res)->mdl)
             {
                 ctl->charId = gFldUnits[i].charId;
@@ -88,7 +89,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         units = gEnFldUnits; // regswap (should be a2 instead of a3)
         for (; i < FLDUNIT_EN_MAX; i++)
         {
-            if (units[i].unk_48 != NULL &&
+            if (units[i].genusBase != NULL &&
                 units[i].unitMdl.mdl == ((ResrcModelChar*)res)->mdl)
             {
                 ctl->charId = gEnFldUnits[i].charId;
@@ -106,7 +107,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         }
     }
 
-    K_FldFrame_CreateCollisSphereDbgTask(task);
+    K_FldFrame_CreateCollisSphereTask(task);
 
     return task;
 }
@@ -228,7 +229,7 @@ void K_FldFrame_CtlRotate(KwlnTask* collisCtlTask, const RwV3d* axis, f32 angle)
 }
 
 // FUN_001ae3f0
-KwlnTask* K_FldFrame_CreateCollisSphereDbgTask(KwlnTask* parent)
+KwlnTask* K_FldFrame_CreateCollisSphereTask(KwlnTask* parent)
 {
     // TODO
 

@@ -21,8 +21,8 @@
 
 typedef enum
 {
-    UNIT_GENUS_ENM,
     UNIT_GENUS_PLAYER,
+    UNIT_GENUS_ENEMY,
 
     UNIT_GENUS_MAX
 } UnitGenus;
@@ -40,5 +40,28 @@ typedef struct DatUnit
     u8 aiTactic;       // 0x10. See enum 'AiTactic'
     u8 unkData1[0x28];
 } DatUnit; 
+
+// at least 8 bytes. Not sure if this struct existed in the source code, but i'm still making it to use it in 'FldUnit' struct
+typedef struct DatUnitGenusBase
+{
+    u16 genus;     // 0x00. See enum 'UnitGenus'
+    s16 unk_02;    // 0x02
+    DatUnit* unit; // 0x04
+} DatUnitGenusBase;
+
+// 12 bytes
+typedef struct DatUnitPlayer
+{
+    DatUnitGenusBase base; // 0x00
+    u8 unkData[0x04];
+} DatUnitPlayer;
+
+// 372 bytes
+typedef struct DatUnitEnemy
+{
+    DatUnitGenusBase base; // 0x00
+    u16 id;                // 0x08. Idk if it should be in 'DatUnitGenusBase', but 0x08 in 'DatUnitPlayer' is never used
+    u8 unkData[0x16a];
+} DatUnitEnemy;
 
 #endif

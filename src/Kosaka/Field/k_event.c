@@ -135,7 +135,7 @@ u32 K_FldEvent_AreUnitsWithinDist(const FldUnit* fldUnitA, const FldUnit* fldUni
     u32 withinDist;
 
     withinDist = false;
-    if (fldUnitA->unk_48 != NULL && fldUnitB->unk_48 != NULL)
+    if (fldUnitA->genusBase != NULL && fldUnitB->genusBase != NULL)
     {
         withinDist = K_FldEvent_ArePosWithinDist(&mdlGetMatrix(fldUnitA->unitMdl.mdl)->pos,
                                                  &mdlGetMatrix(fldUnitB->unitMdl.mdl)->pos,
@@ -274,7 +274,7 @@ u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId)
     {
         currUnit = &gFldUnits[i];
 
-        if (currUnit->unk_48 != NULL &&
+        if (currUnit->genusBase != NULL &&
            (charId == currUnit->charId))
         {
             isNear = false;
