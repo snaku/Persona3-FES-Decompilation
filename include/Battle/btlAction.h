@@ -45,7 +45,6 @@ typedef enum
     BTLACTION_STATE_TEST
 } BtlActionState;
 
-typedef struct BtlUnit BtlUnit;
 typedef struct BtlAction BtlAction;
 
 // 1200 bytes
@@ -80,10 +79,9 @@ struct BtlAction
 
 BtlAction* btlActionCreate();
 void btlActionSetState(BtlAction* action, u16 state);
-
-u32 btlActionInsert(BtlAction* action);
-BtlAction* btlActionGetPrevPlaying();
-BtlAction* btlActionGetByIdx(u16 idx);
-BtlUnit* btlActionGetUnitByIdx(u16 idx);
+void btlActionUpdate();
+void btlActionDestroyAll();
+BtlAction* btlActionFindByUnit(BtlUnit* unit);
+BtlAction* btlActionFindById(u32 id);
 
 #endif

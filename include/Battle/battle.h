@@ -2,6 +2,7 @@
 #define BATTLE_H
 
 #include "Battle/btlMain.h"
+#include "Battle/btlOrder.h"
 #include "rw/rwplcore.h"
 #include "datUnit.h"
 
@@ -11,8 +12,6 @@
 
 #define BTL_UIDMAX  0x3FFFFFFFFFFFFFFF
 
-#define BTL_CURRACTION 0   // current action playing
-#define BTL_NEXTACTION 1   // next action playing
 #define BTL_MAXACTIONS 12
 
 typedef struct KwlnTask KwlnTask;
@@ -55,10 +54,7 @@ typedef struct Battle
     u8 unkData3[0xe4];
     u16 fldMajorId;                       // 0x244
     u16 fldMinorId;                       // 0x246
-    u8 unkData4[0x08];
-    BtlAction* prevActionPlaying;         // 0x250. The action who played before current action
-    BtlAction* actions[BTL_MAXACTIONS];   // 0x254
-    BtlAction* actions2[BTL_MAXACTIONS];  // 0x284. ??
+    BtlOrder order;                       // 0x248
     BtlStateWork stateWork;               // 0x2b4
     u8 unkData5[0xa58];
     BtlStartInfo startInfo;               // 0xba8
