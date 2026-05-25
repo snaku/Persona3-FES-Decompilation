@@ -131,3 +131,15 @@ u32 K_Scene_001a0250()
 
     return false;
 }
+
+// FUN_001a0410
+void K_Scene_SetShouldSortChars(u32 shouldSortChars)
+{
+    gMtScene->shouldSortChars = shouldSortChars;
+}
+
+// FUN_001a0420
+void K_Scene_SetShouldSortNpcs(u32 shouldSortNpcs)
+{
+    gMtScene->shouldSortNpcs = shouldSortNpcs;
+}
