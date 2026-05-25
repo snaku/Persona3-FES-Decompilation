@@ -41,11 +41,11 @@ typedef struct DatUnit
     u8 unkData1[0x28];
 } DatUnit; 
 
-// at least 8 bytes. Not sure if this struct existed in the source code, but i'm still making it to use it in 'FldUnit' struct
+// 8 bytes
 typedef struct DatUnitGenusBase
 {
     u16 genus;     // 0x00. See enum 'UnitGenus'
-    s16 unk_02;    // 0x02
+    s16 count;     // 0x02
     DatUnit* unit; // 0x04
 } DatUnitGenusBase;
 
@@ -60,8 +60,10 @@ typedef struct DatUnitPlayer
 typedef struct DatUnitEnemy
 {
     DatUnitGenusBase base; // 0x00
-    u16 id;                // 0x08. Idk if it should be in 'DatUnitGenusBase', but 0x08 in 'DatUnitPlayer' is never used
-    u8 unkData[0x16a];
+    u16 groupdId;          // 0x08
+    s16 unk_0a;            // 0x0a
+    DatUnit units[5];      // 0x0c
+    u8 unkData[0x3c];
 } DatUnitEnemy;
 
 #endif

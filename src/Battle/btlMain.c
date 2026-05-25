@@ -40,24 +40,32 @@ u32 btlMainUpdateStateTest(BtlStateWork* work);
 void btlMainInitStateMcNop(BtlStateWork* work);
 u32 btlMainUpdateStateMcNop(BtlStateWork* work);
 
+// 12 bytes
+typedef struct 
+{
+    void (*init)(BtlStateWork* work);  // 0x00
+    u32 (*update)(BtlStateWork* work); // 0x04
+    const char* name;                  // 0x08
+} BtlStateEntry;
+
 // 00693760
-BtlStateEntry gBattleStateTable[] = 
+static const BtlStateEntry sBtlStateTable[] =
 {
     {NULL, NULL, "NULL"},
     {btlMainInitStateNon, btlMainUpdateStateNon, "NON"},
     {btlMainInitStateInit, btlMainUpdateStateInit, "INIT"},
-    {btlMainInitStateSceneSet, btlMainUpdateStateSceneSet, "SCENE SET"},
-    {btlMainInitStateUnitCreate, btlMainUpdateStateUnitCreate, "UNIT CREATE"},
-    {btlMainInitStateUnitLoad, btlMainUpdateStateUnitLoad, "UNIT LOAD"},
+    {btlMainInitStateSceneSet, btlMainUpdateStateSceneSet, "SCENE_SET"},
+    {btlMainInitStateUnitCreate, btlMainUpdateStateUnitCreate, "UNIT_CREATE"},
+    {btlMainInitStateUnitLoad, btlMainUpdateStateUnitLoad, "UNIT_LOAD"},
     {btlMainInitStateStart, btlMainUpdateStateStart, "START"},
     {btlMainInitStateAction, btlMainUpdateStateAction, "ACTION"},
-    {btlMainInitStateRevivalMes, btlMainUpdateStateRevivalMes, "REVIVAL MES"},
+    {btlMainInitStateRevivalMes, btlMainUpdateStateRevivalMes, "REVIVAL_MES"},
     {btlMainInitStateRevival, btlMainUpdateStateRevival, "REVIVAL"},
     {btlMainInitStateWin, btlMainUpdateStateWin, "WIN"},
     {btlMainInitStateEnemyDead, btlMainUpdateStateEnemyDead, "ENEMY DEAD"},
     {btlMainInitStateCondition, btlMainUpdateStateCondition, "CONDITION"},
     {btlMainInitStateLose, btlMainUpdateStateLose, "LOSE"},
-    {btlMainInitStateFadeOut, btlMainUpdateStateFadeOut, "FADE OUT"},
+    {btlMainInitStateFadeOut, btlMainUpdateStateFadeOut, "FADE_OUT"},
     {btlMainInitStateEnd, btlMainUpdateStateEnd, "END"},
     {btlMainInitStateResult, btlMainUpdateStateResult, "RESULT"},
     {btlMainInitStateExit, btlMainUpdateStateExit, "EXIT"},
@@ -313,12 +321,12 @@ u32 btlMainUpdateStateMcNop(BtlStateWork* work)
 }
 
 // FUN_0029de20
-void btlMainSetStateAndInit(u32 state)
+void btlMainSetState(u32 state)
 {
     gBtl->stateWork.currState = state;
     gBtl->stateWork.stateTimer = 0;
     
-    gBattleStateTable[gBtl->stateWork.currState].init(&gBtl->stateWork);
+    sBtlStateTable[gBtl->stateWork.currState].init(&gBtl->stateWork);
 }
 
 // FUN_0029de80
@@ -328,12 +336,14 @@ void btlMainUpdateState()
 
     if (gBtl->stateWork.stateToSet != BTL_STATE_NULL)
     {
-        btlMainSetStateAndInit(gBtl->stateWork.stateToSet); // was inlined
+        gBtl->stateWork.currState = gBtl->stateWork.stateToSet;
+        gBtl->stateWork.stateTimer = 0;
+        sBtlStateTable[gBtl->stateWork.currState].init(&gBtl->stateWork);
 
         gBtl->stateWork.stateToSet = BTL_STATE_NULL;
     }
 
-    newState = gBattleStateTable[gBtl->stateWork.currState].update(&gBtl->stateWork);
+    newState = sBtlStateTable[gBtl->stateWork.currState].update(&gBtl->stateWork);
 
     if (newState != BTL_STATE_NULL)
     {
@@ -346,7 +356,9 @@ void btlMainUpdateState()
 // FUN_0029df40. Called when 'btlCtx' is allocated
 void btlMainSetStateNon()
 {
-    btlMainSetStateAndInit(BTL_STATE_NON); // was inlined
+    gBtl->stateWork.currState = BTL_STATE_NON;
+    gBtl->stateWork.stateTimer = 0;
+    sBtlStateTable[gBtl->stateWork.currState].init(&gBtl->stateWork);
 
     gBtl->stateWork.stateToSet = BTL_STATE_NULL;
 }

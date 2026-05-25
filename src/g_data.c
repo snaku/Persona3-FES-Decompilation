@@ -81,7 +81,7 @@ u16 datGetPersonaId(u16 characterId)
 }
 
 // FUN_0016cd60
-DatUnit* datGetUnit(u16 characterId)
+DatUnit* datGetUnit(s16 characterId)
 {
     if (IS_HERO(characterId))
     {

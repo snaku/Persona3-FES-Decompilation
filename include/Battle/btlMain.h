@@ -25,25 +25,17 @@ typedef enum
     BTL_STATE_EXIT,
     BTL_STATE_TEST,
     BTL_STATE_MCNOP
-} BattleState;
+} BtlState;
 
-typedef struct 
+// at least 12 bytes
+typedef struct BtlStateWork
 {
-    u32 currState;  // 0x0. See enum 'BattleState'
-    u32 stateToSet; // 0x4. See enum 'BattleState'
+    u32 currState;  // 0x0. See enum 'BtlState'
+    u32 stateToSet; // 0x4. See enum 'BtlState'
     u32 stateTimer; // 0x8. Reset on state change
 } BtlStateWork;
 
-typedef struct 
-{
-    void (*init)(BtlStateWork* work);
-    u32 (*update)(BtlStateWork* work);
-    const char* name;
-} BtlStateEntry;
-
-extern BtlStateEntry gBattleStateTable[];
-
-void btlMainSetStateAndInit(u32 btlState);
+void btlMainSetState(u32 state);
 void btlMainUpdateState();
 void btlMainSetStateNon();
 

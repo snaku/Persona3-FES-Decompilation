@@ -221,7 +221,7 @@ u32 datGetScenarioMode();
 
 void FUN_0016f3e0(u32 idx, u32 value);
 
-DatUnit* datGetUnit(u16 characterId);
+DatUnit* datGetUnit(s16 characterId);
 void datInitUnit(u16 characterId);
 u8 datGetLevel(u16 characterId);
 u16 datGetPersonaId(u16 characterId);
