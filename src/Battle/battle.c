@@ -2,8 +2,6 @@
 #include "kwln/kwlnTask.h"
 #include "temporary.h"
 
-#define BTL_MAXUID 0x3FFFFFFFFFFFFFFF
-
 static u64 sUID = 1; // 007cc510
 
 Battle* gBtl; // 007ce3ec. NULL when not in a battle
@@ -13,12 +11,20 @@ u64 btlGetUID()
 {
     sUID++;
 
-    if (sUID >= BTL_MAXUID)
+    if (sUID >= BTL_UIDMAX)
     {
         sUID = 1;
     }
 
     return sUID;
+}
+
+// FUN_0027d1d0
+KwlnTask* btlStart(BtlStartInfo* startInfo)
+{
+    // TODO
+
+    return NULL;
 }
 
 // FUN_0027d880

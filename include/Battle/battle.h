@@ -2,9 +2,10 @@
 #define BATTLE_H
 
 #include "Battle/btlMain.h"
+#include "rw/rwplcore.h"
 #include "datUnit.h"
 
-#define BTL_FLAG_ACTIVE      (1 << 0)  // 0x1. Currently in a battle. Destroy 'battle' task if not set
+#define BTL_FLAG_ACTIVE      (1 << 0)  // 0x01. Currently in a battle. Destroy 'battle' task if not set
 #define BTL_FLAG_IS_BOSS     (1 << 15) // 0x8000. Battle is a boss battle
 #define BTL_FLAG_MULTI_ENEMY (1 << 16) // 0x10000. More than one enemy in the battle
 
@@ -32,6 +33,17 @@ typedef struct BtlUnitList
     BtlUnit* tail; // 0x04
 } BtlUnitList;
 
+// 52 bytes
+typedef struct BtlStartInfo
+{
+    s32 unk_00;                   // 0x00
+    DatUnitPlayer* partyUnits[4]; // 0x04
+    DatUnitEnemy* enmUnits;       // 0x14
+    u16 fldMajorId;               // 0x18
+    u16 fldMinorId;               // 0x1a
+    u8 unkData[0x18];
+} BtlStartInfo;
+
 // 3440 bytes
 typedef struct Battle
 {
@@ -40,12 +52,17 @@ typedef struct Battle
     u8 unkData2[0x138];
     BtlActionList actionList;             // 0x148
     BtlUnitList unitList[UNIT_GENUS_MAX]; // 0x150
-    u8 unkData3[0xf0];
+    u8 unkData3[0xe4];
+    u16 fldMajorId;                       // 0x244
+    u16 fldMinorId;                       // 0x246
+    u8 unkData4[0x08];
     BtlAction* prevActionPlaying;         // 0x250. The action who played before current action
     BtlAction* actions[BTL_MAXACTIONS];   // 0x254
     BtlAction* actions2[BTL_MAXACTIONS];  // 0x284. ??
     BtlStateWork stateWork;               // 0x2b4
-    u8 unkData6[0xa58];
+    u8 unkData5[0xa58];
+    BtlStartInfo startInfo;               // 0xba8
+    u8 unkData6[0x13c];
     KwlnTask* btlTask;                    // 0xd18
     u8 unkData7[0x10];
     KwlnTask* btlPanelTask;               // 0xd2c
@@ -56,6 +73,7 @@ extern Battle* gBtl;
 
 u64 btlGetUID();
 
+KwlnTask* btlStart(BtlStartInfo* startInfo);
 KwlnTask* btlGetTask();
 void btlSetIsBoss();
 
