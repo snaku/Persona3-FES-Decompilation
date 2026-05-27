@@ -1,4 +1,5 @@
 #include "g_data.h"
+#include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
 
@@ -25,6 +26,31 @@ DatUnitEnemy* datUnitCreateEnemy(u16 groupdId)
     // TODO
 
     return NULL;
+}
+
+// FUN_002ff660
+void datUnitRemoveEnemy(DatUnitEnemy* enm, DatUnit* unit)
+{
+    u16 i;
+    DatUnit* curr;
+
+    K_ASSERT(enm->base.genus == UNIT_GENUS_ENEMY, 134);
+    K_ASSERT(enm->base.count <= 6, 135);
+
+    for (i = 0; i < 6; i++)
+    {
+        curr = &enm->base.unit[i];
+
+        if (unit == curr)
+        {
+            curr->id = 0;
+            enm->base.count--;
+
+            break;
+        }
+    }
+
+    K_ASSERT(i < 6, 147);
 }
 
 // FUN_002ff890

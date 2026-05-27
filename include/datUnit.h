@@ -62,12 +62,12 @@ typedef struct DatUnitEnemy
     DatUnitGenusBase base; // 0x00
     u16 groupdId;          // 0x08
     s16 unk_0a;            // 0x0a
-    DatUnit units[5];      // 0x0c
-    u8 unkData[0x3c];
+    DatUnit units[6];      // 0x0c
 } DatUnitEnemy;
 
 DatUnitPlayer* datUnitCreatePlayer(u16 charId);
 DatUnitEnemy* datUnitCreateEnemy(u16 groupdId);
+void datUnitRemoveEnemy(DatUnitEnemy* enm, DatUnit* unit);
 
 u32 datUnitInit(DatUnit* unit, u8 genus, u16 id);
 
