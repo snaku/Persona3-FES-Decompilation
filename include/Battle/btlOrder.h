@@ -20,9 +20,10 @@ typedef struct BtlOrder
 } BtlOrder;
 
 void btlOrderInit();
-u32 btlOrderAdd(BtlAction* action);
-BtlAction* btlOrderGetPlaying();
-BtlAction* btlOrderGetPrevPlaying();
+u32 btlOrderRemoveAction(BtlAction** actions, u32 arrSize, BtlAction* action);
+u32 btlOrderAddAction(BtlAction* action);
+BtlAction* btlOrderGetActionPlaying();
+BtlAction* btlOrderGetPrevActionPlaying();
 BtlAction* btlOrderGetActionByIdx(u16 idx);
 BtlUnit* btlOrderGetUnitByIdx(u16 idx);
 

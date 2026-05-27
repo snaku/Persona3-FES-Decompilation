@@ -2,14 +2,43 @@
 #include "Battle/btlAction.h"
 #include "temporary.h"
 
-// FUN_0029b090
-void btlOrderInit()
+// FUN_0029a250
+u32 btlOrderRemoveAction(BtlAction** actions, u32 arrSize, BtlAction* action)
 {
-    memset(&gBtl->order, 0, sizeof(BtlOrder));
+    BtlAction* curr;
+    s32 i;
+
+    for (i = 0; i < arrSize; i++)
+    {
+        curr = *actions;
+        if (curr != action)
+        {
+            actions++;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    if (i == arrSize)
+    {
+        return false;
+    }
+
+    for (; i < arrSize - 1; i++)
+    {
+        *actions = *(actions + 1);
+        actions++;
+    }
+
+    *actions = NULL;
+
+    return true;
 }
 
 // FUN_0029a2c0
-u32 btlOrderAdd(BtlAction* action)
+u32 btlOrderAddAction(BtlAction* action)
 {
     BtlAction** actions;
     BtlAction* curr;
@@ -40,7 +69,7 @@ u32 btlOrderAdd(BtlAction* action)
 }
 
 // FUN_0029ad20
-BtlAction* btlOrderGetPlaying()
+BtlAction* btlOrderGetActionPlaying()
 {
     BtlAction* action;
 
@@ -54,7 +83,7 @@ BtlAction* btlOrderGetPlaying()
 }
 
 // FUN_0029ad50
-BtlAction* btlOrderGetPrevPlaying()
+BtlAction* btlOrderGetPrevActionPlaying()
 {
     return gBtl->order.prevActionPlaying;
 }
@@ -90,4 +119,10 @@ BtlUnit* btlOrderGetUnitByIdx(u16 idx)
     }
 
     return action->unit;
+}
+
+// FUN_0029b090
+void btlOrderInit()
+{
+    memset(&gBtl->order, 0, sizeof(BtlOrder));
 }
