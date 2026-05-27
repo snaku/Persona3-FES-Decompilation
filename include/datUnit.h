@@ -45,7 +45,7 @@ typedef struct DatUnit
 typedef struct DatUnitGenusBase
 {
     u16 genus;     // 0x00. See enum 'UnitGenus'
-    s16 count;     // 0x02
+    u16 count;     // 0x02
     DatUnit* unit; // 0x04
 } DatUnitGenusBase;
 
@@ -65,5 +65,10 @@ typedef struct DatUnitEnemy
     DatUnit units[5];      // 0x0c
     u8 unkData[0x3c];
 } DatUnitEnemy;
+
+DatUnitPlayer* datUnitCreatePlayer(u16 charId);
+DatUnitEnemy* datUnitCreateEnemy(u16 groupdId);
+
+u32 datUnitInit(DatUnit* unit, u8 genus, u16 id);
 
 #endif
