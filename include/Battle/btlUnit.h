@@ -16,6 +16,7 @@ typedef struct BtlPacket BtlPacket;
 // TODO
 typedef enum
 {
+    BTLUNIT_PACKET_MOVE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 10),
     BTLUNIT_PACKET_ROTATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 13)
 } BtlUnitPacket;
 
@@ -42,17 +43,29 @@ struct BtlUnit
     BtlUnit* prev;      // 0xa34
 };
 
+// 36 bytes
+typedef struct BtlUnitPacketMove
+{
+    BtlUnit* unit;    // 0x00
+    RwV3d targetPos;  // 0x04 
+    u32 flags;        // 0x10
+    u16 state;        // 0x14
+    u8 unkData[0x0a];
+    f32 speed;        // 0x20
+} BtlUnitPacketMove;
+
 // 24 bytes
 typedef struct BtlUnitPacketRotate
 {
     BtlUnit* unit; // 0x00
     RwV3d rot;     // 0x04
-    s32 unk_10;    // 0x10
+    u32 flags;     // 0x10
     s32 unk_14;    // 0x14
 } BtlUnitPacketRotate;
 
 extern RwV3d gUnk_00957188;
 
-BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, s32 param_3);
+BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 speed, u32 flags);
+BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags);
 
 #endif
