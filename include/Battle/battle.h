@@ -17,6 +17,7 @@
 typedef struct KwlnTask KwlnTask;
 typedef struct BtlAction BtlAction;
 typedef struct BtlUnit BtlUnit;
+typedef struct BtlPacket BtlPacket;
 
 // 8 bytes
 typedef struct BtlActionList
@@ -31,6 +32,13 @@ typedef struct BtlUnitList
     BtlUnit* head; // 0x00
     BtlUnit* tail; // 0x04
 } BtlUnitList;
+
+// 8 bytes
+typedef struct BtlPacketList
+{
+    BtlPacket* tail; // 0x00
+    BtlPacket* head; // 0x04
+} BtlPacketList;
 
 // 52 bytes
 typedef struct BtlStartInfo
@@ -47,22 +55,24 @@ typedef struct BtlStartInfo
 typedef struct Battle
 {
     u8 unkData1[0x0c];
-    u32 flags;                            // 0x0c
+    u32 flags;                                     // 0x0c
     u8 unkData2[0x138];
-    BtlActionList actionList;             // 0x148
-    BtlUnitList unitList[UNIT_GENUS_MAX]; // 0x150
-    u8 unkData3[0xe4];
-    u16 fldMajorId;                       // 0x244
-    u16 fldMinorId;                       // 0x246
-    BtlOrder order;                       // 0x248
-    BtlStateWork stateWork;               // 0x2b4
-    u8 unkData5[0xa58];
-    BtlStartInfo startInfo;               // 0xba8
-    u8 unkData6[0x13c];
-    KwlnTask* btlTask;                    // 0xd18
-    u8 unkData7[0x10];
-    KwlnTask* btlPanelTask;               // 0xd2c
-    u8 unkData8[0x40];
+    BtlActionList actionList;                      // 0x148
+    BtlUnitList unitLists[UNIT_GENUS_MAX];         // 0x150
+    u8 unkData3[0x10];
+    BtlPacketList packetLists[BTLPACKET_TYPE_MAX]; // 0x170
+    u8 unkData4[0xc4];
+    u16 fldMajorId;                                // 0x244
+    u16 fldMinorId;                                // 0x246
+    BtlOrder order;                                // 0x248
+    BtlStateWork stateWork;                        // 0x2b4
+    u8 unkData6[0xa58];
+    BtlStartInfo startInfo;                        // 0xba8
+    u8 unkData7[0x13c];
+    KwlnTask* btlTask;                             // 0xd18
+    u8 unkData8[0x10];
+    KwlnTask* btlPanelTask;                        // 0xd2c
+    u8 unkData9[0x40];
 } Battle;
 
 extern Battle* gBtl;
