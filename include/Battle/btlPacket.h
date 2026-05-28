@@ -3,7 +3,14 @@
 
 #include "Utils.h"
 
-typedef struct BtlPacket BtlPacket;
+#define BTLPACKET_MAKE_ID(moduleId, _id) (((moduleId) << 8) | ((_id)))
+
+// TODO
+typedef enum
+{
+    BTLPACKET_MODULE_NULL,
+    BTLPACKET_MODULE_UNIT
+} BtlPacketModule;
 
 // TODO: names
 typedef enum
@@ -16,11 +23,13 @@ typedef enum
     BTLPACKET_TYPE_MAX
 } BtlPacketType;
 
+typedef struct BtlPacket BtlPacket;
+
 // 144 bytes. Base struct for a packet
 struct BtlPacket
 {
     u8 unkData1[0x40];
-    u32 id;                          // 0x40
+    u32 id;                          // 0x40. See macro 'BTLPACKET_MAKE_ID' and enum 'BtlPacketModule'
     s8 type;                         // 0x44. See enum 'BtlPacketType'
     u8 unkData2[0x13];
     u64 uid;                         // 0x58
@@ -37,6 +46,6 @@ struct BtlPacket
 
 BtlPacket* btlPacketFindFirstByActionUID(u64 actionUID, u64 mask);
 BtlPacket* btlPacketCreate(u32 id, u32 workDataSize);
-u64 btlPacketRegister(BtlPacket* packet, s32 slot);
+u64 btlPacketRegister(BtlPacket* packet, s32 type);
 
 #endif

@@ -17,7 +17,7 @@ BtlPacket* btlPacketCreate(u32 id, u32 workDataSize)
 }
 
 // FUN_0027ed20
-u64 btlPacketRegister(BtlPacket* packet, s32 slot)
+u64 btlPacketRegister(BtlPacket* packet, s32 type)
 {
     // TODO
 

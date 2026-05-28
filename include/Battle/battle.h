@@ -3,6 +3,7 @@
 
 #include "Battle/btlMain.h"
 #include "Battle/btlOrder.h"
+#include "Battle/btlPacket.h"
 #include "rw/rwplcore.h"
 #include "datUnit.h"
 
