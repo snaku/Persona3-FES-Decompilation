@@ -67,7 +67,10 @@ typedef enum
     BGM_ID_AFTERNOON_BREAK,                // 91.ADX
     BGM_ID_UNK_58,                         // 92.ADX
     BGM_ID_VELVET_ROOM_FINAL,              // 93.ADX
-    BGM_ID_MAIN_MENU = 115,                // 115.ADX
+    BGM_ID_MASS_DESTRUCTION_FES = 106,     // 106.ADX
+    BGM_ID_HEARTFUL_CRY = 113,             // 113.ADX
+    BGM_ID_DARKNESS,                       // 114.ADX (the answer final boss)
+    BGM_ID_MAIN_MENU,                      // 115.ADX
     BGM_ID_NONE = -1,
 } BgmId;
 

@@ -8,6 +8,7 @@
 #include "datUnit.h"
 
 #define BTL_FLAG_ACTIVE      (1 << 0)  // 0x01. Currently in a battle. Destroy 'battle' task if not set
+#define BTL_FLAG_UNK40       (1 << 6)  // 0x40
 #define BTL_FLAG_UNK8000     (1 << 15) // 0x8000
 #define BTL_FLAG_MULTI_ENEMY (1 << 16) // 0x10000. More than one enemy in the battle
 
@@ -75,6 +76,17 @@ typedef struct Battle
     KwlnTask* btlPanelTask;                        // 0xd2c
     u8 unkData9[0x40];
 } Battle;
+
+typedef enum
+{
+    BTLENCOUNT_BGM_FULLMOON = 2,
+    BTLENCOUNT_BGM_STREGA,
+    BTLENCOUNT_BGM_NYX,
+    BTLENCOUNT_BGM_NYXAVATAR,
+    BTLENCOUNT_BGM_TARTARUSBOSS,
+    BTLENCOUNT_BGM_SEES,
+    BTLENCOUNT_BGM_EREBUS
+} BtlEncountBgm;
 
 // 28 bytes
 typedef struct BtlEncountTable
