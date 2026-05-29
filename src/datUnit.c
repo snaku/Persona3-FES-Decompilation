@@ -21,7 +21,7 @@ DatUnitPlayer* datUnitCreatePlayer(u16 charId)
 }
 
 // FUN_002ff3e0
-DatUnitEnemy* datUnitCreateEnemy(u16 groupdId)
+DatUnitEnemy* datUnitCreateEnemy(u16 encountId)
 {
     // TODO
 
@@ -51,6 +51,12 @@ void datUnitRemoveEnemy(DatUnitEnemy* enm, DatUnit* unit)
     }
 
     K_ASSERT(i < 6, 147);
+}
+
+// FUN_002ff760
+void datUnitDestroyGenus(DatUnitGenusBase* genusBase)
+{
+    RwFree(genusBase);
 }
 
 // FUN_002ff890

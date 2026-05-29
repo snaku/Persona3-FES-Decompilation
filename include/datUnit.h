@@ -60,14 +60,15 @@ typedef struct DatUnitPlayer
 typedef struct DatUnitEnemy
 {
     DatUnitGenusBase base; // 0x00
-    u16 groupdId;          // 0x08
+    u16 encountId;         // 0x08
     s16 unk_0a;            // 0x0a
     DatUnit units[6];      // 0x0c
 } DatUnitEnemy;
 
 DatUnitPlayer* datUnitCreatePlayer(u16 charId);
-DatUnitEnemy* datUnitCreateEnemy(u16 groupdId);
+DatUnitEnemy* datUnitCreateEnemy(u16 encountId);
 void datUnitRemoveEnemy(DatUnitEnemy* enm, DatUnit* unit);
+void datUnitDestroyGenus(DatUnitGenusBase* genusBase);
 
 u32 datUnitInit(DatUnit* unit, u8 genus, u16 id);
 
