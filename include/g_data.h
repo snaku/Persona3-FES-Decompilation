@@ -232,6 +232,7 @@ void datClearBadStatus(u16 characterId, u32 flags);
 u32 datGetExpUntilNextLevel(u16 characterId);
 u8 datDidCharacterLevelUp(u16 characterId, u32 expGain);
 void datSetAiTactic(u16 characterId, u8 aiTacticId);
+u16 datGetPartyId(s32 idx);
 u8 datGetAiTactic(u16 characterId);
 void datSetPhysicalCondition(u16 characterId, u16 physicalCondition);
 void datSetFatigueCounter(u16 characterId, u16 fatigueCounter);

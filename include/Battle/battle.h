@@ -8,7 +8,7 @@
 #include "datUnit.h"
 
 #define BTL_FLAG_ACTIVE      (1 << 0)  // 0x01. Currently in a battle. Destroy 'battle' task if not set
-#define BTL_FLAG_IS_BOSS     (1 << 15) // 0x8000. Battle is a boss battle
+#define BTL_FLAG_UNK8000     (1 << 15) // 0x8000
 #define BTL_FLAG_MULTI_ENEMY (1 << 16) // 0x10000. More than one enemy in the battle
 
 #define BTL_UIDMAX  0x3FFFFFFFFFFFFFFF
@@ -62,12 +62,12 @@ typedef struct Battle
     BtlUnitList unitLists[UNIT_GENUS_MAX];         // 0x150
     u8 unkData3[0x10];
     BtlPacketList packetLists[BTLPACKET_TYPE_MAX]; // 0x170
-    u8 unkData4[0xc4];
+    u8 unkData4[0xb4];
     u16 fldMajorId;                                // 0x244
     u16 fldMinorId;                                // 0x246
     BtlOrder order;                                // 0x248
     BtlStateWork stateWork;                        // 0x2b4
-    u8 unkData6[0xa58];
+    u8 unkData6[0x8e8];
     BtlStartInfo startInfo;                        // 0xba8
     u8 unkData7[0x13c];
     KwlnTask* btlTask;                             // 0xd18
@@ -76,12 +76,25 @@ typedef struct Battle
     u8 unkData9[0x40];
 } Battle;
 
+// 28 bytes
+typedef struct BtlEncountTable
+{
+    u8 unkData1[0x08];
+    u16 enmIds[5];     // 0x08
+    u16 fldMajorId;    // 0x12
+    u16 fldMinorId;    // 0x14
+    u16 bgm;           // 0x16. See enum 'BtlEncountBgm'
+    u8 unkData2[0x04];
+} BtlEncountTable;
+
+extern BtlEncountTable* gEncountTbl;
 extern Battle* gBtl;
 
 u64 btlGetUID();
 
 KwlnTask* btlStart(BtlStartInfo* startInfo);
+u32 btlScrCmd_CALL_BATTLE();
 KwlnTask* btlGetTask();
-void btlSetIsBoss();
+void btl0027d8b0();
 
 #endif

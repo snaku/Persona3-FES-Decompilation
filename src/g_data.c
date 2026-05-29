@@ -254,6 +254,14 @@ void datSetAiTactic(u16 characterId, u8 aiTacticId)
     gCharacters[characterId].unit.aiTactic = aiTacticId;
 }
 
+// FUN_0016dd60
+u16 datGetPartyId(s32 idx)
+{
+    // TODO
+
+    return 0;
+}
+
 // FUN_0016dd80
 u8 datGetAiTactic(u16 characterId)
 {
