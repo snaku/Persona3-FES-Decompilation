@@ -63,6 +63,57 @@ BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 sp
     return packet;
 }
 
+// FUN_00281ab0
+void btlUnitInitMoveToUnitPacket(void* work)
+{
+    BtlUnitPacketMoveToUnit* packet;
+
+    packet = (BtlUnitPacketMoveToUnit*)work;
+
+    packet->targetUnit->packetCount++;
+}
+
+// FUN_00281ad0
+u32 btlUnitUpdateMoveToUnitPacket(void* work)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_00281ab0
+void btlUnitDestroyMoveToUnitPacket(void* work)
+{
+    BtlUnitPacketMoveToUnit* packet;
+
+    packet = (BtlUnitPacketMoveToUnit*)work;
+
+    packet->targetUnit->packetCount--;
+}
+
+// FUN_00281e80
+BtlPacket* btlUnitCreateMoveToUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, f32 param_3, f32 speed, u32 flags)
+{
+    BtlPacket* packet;
+    BtlUnitPacketMoveToUnit* work;
+
+    packet = btlPacketCreate(BTLUNIT_PACKET_MOVETOUNIT, sizeof(BtlUnitPacketMoveToUnit));
+    
+    packet->initFunc = btlUnitInitMoveToUnitPacket;
+    packet->updateFunc = btlUnitUpdateMoveToUnitPacket;
+    packet->destroyFunc = btlUnitDestroyMoveToUnitPacket;
+
+    work = (BtlUnitPacketMoveToUnit*)packet->workData;
+
+    work->move.unit = unit;
+    work->move.unk_1c = param_3;
+    work->move.speed = speed;
+    work->move.flags = flags;
+    work->targetUnit = targetUnit;
+
+    return packet;
+}
+
 // FUN_00282190
 void btlUnitInitRotatePacket(void* work)
 {
