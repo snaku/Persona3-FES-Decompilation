@@ -22,5 +22,6 @@ typedef struct BtlTarget
 } BtlTarget;
 
 void btlTargetInit(BtlTarget* target);
+void btlTargetReset(BtlTarget* target);
 
 #endif
