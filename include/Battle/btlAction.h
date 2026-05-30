@@ -69,7 +69,9 @@ struct BtlAction
     s16 unk_34;              // 0x34
     u16 rand;                // 0x36
     BtlTarget target;        // 0x38
-    u8 unkData3[0x414];
+    u8 unkData3[0x3fc];
+    s32 unk_484;             // 0x484
+    u8 unkData4[0x14];
     u16 stateAfterEvt;       // 0x49c
     u32 (*evtFunc)();        // 0x4a0
     BtlAction* next;         // 0x4a4
@@ -79,7 +81,7 @@ struct BtlAction
 
 BtlAction* btlActionCreate();
 void btlActionSetState(BtlAction* action, u16 state);
-void btlActionUpdate();
+void btlActionUpdateAll();
 void btlActionDestroyAll();
 BtlAction* btlActionFindByUnit(BtlUnit* unit);
 BtlAction* btlActionFindById(u32 id);

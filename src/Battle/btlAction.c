@@ -1,7 +1,9 @@
 #include "Battle/battle.h"
 #include "Battle/btlAction.h"
+#include "Battle/btlMain.h"
+#include "Battle/btlOrder.h"
 #include "Battle/btlUnit.h"
-#include "Battle/btlSupport.h"
+#include "Battle/btlPacket.h"
 #include "datCalc.h"
 #include "temporary.h"
 
@@ -640,33 +642,35 @@ BtlAction* btlActionCreate()
 }
 
 // FUN_00299fb0
-void btlActionUpdate()
+void btlActionUpdateAll()
 {
-    BtlAction* currAction;
-    BtlAction* actionToUpdate;
-    u8 canUpdateAction;
+    BtlAction* curr;
+    BtlAction* prev;
+    u32 canUpdateAction;
+    u32 currState;
+    u32 pendingState;
+    const BtlActionStateEntry* stateEntry;
 
-    currAction = gBtl->actionList.tail;
-    actionToUpdate = currAction;
-    while (actionToUpdate != NULL)
+    curr = gBtl->actionList.tail;
+    while (curr != NULL)
     {
-        actionToUpdate = currAction;
-        currAction = actionToUpdate->prev;
+        prev = curr->prev;
         canUpdateAction = true;
 
-        if (actionToUpdate->pendingState != BTLACTION_STATE_NON &&
-            actionToUpdate->pendingStateTimer != 0)
+        if (curr->pendingState != BTLACTION_STATE_NON &&
+            curr->pendingStateTimer > 0)
         {
-            actionToUpdate->pendingStateTimer--;
-            if (actionToUpdate->pendingStateTimer == 0)
+            if (--curr->pendingStateTimer == 0)
             {
-                actionToUpdate->oldState = actionToUpdate->currState;
-                actionToUpdate->currState = actionToUpdate->pendingState;
-                actionToUpdate->stateTimer = 0;
+                currState = curr->currState;
+                pendingState = curr->pendingState;
+                curr->oldState = currState;
+                curr->currState = pendingState;
+                curr->stateTimer = 0;
 
-                sActionStateTable[actionToUpdate->pendingState].init(actionToUpdate);
+                sActionStateTable[pendingState].init(curr);
 
-                actionToUpdate->pendingState = BTLACTION_STATE_NON;
+                curr->pendingState = BTLACTION_STATE_NON;
             }
             else 
             {
@@ -674,33 +678,36 @@ void btlActionUpdate()
             }
         }
 
-        if (canUpdateAction && !(actionToUpdate->unk_1a & (1 << 2)))
+        if (canUpdateAction && !(curr->unk_1a & (1 << 2)))
         {
-            if (!(actionToUpdate->unk_18 & (1 << 0)) &&
-                 (actionToUpdate->unk_1a & (1 << 1)))
+            if (curr->unk_18 & (1 << 0))
             {
-                if (actionToUpdate->prev != NULL)
+                stateEntry = &sActionStateTable[curr->currState];
+                stateEntry->update(curr);
+
+                curr->stateTimer += 2;
+            }
+            else if (curr->unk_1a & (1 << 1))
+            {
+                if (curr->prev != NULL)
                 {
-                    actionToUpdate->prev->next = actionToUpdate->next;
+                    curr->prev->next = curr->next;
                 }
 
-                if (actionToUpdate->next == NULL)
+                if (curr->next != NULL)
                 {
-                    gBtl->actionList.tail = actionToUpdate->prev;
+                    curr->next->prev = curr->prev;
                 }
                 else 
                 {
-                    actionToUpdate->next->prev = actionToUpdate->prev;
+                    gBtl->actionList.tail = curr->prev;
                 }
 
-                RwFree(actionToUpdate);
-            }
-            else
-            {
-                sActionStateTable[actionToUpdate->currState].update(actionToUpdate);
-                actionToUpdate->stateTimer += 2;
+                RwFree(curr);
             }
         }
+
+        curr = prev;
     }
 }
 
