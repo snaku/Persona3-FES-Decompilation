@@ -1,7 +1,10 @@
 #include "Battle/btlSound.h"
 #include "Battle/battle.h"
+#include "Battle/btlPacket.h"
 #include "g_data.h"
 #include "h_snd.h"
+#include "h_cdvd.h"
+#include "temporary.h"
 
 // FUN_002dcd30
 void btlSoundPlayBgm()
@@ -33,4 +36,54 @@ void btlSoundPlayBgm()
                 }
         }
     }
+}
+
+// FUN_002dd270
+void btlSoundInitSkillSEPacket(void* work)
+{
+    BtlSoundPacketSkillSE* packet;
+    char buffer[128];
+
+    packet = (BtlSoundPacketSkillSE*)work;
+
+    if (!(packet->flags & BTLSOUND_SKILLSE_FLAG_UNK01))
+    {
+        sprintf(buffer, "%s%03X.se", "skill/", packet->skillId);
+        packet->cdvd = H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
+    }
+    else
+    {
+        packet->cdvd = NULL;
+    }
+
+    packet->state = 1;
+    packet->timer = 0;
+}
+
+// FUN_002dd2f0
+u32 btlSoundUpdateSkillSEPacket(void* work)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_002dd4a0
+BtlPacket* btlSoundCreateSkillSEPacket(u16 skillId, u16 flags)
+{
+    BtlPacket* packet;
+    BtlSoundPacketSkillSE* work;
+
+    packet = btlPacketCreate(BTLSOUND_PACKET_SKILLSE, sizeof(BtlSoundPacketSkillSE));
+
+    packet->unk_47 &= ~(1 << 0);
+    packet->initFunc = btlSoundInitSkillSEPacket;
+    packet->updateFunc = btlSoundUpdateSkillSEPacket;
+
+    work = (BtlSoundPacketSkillSE*)packet->workData;
+
+    work->skillId = skillId;
+    work->flags = flags;
+
+    return packet;
 }

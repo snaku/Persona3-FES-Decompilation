@@ -9,7 +9,8 @@
 typedef enum
 {
     BTLPACKET_MODULE_NULL,
-    BTLPACKET_MODULE_UNIT
+    BTLPACKET_MODULE_UNIT,
+    BTLPACKET_MODULE_SOUND = 9
 } BtlPacketModule;
 
 // TODO: names
@@ -31,7 +32,10 @@ struct BtlPacket
     u8 unkData1[0x40];
     u32 id;                          // 0x40. See macro 'BTLPACKET_MAKE_ID' and enum 'BtlPacketModule'
     s8 type;                         // 0x44. See enum 'BtlPacketType'
-    u8 unkData2[0x13];
+    s8 unk_45;                       // 0x45
+    s8 unk_46;                       // 0x46
+    u8 unk_47;                       // 0x47
+    u8 unkData2[0x10];
     u64 uid;                         // 0x58
     u64 actionUID;                   // 0x60
     void (*initFunc)(void* work);    // 0x68
