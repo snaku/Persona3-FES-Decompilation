@@ -16,6 +16,7 @@ typedef struct BtlPacket BtlPacket;
 // TODO
 typedef enum
 {
+    BTLUNIT_PACKET_ANIM = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 0),
     BTLUNIT_PACKET_MOVE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 10),
     BTLUNIT_PACKET_MOVETOUNIT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 11),
     BTLUNIT_PACKET_ROTATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 13)
@@ -43,6 +44,33 @@ struct BtlUnit
     BtlUnit* next;      // 0xa30
     BtlUnit* prev;      // 0xa34
 };
+
+// TODO
+typedef enum
+{
+    BTLUNIT_ANIM_DODGE = -4,
+    BTLUNIT_ANIM_RESNULLIFIED = -2,
+    BTLUNIT_ANIM_IDLEWEAPON = 16,
+
+    BTLUNIT_ANIM_MAX = 26
+} BtlUnitAnim;
+
+// TODO
+typedef enum
+{
+    BTLUNIT_ANIM_MODE_ONCE,
+    BTLUNIT_ANIM_MODE_LOOP
+} BtlUnitAnimMode;
+
+// 16 bytes
+typedef struct BtlUnitPacketAnim
+{
+    BtlUnit* unit;       // 0x00
+    s16 id;              // 0x04. See enum 'BtlUnitAnim'
+    u16 blendFrameCount; // 0x06
+    f32 speed;           // 0x08
+    u16 mode;            // 0x0c. See enum 'BtlUnitAnimMode'
+} BtlUnitPacketAnim;
 
 // 36 bytes
 typedef struct BtlUnitPacketMove
@@ -74,6 +102,9 @@ typedef struct BtlUnitPacketRotate
 
 extern RwV3d gUnk_00957188;
 
+void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode);
+
+BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode);
 BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 speed, u32 flags);
 BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags);
 

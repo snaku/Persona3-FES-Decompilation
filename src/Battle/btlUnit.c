@@ -5,6 +5,10 @@ static u32 sNextId = 1; // 007cc51c
 
 RwV3d gUnk_00957188; // 00957188
 
+BtlPacket* btlUnitCreateDodgeAnimPacket(BtlUnit* unit, s32 unused);
+BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
+BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
+
 // FUN_002813d0
 void btlUnitInitMovePacket(void* work)
 {
@@ -169,6 +173,103 @@ BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags)
     }
 
     return packet;
+}
+
+// FUN_00282d40
+void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode)
+{
+    // TODO
+}
+
+// FUN_00284170
+void btlUnitInitAnimPacket(void* work)
+{
+    BtlUnitPacketAnim* packet;
+
+    packet = (BtlUnitPacketAnim*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00284190
+u32 btlUnitUpdateAnimPacket(void* work)
+{
+    // TODO
+
+    return true;
+}
+
+// FUN_002841e0
+void btlUnitDestroyAnimPacket(void* work)
+{
+    BtlUnitPacketAnim* packet;
+
+    packet = (BtlUnitPacketAnim*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00284200
+BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode)
+{
+    BtlPacket* packet;
+    BtlUnitPacketAnim* work;
+    s16 _id;
+
+    _id = id;
+    switch (_id)
+    {
+        case BTLUNIT_ANIM_RESNULLIFIED: return btlUnitCreateResNullifiedAnimPacket(unit, 32.0f);
+        case -3:                        return btlUnit00284900(unit, 6);
+        case BTLUNIT_ANIM_DODGE:        return btlUnitCreateDodgeAnimPacket(unit, 6);  
+    }
+
+    packet = btlPacketCreate(BTLUNIT_PACKET_ANIM, sizeof(BtlUnitPacketAnim));
+
+    packet->initFunc = btlUnitInitAnimPacket;
+    packet->updateFunc = btlUnitUpdateAnimPacket;
+    packet->destroyFunc = btlUnitDestroyAnimPacket;
+
+    work = (BtlUnitPacketAnim*)packet->workData;
+
+    work->unit = unit;
+
+    switch (_id)
+    {
+        case -5:
+            _id = -1;
+    }
+
+    work->id = _id;
+    work->blendFrameCount = blendFrameCount;
+    work->speed = speed;
+    work->mode = mode;
+
+    return packet;
+}
+
+// FUN_00284200
+BtlPacket* btlUnitCreateDodgeAnimPacket(BtlUnit* unit, s32 unused)
+{
+    // TODO
+
+    return NULL;
+}
+
+// FUN_00284900
+BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2)
+{
+    // TODOD
+
+    return NULL;
+}
+
+// FUN_00284b70
+BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2)
+{
+    // TODO
+
+    return NULL;
 }
 
 // FUN_002875a0
