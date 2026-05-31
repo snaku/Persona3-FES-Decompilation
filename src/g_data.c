@@ -340,17 +340,17 @@ void datSetFatigueCounter(u16 characterId, u16 fatigueCounter)
     gCharacters[characterId].physicalState.fatigueCounter = fatigueCounter;
 }
 
-void datSetHealth(u16 characterId, u16 health)
+void datSetHp(u16 characterId, u16 hp)
 {
-    u16 tmp = health;
+    u16 tmp = hp;
 
     if (!IS_HERO(characterId))
     {
-        gCharacters[characterId].unit.health = health;
-        tmp = sPlayerUnit.health;
+        gCharacters[characterId].unit.hp = hp;
+        tmp = sPlayerUnit.hp;
     }
 
-    sPlayerUnit.health = tmp;
+    sPlayerUnit.hp = tmp;
 }
 
 // FUN_0016e920

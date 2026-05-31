@@ -34,12 +34,12 @@ typedef struct DatUnit
     u16 id;            // 0x02
     u16 id2;           // 0x04
     u8 level;          // 0x06
-    u16 health;        // 0x08
+    u16 hp;            // 0x08
     u16 sp;            // 0x0a
     u32 bad;           // 0x0c. See 'UNIT_BADSTATUS_*'
     u8 aiTactic;       // 0x10. See enum 'AiTactic'
     u8 unkData1[0x28];
-} DatUnit; 
+} DatUnit;
 
 // 8 bytes
 typedef struct DatUnitGenusBase

@@ -236,7 +236,7 @@ u16 datGetPartyId(s32 idx);
 u8 datGetAiTactic(u16 characterId);
 void datSetPhysicalCondition(u16 characterId, u16 physicalCondition);
 void datSetFatigueCounter(u16 characterId, u16 fatigueCounter);
-void datSetHealth(u16 characterId, u16 health);
+void datSetHp(u16 characterId, u16 hp);
 void datSetActiveSocialLink(u16 activeSocialLink);
 s16 datGetDaysSinceApr5();
 s8 datGetTime();

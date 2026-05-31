@@ -55,9 +55,9 @@ u8 datCalcGetLevel(DatUnit* unit){
 }
 
 // FUN_002ffd70
-u16 datCalcGetHealth(DatUnit* unit)
+u16 datCalcGetHp(DatUnit* unit)
 {
-    return unit->health;
+    return unit->hp;
 }
 
 // FUN_002ffd80
@@ -67,14 +67,14 @@ u16 datCalcGetSp(DatUnit* unit)
 }
 
 // FUN_002ffd90
-void datCalcSetHealth(DatUnit* unit, u16 health)
+void datCalcSetHp(DatUnit* unit, u16 hp)
 {
-    if (health > 999 && !(unit->flags & UNIT_FLAG_ENEMY))
+    if (hp > 999 && !(unit->flags & UNIT_FLAG_ENEMY))
     {
-        health = 999;
+        hp = 999;
     }
 
-    unit->health = health;
+    unit->hp = hp;
 }
 
 // FUN_002ffdc0
@@ -86,6 +86,14 @@ void datCalcSetSp(DatUnit* unit, u16 sp)
     }
 
     unit->sp = sp;
+}
+
+// FUN_002ffdf0
+u16 datCalcGetMaxHp(DatUnit* unit)
+{
+    // TODO
+
+    return 0;
 }
 
 // FUN_003004f0
@@ -219,12 +227,22 @@ u8 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect)
 }
 
 // FUN_0030b5a0
-u32 datCalcChkDead(const DatUnit* unit, s32 hpDelta)
+u32 datCalcIsDead(const DatUnit* unit, s32 hpDelta)
 {
     if (unit->bad & UNIT_BADSTATUS_DEAD)// TODO: sltu v0,zero,v0
     {
         return true;
     }
 
-    return (unit->health + hpDelta) <= 0;
+    return (unit->hp + hpDelta) <= 0;
+}
+
+// FUN_0030b5e0
+u32 datCalcIsLowHp(DatUnit* unit)
+{
+    u16 hp;
+
+    hp = unit->hp;
+
+    return ((hp * 100) / datCalcGetMaxHp(unit)) < 26; // is hp below 26%
 }
