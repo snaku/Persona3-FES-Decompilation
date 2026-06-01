@@ -1,5 +1,6 @@
 #include "Battle/btlUnit.h"
 #include "Battle/btlPacket.h"
+#include "Model/mdlManager.h"
 
 static u32 sNextId = 1; // 007cc51c
 
@@ -181,6 +182,17 @@ void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 m
     // TODO
 }
 
+// FUN_00283ba0
+s16 btlUnitGetAnimFrame(BtlUnit* unit)
+{
+    if (unit->unk_98 & (1 << 1))
+    {
+        return mdlAnimGetCurrentFrame(unit->mdl, 0);
+    }
+
+    return 0;
+}
+
 // FUN_00284170
 void btlUnitInitAnimPacket(void* work)
 {
@@ -194,7 +206,18 @@ void btlUnitInitAnimPacket(void* work)
 // FUN_00284190
 u32 btlUnitUpdateAnimPacket(void* work)
 {
-    // TODO
+    BtlUnitPacketAnim* packet;
+
+    packet = (BtlUnitPacketAnim*)work;
+
+    if (packet->id >= 0 && packet->id < BTLUNIT_ANIM_MAX)
+    {
+        btlUnitAnimate(packet->unit,
+                       packet->id,
+                       packet->blendFrameCount,
+                       packet->speed,
+                       packet->mode);
+    }
 
     return true;
 }

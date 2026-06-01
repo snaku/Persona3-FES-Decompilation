@@ -30,13 +30,14 @@ struct BtlUnit
     u32 flags;          // 0x00
     RwV3d pos1;         // 0x04
     RwV3d pos2;         // 0x10
-    u8 unkData1[0x80];
+    u8 unkData1[0x7c];
+    u32 unk_98;         // 0x98
     u32 flags2;         // 0x9c. Temp name
     u16 packetCount;    // 0xa0
     u8 genus;           // 0xa2. See enum 'UnitGenus'
     s32 unk_a4;         // 0xa4
     u32 id;             // 0xa8
-    u8 unkData2[0x94f];
+    u8 unkData2[0x946];
     u16 resTypeId;      // 0x9f2
     Model* mdl;         // 0x9f4
     u8 unkData3[0x34];
@@ -103,6 +104,7 @@ typedef struct BtlUnitPacketRotate
 extern RwV3d gUnk_00957188;
 
 void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode);
+s16 btlUnitGetAnimFrame(BtlUnit* unit);
 
 BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode);
 BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 speed, u32 flags);
