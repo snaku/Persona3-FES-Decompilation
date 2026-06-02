@@ -19,16 +19,22 @@ void scrDestroyTask(KwlnTask* scrTask);
 void* scrScriptProcess(KwlnTask* scrTask);
 
 // FUN_0035b570
-ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
-                         ScrLblPrcd* prcd, ScrLblPrcd* labels, 
-                         ScrInstruction* instr, BmdHeader* msg, 
-                         char* strings, s32 prcdIdx)
+ScrData* scrStartScript(ScrHeader* header,
+                        ScrContentEntry* entries,
+                        ScrLblPrcd* prcd,
+                        ScrLblPrcd* labels,
+                        ScrInstruction* instr,
+                        BmdHeader* msg,
+                        char* strings,
+                        s32 prcdIdx)
 {
     ScrData* scr;
     s32 mesHandleIdx;
     s32 i;
     char* prcdName;
     s32 j;
+    s8* stackType;
+    ScrValues* stackValue;
     s32 k;
 
     if (header == NULL || entries == NULL || prcd == NULL || instr == NULL)
@@ -61,10 +67,11 @@ ScrData* scrStartScript(ScrHeader* header, ScrContentEntry* entries,
     scr->sp = 0;
     for (j = 0; j < SCR_STACK_MAX; j++)
     {
-        // TODO: addu v0, s0, v0 instead of addu v0, v0, s0
+        stackType = &scr->stackTypes[j];
+        stackValue = &scr->stackValues[j];
 
-        scr->stackTypes[j] = 0;
-        scr->stackValues[j].iVal = 0;
+        *stackType = 0;
+        stackValue->iVal = 0;
     }
 
     scr->scrHeader = header;
@@ -211,8 +218,14 @@ ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
         }
     }
 
-    return scrStartScript(header, entries, prcd, labels,
-                          instr, msgs, strings, prcdIdx);
+    return scrStartScript(header,
+                          entries,
+                          prcd,
+                          labels,
+                          instr,
+                          msgs,
+                          strings,
+                          prcdIdx);
 }
 
 // FUN_0035bb40. Create a script task by a script header
