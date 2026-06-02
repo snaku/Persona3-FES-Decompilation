@@ -79,6 +79,18 @@ typedef struct Battle
 
 typedef enum
 {
+    BTLBATTLE_PACKET_SETFLAGS = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_BATTLE, 2),
+    BTLBATTLE_PACKET_REMOVEFLAGS = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_BATTLE, 3)
+} BtlBattlePacket;
+
+// 4 bytes
+typedef struct BtlBattleFlagPacket
+{
+    u32 flags; // 0x00
+} BtlBattleFlagPacket;
+
+typedef enum
+{
     BTLENCOUNT_BGM_FULLMOON = 2,
     BTLENCOUNT_BGM_STREGA,
     BTLENCOUNT_BGM_NYX,
@@ -108,5 +120,6 @@ KwlnTask* btlStart(BtlStartInfo* startInfo);
 u32 btlScrCmd_CALL_BATTLE();
 KwlnTask* btlGetTask();
 void btl0027d8b0();
+BtlPacket* btlCreateSetFlagsPacket(u32 flags);
 
 #endif

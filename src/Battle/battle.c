@@ -112,3 +112,29 @@ void btl0027d8b0()
 {
     gBtl->flags |= BTL_FLAG_UNK8000;
 }
+
+// FUN_0027dbe0
+u32 btlUpdateSetFlagsPacket(void* work)
+{
+    BtlBattleFlagPacket* packet;
+
+    packet = (BtlBattleFlagPacket*)work;
+
+    gBtl->flags |= packet->flags;
+
+    return true;
+}
+
+// FUN_0027dc00
+BtlPacket* btlCreateSetFlagsPacket(u32 flags)
+{
+    BtlPacket* packet;
+
+    packet = btlPacketCreate(BTLBATTLE_PACKET_SETFLAGS, sizeof(BtlBattleFlagPacket));
+
+    packet->updateFunc = btlUpdateSetFlagsPacket;
+
+    ((BtlBattleFlagPacket*)packet->workData)->flags = flags;
+
+    return packet;
+}
