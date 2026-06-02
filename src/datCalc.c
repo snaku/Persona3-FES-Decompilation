@@ -229,7 +229,7 @@ u8 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect)
 // FUN_0030b5a0
 u32 datCalcIsDead(const DatUnit* unit, s32 hpDelta)
 {
-    if (unit->bad & UNIT_BADSTATUS_DEAD)// TODO: sltu v0,zero,v0
+    if (unit->bad & UNIT_BADSTATUS_DEAD ? 1 : 0)
     {
         return true;
     }

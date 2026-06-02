@@ -50,6 +50,7 @@ struct BtlPacket
 };
 
 BtlPacket* btlPacketFindFirstByActionUID(u64 actionUID, u64 mask);
+u32 btlPacketGetCount();
 BtlPacket* btlPacketCreate(u32 id, u32 workDataSize);
 u64 btlPacketRegister(BtlPacket* packet, s32 type);
 
