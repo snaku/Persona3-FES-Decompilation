@@ -79,6 +79,7 @@ struct BtlAction
     s32 unk_4ac;             // 0x4ac
 };
 
+u32 btlActionIdleWeaponAnim(BtlAction* action);
 BtlAction* btlActionCreate();
 void btlActionSetState(BtlAction* action, u16 state);
 void btlActionUpdateAll();

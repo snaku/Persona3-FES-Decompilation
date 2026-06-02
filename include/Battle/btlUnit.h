@@ -103,6 +103,7 @@ typedef struct BtlUnitPacketRotate
 
 extern RwV3d gUnk_00957188;
 
+u32 btlUnit00282c60(BtlUnit* unit);
 void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode);
 s16 btlUnitGetAnimFrame(BtlUnit* unit);
 

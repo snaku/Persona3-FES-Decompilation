@@ -176,6 +176,14 @@ BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags)
     return packet;
 }
 
+// FUN_00282c60
+u32 btlUnit00282c60(BtlUnit* unit)
+{
+    // TODO
+
+    return false;
+}
+
 // FUN_00282d40
 void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode)
 {

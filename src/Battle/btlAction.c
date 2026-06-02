@@ -4,6 +4,7 @@
 #include "Battle/btlOrder.h"
 #include "Battle/btlUnit.h"
 #include "Battle/btlPacket.h"
+#include "Effect/effMisc.h"
 #include "datCalc.h"
 #include "temporary.h"
 
@@ -136,20 +137,53 @@ static const BtlActionStateEntry sActionStateTable[] =
 static u32 sNextId = 1; // 007cc530
 
 // FUN_00289860
-u8 btlActionCheckPlayWeaponIdleAnim(BtlAction* action)
+u32 btlActionIdleWeaponAnim(BtlAction* action)
 {
-    // TODO
+    BtlPacket* animPacket;
 
-    if (action->idleWeaponAnimTimer <= 0)
+    if (action->idleWeaponAnimTimer < 0)
     {
-
+        action->idleWeaponAnimTimer = (effMiscRand(NULL) % 240) + 120; // [120;359]
     }
+
     if (action->idleWeaponAnimTimer == 0)
     {
+        if (!btlUnit00282c60(action->unit))
+        {
+            return false;
+        }
+        if (datCalcChkBadStatus(action->unit->datUnit, UNIT_BADSTATUS_DOWN))
+        {
+            return false;
+        }
+        if (datCalcChkBadStatus(action->unit->datUnit, 0xFFFFF))
+        {
+            return false;
+        }
+        if (datCalcIsLowHp(action->unit->datUnit) || datCalcIsDead(action->unit->datUnit, 0))
+        {
+            return false;
+        }
 
+        if (btlUnitGetAnimFrame(action->unit) < 4)
+        {
+            animPacket = btlUnitCreateAnimPacket(action->unit,
+                                                 BTLUNIT_ANIM_IDLEWEAPON,
+                                                 4,
+                                                 1.0f,
+                                                 BTLUNIT_ANIM_MODE_ONCE);
+            btlPacketRegister(animPacket, BTLPACKET_TYPE_1);
+
+            action->idleWeaponAnimTimer = -1;
+        }
+
+        return true;
+    }
+    else
+    {
+        action->idleWeaponAnimTimer--;
     }
 
-    action->idleWeaponAnimTimer--;
     return false;
 }
 
