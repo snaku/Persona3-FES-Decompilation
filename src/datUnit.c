@@ -29,6 +29,33 @@ DatUnitEnemy* datUnitCreateEnemy(u16 encountId)
 }
 
 // FUN_002ff660
+DatUnit* datUnitAddEnemy(DatUnitEnemy* enm, u16 id)
+{
+    u16 i;
+    DatUnit* curr;
+
+    K_ASSERT(enm->base.genus == UNIT_GENUS_ENEMY, 100);
+    K_ASSERT(enm->base.count < 6, 101);
+
+    for (i = 0; i < 6; i++)
+    {
+        curr = &enm->base.unit[i];
+
+        if (curr->id == 0)
+        {
+            datUnitInit(curr, UNIT_GENUS_ENEMY, id);
+            enm->base.count++;
+
+            break;
+        }
+    }
+
+    K_ASSERT(i < 6, 117);
+
+    return curr;
+}
+
+// FUN_002ff660
 void datUnitRemoveEnemy(DatUnitEnemy* enm, DatUnit* unit)
 {
     u16 i;

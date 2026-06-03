@@ -67,6 +67,7 @@ typedef struct DatUnitEnemy
 
 DatUnitPlayer* datUnitCreatePlayer(u16 charId);
 DatUnitEnemy* datUnitCreateEnemy(u16 encountId);
+DatUnit* datUnitAddEnemy(DatUnitEnemy* enm, u16 id);
 void datUnitRemoveEnemy(DatUnitEnemy* enm, DatUnit* unit);
 void datUnitDestroyGenus(DatUnitGenusBase* genusBase);
 
