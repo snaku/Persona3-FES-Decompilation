@@ -313,6 +313,23 @@ BtlUnit* btlUnitCreate(u8 genus)
     return NULL;
 }
 
+// FUN_002889c0
+void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
+{
+    // TODO
+}
+
+// FUN_00288f80
+void btlUnitInitPersona(BtlUnit* unit, u16 personaId)
+{
+    if (unit->personaUnit == NULL)
+    {
+        unit->personaUnit = btlUnitCreate(UNIT_GENUS_PERSONA);
+    }
+
+    btlUnitInitFromCharId(unit->personaUnit, personaId);
+}
+
 // FUN_00289030
 BtlUnit* btlUnitFindFromId(u16 id)
 {
