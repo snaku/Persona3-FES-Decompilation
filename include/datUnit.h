@@ -23,8 +23,9 @@ typedef enum
 {
     UNIT_GENUS_PLAYER,
     UNIT_GENUS_ENEMY,
+    UNIT_GENUS_PERSONA,
 
-    UNIT_GENUS_MAX
+    UNIT_GENUS_MAX = 4
 } UnitGenus;
 
 // 60 bytes

@@ -61,20 +61,19 @@ typedef struct Battle
     u8 unkData2[0x138];
     BtlActionList actionList;                      // 0x148
     BtlUnitList unitLists[UNIT_GENUS_MAX];         // 0x150
-    u8 unkData3[0x10];
     BtlPacketList packetLists[BTLPACKET_TYPE_MAX]; // 0x170
-    u8 unkData4[0xb4];
+    u8 unkData3[0xb4];
     u16 fldMajorId;                                // 0x244
     u16 fldMinorId;                                // 0x246
     BtlOrder order;                                // 0x248
     BtlStateWork stateWork;                        // 0x2b4
-    u8 unkData6[0x8e8];
+    u8 unkData4[0x8e8];
     BtlStartInfo startInfo;                        // 0xba8
-    u8 unkData7[0x13c];
+    u8 unkData5[0x13c];
     KwlnTask* btlTask;                             // 0xd18
-    u8 unkData8[0x10];
+    u8 unkData6[0x10];
     KwlnTask* btlPanelTask;                        // 0xd2c
-    u8 unkData9[0x40];
+    u8 unkData7[0x40];
 } Battle;
 
 typedef enum

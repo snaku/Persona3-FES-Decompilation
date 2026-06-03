@@ -1,6 +1,8 @@
 #include "Battle/btlUnit.h"
 #include "Battle/btlPacket.h"
+#include "Battle/battle.h"
 #include "Model/mdlManager.h"
+#include "datUnit.h"
 
 static u32 sNextId = 1; // 007cc51c
 
@@ -307,6 +309,36 @@ BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2)
 BtlUnit* btlUnitCreate(u8 genus)
 {
     // TODO
+
+    return NULL;
+}
+
+// FUN_00289030
+BtlUnit* btlUnitFindFromId(u16 id)
+{
+    u32 i;
+    Battle* btl;
+    u32 _id;
+    BtlUnitList* list;
+    BtlUnit* curr;
+
+    i = 0;
+    btl = gBtl;
+    _id = id;
+    for (; i < UNIT_GENUS_MAX; i++)
+    {
+        list = &btl->unitLists[i];
+        curr = list->tail;
+        while (curr != NULL)
+        {
+            if (curr->id == _id)
+            {
+                return curr;
+            }
+
+            curr = curr->prev;
+        }
+    }
 
     return NULL;
 }
