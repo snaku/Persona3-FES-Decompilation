@@ -3,7 +3,7 @@
 
 #include "Utils.h"
 #include "Battle/btlPacket.h"
-#include "rw/rwplcore.h"
+#include "rw/rtquat.h"
 
 #define BTLUNIT_FLAG2_DEAD   (1 << 0) // 0x01
 #define BTLUNIT_FLAG2_ENDURE (1 << 4) // 0x10
@@ -19,7 +19,8 @@ typedef enum
     BTLUNIT_PACKET_ANIM = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 0),
     BTLUNIT_PACKET_MOVE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 10),
     BTLUNIT_PACKET_MOVETOUNIT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 11),
-    BTLUNIT_PACKET_ROTATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 13)
+    BTLUNIT_PACKET_ROTATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 13),
+    BTLUNIT_PACKET_LOOKAT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 23)
 } BtlUnitPacket;
 
 typedef struct BtlUnit BtlUnit;
@@ -27,25 +28,30 @@ typedef struct BtlUnit BtlUnit;
 // 2616 bytes
 struct BtlUnit
 {
-    u32 flags;            // 0x00
-    RwV3d pos1;           // 0x04
-    RwV3d pos2;           // 0x10
-    u8 unkData1[0x7c];
-    u32 unk_98;           // 0x98
-    u32 flags2;           // 0x9c. Temp name
-    u16 packetCount;      // 0xa0
-    u8 genus;             // 0xa2. See enum 'UnitGenus'
-    u16 charId;           // 0xa4
-    u32 id;               // 0xa8
-    u8 unkData2[0x946];
-    u16 resTypeId;        // 0x9f2
-    Model* mdl;           // 0x9f4
+    u32 flags;             // 0x00
+    RwV3d pos1;            // 0x04
+    RwV3d pos2;            // 0x10
+    RtQuat rot;            // 0x1c
+    u8 unkData1[0x6c];
+    u32 unk_98;            // 0x98
+    u32 flags2;            // 0x9c. Temp name
+    u16 packetCount;       // 0xa0
+    u8 genus;              // 0xa2. See enum 'UnitGenus'
+    u16 charId;            // 0xa4
+    u32 id;                // 0xa8
+    s32 unk_ac;            // 0xac
+    u16 lookAtMode;        // 0xb0
+    u32 lookAtTargetId;    // 0xb4
+    RwV3d lookAtTargetPos; // 0xb8
+    u8 unkData2[0x92e];
+    u16 resTypeId;         // 0x9f2
+    Model* mdl;            // 0x9f4
     u8 unkData3[0x08];
-    BtlUnit* personaUnit; // 0xa00
+    BtlUnit* personaUnit;  // 0xa00
     u8 unkData4[0x28];
-    DatUnit* datUnit;     // 0xa2c
-    BtlUnit* prev;        // 0xa30
-    BtlUnit* next;        // 0xa34
+    DatUnit* datUnit;      // 0xa2c
+    BtlUnit* prev;         // 0xa30
+    BtlUnit* next;         // 0xa34
 };
 
 // TODO
@@ -103,6 +109,14 @@ typedef struct BtlUnitPacketRotate
     s32 unk_14;    // 0x14
 } BtlUnitPacketRotate;
 
+// 20 bytes
+typedef struct BtlUnitPacketLookAt
+{
+    BtlUnit* unit;   // 0x00
+    RwV3d targetPos; // 0x04
+    u16 flags;       // 0x10
+} BtlUnitPacketLookAt;
+
 extern RwV3d gUnk_00957188;
 
 u32 btlUnit00282c60(BtlUnit* unit);
@@ -115,5 +129,6 @@ BtlUnit* btlUnitFindFromId(u16 id);
 BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode);
 BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 speed, u32 flags);
 BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags);
+BtlPacket* btlUnitCreateLookAtPacket(BtlUnit* unit, const RwV3d* targetPos, u16 flags);
 
 #endif

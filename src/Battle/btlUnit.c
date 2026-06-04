@@ -313,6 +313,61 @@ BtlUnit* btlUnitCreate(u8 genus)
     return NULL;
 }
 
+// FUN_00288170
+void btlUnitInitLookAtPacket(void* work)
+{
+    BtlUnitPacketLookAt* packet;
+
+    packet = (BtlUnitPacketLookAt*)work;
+
+    if (packet->unit != NULL)
+    {
+        packet->unit->packetCount++;
+    }
+}
+
+// FUN_00288190
+u32 btlUnitUpdateLookAtPacket(void* work)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_00288340
+void btlUnitDestroyLookAtPacket(void* work)
+{
+    BtlUnitPacketLookAt* packet;
+
+    packet = (BtlUnitPacketLookAt*)work;
+
+    if (packet->unit != NULL)
+    {
+        packet->unit->packetCount--;
+    }
+}
+
+// FUN_00288360
+BtlPacket* btlUnitCreateLookAtPacket(BtlUnit* unit, const RwV3d* targetPos, u16 flags)
+{
+    BtlPacket* packet;
+    BtlUnitPacketLookAt* work;
+
+    packet = btlPacketCreate(BTLUNIT_PACKET_LOOKAT, sizeof(BtlUnitPacketLookAt));
+    
+    packet->initFunc = btlUnitInitLookAtPacket;
+    packet->updateFunc = btlUnitUpdateLookAtPacket;
+    packet->destroyFunc = btlUnitDestroyLookAtPacket;
+
+    work = (BtlUnitPacketLookAt*)packet->workData;
+
+    work->unit = unit;
+    work->flags = flags;
+    work->targetPos = *targetPos;
+
+    return packet;
+}
+
 // FUN_002889c0
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
 {
