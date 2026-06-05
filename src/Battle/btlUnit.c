@@ -368,6 +368,65 @@ BtlPacket* btlUnitCreateLookAtPacket(BtlUnit* unit, const RwV3d* targetPos, u16 
     return packet;
 }
 
+// FUN_00288400
+void btlUnitInitLookAtUnitPacket(void* work)
+{
+    BtlUnitPacketLookAtUnit* packet;
+
+    packet = (BtlUnitPacketLookAtUnit*)work;
+
+    if (packet->unit != NULL)
+    {
+        packet->unit->packetCount++;
+    }
+
+    packet->targetUnit->packetCount++;
+}
+
+// FUN_00288430
+u32 btlUnitUpdateLookAtUnitPacket(void* work)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_002886b0
+void btlUnitDestroyLookAtUnitPacket(void* work)
+{
+    BtlUnitPacketLookAtUnit* packet;
+
+    packet = (BtlUnitPacketLookAtUnit*)work;
+
+    if (packet->unit != NULL)
+    {
+        packet->unit->packetCount--;
+    }
+
+    packet->targetUnit->packetCount--;
+}
+
+// FUN_002886e0
+BtlPacket* btlUnitCreateLookAtUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u16 flags)
+{
+    BtlPacket* packet;
+    BtlUnitPacketLookAtUnit* work;
+
+    packet = btlPacketCreate(BTLUNIT_PACKET_LOOKATUNIT, sizeof(BtlUnitPacketLookAtUnit));
+
+    packet->initFunc = btlUnitInitLookAtUnitPacket;
+    packet->updateFunc = btlUnitUpdateLookAtUnitPacket;
+    packet->destroyFunc = btlUnitDestroyLookAtUnitPacket;
+
+    work = (BtlUnitPacketLookAtUnit*)packet->workData;
+
+    work->unit = unit;
+    work->targetUnit = targetUnit;
+    work->flags = flags;
+
+    return packet;
+}
+
 // FUN_002889c0
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
 {
