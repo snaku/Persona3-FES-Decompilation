@@ -428,7 +428,10 @@ void btlActionInitStateEvent(BtlAction* action)
 // FUN_00295ba0
 void btlActionUpdateStateEvent(BtlAction* action)
 {
-    // TODO
+    if (!action->evtFunc())
+    {
+        btlActionSetState(action, action->stateAfterEvt);
+    }
 }
 
 // FUN_00295bf0
@@ -571,7 +574,37 @@ void btlActionInitStateDead(BtlAction* action)
 // FUN_00299990
 void btlActionUpdateStateDead(BtlAction* action)
 {
-    // TODO
+    BtlUnit* unit;
+
+    unit = action->unit;
+    switch (unit->genus)
+    {
+        case UNIT_GENUS_PLAYER:
+            if (!datCalcIsDead(unit->datUnit, 0))
+            {
+                unit->flags2 &= ~BTLUNIT_FLAG2_DEAD;
+
+                btlOrderAddAction(action);
+                btlActionSetState(action, BTLACTION_STATE_STANDBY);
+            }
+            break;
+
+        case UNIT_GENUS_ENEMY:
+            if (!(unit->flags2 & BTLUNIT_FLAG2_UNK40))
+            {
+                btlActionSetState(action, BTLACTION_STATE_EXIT);
+            }
+            else
+            {
+                if (!datCalcIsDead(unit->datUnit, 0))
+                {
+                    unit->flags2 &= ~BTLUNIT_FLAG2_DEAD;
+
+                    btlOrderAddAction(action);
+                    btlActionSetState(action, BTLACTION_STATE_STANDBY);
+                }
+            }
+    }
 }
 
 // FUN_00299aa0
