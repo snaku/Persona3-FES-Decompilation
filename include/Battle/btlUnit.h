@@ -6,6 +6,7 @@
 #include "rw/rtquat.h"
 
 #define BTLUNIT_FLAG2_DEAD   (1 << 0) // 0x01
+#define BTLUNIT_FLAG2_UNK08  (1 << 3) // 0x08
 #define BTLUNIT_FLAG2_ENDURE (1 << 4) // 0x10
 #define BTLUNIT_FLAG2_UNK40  (1 << 6) // 0x40
 
@@ -21,7 +22,8 @@ typedef enum
     BTLUNIT_PACKET_MOVETOUNIT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 11),
     BTLUNIT_PACKET_ROTATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 13),
     BTLUNIT_PACKET_LOOKAT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 23),
-    BTLUNIT_PACKET_LOOKATUNIT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 24)
+    BTLUNIT_PACKET_LOOKATUNIT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 24),
+    BTLUNIT_PACKET_LOOKATDEACTIVATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 25)
 } BtlUnitPacket;
 
 typedef struct BtlUnit BtlUnit;
@@ -126,6 +128,13 @@ typedef struct BtlUnitPacketLookAtUnit
     u16 flags;           // 0x08
 } BtlUnitPacketLookAtUnit;
 
+// 8 bytes
+typedef struct BtlUnitPacketLookAtDeactivate
+{
+    BtlUnit* unit; // 0x00
+    u16 flags;     // 0x04
+} BtlUnitPacketLookAtDeactivate;
+
 extern RwV3d gUnk_00957188;
 
 u32 btlUnit00282c60(BtlUnit* unit);
@@ -140,5 +149,6 @@ BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 sp
 BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags);
 BtlPacket* btlUnitCreateLookAtPacket(BtlUnit* unit, const RwV3d* targetPos, u16 flags);
 BtlPacket* btlUnitCreateLookAtUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u16 flags);
+BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags);
 
 #endif

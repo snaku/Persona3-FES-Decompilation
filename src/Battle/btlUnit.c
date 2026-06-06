@@ -6,6 +6,8 @@
 
 static u32 sNextId = 1; // 007cc51c
 
+static const f32 gUnk_007cad7c = 0.3f; // 007cad7c. No idea where to put this
+
 RwV3d gUnk_00957188; // 00957188
 
 BtlPacket* btlUnitCreateDodgeAnimPacket(BtlUnit* unit, s32 unused);
@@ -422,6 +424,60 @@ BtlPacket* btlUnitCreateLookAtUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u16
 
     work->unit = unit;
     work->targetUnit = targetUnit;
+    work->flags = flags;
+
+    return packet;
+}
+
+// FUN_00288760
+void btlUnitInitLookAtDeactivatePacket(void* work)
+{
+    BtlUnitPacketLookAtDeactivate* packet;
+
+    packet = (BtlUnitPacketLookAtDeactivate*)work;
+
+    if (packet->unit != NULL)
+    {
+        packet->unit->packetCount--;
+    }
+}
+
+// FUN_00288780
+u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
+{
+    // TODO
+
+    return true;
+}
+
+// FUN_00288930
+void btlUnitDestroyLookAtDeactivatePacket(void* work)
+{
+    BtlUnitPacketLookAtDeactivate* packet;
+
+    packet = (BtlUnitPacketLookAtDeactivate*)work;
+
+    if (packet->unit != NULL)
+    {
+        packet->unit->packetCount--;
+    }
+}
+
+// FUN_00288950
+BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags)
+{
+    BtlPacket* packet;
+    BtlUnitPacketLookAtDeactivate* work;
+
+    packet = btlPacketCreate(BTLUNIT_PACKET_LOOKATDEACTIVATE, sizeof(BtlUnitPacketLookAtDeactivate));
+
+    packet->initFunc = btlUnitInitLookAtDeactivatePacket;
+    packet->updateFunc = btlUnitUpdateLookAtDeactivatePacket;
+    packet->destroyFunc = btlUnitDestroyLookAtDeactivatePacket;
+
+    work = (BtlUnitPacketLookAtDeactivate*)packet->workData;
+
+    work->unit = unit;
     work->flags = flags;
 
     return packet;
