@@ -82,6 +82,8 @@ struct BtlAction
 u32 btlActionIdleWeaponAnim(BtlAction* action);
 BtlAction* btlActionCreate();
 void btlActionSetState(BtlAction* action, u16 state);
+void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);
+void btlActionSetUnit(BtlAction* action, BtlUnit* unit);
 void btlActionUpdateAll();
 void btlActionDestroyAll();
 BtlAction* btlActionFindByUnit(BtlUnit* unit);
