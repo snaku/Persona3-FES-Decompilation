@@ -445,7 +445,67 @@ void btlUnitInitLookAtDeactivatePacket(void* work)
 // FUN_00288780
 u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
 {
-    // TODO
+    BtlUnitPacketLookAtDeactivate* packet;
+    Battle* btl;
+    BtlUnit* curr;
+    BtlUnit* unit;
+
+    packet = (BtlUnitPacketLookAtDeactivate*)work;
+
+    if (packet->flags & (BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLPLAYER | BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLENEMY))
+    {
+        if (packet->flags & BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLPLAYER)
+        {
+            btl = gBtl;
+            curr = btl->unitLists[UNIT_GENUS_PLAYER].tail;
+            while (curr != NULL)
+            {
+                if (curr->flags2 & BTLUNIT_FLAG2_UNK08 && 
+                    curr->unk_98 & (1 << 1))
+                {
+                    mdlLookAtSetBlendRotFactor(curr->mdl, gUnk_007cad7c);
+                    mdlLookAtSetMaxAngles(curr->mdl, 70.0f, 75.0f);
+                    mdlLookAtDisableTarget(curr->mdl);
+
+                    curr->lookAtMode = 0;
+                }
+
+                curr = curr->prev;
+            }
+        }
+
+        if (packet->flags & BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLENEMY)
+        {
+            btl = gBtl;
+            curr = btl->unitLists[UNIT_GENUS_ENEMY].tail;
+            while (curr != NULL)
+            {
+                if (curr->flags2 & BTLUNIT_FLAG2_UNK08 && 
+                    curr->unk_98 & (1 << 1))
+                {
+                    mdlLookAtSetBlendRotFactor(curr->mdl, gUnk_007cad7c);
+                    mdlLookAtSetMaxAngles(curr->mdl, 70.0f, 75.0f);
+                    mdlLookAtDisableTarget(curr->mdl);
+
+                    curr->lookAtMode = 0;
+                }
+
+                curr = curr->prev;
+            }
+        }
+    }
+    else
+    {
+        unit = packet->unit;
+        if (unit->unk_98 & (1 << 1))
+        {
+            mdlLookAtSetBlendRotFactor(unit->mdl, gUnk_007cad7c);
+            mdlLookAtSetMaxAngles(unit->mdl, 70.0f, 75.0f);
+            mdlLookAtDisableTarget(unit->mdl);
+
+            unit->lookAtMode = 0;
+        }
+    }
 
     return true;
 }

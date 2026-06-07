@@ -10,6 +10,9 @@
 #define BTLUNIT_FLAG2_ENDURE (1 << 4) // 0x10
 #define BTLUNIT_FLAG2_UNK40  (1 << 6) // 0x40
 
+#define BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLPLAYER (1 << 0) // 0x01
+#define BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLENEMY  (1 << 0) // 0x02
+
 typedef struct DatUnit DatUnit;
 typedef struct Model Model;
 typedef struct BtlPacket BtlPacket;
