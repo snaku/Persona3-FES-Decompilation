@@ -36,7 +36,10 @@ struct BtlPacket
     s8 unk_45;                       // 0x45
     s8 unk_46;                       // 0x46
     u8 unk_47;                       // 0x47
-    u8 unkData2[0x10];
+    u8 unkData2[0x04];
+    s32 unk_4c;                      // 0x4c
+    s32 unk_50;                      // 0x50
+    s32 unk_54;                      // 0x54
     u64 uid;                         // 0x58
     u64 actionUID;                   // 0x60
     void (*initFunc)(void* work);    // 0x68
@@ -46,12 +49,13 @@ struct BtlPacket
     void* workData;                  // 0x78
     BtlPacket* next;                 // 0x7c
     BtlPacket* prev;                 // 0x80
-    u8 unkData4[0x0c];
+    u8 unkData3[0x0c];
 };
 
 BtlPacket* btlPacketFindFirstByActionUID(u64 actionUID, u64 mask);
 u32 btlPacketCount();
+u32 btlPacketCountById(u16 id);
 BtlPacket* btlPacketCreate(u32 id, u32 workDataSize);
-u64 btlPacketRegister(BtlPacket* packet, s32 type);
+u64 btlPacketRegister(BtlPacket* packet, u8 type);
 
 #endif
