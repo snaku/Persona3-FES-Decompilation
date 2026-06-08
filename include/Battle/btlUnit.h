@@ -10,6 +10,8 @@
 #define BTLUNIT_FLAG2_ENDURE (1 << 4) // 0x10
 #define BTLUNIT_FLAG2_UNK40  (1 << 6) // 0x40
 
+#define BTLUNIT_MOVEMENTFLAGS_MOVE   (1 << 0) // 0x01
+
 #define BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLPLAYER (1 << 0) // 0x01
 #define BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLENEMY  (1 << 1) // 0x02
 
@@ -49,12 +51,20 @@ struct BtlUnit
     u16 lookAtMode;        // 0xb0
     u32 lookAtTargetId;    // 0xb4
     RwV3d lookAtTargetPos; // 0xb8
-    u8 unkData2[0x92e];
+    u32 unk_c4;            // 0xc4
+    u16 movementFlags;     // 0xc8. See 'BTLUNIT_MOVEMENTFLAGS_*'
+    u8 unkData2[0x06];
+    RwV3d targetRot;       // 0xd0
+    u8 unkData3[0x0c];
+    s32 unk_e8;            // 0xe8
+    u8 unkData5[0x40c];
+    s32 unk_4f8;           // 0x4f8
+    u8 unkData6[0x4f6];
     u16 resTypeId;         // 0x9f2
     Model* mdl;            // 0x9f4
-    u8 unkData3[0x08];
+    u8 unkData7[0x08];
     BtlUnit* personaUnit;  // 0xa00
-    u8 unkData4[0x28];
+    u8 unkData8[0x28];
     DatUnit* datUnit;      // 0xa2c
     BtlUnit* prev;         // 0xa30
     BtlUnit* next;         // 0xa34
@@ -112,7 +122,7 @@ typedef struct BtlUnitPacketRotate
     BtlUnit* unit; // 0x00
     RwV3d rot;     // 0x04
     u32 flags;     // 0x10
-    s32 unk_14;    // 0x14
+    u32 timer;     // 0x14
 } BtlUnitPacketRotate;
 
 // 20 bytes
@@ -140,6 +150,7 @@ typedef struct BtlUnitPacketLookAtDeactivate
 
 extern RwV3d gUnk_00957188;
 
+u32 btlUnitIsMoving(BtlUnit* unit);
 u32 btlUnit00282c60(BtlUnit* unit);
 void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode);
 s16 btlUnitGetAnimFrame(BtlUnit* unit);

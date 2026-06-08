@@ -14,6 +14,12 @@ BtlPacket* btlUnitCreateDodgeAnimPacket(BtlUnit* unit, s32 unused);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 
+// FUN_00281270
+u32 btlUnitIsMoving(BtlUnit* unit)
+{
+    return (unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_MOVE) != 0;
+}
+
 // FUN_002813d0
 void btlUnitInitMovePacket(void* work)
 {
