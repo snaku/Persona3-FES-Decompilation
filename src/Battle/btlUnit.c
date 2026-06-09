@@ -14,6 +14,12 @@ BtlPacket* btlUnitCreateDodgeAnimPacket(BtlUnit* unit, s32 unused);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 
+// FUN_0027f7c0
+void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4)
+{
+    // TODO
+}
+
 // FUN_00281270
 u32 btlUnitIsMoving(BtlUnit* unit)
 {
@@ -142,7 +148,39 @@ void btlUnitInitRotatePacket(void* work)
 // FUN_002821b0
 u32 btlUnitUpdateRotatePacket(void* work)
 {
-    // TODO
+    BtlUnitPacketRotate* packet;
+    BtlUnit* unit;
+    RwV3d baseRot;
+    u32 flags;
+    u32 ret;
+
+    packet = (BtlUnitPacketRotate*)work;
+    unit = packet->unit;
+
+    if (packet->timer == 0)
+    {
+        if (packet->flags & (1 << 5))
+        {
+            btlUnit0027f7c0(unit, NULL, NULL, &baseRot);
+            packet->rot = baseRot;
+        }
+
+        flags = packet->flags;
+        
+        unit->targetRot = packet->rot;
+        unit->unk_4f8 = 0;
+        unit->unk_e8 = 0;
+        unit->unk_c4 = flags;
+        unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_ROTATE;
+    }
+
+    // !(unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE)
+    if (!(unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE ? 1 : 0))
+    {
+        return true;
+    }
+
+    packet->timer++;
 
     return false;
 }

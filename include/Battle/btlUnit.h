@@ -11,6 +11,7 @@
 #define BTLUNIT_FLAG2_UNK40  (1 << 6) // 0x40
 
 #define BTLUNIT_MOVEMENTFLAGS_MOVE   (1 << 0) // 0x01
+#define BTLUNIT_MOVEMENTFLAGS_ROTATE (1 << 1) // 0x02
 
 #define BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLPLAYER (1 << 0) // 0x01
 #define BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLENEMY  (1 << 1) // 0x02
@@ -150,6 +151,7 @@ typedef struct BtlUnitPacketLookAtDeactivate
 
 extern RwV3d gUnk_00957188;
 
+void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4);
 u32 btlUnitIsMoving(BtlUnit* unit);
 u32 btlUnit00282c60(BtlUnit* unit);
 void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode);
