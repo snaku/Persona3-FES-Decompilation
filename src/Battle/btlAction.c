@@ -210,13 +210,13 @@ void btlActionUpdateStateStandBy(BtlAction* action)
 
     unit = action->unit;
 
-    if (unit->flags2 & BTLUNIT_FLAG2_ENDURE)
+    if (unit->flags3 & BTLUNIT_FLAG3_ENDURE)
     {
         btlActionSetState(action, BTLACTION_STATE_ENDURE);
         return;
     }
 
-    if (unit->flags2 & BTLUNIT_FLAG2_DEAD)
+    if (unit->flags3 & BTLUNIT_FLAG3_DEAD)
     {
         btlActionSetState(action, BTLACTION_STATE_DEAD);
     }
@@ -582,7 +582,7 @@ void btlActionUpdateStateDead(BtlAction* action)
         case UNIT_GENUS_PLAYER:
             if (!datCalcIsDead(unit->datUnit, 0))
             {
-                unit->flags2 &= ~BTLUNIT_FLAG2_DEAD;
+                unit->flags3 &= ~BTLUNIT_FLAG3_DEAD;
 
                 btlOrderAddAction(action);
                 btlActionSetState(action, BTLACTION_STATE_STANDBY);
@@ -590,7 +590,7 @@ void btlActionUpdateStateDead(BtlAction* action)
             break;
 
         case UNIT_GENUS_ENEMY:
-            if (!(unit->flags2 & BTLUNIT_FLAG2_UNK40))
+            if (!(unit->flags3 & BTLUNIT_FLAG3_UNK40))
             {
                 btlActionSetState(action, BTLACTION_STATE_EXIT);
             }
@@ -598,7 +598,7 @@ void btlActionUpdateStateDead(BtlAction* action)
             {
                 if (!datCalcIsDead(unit->datUnit, 0))
                 {
-                    unit->flags2 &= ~BTLUNIT_FLAG2_DEAD;
+                    unit->flags3 &= ~BTLUNIT_FLAG3_DEAD;
 
                     btlOrderAddAction(action);
                     btlActionSetState(action, BTLACTION_STATE_STANDBY);

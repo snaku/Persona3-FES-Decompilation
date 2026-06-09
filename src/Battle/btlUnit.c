@@ -14,6 +14,13 @@ BtlPacket* btlUnitCreateDodgeAnimPacket(BtlUnit* unit, s32 unused);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 
+// FUN_0027f650
+void btlUnitSetPos(BtlUnit* unit, const RwV3d* pos)
+{
+    unit->pos1 = *pos;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+}
+
 // FUN_0027f7c0
 void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4)
 {
@@ -241,7 +248,7 @@ void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 m
 // FUN_00283ba0
 s16 btlUnitGetAnimFrame(BtlUnit* unit)
 {
-    if (unit->unk_98 & (1 << 1))
+    if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
     {
         return mdlAnimGetCurrentFrame(unit->mdl, 0);
     }
@@ -504,8 +511,8 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
             curr = btl->unitLists[UNIT_GENUS_PLAYER].tail;
             while (curr != NULL)
             {
-                if (curr->flags2 & BTLUNIT_FLAG2_UNK08 && 
-                    curr->unk_98 & (1 << 1))
+                if (curr->flags3 & BTLUNIT_FLAG3_UNK08 && 
+                    curr->flags2 & BTLUNIT_FLAG2_UPDATE)
                 {
                     mdlLookAtSetBlendRotFactor(curr->mdl, gUnk_007cad7c);
                     mdlLookAtSetMaxAngles(curr->mdl, 70.0f, 75.0f);
@@ -524,8 +531,8 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
             curr = btl->unitLists[UNIT_GENUS_ENEMY].tail;
             while (curr != NULL)
             {
-                if (curr->flags2 & BTLUNIT_FLAG2_UNK08 && 
-                    curr->unk_98 & (1 << 1))
+                if (curr->flags3 & BTLUNIT_FLAG3_UNK08 && 
+                    curr->flags2 & BTLUNIT_FLAG2_UPDATE)
                 {
                     mdlLookAtSetBlendRotFactor(curr->mdl, gUnk_007cad7c);
                     mdlLookAtSetMaxAngles(curr->mdl, 70.0f, 75.0f);
@@ -541,7 +548,7 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
     else
     {
         unit = packet->unit;
-        if (unit->unk_98 & (1 << 1))
+        if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
         {
             mdlLookAtSetBlendRotFactor(unit->mdl, gUnk_007cad7c);
             mdlLookAtSetMaxAngles(unit->mdl, 70.0f, 75.0f);
