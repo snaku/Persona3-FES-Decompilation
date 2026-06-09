@@ -10,7 +10,7 @@ static const f32 gUnk_007cad7c = 0.3f; // 007cad7c. No idea where to put this
 
 RwV3d gUnk_00957188; // 00957188
 
-BtlPacket* btlUnitCreateDodgeAnimPacket(BtlUnit* unit, s32 unused);
+BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 
@@ -19,6 +19,16 @@ void btlUnitSetPos(BtlUnit* unit, const RwV3d* pos)
 {
     unit->pos1 = *pos;
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+}
+
+// FUN_0027f680
+void btlUnitSetRot(BtlUnit* unit, const RtQuat* rot)
+{
+    if (!(unit->flags3 & BTLUNIT_FLAG3_NOROT))
+    {
+        unit->rot = *rot;
+        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+    }
 }
 
 // FUN_0027f7c0
@@ -307,7 +317,7 @@ BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f
     {
         case BTLUNIT_ANIM_RESNULLIFIED: return btlUnitCreateResNullifiedAnimPacket(unit, 32.0f);
         case -3:                        return btlUnit00284900(unit, 6);
-        case BTLUNIT_ANIM_DODGE:        return btlUnitCreateDodgeAnimPacket(unit, 6);  
+        case BTLUNIT_ANIM_ENMDODGE:     return btlUnitCreateEnmDodgeAnimPacket(unit, 6);
     }
 
     packet = btlPacketCreate(BTLUNIT_PACKET_ANIM, sizeof(BtlUnitPacketAnim));
@@ -335,7 +345,7 @@ BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f
 }
 
 // FUN_00284200
-BtlPacket* btlUnitCreateDodgeAnimPacket(BtlUnit* unit, s32 unused)
+BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused)
 {
     // TODO
 

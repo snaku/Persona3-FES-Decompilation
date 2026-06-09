@@ -5,13 +5,14 @@
 #include "Battle/btlPacket.h"
 #include "rw/rtquat.h"
 
-#define BTLUNIT_FLAG2_UPDATE (1 << 1) // 0x02
-#define BTLUNIT_FLAG2_DIRTY  (1 << 2) // 0x04
+#define BTLUNIT_FLAG2_UPDATE (1 << 1)  // 0x02
+#define BTLUNIT_FLAG2_DIRTY  (1 << 2)  // 0x04
 
 #define BTLUNIT_FLAG3_DEAD   (1 << 0) // 0x01
 #define BTLUNIT_FLAG3_UNK08  (1 << 3) // 0x08
 #define BTLUNIT_FLAG3_ENDURE (1 << 4) // 0x10
 #define BTLUNIT_FLAG3_UNK40  (1 << 6) // 0x40
+#define BTLUNIT_FLAG3_NOROT  (1 << 13) // 0x2000
 
 #define BTLUNIT_MOVEMENTFLAGS_MOVE   (1 << 0) // 0x01
 #define BTLUNIT_MOVEMENTFLAGS_ROTATE (1 << 1) // 0x02
@@ -77,7 +78,7 @@ struct BtlUnit
 // TODO
 typedef enum
 {
-    BTLUNIT_ANIM_DODGE = -4,
+    BTLUNIT_ANIM_ENMDODGE = -4,
     BTLUNIT_ANIM_RESNULLIFIED = -2,
     BTLUNIT_ANIM_IDLEWEAPON = 16,
 
@@ -155,6 +156,7 @@ typedef struct BtlUnitPacketLookAtDeactivate
 extern RwV3d gUnk_00957188;
 
 void btlUnitSetPos(BtlUnit* unit, const RwV3d* pos);
+void btlUnitSetRot(BtlUnit* unit, const RtQuat* rot);
 void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4);
 u32 btlUnitIsMoving(BtlUnit* unit);
 u32 btlUnit00282c60(BtlUnit* unit);
