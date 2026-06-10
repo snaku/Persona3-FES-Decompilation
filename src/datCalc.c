@@ -132,6 +132,97 @@ u8 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
     return (unit->bad & badStatus);
 }
 
+// FUN_00300d80
+u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_00300870. Return the number of equipments with the effect
+u8 datCalcCountEquipmentWithEffectById(u16 characterId, u16 effect)
+{
+    u8 equipWithEffectNum = 0;
+    u16 equipIdx;
+    u8 equipEffect;
+
+    K_ASSERT(characterId < CHARACTER_MAX, 646);
+
+    // weapon
+    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_WEAPON);
+    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
+    if (effect == equipEffect) equipWithEffectNum++;
+
+    // armor
+    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_ARMOR);
+    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
+    if (effect == equipEffect) equipWithEffectNum++;
+
+    // boots
+    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_BOOTS);
+    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
+    if (effect == equipEffect) equipWithEffectNum++;
+
+    return equipWithEffectNum;
+}
+
+// FUN_003009a0. Return the number of equipments with the effect
+u8 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect)
+{
+    if (unit->flags & UNIT_FLAG_ENEMY)
+    {
+        return 0;
+    }
+
+    return datCalcCountEquipmentWithEffectById(unit->id, effect); // was probably inlined
+}
+
+// FUN_00300d80
+u32 datCalcGetPassiveSkillFlags(DatUnit* unit)
+{
+    u32 flags;
+
+    flags = 0;
+
+    if (datCalcHasSkill(unit, SKILL_REGENERATE1))
+    {
+        flags |= PASSIVESKILL_FLAG_REGENERATE1;
+    }
+    if (datCalcHasSkill(unit, SKILL_REGENERATE2))
+    {
+        flags |= PASSIVESKILL_FLAG_REGENERATE2;
+    }
+    if (datCalcHasSkill(unit, SKILL_REGENERATE3))
+    {
+        flags |= PASSIVESKILL_FLAG_REGENERATE3;
+    }
+
+    if (datCalcHasSkill(unit, SKILL_INVIGORATE1))
+    {
+        flags |= PASSIVESKILL_FLAG_INVIGORATE1;
+    }
+    if (datCalcHasSkill(unit, SKILL_INVIGORATE2))
+    {
+        flags |= PASSIVESKILL_FLAG_INVIGORATE2;
+    }
+    if (datCalcHasSkill(unit, SKILL_INVIGORATE3))
+    {
+        flags |= PASSIVESKILL_FLAG_INVIGORATE3;
+    }
+
+    if (datCalcHasSkill(unit, SKILL_SPRINGOFLIFE1))
+    {
+        flags |= PASSIVESKILL_FLAG_SPRINGOFLIFE1;
+    }
+    if (datCalcHasSkill(unit, SKILL_SPRINGOFLIFE2))
+    {
+        flags |= PASSIVESKILL_FLAG_SPRINGOFLIFE2;
+    }
+
+    return flags;
+}
+
 // FUN_00308c60
 u32 datCalcGetHeldWeaponType(DatUnit* unit)
 {
@@ -186,44 +277,6 @@ u32 datCalcGetHeldWeaponType(DatUnit* unit)
     }
 
     return WEAPON_TYPE_1H_SWORD;
-}
-
-// FUN_00300870. Return the number of equipments with the effect
-u8 datCalcCountEquipmentWithEffectById(u16 characterId, u16 effect)
-{
-    u8 equipWithEffectNum = 0;
-    u16 equipIdx;
-    u8 equipEffect;
-
-    K_ASSERT(characterId < CHARACTER_MAX, 646);
-
-    // weapon
-    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_WEAPON);
-    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
-    if (effect == equipEffect) equipWithEffectNum++;
-
-    // armor
-    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_ARMOR);
-    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
-    if (effect == equipEffect) equipWithEffectNum++;
-
-    // boots
-    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_BOOTS);
-    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
-    if (effect == equipEffect) equipWithEffectNum++;
-
-    return equipWithEffectNum;
-}
-
-// FUN_003009a0. Return the number of equipments with the effect
-u8 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect)
-{
-    if (unit->flags & UNIT_FLAG_ENEMY)
-    {
-        return 0;
-    }
-
-    return datCalcCountEquipmentWithEffectById(unit->id, effect); // was probably inlined
 }
 
 // FUN_0030b5a0

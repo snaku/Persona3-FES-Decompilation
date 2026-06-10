@@ -203,12 +203,12 @@ void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona)
 
     for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
-        if (persona->skills[skillIdx] == PERSONA_SKILL_SLASH_ATTACK)
+        if (persona->skills[skillIdx] == SKILL_SLASH_ATTACK)
         {
             nextSkillIdx = skillIdx + 1;
 
             while (nextSkillIdx < ARRAY_SIZE(persona->skills) &&
-                  (persona->skills[nextSkillIdx] == PERSONA_SKILL_SLASH_ATTACK))
+                  (persona->skills[nextSkillIdx] == SKILL_SLASH_ATTACK))
             {
                 nextSkillIdx++;
             }
@@ -219,7 +219,7 @@ void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona)
         if (skillIdx != nextSkillIdx)
         {
             persona->skills[skillIdx] = persona->skills[nextSkillIdx];
-            persona->skills[nextSkillIdx] = PERSONA_SKILL_SLASH_ATTACK;
+            persona->skills[nextSkillIdx] = SKILL_SLASH_ATTACK;
         }
     }
 }
@@ -230,12 +230,12 @@ u8 datPersonaSetSkill(DatPersonaWork* persona, u16 skillId)
     s32 skillIdx;
     u16* skillSlot;
 
-    K_ASSERT(persona != NULL && skillId != PERSONA_SKILL_SLASH_ATTACK, 1546);
+    K_ASSERT(persona != NULL && skillId != SKILL_SLASH_ATTACK, 1546);
 
     for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
     {
         skillSlot = &persona->skills[skillIdx];
-        if (*skillSlot == PERSONA_SKILL_SLASH_ATTACK)
+        if (*skillSlot == SKILL_SLASH_ATTACK)
         {
             *skillSlot = skillId;
             return true;
@@ -250,13 +250,13 @@ u8 datPersonaResetSkill(DatPersonaWork* persona, u16 skillId)
 {
     u32 skillIdx;
 
-    K_ASSERT(persona != NULL && skillId != PERSONA_SKILL_SLASH_ATTACK, 1560);
+    K_ASSERT(persona != NULL && skillId != SKILL_SLASH_ATTACK, 1560);
 
     for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
         if (persona->skills[skillIdx] == skillId)
         {
-            persona->skills[skillIdx] = PERSONA_SKILL_SLASH_ATTACK;
+            persona->skills[skillIdx] = SKILL_SLASH_ATTACK;
             datPersonaMoveValidSkillsOnTop(persona);
             return true;
         }
@@ -269,7 +269,7 @@ s32 datPersonaFindSkillIdx(DatPersonaWork* persona, u16 skillId)
 {
     s32 skillIdx = 0;
 
-    K_ASSERT(persona != NULL && skillId != PERSONA_SKILL_SLASH_ATTACK, 1588);
+    K_ASSERT(persona != NULL && skillId != SKILL_SLASH_ATTACK, 1588);
 
     for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
@@ -290,7 +290,7 @@ u32 datPersonaCountValidSkills(DatPersonaWork* persona)
 
     for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
     {
-        if (persona->skills[skillIdx] != PERSONA_SKILL_SLASH_ATTACK)
+        if (persona->skills[skillIdx] != SKILL_SLASH_ATTACK)
             validSkills++;
     }
 
