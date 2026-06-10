@@ -20,6 +20,10 @@
 #define BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLPLAYER (1 << 0) // 0x01
 #define BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLENEMY  (1 << 1) // 0x02
 
+#define BTLUNIT_POSROTCOL_FLAG_SETPOS (1 << 0) // 0x01
+#define BTLUNIT_POSROTCOL_FLAG_SETROT (1 << 1) // 0x02
+#define BTLUNIT_POSROTCOL_FLAG_SETCOL (1 << 2) // 0x04  
+
 typedef struct DatUnit DatUnit;
 typedef struct Model Model;
 typedef struct BtlPacket BtlPacket;
@@ -33,7 +37,8 @@ typedef enum
     BTLUNIT_PACKET_ROTATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 13),
     BTLUNIT_PACKET_LOOKAT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 23),
     BTLUNIT_PACKET_LOOKATUNIT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 24),
-    BTLUNIT_PACKET_LOOKATDEACTIVATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 25)
+    BTLUNIT_PACKET_LOOKATDEACTIVATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 25),
+    BTLUNIT_PACKET_POSROTCOL = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 27)
 } BtlUnitPacket;
 
 // TODO
@@ -160,8 +165,18 @@ typedef struct BtlUnitPacketLookAtUnit
 typedef struct BtlUnitPacketLookAtDeactivate
 {
     BtlUnit* unit; // 0x00
-    u16 flags;     // 0x04
+    u16 flags;     // 0x04. See 'BTLUNIT_LOOKATDEACTIVATE_FLAG_*'
 } BtlUnitPacketLookAtDeactivate;
+
+// 40 bytes
+typedef struct BtlUnitPacketPosRotCol
+{
+    BtlUnit* unit; // 0x00
+    RwV3d pos;     // 0x04
+    RtQuat rot;    // 0x10
+    RwRGBA col;    // 0x20
+    u16 flags;     // 0x24. See 'BTLUNIT_POSROTCOL_FLAG_*'
+} BtlUnitPacketPosRotCol;
 
 extern RwV3d gUnk_00957188;
 
@@ -185,5 +200,6 @@ BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags)
 BtlPacket* btlUnitCreateLookAtPacket(BtlUnit* unit, const RwV3d* targetPos, u16 flags);
 BtlPacket* btlUnitCreateLookAtUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u16 flags);
 BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags);
+BtlPacket* btlUnitCreatePosRotColPacket(BtlUnit* unit, const RwV3d* pos, const RtQuat* rot, const RwRGBA* col);
 
 #endif

@@ -58,6 +58,72 @@ void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_
     // TODO
 }
 
+// FUN_0027fd70
+void btlUnitInitPosRotColPacket(void* work)
+{
+    BtlUnitPacketPosRotCol* packet;
+
+    packet = (BtlUnitPacketPosRotCol*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_0027fe70
+u32 btlUnitUpdatePosRotColPacket(void* work)
+{
+    // TODO
+
+    return true;
+}
+
+// FUN_0027fd70
+void btlUnitDestroyPosRotColPacket(void* work)
+{
+    BtlUnitPacketPosRotCol* packet;
+
+    packet = (BtlUnitPacketPosRotCol*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_0027fe90
+BtlPacket* btlUnitCreatePosRotColPacket(BtlUnit* unit, const RwV3d* pos, const RtQuat* rot, const RwRGBA* col)
+{
+    BtlPacket* packet;
+    BtlUnitPacketPosRotCol* work;
+
+    packet = btlPacketCreate(BTLUNIT_PACKET_POSROTCOL, sizeof(BtlUnitPacketPosRotCol));
+
+    packet->initFunc = btlUnitInitPosRotColPacket;
+    packet->updateFunc = btlUnitUpdatePosRotColPacket;
+    packet->destroyFunc = btlUnitDestroyPosRotColPacket;
+
+    work = (BtlUnitPacketPosRotCol*)packet->workData;
+
+    work->unit = unit;
+    work->flags = 0;
+
+    if (pos != NULL)
+    {
+        work->pos = *pos;
+        work->flags |= BTLUNIT_POSROTCOL_FLAG_SETPOS;
+    }
+
+    if (rot != NULL)
+    {
+        work->rot = *rot;
+        work->flags |= BTLUNIT_POSROTCOL_FLAG_SETROT;
+    }
+
+    if (col != NULL)
+    {
+        work->col = *col;
+        work->flags |= BTLUNIT_POSROTCOL_FLAG_SETCOL;
+    }
+
+    return packet;
+}
+
 // FUN_00281270
 u32 btlUnitIsMoving(BtlUnit* unit)
 {
