@@ -36,43 +36,53 @@ typedef enum
     BTLUNIT_PACKET_LOOKATDEACTIVATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 25)
 } BtlUnitPacket;
 
+// TODO
+typedef enum
+{
+    BTLUNIT_COL_MAIN,
+
+    BTLUNIT_COL_MAX = 5
+} BtlUnitColor;
+
 typedef struct BtlUnit BtlUnit;
 
 // 2616 bytes
 struct BtlUnit
 {
-    u32 flags;             // 0x00
-    RwV3d pos1;            // 0x04
-    RwV3d pos2;            // 0x10
-    RtQuat rot;            // 0x1c
-    u8 unkData1[0x6c];
-    u32 flags2;            // 0x98. Temp name. See 'BTLUNIT_FLAG2_*'
-    u32 flags3;            // 0x9c. Temp name. See 'BTLUNIT_FLAG3_*'
-    u16 packetCount;       // 0xa0
-    u8 genus;              // 0xa2. See enum 'UnitGenus'
-    u16 charId;            // 0xa4
-    u32 id;                // 0xa8
-    s32 unk_ac;            // 0xac
-    u16 lookAtMode;        // 0xb0
-    u32 lookAtTargetId;    // 0xb4
-    RwV3d lookAtTargetPos; // 0xb8
-    u32 unk_c4;            // 0xc4
-    u16 movementFlags;     // 0xc8. See 'BTLUNIT_MOVEMENTFLAGS_*'
+    u32 flags;                    // 0x00
+    RwV3d pos1;                   // 0x04
+    RwV3d pos2;                   // 0x10
+    RtQuat rot;                   // 0x1c
+    f32 scale;                    // 0x2c
+    RwRGBA cols[BTLUNIT_COL_MAX]; // 0x30
+    u8 unkData1[0x54];
+    u32 flags2;                   // 0x98. Temp name. See 'BTLUNIT_FLAG2_*'
+    u32 flags3;                   // 0x9c. Temp name. See 'BTLUNIT_FLAG3_*'
+    u16 packetCount;              // 0xa0
+    u8 genus;                     // 0xa2. See enum 'UnitGenus'
+    u16 charId;                   // 0xa4
+    u32 id;                       // 0xa8
+    s32 unk_ac;                   // 0xac
+    u16 lookAtMode;               // 0xb0
+    u32 lookAtTargetId;           // 0xb4
+    RwV3d lookAtTargetPos;        // 0xb8
+    u32 unk_c4;                   // 0xc4
+    u16 movementFlags;            // 0xc8. See 'BTLUNIT_MOVEMENTFLAGS_*'
     u8 unkData2[0x06];
-    RwV3d targetRot;       // 0xd0
+    RwV3d targetRot;              // 0xd0
     u8 unkData3[0x0c];
-    s32 unk_e8;            // 0xe8
+    s32 unk_e8;                   // 0xe8
     u8 unkData5[0x40c];
-    s32 unk_4f8;           // 0x4f8
+    s32 unk_4f8;                  // 0x4f8
     u8 unkData6[0x4f6];
-    u16 resTypeId;         // 0x9f2
-    Model* mdl;            // 0x9f4
+    u16 resTypeId;                // 0x9f2
+    Model* mdl;                   // 0x9f4
     u8 unkData7[0x08];
-    BtlUnit* personaUnit;  // 0xa00
+    BtlUnit* personaUnit;         // 0xa00
     u8 unkData8[0x28];
-    DatUnit* datUnit;      // 0xa2c
-    BtlUnit* prev;         // 0xa30
-    BtlUnit* next;         // 0xa34
+    DatUnit* datUnit;             // 0xa2c
+    BtlUnit* prev;                // 0xa30
+    BtlUnit* next;                // 0xa34
 };
 
 // TODO
@@ -157,6 +167,9 @@ extern RwV3d gUnk_00957188;
 
 void btlUnitSetPos(BtlUnit* unit, const RwV3d* pos);
 void btlUnitSetRot(BtlUnit* unit, const RtQuat* rot);
+void btlUnitSetRotFromMat(BtlUnit* unit, const RwMatrix* mat);
+void btlUnitSetScale(BtlUnit* unit, f32 scale);
+void btlUnitSetColor(BtlUnit* unit, RwRGBA col);
 void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4);
 u32 btlUnitIsMoving(BtlUnit* unit);
 u32 btlUnit00282c60(BtlUnit* unit);

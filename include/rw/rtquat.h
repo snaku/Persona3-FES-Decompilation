@@ -10,4 +10,6 @@ typedef struct RtQuat
     RwReal real; // 0x0c
 } RtQuat;
 
+RwBool RtQuatConvertFromMatrix(RtQuat* quat, const RwMatrix* matrix);
+
 #endif

@@ -31,6 +31,27 @@ void btlUnitSetRot(BtlUnit* unit, const RtQuat* rot)
     }
 }
 
+// FUN_0027f6d0
+void btlUnitSetRotFromMat(BtlUnit* unit, const RwMatrix* mat)
+{
+    RtQuatConvertFromMatrix(&unit->rot, mat);
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+}
+
+// FUN_0027f710
+void btlUnitSetScale(BtlUnit* unit, f32 scale)
+{
+    unit->scale = scale;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+}
+
+// FUN_0027f730
+void btlUnitSetColor(BtlUnit* unit, RwRGBA col)
+{
+    unit->cols[BTLUNIT_COL_MAIN] = col;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+}
+
 // FUN_0027f7c0
 void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4)
 {
