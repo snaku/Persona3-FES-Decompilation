@@ -18,3 +18,27 @@ void K_FldUnit_DestroyMdl(s32 unitId)
         gFldUnitsMdl[unitId].id = 0;
     }
 }
+
+// FUN_001cd940
+FldUnit* K_FldUnit_FindFree()
+{
+    FldUnit* units;
+    FldUnit* free;
+    FldUnit* curr;
+    s32 i;
+
+    free = NULL;
+    i = 0;
+    units = gFldUnits;
+    for (; i < FLDUNIT_MAX; i++)
+    {
+        curr = &units[i];
+        if (curr->genusBase == NULL)
+        {
+            free = curr;
+            break;
+        }
+    }
+
+    return free;
+}

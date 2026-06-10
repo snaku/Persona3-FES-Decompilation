@@ -36,7 +36,7 @@ typedef struct FldUnit
     u16 charId;                  // 0x1a8
     u8 unkData4[0x06];
     HCdvd* scrCdvd;              // 0x1b0
-    u8 unkData4[0x0c];
+    u8 unkData5[0x0c];
 } FldUnit;
 
 extern FldUnitMdl gFldUnitsMdl[FLDUNIT_MAX];
@@ -45,5 +45,6 @@ extern FldUnit gFldUnits[FLDUNIT_MAX];
 extern FldUnit gEnFldUnits[FLDUNIT_EN_MAX];
 
 void K_FldUnit_DestroyMdl(s32 unitId);
+FldUnit* K_FldUnit_FindFree();
 
 #endif
