@@ -71,7 +71,35 @@ void btlUnitInitPosRotColPacket(void* work)
 // FUN_0027fe70
 u32 btlUnitUpdatePosRotColPacket(void* work)
 {
-    // TODO
+    BtlUnitPacketPosRotCol* packet;
+    BtlUnit* unit;
+
+    packet = (BtlUnitPacketPosRotCol*)work;
+
+    if (packet->flags & BTLUNIT_POSROTCOL_FLAG_SETPOS)
+    {
+        unit = packet->unit;
+
+        unit->pos1 = packet->pos;
+        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+    }
+
+    if (packet->flags & BTLUNIT_POSROTCOL_FLAG_SETROT && 
+        !(packet->unit->flags3 & BTLUNIT_FLAG3_NOROT))
+    {
+        unit = packet->unit;
+
+        unit->rot = packet->rot;
+        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+    }
+
+    if (packet->flags & BTLUNIT_POSROTCOL_FLAG_SETCOL)
+    {
+        unit = packet->unit;
+
+        unit->cols[BTLUNIT_COL_MAIN] = packet->col;
+        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+    }
 
     return true;
 }
@@ -128,6 +156,18 @@ BtlPacket* btlUnitCreatePosRotColPacket(BtlUnit* unit, const RwV3d* pos, const R
 u32 btlUnitIsMoving(BtlUnit* unit)
 {
     return (unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_MOVE) != 0;
+}
+
+// FUN_00281290
+void btlUnitStopMoving(BtlUnit* unit)
+{
+    unit->movementFlags &= ~BTLUNIT_MOVEMENTFLAGS_MOVE;
+}
+
+// FUN_00281290
+void btlUnitStopRotating(BtlUnit* unit)
+{
+    unit->movementFlags &= ~BTLUNIT_MOVEMENTFLAGS_ROTATE;
 }
 
 // FUN_002813d0
