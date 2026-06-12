@@ -186,3 +186,37 @@ u16 MT_Scene_CreateResLightNpc(u16 resId)
 
     return resTypeId;
 }
+
+// FUN_003b65d0
+u16 MT_Scene_CreateResModelFld(u16 resId, Model* mdl)
+{
+    ResrcManager* resManager;
+    u16 resTypeId;
+    ResrcModelFld* res;
+    RwV3d unused = {0};
+
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_MODELFLD);
+
+    resManager = gMtScene->resManager;
+    if (resManager == NULL)
+    {
+        printf("not found active resmanager\n");
+        return 0;
+    }
+
+    if (mdl == NULL)
+    {
+        return 0;
+    }
+
+    res = (ResrcModelFld*)resrcMngCreateRes(resManager, resTypeId);
+    if (res == NULL)
+    {
+        return 0;
+    }
+
+    res->mdl = mdl;
+    res->base.flags |= (1 << 3); // 0x08
+
+    return resTypeId;
+}
