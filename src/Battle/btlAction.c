@@ -563,7 +563,23 @@ void btlActionInitStateEndHome(BtlAction* action)
 // FUN_00299760
 void btlActionUpdateStateEndHome(BtlAction* action)
 {
-    // TODO
+    RwV3d rot;
+    BtlPacket* rotPacket;
+
+    if (!btlUnitIsMoving(action->unit))
+    {
+        if (action->movedAwayFromHome == true)
+        {
+            btlUnit0027f7c0(action->unit, NULL, NULL, &rot);
+
+            rotPacket = btlUnitCreateRotatePacket(action->unit, &rot, 0);
+            rotPacket->actionUID = action->uid;
+
+            btlPacketRegister(rotPacket, BTLPACKET_TYPE_1);
+        }
+
+        btlActionSetState(action, BTLACTION_STATE_STANDBY);
+    }
 }
 
 // FUN_00299800

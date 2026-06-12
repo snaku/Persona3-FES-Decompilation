@@ -70,7 +70,11 @@ struct BtlAction
     u16 rand;                // 0x36
     BtlTarget target;        // 0x38
     u8 unkData3[0x3fc];
-    s32 unk_484;             // 0x484
+    union
+    {
+        u32 movedAwayFromHome;  // 0x484
+        u32 passiveSkillsFlags; // 0x484
+    };
     u8 unkData4[0x14];
     u16 stateAfterEvt;       // 0x49c
     u32 (*evtFunc)();        // 0x4a0
