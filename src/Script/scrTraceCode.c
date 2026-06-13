@@ -817,7 +817,47 @@ static u32 CodeFunc_LE(ScrData* scr)
 // FUN_0035e850
 static u32 CodeFunc_IF(ScrData* scr)
 {
-    // TODO
+    u32 res;
+
+    K_ASSERT(scr->sp > 0, 804);
+
+    switch (scr->stackTypes[scr->sp - 1])
+    {
+        case SCR_STACK_TYPE_INTEGER: // fallthrough
+        case 2:
+            res = PopInt(scr);
+            break;
+
+        case SCR_STACK_TYPE_FLOAT: // fallthrough
+        case 3:
+            if (PopFloat(scr) == 0.0f)
+            {
+                res = false;
+            }
+            else
+            {
+                res = true;
+            }
+            break;
+
+        case SCR_STACK_TYPE_ADDR:
+            K_Abort("CodeFunc_IF(..) invalid stack type(RET)!!\n", "scrTraceCode.c", 818);
+            res = false;
+            break;
+        
+        default:
+            K_Abort("CodeFunc_IF(..) invalid stack type(?)!!\n", "scrTraceCode.c", 822);
+            res = false;
+    }
+
+    if (res)
+    {
+        scr->pc++;
+    }
+    else
+    {
+        scr->pc = scr->labelsContent[scr->instrContent[scr->pc].opOperand16.sOperand].addr;
+    }
 
     return CODEFUNC_NEXTINSTR;   
 }
