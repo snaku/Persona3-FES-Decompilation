@@ -55,7 +55,7 @@ static u32 CodeFunc_S(ScrData* scr);
 static u32 CodeFunc_L(ScrData* scr);
 static u32 CodeFunc_SE(ScrData* scr);
 static u32 CodeFunc_LE(ScrData* scr);
-static u32 CodeFunc_If(ScrData* scr);
+static u32 CodeFunc_IF(ScrData* scr);
 
 typedef u32 (*CodeFunc)(ScrData* scr);
 
@@ -67,7 +67,7 @@ static const CodeFunc sCodeFuncTable[SCR_CODEFUNC_MAX] =
     CodeFunc_Jmp, CodeFunc_Call, CodeFunc_Run, CodeFunc_Goto, CodeFunc_Add,
     CodeFunc_Sub, CodeFunc_Mul, CodeFunc_Div, CodeFunc_Minus, CodeFunc_Not,
     CodeFunc_Or, CodeFunc_And, CodeFunc_Eq, CodeFunc_Neq, CodeFunc_S,
-    CodeFunc_L, CodeFunc_SE, CodeFunc_LE, CodeFunc_If, CodeFunc_PushS,
+    CodeFunc_L, CodeFunc_SE, CodeFunc_LE, CodeFunc_IF, CodeFunc_PushS,
     CodeFunc_PushLIX, CodeFunc_PushLFX, CodeFunc_PopLIX, CodeFunc_PopLFX, CodeFunc_PushSTR
 };
 
@@ -711,7 +711,33 @@ static u32 CodeFunc_Minus(ScrData* scr)
 // FUN_0035e250
 static u32 CodeFunc_Not(ScrData* scr)
 {
-    // TODO
+    u32 res;
+
+    K_ASSERT(scr->sp > 0, 677);
+
+    switch (scr->stackTypes[scr->sp - 1])
+    {
+        case SCR_STACK_TYPE_INTEGER: // fallthrough
+        case 2:
+            res = PopInt(scr) == 0;
+            PushInt(scr, res);
+            break;
+
+        case SCR_STACK_TYPE_FLOAT: // fallthrough
+        case 3:
+            res = PopFloat(scr) == 0.0f;
+            PushInt(scr, res);
+            break;
+
+        case SCR_STACK_TYPE_ADDR:
+            K_Abort("CodeFunc_Not(..) invalid stack type(RET)!!\n", "scrTraceCode.c", 696);
+            break;
+        
+        default:
+            K_Abort("CodeFunc_Not(..) invalid stack type(?)!!\n", "scrTraceCode.c", 699);
+    }
+
+    scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -789,7 +815,7 @@ static u32 CodeFunc_LE(ScrData* scr)
 }
 
 // FUN_0035e850
-static u32 CodeFunc_If(ScrData* scr)
+static u32 CodeFunc_IF(ScrData* scr)
 {
     // TODO
 
