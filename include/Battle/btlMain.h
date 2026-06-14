@@ -39,4 +39,6 @@ void btlMainSetState(u32 state);
 void btlMainUpdateState();
 void btlMainSetStateNon();
 
+void btlMainLoadScene();
+
 #endif

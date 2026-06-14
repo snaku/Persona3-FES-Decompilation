@@ -1,4 +1,5 @@
 #include "Battle/battle.h"
+#include "Scene/mt_scene.h"
 #include "temporary.h"
 
 void btlMainInitStateNon(BtlStateWork* work);
@@ -361,4 +362,10 @@ void btlMainSetStateNon()
     sBtlStateTable[gBtl->stateWork.currState].init(&gBtl->stateWork);
 
     gBtl->stateWork.stateToSet = BTL_STATE_NULL;
+}
+
+// FUN_0029e390
+void btlMainLoadScene()
+{
+    MT_Scene_Load(gBtl->fldMajorId, gBtl->fldMinorId);
 }
