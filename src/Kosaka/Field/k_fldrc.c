@@ -35,6 +35,12 @@ HCdvd* K_FldRc_GetFldArchiveCdvd()
     return sFldArchiveCdvd;
 }
 
+// FUN_001b0a20
+void K_FldRc_001b0a20(s16 majorId, s16 minorId)
+{
+    // TODO
+}
+
 // FUN_001b5850
 void* K_FldRc_UpdateFilterTask(KwlnTask* fldFilterTask)
 {

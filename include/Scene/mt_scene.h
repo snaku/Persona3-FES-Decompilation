@@ -3,6 +3,8 @@
 
 #include "Utils.h"
 
+#define MTSCENE_FLAG_CACHE (1 << 0) // 0x01
+
 typedef struct ResrcManager ResrcManager;
 typedef struct Resrc Resrc;
 typedef struct HCdvd HCdvd;
@@ -15,9 +17,10 @@ typedef struct
     s32 fldMajorId;           // 0x00
     s32 fldMinorId;           // 0x04
     ResrcManager* resManager; // 0x08
-    s32 unk_0c;               // 0x0c
+    u32 flags;                // 0x0c
     HCdvd* cmrCdvd;           // 0x10. Cdvd of "field/env/f*.CMR". Path doesn't exist, so never used
-    s32 unk_14;               // 0x14
+    s16 unk_14;               // 0x14
+    s16 unk_16;               // 0x16
     u32 shouldSortChars;      // 0x18
     u32 shouldSortNpcs;       // 0x1c
     KwlnTask* sceneMngTask;   // 0x20
@@ -26,6 +29,8 @@ typedef struct
 
 extern MtScene* gMtScene;
 
+void MT_Scene_Load(s32 fldMajorId, s32 fldMinorId);
+void MT_Scene_Destroy();
 MtScene* MT_Scene_GetScene();
 
 Resrc* MT_Scene_GetRes(u16 resTypeId);

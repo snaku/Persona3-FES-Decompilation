@@ -1,6 +1,8 @@
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
+#include "Kosaka/Field/k_fldrc.h"
 #include "Kosaka/Field/k_fldFrame.h"
+#include "Kosaka/Field/k_sceneDraw.h"
 #include "Kosaka/Field/k_shadow.h"
 #include "Model/mdlManager.h"
 #include "rw/rwplcore.h"
@@ -8,6 +10,48 @@
 
 static MtScene sMtScene;       // 0095afc0
 MtScene* gMtScene = &sMtScene; // 007cd540
+
+// FUN_003b5760
+void MT_Scene_Load(s32 fldMajorId, s32 fldMinorId)
+{
+    gMtScene->flags = 0;
+
+    if (gMtScene->fldMajorId == fldMajorId && 
+        gMtScene->fldMinorId == fldMinorId &&
+       (fldMajorId < 20 || fldMajorId > 28))
+    {
+        printf("Scene data cashe hit!! major=%d minor=%d\n", fldMajorId, fldMinorId);
+        gMtScene->flags |= MTSCENE_FLAG_CACHE;
+
+        return;
+    }
+
+    MT_Scene_Destroy();
+
+    K_FldRc_RequestFldArchive(fldMajorId, fldMinorId);
+    K_FldRc_001b0a20(fldMajorId, fldMinorId);
+
+    gMtScene->fldFilterTask = K_FldRc_CreateFilterTask(NULL);
+    gMtScene->fldMajorId = fldMajorId;
+    gMtScene->fldMinorId = fldMinorId;
+    gMtScene->unk_14 = 0;
+    gMtScene->unk_16 = gMtScene->fldMinorId;
+    gMtScene->resManager = resrcMngCreate();
+
+    MT_Scene_CreateResLightChar(0);
+    K_Scene_InitCharLight();
+
+    MT_Scene_CreateResLightNpc(0);
+    K_Scene_InitNpcLight();
+
+    printf("Scene data load...\n");
+}
+
+// FUN_00b5ab0
+void MT_Scene_Destroy()
+{
+    // TODO
+}
 
 // FUN_003b5cf0
 MtScene* MT_Scene_GetScene()

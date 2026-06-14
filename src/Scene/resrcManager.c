@@ -5,7 +5,7 @@
 #include "g_data.h"
 
 // FUN_003b4fc0
-ResrcManager* resrcMngInit()
+ResrcManager* resrcMngCreate()
 {
     ResrcManager* resMgr;
 
