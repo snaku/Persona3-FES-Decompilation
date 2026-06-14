@@ -71,15 +71,15 @@ u32 btlOrderAddAction(BtlAction* action)
 // FUN_0029ad20
 BtlAction* btlOrderGetActionPlaying()
 {
-    BtlAction* action;
+    BtlAction** actions;
 
-    action = gBtl->order.actions2[BTLORDER_CURRENT];
-    if (action == NULL)
+    actions = gBtl->order.actions2;
+    if (actions[BTLORDER_CURRENT] == NULL)
     {
-        action = gBtl->order.actions[BTLORDER_CURRENT];
+        actions = gBtl->order.actions;
     }
 
-    return action;
+    return *actions;
 }
 
 // FUN_0029ad50
