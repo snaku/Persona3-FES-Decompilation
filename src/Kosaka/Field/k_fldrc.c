@@ -1,11 +1,30 @@
 #include "Kosaka/Field/k_fldrc.h"
 #include "Kosaka/Field/k_fldFilter.h"
+#include "Kosaka/Field/k_field.h"
 #include "kwln/kwlnTask.h"
 #include "h_cdvd.h"
 #include "temporary.h"
 
 static HCdvd* sFldFpcCdvd; // 007ce160. "field/pack/f%03d_%03d.fpc"
 static HCdvd* sFldPacCdvd; // 007ce15c. "field/pack/f%03d_%03d.pac"
+
+// FUN_001b0710
+void K_Fldrc_RequestArchives()
+{
+    s16 major;
+    s16 minor;
+
+    if (K_Field_Get()->rootTask != NULL)
+    {
+        major = K_Field_GetMajorId(K_Field_Get()->rootTask);
+        minor = K_Field_GetMinorId(K_Field_Get()->rootTask);
+        K_Fldrc_RequestFldPac(major, minor);
+
+        major = K_Field_GetMajorId(K_Field_Get()->rootTask);
+        minor = K_Field_GetMinorId(K_Field_Get()->rootTask);
+        K_Fldrc_RequestFldFpc(major, minor);
+    }
+}
 
 // FUN_001b0870
 void K_Fldrc_RequestFldPac(s16 majorId, s16 minorId)

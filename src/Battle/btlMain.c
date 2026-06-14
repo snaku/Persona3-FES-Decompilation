@@ -1,4 +1,5 @@
 #include "Battle/battle.h"
+#include "Kosaka/Field/k_fldrc.h"
 #include "Scene/mt_scene.h"
 #include "temporary.h"
 
@@ -286,7 +287,14 @@ u32 btlMainUpdateStateResult(BtlStateWork* work)
 // FUN_0029dcf0
 void btlMainInitStateExit(BtlStateWork* work)
 {
-    // TODO
+    btlPacket0027e4d0();
+
+    if (!(gBtl->flags & BTL_FLAG_EXIT))
+    {
+        K_Fldrc_RequestArchives();
+
+        gBtl->flags |= BTL_FLAG_EXIT;
+    }
 }
 // FUN_0029dd50
 u32 btlMainUpdateStateExit(BtlStateWork* work)

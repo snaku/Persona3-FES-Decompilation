@@ -92,6 +92,12 @@ u32 btlPacketCountById(u16 id)
     return total;
 }
 
+// FUN_0027e4d0
+void btlPacket0027e4d0()
+{
+    // TODO
+}
+
 // FUN_0027ec10
 BtlPacket* btlPacketCreate(u32 id, u32 workDataSize)
 {

@@ -6,6 +6,7 @@
 typedef struct HCdvd HCdvd;
 typedef struct KwlnTask KwlnTask;
 
+void K_Fldrc_RequestArchives();
 void K_Fldrc_RequestFldPac(s16 majorId, s16 minorId);
 u8 K_Fldrc_IsFldPacLoaded();
 HCdvd* K_Fldrc_GetFldPacCdvd();

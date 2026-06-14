@@ -11,6 +11,7 @@
 #define BTL_FLAG_UNK40       (1 << 6)  // 0x40
 #define BTL_FLAG_UNK8000     (1 << 15) // 0x8000
 #define BTL_FLAG_MULTI_ENEMY (1 << 16) // 0x10000. More than one enemy in the battle
+#define BTL_FLAG_EXIT        (1 << 27) // 0x8000000
 
 #define BTL_UIDMAX  0x3FFFFFFFFFFFFFFF
 
