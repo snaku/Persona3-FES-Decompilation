@@ -28,10 +28,10 @@ void MT_Scene_Load(s32 fldMajorId, s32 fldMinorId)
 
     MT_Scene_Destroy();
 
-    K_FldRc_RequestFldArchive(fldMajorId, fldMinorId);
-    K_FldRc_001b0a20(fldMajorId, fldMinorId);
+    K_Fldrc_RequestFldPac(fldMajorId, fldMinorId);
+    K_Fldrc_001b0a20(fldMajorId, fldMinorId);
 
-    gMtScene->fldFilterTask = K_FldRc_CreateFilterTask(NULL);
+    gMtScene->fldFilterTask = K_Fldrc_CreateFilterTask(NULL);
     gMtScene->fldMajorId = fldMajorId;
     gMtScene->fldMinorId = fldMinorId;
     gMtScene->unk_14 = 0;
