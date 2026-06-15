@@ -161,13 +161,13 @@ KwlnTask* btlStart(BtlStartInfo* startInfo)
     {
         gBtl->hasNoStartInfo = true;
 
-        if (!datGetFlag(FLG_BATTLE_MCNOP))
+        if (!datGetFlag(FLG_BATTLE_MC))
         {
             btlMainSetState(BTL_STATE_TEST);
         }
         else
         {
-            btlMainSetState(BTL_STATE_MCNOP);
+            btlMainSetState(BTL_STATE_MC);
         }
     }
 
