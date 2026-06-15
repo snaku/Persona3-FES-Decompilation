@@ -68,7 +68,8 @@ typedef struct Battle
     u16 fldMinorId;                                // 0x246
     BtlOrder order;                                // 0x248
     BtlStateWork stateWork;                        // 0x2b4
-    u8 unkData4[0x8e8];
+    u8 unkData4[0x8e5];
+    u8 hasNoStartInfo;                             // 0xba5
     BtlStartInfo startInfo;                        // 0xba8
     u8 unkData5[0x13c];
     KwlnTask* btlTask;                             // 0xd18
@@ -117,6 +118,7 @@ extern Battle* gBtl;
 u64 btlGetUID();
 
 KwlnTask* btlStart(BtlStartInfo* startInfo);
+void btlStop();
 u32 btlScrCmd_CALL_BATTLE();
 KwlnTask* btlGetTask();
 void btl0027d8b0();

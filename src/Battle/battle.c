@@ -6,6 +6,7 @@
 #include "Script/scrTraceCode.h"
 #include "admini.h"
 #include "g_data.h"
+#include "g_flags.h"
 #include "temporary.h"
 
 #define BTL_CHAR_RESID_BASE 0x100
@@ -16,6 +17,11 @@ static u16 sCurrCharResId = BTL_CHAR_RESID_BASE; // 007cc518
 
 BtlEncountTable* gEncountTbl; // 007ce4a8
 Battle* gBtl;                 // 007ce3ec. NULL when not in a battle
+
+KwlnTask* BP_Root_CreateTasks(KwlnTask* parent); // temporary here
+void BP_Root_001ff350();                         // temporary here
+
+u32 btlDestroy();
 
 // FUN_0027cb80
 u64 btlGetUID()
@@ -44,12 +50,130 @@ u16 btlFindFreeCharResId()
     return sCurrCharResId;
 }
 
-// FUN_0027d1d0
-KwlnTask* btlStart(BtlStartInfo* startInfo)
+// FUN_0027cc30
+void* btlUpdateTask(KwlnTask* btlTask)
 {
     // TODO
 
-    return NULL;
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_0027ccf0
+void* btlUpdateDraw3DTask(KwlnTask* btlDraw3DTask)
+{
+    // TODO
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_0027cd70
+void* btlUpdateDraw3DFrontTask(KwlnTask* btlDraw3DFrontTask)
+{
+    // TODO
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_0027cda0
+void* btlUpdateDraw2DTask(KwlnTask* btlDraw2DTask)
+{
+    // TODO
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_0027cdf0
+void btlDestroyTask(KwlnTask* btlTask)
+{
+    // TODO
+}
+
+// FUN_0027ced0
+void btlCreate()
+{
+    // TODO
+}
+
+// FUN_0027d020
+u32 btlDestroy()
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_0027ce10
+void btlStop()
+{
+    // TODO
+}
+
+// FUN_0027d1d0
+KwlnTask* btlStart(BtlStartInfo* startInfo)
+{
+    KwlnTask* btlTask;
+
+    btlCreate();
+
+    gBtl->btlTask = kwlnTaskCreate(NULL,
+                                   "battle",
+                                   10,
+                                   btlUpdateTask,
+                                   btlDestroyTask,
+                                   NULL);
+
+    kwlnTaskCreate(gBtl->btlTask,
+                   "battle_draw_3d",
+                   2081,
+                   btlUpdateDraw3DTask,
+                   NULL,
+                   NULL);
+    kwlnTaskCreate(gBtl->btlTask,
+                   "battle_draw_3d_front",
+                   4169,
+                   btlUpdateDraw3DFrontTask,
+                   NULL,
+                   NULL);
+    kwlnTaskCreate(gBtl->btlTask,
+                   "battle_draw_2d",
+                   4207,
+                   btlUpdateDraw2DTask,
+                   NULL,
+                   NULL);
+
+    gBtl->btlPanelTask = BP_Root_CreateTasks(gBtl->btlTask);
+    BP_Root_001ff350();
+
+    btlTask = gBtl->btlTask;
+
+    if (startInfo != NULL)
+    {
+        gBtl->hasNoStartInfo = false;
+
+        memcpy(&gBtl->startInfo, startInfo, sizeof(BtlStartInfo));
+
+        gBtl->fldMajorId = gBtl->startInfo.fldMajorId;
+        gBtl->fldMinorId = gBtl->startInfo.fldMinorId;
+
+        btlMainSetState(BTL_STATE_INIT);
+    }
+    else
+    {
+        gBtl->hasNoStartInfo = true;
+
+        if (!datGetFlag(FLG_BATTLE_MCNOP))
+        {
+            btlMainSetState(BTL_STATE_TEST);
+        }
+        else
+        {
+            btlMainSetState(BTL_STATE_MCNOP);
+        }
+    }
+
+    gBtl->flags |= BTL_FLAG_ACTIVE;
+
+    return btlTask;
 }
 
 // FUN_0027d5e0
