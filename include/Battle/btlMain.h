@@ -24,7 +24,7 @@ typedef enum
     BTL_STATE_RESULT,
     BTL_STATE_EXIT,
     BTL_STATE_TEST,
-    BTL_STATE_MCNOP
+    BTL_STATE_MC
 } BtlState;
 
 // at least 12 bytes

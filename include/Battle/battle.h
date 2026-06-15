@@ -4,6 +4,7 @@
 #include "Battle/btlMain.h"
 #include "Battle/btlOrder.h"
 #include "Battle/btlPacket.h"
+#include "Battle/btlCamera.h"
 #include "rw/rwplcore.h"
 #include "datUnit.h"
 
@@ -59,23 +60,25 @@ typedef struct Battle
 {
     u8 unkData1[0x0c];
     u32 flags;                                     // 0x0c
-    u8 unkData2[0x138];
+    u8 unkData2[0x10];
+    BtlCamera camera;                              // 0x20
+    u8 unkData3[0x28];
     BtlActionList actionList;                      // 0x148
     BtlUnitList unitLists[UNIT_GENUS_MAX];         // 0x150
     BtlPacketList packetLists[BTLPACKET_TYPE_MAX]; // 0x170
-    u8 unkData3[0xb4];
+    u8 unkData4[0xb4];
     u16 fldMajorId;                                // 0x244
     u16 fldMinorId;                                // 0x246
     BtlOrder order;                                // 0x248
     BtlStateWork stateWork;                        // 0x2b4
-    u8 unkData4[0x8e5];
+    u8 unkData5[0x8e5];
     u8 hasNoStartInfo;                             // 0xba5
     BtlStartInfo startInfo;                        // 0xba8
-    u8 unkData5[0x13c];
+    u8 unkData6[0x13c];
     KwlnTask* btlTask;                             // 0xd18
-    u8 unkData6[0x10];
+    u8 unkData7[0x10];
     KwlnTask* btlPanelTask;                        // 0xd2c
-    u8 unkData7[0x40];
+    u8 unkData8[0x40];
 } Battle;
 
 typedef enum

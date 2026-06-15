@@ -39,8 +39,8 @@ void btlMainInitStateExit(BtlStateWork* work);
 u32 btlMainUpdateStateExit(BtlStateWork* work);
 void btlMainInitStateTest(BtlStateWork* work);
 u32 btlMainUpdateStateTest(BtlStateWork* work);
-void btlMainInitStateMcNop(BtlStateWork* work);
-u32 btlMainUpdateStateMcNop(BtlStateWork* work);
+void btlMainInitStateMc(BtlStateWork* work);
+u32 btlMainUpdateStateMc(BtlStateWork* work);
 
 // 12 bytes
 typedef struct 
@@ -72,7 +72,7 @@ static const BtlStateEntry sBtlStateTable[] =
     {btlMainInitStateResult, btlMainUpdateStateResult, "RESULT"},
     {btlMainInitStateExit, btlMainUpdateStateExit, "EXIT"},
     {btlMainInitStateTest, btlMainUpdateStateTest, "TEST"},
-    {btlMainInitStateMcNop, btlMainUpdateStateMcNop, "MC NOP"}
+    {btlMainInitStateMc, btlMainUpdateStateMc, "MC"}
 };
 
 // FUN_0029b0e0
@@ -102,7 +102,7 @@ u32 btlMainUpdateStateInit(BtlStateWork* work)
 // FUN_0029b170
 void btlMainInitStateSceneSet(BtlStateWork* work)
 {
-    // TODO
+    btlMainLoadScene();
 }
 // FUN_0029b190
 u32 btlMainUpdateStateSceneSet(BtlStateWork* work)
@@ -318,12 +318,12 @@ u32 btlMainUpdateStateTest(BtlStateWork* work)
 }
 
 // FUN_0029de00
-void btlMainInitStateMcNop(BtlStateWork* work)
+void btlMainInitStateMc(BtlStateWork* work)
 {
     // nothing
 }
 // FUN_0029de10
-u32 btlMainUpdateStateMcNop(BtlStateWork* work)
+u32 btlMainUpdateStateMc(BtlStateWork* work)
 {
     // OK
     return BTL_STATE_NULL;

@@ -24,7 +24,7 @@
 #define FLG_ROOM_HELP_SEEN       3086 // idx 96  (1 << 14). "If you go back into your room, it will become midnight"
 #define FLG_HERO_HANDS_IN_POCKET 3125 // idx 98  (1 << 21)
 #define FLG_HIDE_DATE_HUD        5127 // idx 160 (1 << 7)
-#define FLG_BATTLE_MCNOP         5147 // idx 160 (1 << 27)
+#define FLG_BATTLE_MC            5147 // idx 160 (1 << 27)
 
 #define FLG_MAX 5632
 
