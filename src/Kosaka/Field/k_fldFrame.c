@@ -1,6 +1,7 @@
 #include "Kosaka/Field/k_fldFrame.h"
 #include "Kosaka/Field/k_unit.h"
 #include "Kosaka/Field/k_sceneDraw.h"
+#include "Kosaka/k_footstep.h"
 #include "Model/mdlManager.h"
 #include "kwln/kwlnTask.h"
 #include "kwln/kwln.h"
@@ -9,9 +10,11 @@
 #include "Scene/resrcManager.h"
 #include "temporary.h"
 
+#define COLLISCTL_SUBSTEPS 3
+
 static RwRGBA sDebugSphereColor = {0, 168, 168, 168};
 
-KwlnTask* K_FldFrame_CreateCollisSphereTask(KwlnTask* parent);
+void K_FldFrame_CollisSphereSetDrawEnabled(KwlnTask* collisSphereTask, u32 drawEnabled);
 
 // FUN_001aaad0
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
@@ -21,10 +24,114 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
     return false;
 }
 
+// FUN_001ac750
+void K_FldFrame_HandleCollis(const RwV3d* pos, RwV3d* translation, f32 sphereCollisRadius, u16 resTypeId)
+{
+    // TODO
+}
+
+// FUN_001acc30
+u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
+{
+    // TODO
+
+    return false;
+}
+
 // FUN_001ad2f0
 void* K_FldFrame_UpdateCtlTask(KwlnTask* collisCtlTask)
 {
-    // TODO
+    CollisCtl* ctl;
+    ResrcModelChar* charList; // unused
+    ResrcModelNpc* npcList;   // unused
+    RwMatrix* mdlMatrix;
+    RwV3d line[2];
+    RwV3d hitPoint;
+    RwV3d translation;
+    RwV3d pos;
+    s32 i;
+
+    ctl = (CollisCtl*)collisCtlTask->workData;
+
+    charList = (ResrcModelChar*)MT_Scene_GetResListHead(RESRC_TYPE_MODELCHAR);
+    npcList = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
+
+    if (ctl->flags & COLLISCTL_FLAG_NOUPDATE)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    switch (ctl->state)
+    {
+        case COLLISCTL_STATE_DIRTY:
+            mdlMatrix = mdlGetMatrix(ctl->mdl);
+            pos = mdlMatrix->pos;
+
+            if (ctl->flags & COLLISCTL_FLAG_GROUNDSNAP && 
+                !(ctl->flags & COLLISCTL_FLAG_NOCOLLIS))
+            {
+                line[0] = line[1] = pos;
+
+                if (K_Scene_001a0250())
+                {
+                    line[0].y += 600.0f;
+                }
+                else
+                {
+                    line[0].y += 200.0f;
+                }
+
+                line[1].y -= 1000.0f;
+
+                if (K_FldFrame_Raycast(line, &hitPoint) == true)
+                {
+                    ctl->velocity.y = -(pos.y - hitPoint.y);
+                }
+            }
+
+            for (i = 0; i < COLLISCTL_SUBSTEPS; i++)
+            {
+                translation.x = ctl->velocity.x / COLLISCTL_SUBSTEPS;
+                translation.y = ctl->velocity.y / COLLISCTL_SUBSTEPS;
+                translation.z = ctl->velocity.z / COLLISCTL_SUBSTEPS;
+
+                pos = mdlGetMatrix(ctl->mdl)->pos;
+                pos.y += ctl->sphereCollisRadius;
+
+                if (!(ctl->flags & COLLISCTL_FLAG_NOCOLLIS))
+                {
+                    K_FldFrame_HandleCollis(&pos, &translation, ctl->sphereCollisRadius, ctl->resTypeId);
+                }
+
+                mdlTranslate(ctl->mdl, &translation, rwCOMBINEPOSTCONCAT);
+            }
+
+            ctl->xGrid = (mdlMatrix->pos.x + 400.0f) / 800.0f;
+            ctl->zGrid = (mdlMatrix->pos.z + 400.0f) / 800.0f;
+
+            if (RESRC_GET_ID(ctl->resTypeId) < 100)
+            {
+                K_Footstep_Update(ctl->mdl, ctl->charId, ctl->resTypeId);
+            }
+
+            ctl->state++; // COLLISCTL_STATE_NOTDIRTY
+            break;
+
+        case COLLISCTL_STATE_NOTDIRTY:
+            mdlMatrix = mdlGetMatrix(ctl->mdl);
+
+            if (ctl->flags & COLLISCTL_FLAG_DEBUGDRAW)
+            {
+                K_FldFrame_CollisSphereSetDrawEnabled(collisCtlTask->child, true);
+            }
+            else
+            {
+                K_FldFrame_CollisSphereSetDrawEnabled(collisCtlTask->child, false);
+            }
+            break;
+        
+        case COLLISCTL_STATE_IDLE: break;
+    }
 
     return KWLNTASK_CONTINUE;
 }
@@ -234,4 +341,10 @@ KwlnTask* K_FldFrame_CreateCollisSphereTask(KwlnTask* parent)
     // TODO
 
     return NULL;
+}
+
+// FUN_001ae470
+void K_FldFrame_CollisSphereSetDrawEnabled(KwlnTask* collisSphereTask, u32 drawEnabled)
+{
+    // TODO
 }

@@ -8,13 +8,16 @@ typedef struct Model Model;
 typedef struct KwlnTask KwlnTask;
 typedef struct FldUnit FldUnit;
 
-#define COLLISCTL_FLAG_NOCOLLIS  (1 << 28) // 0x10000000. Disable collisions
-#define COLLISCTL_FLAG_DEBUGDRAW (1 << 31) // 0x80000000. Draw collisions
+#define COLLISCTL_FLAG_NOUPDATE   (1 << 27) // 0x8000000
+#define COLLISCTL_FLAG_NOCOLLIS   (1 << 28) // 0x10000000. Disable collisions
+#define COLLISCTL_FLAG_GROUNDSNAP (1 << 30) // 0x40000000
+#define COLLISCTL_FLAG_DEBUGDRAW  (1 << 31) // 0x80000000. Draw collisions
 
 typedef enum
 {
     COLLISCTL_STATE_DIRTY,
-    COLLISCTL_STATE_NOTDIRTY
+    COLLISCTL_STATE_NOTDIRTY,
+    COLLISCTL_STATE_IDLE
 } CollisCtlState;
 
 // 52 bytes. Task data for a "collision controler" task
@@ -41,6 +44,7 @@ typedef struct CollisSphereDebug
 } CollisSphereDebug;
 
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal);
+u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst);
 
 // collis ctl
 KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, f32 sphereCollisRadius);
