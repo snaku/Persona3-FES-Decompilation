@@ -85,7 +85,7 @@ void* btlUpdateDraw2DTask(KwlnTask* btlDraw2DTask)
 // FUN_0027cdf0
 void btlDestroyTask(KwlnTask* btlTask)
 {
-    // TODO
+    btlDestroy();
 }
 
 // FUN_0027ced0
@@ -105,7 +105,10 @@ u32 btlDestroy()
 // FUN_0027ce10
 void btlStop()
 {
-    // TODO
+    if (kwlnTaskGetTaskByName("battle") != NULL)
+    {
+        kwlnTaskDestroyWithHierarchy(gBtl->btlTask);
+    }
 }
 
 // FUN_0027d1d0
