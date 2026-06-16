@@ -26,6 +26,13 @@ void K_Fldrc_RequestArchives()
     }
 }
 
+// FUN_001b0840
+void K_Fldrc_DestroyArchives()
+{
+    K_Fldrc_DestroyFldPac();
+    K_Fldrc_DestroyFldFpc();
+}
+
 // FUN_001b0870
 void K_Fldrc_RequestFldPac(s16 majorId, s16 minorId)
 {
@@ -55,6 +62,16 @@ HCdvd* K_Fldrc_GetFldPacCdvd()
     return sFldPacCdvd;
 }
 
+// FUN_001b0920
+void K_Fldrc_DestroyFldPac()
+{
+    if (sFldPacCdvd != NULL)
+    {
+        H_Cdvd_Destroy(sFldPacCdvd);
+        sFldPacCdvd = NULL;
+    }
+}
+
 // FUN_001b0950
 void K_Fldrc_RequestFldFpc(s16 majorId, s16 minorId)
 {
@@ -64,6 +81,16 @@ void K_Fldrc_RequestFldFpc(s16 majorId, s16 minorId)
     {
         sprintf(buffer, "field/pack/f%03d_%03d.fpc", majorId, minorId);
         sFldFpcCdvd = H_Cdvd_Request(buffer, HCDVD_FILEARCHIVE);
+    }
+}
+
+// FUN_001b09f0
+void K_Fldrc_DestroyFldFpc()
+{
+    if (sFldFpcCdvd != NULL)
+    {
+        H_Cdvd_Destroy(sFldFpcCdvd);
+        sFldFpcCdvd = NULL;
     }
 }
 
