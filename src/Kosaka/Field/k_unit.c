@@ -1,26 +1,30 @@
 #include "Kosaka/Field/k_unit.h"
 #include "Model/mdlManager.h"
+#include "Battle/battle.h"
+#include "datUnit.h"
+#include "g_data.h"
 
-FldUnitMdl gFldUnitsMdl[FLDUNIT_MAX]; // 00871ea0
-FldUnit gFldUnits[FLDUNIT_MAX];       // 008717a0
+FldUnitMdl gFldUnitsPcMdl[FLDUNIT_PC_MAX]; // 00871ea0
+FldUnit gFldUnitsPc[FLDUNIT_PC_MAX];       // 008717a0
 
-FldUnit gEnFldUnits[FLDUNIT_EN_MAX];  // 0086eda0. Enemies
+FldUnit gFldUnitsEc[FLDUNIT_EC_MAX];  // 0086eda0. Enemies
+static u32 sFldUnitsEcCount;          // 007ce28c
 
 // FUN_001cd870
-void K_FldUnit_DestroyMdl(s32 unitId)
+void K_FldUnit_DestroyPcMdl(s32 unitId)
 {
-    if (gFldUnitsMdl[unitId].mdl != NULL)
+    if (gFldUnitsPcMdl[unitId].mdl != NULL)
     {
-        mdlDestroy(gFldUnitsMdl[unitId].mdl);
+        mdlDestroy(gFldUnitsPcMdl[unitId].mdl);
         
-        gFldUnitsMdl[unitId].mdl = NULL;
-        gFldUnitsMdl[unitId].type = 0;
-        gFldUnitsMdl[unitId].id = 0;
+        gFldUnitsPcMdl[unitId].mdl = NULL;
+        gFldUnitsPcMdl[unitId].type = 0;
+        gFldUnitsPcMdl[unitId].id = 0;
     }
 }
 
 // FUN_001cd940
-FldUnit* K_FldUnit_FindFree()
+FldUnit* K_FldUnit_FindFreePc()
 {
     FldUnit* units;
     FldUnit* free;
@@ -29,8 +33,8 @@ FldUnit* K_FldUnit_FindFree()
 
     free = NULL;
     i = 0;
-    units = gFldUnits;
-    for (; i < FLDUNIT_MAX; i++)
+    units = gFldUnitsPc;
+    for (; i < FLDUNIT_PC_MAX; i++)
     {
         curr = &units[i];
         if (curr->genusBase == NULL)
@@ -41,4 +45,51 @@ FldUnit* K_FldUnit_FindFree()
     }
 
     return free;
+}
+
+// FUN_001cfc50
+FldUnit* K_FldUnit_CreateReaper(u32 unused, const RwV3d* spawnPos)
+{
+    FldUnit* units;
+    FldUnit* curr;
+    FldUnit* unit;
+    s32 i;
+
+    unit = NULL;
+    i = 0;
+    units = gFldUnitsEc;
+    for (; i < FLDUNIT_EC_MAX; i++)
+    {
+        curr = &units[i];
+        if (curr->genusBase == NULL)
+        {
+            unit = curr;
+            break;
+        }
+    }
+
+    if (datGetFlag(5141) == true)
+    {
+        return NULL;
+    }
+    else if (unit == NULL)
+    {
+        return NULL;
+    }
+
+    unit->genusBase = (DatUnitGenusBase*)datUnitCreateEnemy(BTLENCOUNT_REAPER);
+    unit->encount = &gEncountTbl[BTLENCOUNT_REAPER];
+    unit->unk_18c = 4;
+    unit->scaleIdx = 0;
+    unit->charId = 0;
+    unit->mdl = mdlCreateAndResolvePath(MODEL_TYPE_ENEMYSYMBOL, 3, MDL_READASYNC);
+    unit->spawnPos = *spawnPos;
+    unit->unk_168 = &unit->unk_58;
+    unit->xGrid = (spawnPos->x + 400.0f) / 800.0f;
+    unit->zGrid = (spawnPos->z + 400.0f) / 800.0f;
+    unit->unk_184 = 1000;
+
+    sFldUnitsEcCount++;
+
+    return unit;
 }

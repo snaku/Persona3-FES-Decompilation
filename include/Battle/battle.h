@@ -95,6 +95,11 @@ typedef struct BtlBattleFlagPacket
 
 typedef enum
 {
+    BTLENCOUNT_REAPER = 506
+} BtlEncountId;
+
+typedef enum
+{
     BTLENCOUNT_BGM_FULLMOON = 2,
     BTLENCOUNT_BGM_STREGA,
     BTLENCOUNT_BGM_NYX,

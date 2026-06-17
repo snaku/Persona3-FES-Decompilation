@@ -82,7 +82,7 @@ u32 K_FldEvent_IsUnitNearFldHit(const FldUnit* unit)
         return false;
     }
 
-    unitPos = mdlGetMatrix(unit->unitMdl.mdl)->pos;
+    unitPos = mdlGetMatrix(unit->mdl)->pos;
     while (hit != NULL)
     {
         normal = sFldHitNormal;
@@ -126,7 +126,7 @@ u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat, const RwV3d* targetPos,
 // FUN_001c7130
 u32 K_FldEvent_IsUnitWithinDistOfHero(const FldUnit* fldUnit, f32 maxDist)
 {
-    return K_FldEvent_AreUnitsWithinDist(fldUnit, &gFldUnits[FLDUNIT_HERO], maxDist);
+    return K_FldEvent_AreUnitsWithinDist(fldUnit, &gFldUnitsPc[FLDUNIT_PC_HERO], maxDist);
 }
 
 // FUN_001c7160
@@ -137,8 +137,8 @@ u32 K_FldEvent_AreUnitsWithinDist(const FldUnit* fldUnitA, const FldUnit* fldUni
     withinDist = false;
     if (fldUnitA->genusBase != NULL && fldUnitB->genusBase != NULL)
     {
-        withinDist = K_FldEvent_ArePosWithinDist(&mdlGetMatrix(fldUnitA->unitMdl.mdl)->pos,
-                                                 &mdlGetMatrix(fldUnitB->unitMdl.mdl)->pos,
+        withinDist = K_FldEvent_ArePosWithinDist(&mdlGetMatrix(fldUnitA->mdl)->pos,
+                                                 &mdlGetMatrix(fldUnitB->mdl)->pos,
                                                  maxDist);
     }
 
@@ -179,18 +179,18 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
     interactableNpc = NULL;
     while (npc != NULL)
     {
-        isWithinFov = K_FldEvent_IsPosWithinFov(mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl),
+        isWithinFov = K_FldEvent_IsPosWithinFov(mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl),
                                                 &mdlGetMatrix(npc->mdl)->pos,
                                                 120.0f);
         if (isWithinFov == true)
         {
-            distDiff.x = mdlGetMatrix(npc->mdl)->pos.x - mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl)->pos.x;
-            distDiff.y = mdlGetMatrix(npc->mdl)->pos.y - mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl)->pos.y;
-            distDiff.z = mdlGetMatrix(npc->mdl)->pos.z - mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl)->pos.z;
+            distDiff.x = mdlGetMatrix(npc->mdl)->pos.x - mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos.x;
+            distDiff.y = mdlGetMatrix(npc->mdl)->pos.y - mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos.y;
+            distDiff.z = mdlGetMatrix(npc->mdl)->pos.z - mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos.z;
 
             if (RwV3dLength(&distDiff) < 200.0f)
             {
-                lookAtPos = mdlGetMatrix(gFldUnits[FLDUNIT_HERO].unitMdl.mdl)->pos;
+                lookAtPos = mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos;
                 lookAtPos.y += 140.0f;
 
                 mdlLookAtSetTargetPosXYZ(npc->mdl, &lookAtPos);
@@ -256,7 +256,7 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
 // FUN_001c7b10
 u32 K_FldEvent_IsUnitHero(const FldUnit* fldUnit)
 {
-    return fldUnit == &gFldUnits[FLDUNIT_HERO];
+    return fldUnit == &gFldUnitsPc[FLDUNIT_PC_HERO];
 }
 
 // FUN_001c7ce0. Temp name maybe
@@ -270,18 +270,18 @@ u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId)
     u32 fldMajor;
 
     ret = false;
-    for (i = 0; i < FLDUNIT_MAX; i++)
+    for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        currUnit = &gFldUnits[i];
+        currUnit = &gFldUnitsPc[i];
 
         if (currUnit->genusBase != NULL &&
            (charId == currUnit->charId))
         {
             isNear = false;
 
-            distDiff.x = gFldUnits[FLDUNIT_HERO].matBeforeBtl.pos.x - currUnit->matBeforeBtl.pos.x;
-            distDiff.y = gFldUnits[FLDUNIT_HERO].matBeforeBtl.pos.y - currUnit->matBeforeBtl.pos.y;
-            distDiff.z = gFldUnits[FLDUNIT_HERO].matBeforeBtl.pos.z - currUnit->matBeforeBtl.pos.z;
+            distDiff.x = gFldUnitsPc[FLDUNIT_PC_HERO].matBeforeBtl.pos.x - currUnit->matBeforeBtl.pos.x;
+            distDiff.y = gFldUnitsPc[FLDUNIT_PC_HERO].matBeforeBtl.pos.y - currUnit->matBeforeBtl.pos.y;
+            distDiff.z = gFldUnitsPc[FLDUNIT_PC_HERO].matBeforeBtl.pos.z - currUnit->matBeforeBtl.pos.z;
 
             if (RwV3dLength(&distDiff) < 1600.0f)
             {
