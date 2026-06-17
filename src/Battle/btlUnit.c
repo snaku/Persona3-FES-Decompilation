@@ -645,7 +645,7 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
         if (packet->flags & BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLPLAYER)
         {
             btl = gBtl;
-            curr = btl->unitLists[UNIT_GENUS_PLAYER].tail;
+            curr = btl->unitLists[UNIT_GENUS_PC].tail;
             while (curr != NULL)
             {
                 if (curr->flags3 & BTLUNIT_FLAG3_UNK08 && 
@@ -665,7 +665,7 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
         if (packet->flags & BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLENEMY)
         {
             btl = gBtl;
-            curr = btl->unitLists[UNIT_GENUS_ENEMY].tail;
+            curr = btl->unitLists[UNIT_GENUS_EC].tail;
             while (curr != NULL)
             {
                 if (curr->flags3 & BTLUNIT_FLAG3_UNK08 && 
@@ -742,7 +742,7 @@ void btlUnitInitPersona(BtlUnit* unit, u16 personaId)
 {
     if (unit->personaUnit == NULL)
     {
-        unit->personaUnit = btlUnitCreate(UNIT_GENUS_PERSONA);
+        unit->personaUnit = btlUnitCreate(UNIT_GENUS_PS);
     }
 
     btlUnitInitFromCharId(unit->personaUnit, personaId);

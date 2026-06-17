@@ -47,11 +47,11 @@ typedef struct BtlPacketList
 // 52 bytes
 typedef struct BtlStartInfo
 {
-    s32 unk_00;                   // 0x00
-    DatUnitPlayer* partyUnits[4]; // 0x04
-    DatUnitEnemy* enmUnits;       // 0x14
-    u16 fldMajorId;               // 0x18
-    u16 fldMinorId;               // 0x1a
+    s32 unk_00;               // 0x00
+    DatUnitPc* partyUnits[4]; // 0x04
+    DatUnitEc* enmUnits;      // 0x14
+    u16 fldMajorId;           // 0x18
+    u16 fldMinorId;           // 0x1a
     u8 unkData[0x18];
 } BtlStartInfo;
 

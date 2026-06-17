@@ -28,7 +28,7 @@ typedef struct FldUnit
 {
     RwMatrix matBeforeBtl;       // 0x00. Saved matrix before entering a battle
     u8 unkData1[0x08];
-    DatUnitGenusBase* genusBase; // 0x48. Either 'DatUnitPlayer' or 'DatUnitEnemy'
+    DatUnitGenusBase* genusBase; // 0x48. Either 'DatUnitPc' or 'DatUnitEc'
     BtlEncountTable* encount;    // 0x4c
     Model* mdl;                  // 0x50
     ResrcModelChar* resrc;       // 0x54

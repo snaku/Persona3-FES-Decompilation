@@ -21,9 +21,9 @@
 
 typedef enum
 {
-    UNIT_GENUS_PLAYER,
-    UNIT_GENUS_ENEMY,
-    UNIT_GENUS_PERSONA,
+    UNIT_GENUS_PC,
+    UNIT_GENUS_EC,
+    UNIT_GENUS_PS,
 
     UNIT_GENUS_MAX = 4
 } UnitGenus;
@@ -51,25 +51,25 @@ typedef struct DatUnitGenusBase
 } DatUnitGenusBase;
 
 // 12 bytes
-typedef struct DatUnitPlayer
+typedef struct DatUnitPc
 {
     DatUnitGenusBase base; // 0x00
     u8 unkData[0x04];
-} DatUnitPlayer;
+} DatUnitPc;
 
 // 372 bytes
-typedef struct DatUnitEnemy
+typedef struct DatUnitEc
 {
     DatUnitGenusBase base; // 0x00
     u16 encountId;         // 0x08
     s16 unk_0a;            // 0x0a
     DatUnit units[6];      // 0x0c
-} DatUnitEnemy;
+} DatUnitEc;
 
-DatUnitPlayer* datUnitCreatePlayer(u16 charId);
-DatUnitEnemy* datUnitCreateEnemy(u16 encountId);
-DatUnit* datUnitAddEnemy(DatUnitEnemy* enm, u16 id);
-void datUnitRemoveEnemy(DatUnitEnemy* enm, DatUnit* unit);
+DatUnitPc* datUnitCreatePc(u16 pcId);
+DatUnitEc* datUnitCreateEc(u16 encountId);
+DatUnit* datUnitEcAddEnemy(DatUnitEc* ec, u16 id);
+void datUnitEcRemoveEnemy(DatUnitEc* ec, DatUnit* unit);
 void datUnitDestroyGenus(DatUnitGenusBase* genusBase);
 
 u32 datUnitInit(DatUnit* unit, u8 genus, u16 id);

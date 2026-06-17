@@ -77,7 +77,7 @@ FldUnit* K_FldUnit_CreateReaper(u32 unused, const RwV3d* spawnPos)
         return NULL;
     }
 
-    unit->genusBase = (DatUnitGenusBase*)datUnitCreateEnemy(BTLENCOUNT_REAPER);
+    unit->genusBase = (DatUnitGenusBase*)datUnitCreateEc(BTLENCOUNT_REAPER);
     unit->encount = &gEncountTbl[BTLENCOUNT_REAPER];
     unit->unk_18c = 4;
     unit->scaleIdx = 0;

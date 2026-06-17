@@ -195,17 +195,17 @@ u32 btlScrCmd_CALL_BATTLE()
 
     memset(&startInfo, 0, sizeof(BtlStartInfo));
 
-    startInfo.partyUnits[0] = datUnitCreatePlayer(CHARACTER_HERO);
+    startInfo.partyUnits[0] = datUnitCreatePc(CHARACTER_HERO);
     for (i = 0; i < 4; i++)
     {
         currCharId = datGetPartyId(i);
         if (currCharId != CHARACTER_NONE)
         {
-            startInfo.partyUnits[i + 1] = datUnitCreatePlayer(currCharId);
+            startInfo.partyUnits[i + 1] = datUnitCreatePc(currCharId);
         }
     }
 
-    startInfo.enmUnits = datUnitCreateEnemy(encountId);
+    startInfo.enmUnits = datUnitCreateEc(encountId);
     
     if (encount->fldMajorId == 0 && encount->fldMinorId == 0)
     {

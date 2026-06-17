@@ -4,24 +4,24 @@
 #include "temporary.h"
 
 // FUN_002ff340
-DatUnitPlayer* datUnitCreatePlayer(u16 charId)
+DatUnitPc* datUnitCreatePc(u16 pcId)
 {
-    DatUnitPlayer* unitPlayer;
+    DatUnitPc* pc;
 
-    unitPlayer = RwMalloc(sizeof(DatUnitPlayer), rwMEMHINTDUR_GLOBAL);
-    memset(unitPlayer, 0, sizeof(DatUnitPlayer));
+    pc = RwMalloc(sizeof(DatUnitPc), rwMEMHINTDUR_GLOBAL);
+    memset(pc, 0, sizeof(DatUnitPc));
 
-    unitPlayer->base.genus = UNIT_GENUS_PLAYER;
-    unitPlayer->base.count = 1;
-    unitPlayer->base.unit = datGetUnit(charId);
+    pc->base.genus = UNIT_GENUS_PC;
+    pc->base.count = 1;
+    pc->base.unit = datGetUnit(pcId);
 
-    datUnitInit(unitPlayer->base.unit, UNIT_GENUS_PLAYER, charId);
+    datUnitInit(pc->base.unit, UNIT_GENUS_PC, pcId);
 
-    return unitPlayer;
+    return pc;
 }
 
 // FUN_002ff3e0
-DatUnitEnemy* datUnitCreateEnemy(u16 encountId)
+DatUnitEc* datUnitCreateEc(u16 encountId)
 {
     // TODO
 
@@ -29,22 +29,22 @@ DatUnitEnemy* datUnitCreateEnemy(u16 encountId)
 }
 
 // FUN_002ff660
-DatUnit* datUnitAddEnemy(DatUnitEnemy* enm, u16 id)
+DatUnit* datUnitEcAddEnemy(DatUnitEc* ec, u16 id)
 {
     u16 i;
     DatUnit* curr;
 
-    K_ASSERT(enm->base.genus == UNIT_GENUS_ENEMY, 100);
-    K_ASSERT(enm->base.count < 6, 101);
+    K_ASSERT(ec->base.genus == UNIT_GENUS_EC, 100);
+    K_ASSERT(ec->base.count < 6, 101);
 
     for (i = 0; i < 6; i++)
     {
-        curr = &enm->base.unit[i];
+        curr = &ec->base.unit[i];
 
         if (curr->id == 0)
         {
-            datUnitInit(curr, UNIT_GENUS_ENEMY, id);
-            enm->base.count++;
+            datUnitInit(curr, UNIT_GENUS_EC, id);
+            ec->base.count++;
 
             break;
         }
@@ -56,22 +56,22 @@ DatUnit* datUnitAddEnemy(DatUnitEnemy* enm, u16 id)
 }
 
 // FUN_002ff660
-void datUnitRemoveEnemy(DatUnitEnemy* enm, DatUnit* unit)
+void datUnitEcRemoveEnemy(DatUnitEc* ec, DatUnit* unit)
 {
     u16 i;
     DatUnit* curr;
 
-    K_ASSERT(enm->base.genus == UNIT_GENUS_ENEMY, 134);
-    K_ASSERT(enm->base.count <= 6, 135);
+    K_ASSERT(ec->base.genus == UNIT_GENUS_EC, 134);
+    K_ASSERT(ec->base.count <= 6, 135);
 
     for (i = 0; i < 6; i++)
     {
-        curr = &enm->base.unit[i];
+        curr = &ec->base.unit[i];
 
         if (unit == curr)
         {
             curr->id = 0;
-            enm->base.count--;
+            ec->base.count--;
 
             break;
         }

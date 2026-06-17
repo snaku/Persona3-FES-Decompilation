@@ -595,7 +595,7 @@ void btlActionUpdateStateDead(BtlAction* action)
     unit = action->unit;
     switch (unit->genus)
     {
-        case UNIT_GENUS_PLAYER:
+        case UNIT_GENUS_PC:
             if (!datCalcIsDead(unit->datUnit, 0))
             {
                 unit->flags3 &= ~BTLUNIT_FLAG3_DEAD;
@@ -605,7 +605,7 @@ void btlActionUpdateStateDead(BtlAction* action)
             }
             break;
 
-        case UNIT_GENUS_ENEMY:
+        case UNIT_GENUS_EC:
             if (!(unit->flags3 & BTLUNIT_FLAG3_UNK40))
             {
                 btlActionSetState(action, BTLACTION_STATE_EXIT);
