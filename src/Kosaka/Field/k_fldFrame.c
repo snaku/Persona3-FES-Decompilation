@@ -14,6 +14,7 @@
 
 static RwRGBA sDebugSphereColor = {0, 168, 168, 168};
 
+KwlnTask* K_FldFrame_CreateCollisSphereTask(KwlnTask* parent);
 void K_FldFrame_CollisSphereSetDrawEnabled(KwlnTask* collisSphereTask, u32 drawEnabled);
 
 // FUN_001aaad0
@@ -180,26 +181,26 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         }
 
         i = 0;
-        units = gFldUnits; // regswap (should be a2 instead of a3)
-        for (; i < FLDUNIT_MAX; i++)
+        units = gFldUnitsPc; // regswap (should be a2 instead of a3)
+        for (; i < FLDUNIT_PC_MAX; i++)
         {
             if (units[i].genusBase != NULL &&
-                units[i].unitMdl.mdl == ((ResrcModelChar*)res)->mdl)
+                units[i].mdl == ((ResrcModelChar*)res)->mdl)
             {
-                ctl->charId = gFldUnits[i].charId;
+                ctl->charId = gFldUnitsPc[i].charId;
                 ctl->fldUnit = &units[i];
                 break;
             }
         }
 
         i = 0;
-        units = gEnFldUnits; // regswap (should be a2 instead of a3)
-        for (; i < FLDUNIT_EN_MAX; i++)
+        units = gFldUnitsEc; // regswap (should be a2 instead of a3)
+        for (; i < FLDUNIT_EC_MAX; i++)
         {
             if (units[i].genusBase != NULL &&
-                units[i].unitMdl.mdl == ((ResrcModelChar*)res)->mdl)
+                units[i].mdl == ((ResrcModelChar*)res)->mdl)
             {
-                ctl->charId = gEnFldUnits[i].charId;
+                ctl->charId = gFldUnitsEc[i].charId;
                 ctl->fldUnit = &units[i];
                 break;
             }
@@ -335,16 +336,41 @@ void K_FldFrame_CtlRotate(KwlnTask* collisCtlTask, const RwV3d* axis, f32 angle)
     }
 }
 
-// FUN_001ae3f0
-KwlnTask* K_FldFrame_CreateCollisSphereTask(KwlnTask* parent)
+// FUN_001ae290
+void* K_FldFrame_UpdateCollisSphereTask(KwlnTask* collisSphereTask)
 {
     // TODO
 
-    return NULL;
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001ae3c0
+void K_FldFrame_DestroyCollisSphereTask(KwlnTask* collisSphereTask)
+{
+    RwFree(collisSphereTask->workData);
+}
+
+// FUN_001ae3f0
+KwlnTask* K_FldFrame_CreateCollisSphereTask(KwlnTask* parent)
+{
+    CollisSphereDebug* work;
+
+    work = RwCalloc(1, sizeof(CollisSphereDebug), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    return kwlnTaskCreate(parent,
+                          "collis sphere",
+                          4174,
+                          K_FldFrame_UpdateCollisSphereTask,
+                          K_FldFrame_DestroyCollisSphereTask,
+                          work);
 }
 
 // FUN_001ae470
 void K_FldFrame_CollisSphereSetDrawEnabled(KwlnTask* collisSphereTask, u32 drawEnabled)
 {
-    // TODO
+    ((CollisSphereDebug*)collisSphereTask->workData)->drawEnabled = drawEnabled;
 }
