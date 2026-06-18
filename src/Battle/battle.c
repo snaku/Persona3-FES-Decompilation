@@ -1,13 +1,18 @@
 #include "Battle/battle.h"
 #include "Battle/btlFade.h"
+#include "Kosaka/k_data.h"
+#include "Kosaka/k_misc.h"
 #include "kwln/kwlnTask.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "Script/scrTraceCode.h"
+#include "Script/scrScriptProcess.h"
 #include "admini.h"
+#include "datCalc.h"
 #include "g_data.h"
 #include "g_flags.h"
 #include "temporary.h"
+#include "y_timeLimit.h"
 
 #define BTL_CHAR_RESID_BASE 0x100
 #define BTL_CHAR_RESID_MAX  0x200
@@ -16,6 +21,7 @@ static u64 sUID = 1;                             // 007cc510
 static u16 sCurrCharResId = BTL_CHAR_RESID_BASE; // 007cc518
 
 BtlEncountTable* gEncountTbl; // 007ce4a8
+static u32 sIsDead;           // 007ce3f0
 Battle* gBtl;                 // 007ce3ec. NULL when not in a battle
 
 KwlnTask* BP_Root_CreateTasks(KwlnTask* parent); // temporary here
@@ -221,6 +227,40 @@ u32 btlScrCmd_CALL_BATTLE()
     adminiChangeSeq(ADMINI_SEQ_BATTLE, &startInfo, sizeof(BtlStartInfo), false);
 
     return true;
+}
+
+// FUN_0027d730
+u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
+{
+    if (scrGetIntPara(0) > 10) // ?
+    {
+        if (gBtl != NULL)
+        {
+            sIsDead = false;
+            return false;
+        }
+
+        if (!sIsDead)
+        {
+            if (datCalcIsDead(datGetUnit(CHARACTER_HERO), 0))
+            {
+                datSetFlag(FLG_HERO_DIED, true);
+                Y_TimeLimit_0045a400();
+
+                // TODO: lw a2, %gp_rel(gFldScrSize) before other args
+                scrCreateTaskFromScriptMemory(10, gFldScrMemory, gFldScrSize, FLDSCR_DIED_IN_TARTAROS);
+                K_Misc_CreateScrShutdownTask(scrGetCurrent()->task);
+
+                sIsDead = true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 // FUN_0027d880

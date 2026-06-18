@@ -128,6 +128,7 @@ u64 btlGetUID();
 KwlnTask* btlStart(BtlStartInfo* startInfo);
 void btlStop();
 u32 btlScrCmd_CALL_BATTLE();
+u32 btlScrCmd_CHK_HERO_DIED_TARTAROS();
 KwlnTask* btlGetTask();
 void btl0027d8b0();
 BtlPacket* btlCreateSetFlagsPacket(u32 flags);

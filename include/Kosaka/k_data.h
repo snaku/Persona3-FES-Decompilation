@@ -3,6 +3,8 @@
 
 #include "Utils.h"
 
+#define FLDSCR_DIED_IN_TARTAROS 1
+
 typedef struct Model Model;
 
 // 16 bytes
