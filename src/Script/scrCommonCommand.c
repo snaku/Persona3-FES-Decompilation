@@ -1,7 +1,10 @@
 #include "Script/scrCommonCommand.h"
 #include "Script/scrTraceCode.h"
+#include "Script/scrScriptProcess.h"
+#include "Script/scr.h"
 #include "Kosaka/k_command.h"
 #include "Kosaka/k_assert.h"
+#include "kwln/kwlnTask.h"
 #include "rw/rprandom.h"
 #include "datCalendar.h"
 #include "temporary.h"
@@ -12,6 +15,7 @@ u32 scrCommand_WAIT();
 u32 scrCommand_PUT();
 u32 scrCommand_PUTSTR();
 u32 scrCommand_SWITCH();
+u32 scrCommand_SCR_RUN();
 u32 scrCommand_SQRT();
 
 // 007b92b0
@@ -102,6 +106,55 @@ u32 scrCommand_SWITCH()
     return true;
 }
 
+// FUN_0035b280
+u32 scrCommand_SCR_RUN()
+{
+    s32 prcdIdx;
+    u32 priority;
+    ScrData* scr;
+    ScrContentEntry* entries;
+    KwlnTask* task;
+
+    prcdIdx = scrGetIntPara(0);
+
+    scr = scrGetCurrent();
+    if (scr == NULL)
+    {
+        return true;
+    }
+
+    if (scr->task == NULL)
+    {
+        printf("warning %s %d  ※警告:SCR_RUN()このコマンドはプロセス型スクリプトでのみ有効です。\n", 
+               "scrCommonCommand.c",
+               459);
+    
+        return true;
+    }
+
+    if (prcdIdx < 0 ||
+        prcdIdx >= (entries = scr->entries, entries[SCR_CONTENT_TYPE_PROCEDURE].elementCount))
+    {
+        return true;
+    }
+
+    priority = scr->task->priority + scrGetIntPara(1);
+
+    task = scrCreateTask(priority,
+                         scr->scrHeader,
+                         entries,
+                         scr->proceduresContent,
+                         scr->labelsContent,
+                         scr->instrContent,
+                         scr->msgContentHeader,
+                         scr->stringsContent,
+                         prcdIdx);
+
+    scrSetIntReturnVal((s32)task);
+
+    return true;
+}
+
 // FUN_0035b520
 u32 scrCommand_SQRT()
 {
@@ -110,5 +163,5 @@ u32 scrCommand_SQRT()
     param = scrGetFloatPara(0);
 
     scrSetFloatReturnVal(sqrtf(param));
-    // no return
+    // BUG: no return
 }
