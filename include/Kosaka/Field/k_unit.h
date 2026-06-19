@@ -61,4 +61,8 @@ FldUnit* K_FldUnit_FindFreePc();
 
 FldUnit* K_FldUnit_CreateReaper(u32 unused, const RwV3d* spawnPos);
 
+void K_FldUnit_Destroy(FldUnit* unit);
+void K_FldUnit_DestroyAllPc();
+void K_FldUnit_DestroyAllEc();
+
 #endif

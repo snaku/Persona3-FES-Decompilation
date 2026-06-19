@@ -93,3 +93,31 @@ FldUnit* K_FldUnit_CreateReaper(u32 unused, const RwV3d* spawnPos)
 
     return unit;
 }
+
+// FUN_001d0110
+void K_FldUnit_Destroy(FldUnit* unit)
+{
+    // TODO
+}
+
+// FUN_001d0330
+void K_FldUnit_DestroyAllPc()
+{
+    s32 i;
+
+    for (i = 0; i < FLDUNIT_PC_MAX; i++)
+    {
+        K_FldUnit_Destroy(&gFldUnitsPc[i]);
+    }
+}
+
+// FUN_001d0390
+void K_FldUnit_DestroyAllEc()
+{
+    s32 i;
+
+    for (i = 0; i < FLDUNIT_EC_MAX; i++)
+    {
+        K_FldUnit_Destroy(&gFldUnitsEc[i]);
+    }
+}
