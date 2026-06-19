@@ -1,27 +1,33 @@
-#include "Script/scrTaskHelper.h"
+#include "dds3Process.h"
 
 // FUN_0035ad80.
 // 'unused1' and 'unused2' were probably 'runningDelay' and 'destroyDelay',
 // but instead of using 'kwlnTaskInitEx' they used the normal one for some reason
-KwlnTask* scrTaskInit(const char* name, u32 priority, s32 unused1, s32 unused2, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, ScrData* scr)
+KwlnTask* dds3InitProcess(const char* name,
+                          u32 priority,
+                          s32 unused1,
+                          s32 unused2,
+                          KwlnTaskUpdateFunc update,
+                          KwlnTaskDestroyFunc destroy,
+                          void* workData)
 {
-    return kwlnTaskInit(name, priority, update, destroy, (void*)scr);
+    return kwlnTaskInit(name, priority, update, destroy, workData);
 }
 
 // FUN_0035adb0
-void scrTaskDestroyWithHierarchy(KwlnTask* scrTask, s32 unused)
+void dds3KillProcess(KwlnTask* task, s32 unused)
 {
-    kwlnTaskDestroyWithHierarchy(scrTask);
+    kwlnTaskDestroyWithHierarchy(task);
 }
 
 // FUN_0035ae10
-ScrData* scrTaskGetData(KwlnTask* scrTask)
+void* dds3GetProcessWorkData(KwlnTask* task)
 {
-    return (ScrData*)kwlnTaskGetWorkData(scrTask);
+    return kwlnTaskGetWorkData(task);
 }
 
 // FUN_0035ae30
-void scrTaskSetData(KwlnTask* scrTask, ScrData* scr)
+void dds3SetProcessWorkData(KwlnTask* task, void* workData)
 {
-    kwlnTaskSetWorkData(scrTask, (void*)scr);
+    kwlnTaskSetWorkData(task, workData);
 }

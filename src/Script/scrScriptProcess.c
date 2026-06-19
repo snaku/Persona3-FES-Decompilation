@@ -1,8 +1,8 @@
 #include "Script/scrScriptProcess.h"
-#include "Script/scrTaskHelper.h"
 #include "Script/scrTraceCode.h"
 #include "Kosaka/k_assert.h"
 #include "itfMesManager.h"
+#include "dds3Process.h"
 #include "h_dbprt.h"
 #include "h_malloc.h"
 #include "datScript.h"
@@ -237,13 +237,13 @@ KwlnTask* scrCreateTaskFromHeader(u32 priority, ScrHeader* header, u32 prcdIdx)
     scr = scrStartScript2(header, prcdIdx);
     K_ASSERT(scr != NULL, 666);
 
-    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name,
-                          priority, 
-                          1, 
-                          1,
-                          scrScriptProcess, 
-                          scrDestroyTask, 
-                          scr);
+    scrTask = dds3InitProcess(scr->proceduresContent[scr->prcdIdx].name,
+                              priority, 
+                              1, 
+                              1,
+                              scrScriptProcess, 
+                              scrDestroyTask, 
+                              scr);
     K_ASSERT(scrTask != NULL, 395);
 
     scr->task = scrTask;
@@ -267,13 +267,13 @@ KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scrip
 
     scr->scriptMemory = script;
 
-    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name,
-                          priority, 
-                          1, 
-                          1,
-                          scrScriptProcess, 
-                          scrDestroyTask, 
-                          scr);
+    scrTask = dds3InitProcess(scr->proceduresContent[scr->prcdIdx].name,
+                              priority, 
+                              1, 
+                              1,
+                              scrScriptProcess, 
+                              scrDestroyTask, 
+                              scr);
     K_ASSERT(scrTask != NULL, 395);
 
     scr->task = scrTask;
@@ -299,13 +299,13 @@ KwlnTask* scrCreateTask(u32 priority, ScrHeader* header, ScrContentEntry* entrie
     scr = scrStartScript(header, entries, prcd, labels, instr, msg, strings, prcdIdx);
     K_ASSERT(scr != NULL, 784);
 
-    scrTask = scrTaskInit(scr->proceduresContent[scr->prcdIdx].name,
-                          priority, 
-                          1, 
-                          1,
-                          scrScriptProcess, 
-                          scrDestroyTask, 
-                          scr);
+    scrTask = dds3InitProcess(scr->proceduresContent[scr->prcdIdx].name,
+                              priority,
+                              1,
+                              1,
+                              scrScriptProcess,
+                              scrDestroyTask,
+                              scr);
     K_ASSERT(scrTask != NULL, 395);
 
     scr->task = scrTask;
@@ -390,7 +390,7 @@ void scrAllReleaseScript()
             if (curr->task != NULL)
             {
                 printf("dds3KillProcess\n");
-                scrTaskDestroyWithHierarchy(curr->task, 0);
+                dds3KillProcess(curr->task, 0);
             }
             else
             {
@@ -459,13 +459,13 @@ void scrDestroyTask(KwlnTask* scrTask)
 {
     ScrData* scr;
 
-    scr = scrTaskGetData(scrTask);
+    scr = (ScrData*)dds3GetProcessWorkData(scrTask);
     if (scr != NULL)
     {
         scrReleaseScript(scr);
     }
 
-    scrTaskSetData(scrTask, NULL);
+    dds3SetProcessWorkData(scrTask, NULL);
 }
 
 // FUN_0035c250
@@ -479,7 +479,7 @@ void* scrScriptProcess(KwlnTask* scrTask)
 {
     ScrData* scr;
 
-    scr = scrTaskGetData(scrTask);
+    scr = (ScrData*)dds3GetProcessWorkData(scrTask);
 
     switch (scrTraceCode(scr))
     {
