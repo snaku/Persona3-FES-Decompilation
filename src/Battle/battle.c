@@ -245,6 +245,7 @@ u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
             if (datCalcIsDead(datGetUnit(CHARACTER_HERO), 0))
             {
                 datSetFlag(FLG_HERO_DIED, true);
+
                 Y_TimeLimit_0045a400();
 
                 // TODO: lw a2, %gp_rel(gFldScrSize) before other args
@@ -261,6 +262,14 @@ u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
     }
 
     return false;
+}
+
+// FUN_0027d810
+u32 btlScrCommand_ENCOUNT_FADE()
+{
+    btlFadeCreateTask(1);
+
+    return true;
 }
 
 // FUN_0027d880
