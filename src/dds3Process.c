@@ -20,6 +20,18 @@ void dds3KillProcess(KwlnTask* task, s32 unused)
     kwlnTaskDestroyWithHierarchy(task);
 }
 
+// FUN_0035add0
+u32 dds3ProcessExists(KwlnTask* task)
+{
+    return kwlnTaskExists(task);
+}
+
+// FUN_0035adf0
+u32 dds3GetProcessTimer(KwlnTask* task)
+{
+    return kwlnTaskGetTimer(task);
+}
+
 // FUN_0035ae10
 void* dds3GetProcessWorkData(KwlnTask* task)
 {
