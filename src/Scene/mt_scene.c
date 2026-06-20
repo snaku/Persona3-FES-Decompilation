@@ -1,4 +1,5 @@
 #include "Scene/mt_scene.h"
+#include "Scene/mt_sceneFunc.h"
 #include "Scene/resrcManager.h"
 #include "Kosaka/Field/k_fldrc.h"
 #include "Kosaka/Field/k_fldFrame.h"
@@ -45,6 +46,33 @@ void MT_Scene_Load(s32 fldMajorId, s32 fldMinorId)
     K_Scene_InitNpcLight();
 
     printf("Scene data load...\n");
+}
+
+// FUN_003b5a10
+u32 MT_Scene_TryLoadFinish()
+{
+    if (gMtScene->resManager == NULL)
+    {
+        return true;
+    }
+
+    if (gMtScene->flags & MTSCENE_FLAG_CACHE && 
+        !(gMtScene->flags & (MTSCENE_FLAG_UNK02 | MTSCENE_FLAG_UNK04)))
+    {
+        return true;
+    }
+
+    if (!K_Fldrc_Init())
+    {
+        return false;
+    }
+        
+    if (gMtScene->sceneMngTask == NULL)
+    {
+        gMtScene->sceneMngTask = MT_SceneFunc_CreateTasks();
+    }
+
+    return true;
 }
 
 // FUN_00b5ab0

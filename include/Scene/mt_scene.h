@@ -4,6 +4,8 @@
 #include "Utils.h"
 
 #define MTSCENE_FLAG_CACHE (1 << 0) // 0x01
+#define MTSCENE_FLAG_UNK02 (1 << 1) // 0x02
+#define MTSCENE_FLAG_UNK04 (1 << 2) // 0x04
 
 typedef struct ResrcManager ResrcManager;
 typedef struct Resrc Resrc;
@@ -30,6 +32,7 @@ typedef struct
 extern MtScene* gMtScene;
 
 void MT_Scene_Load(s32 fldMajorId, s32 fldMinorId);
+u32 MT_Scene_TryLoadFinish();
 void MT_Scene_Destroy();
 MtScene* MT_Scene_GetScene();
 
