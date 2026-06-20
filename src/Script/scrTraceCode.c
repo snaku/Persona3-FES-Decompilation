@@ -312,7 +312,7 @@ static u32 CodeFunc_Comm(ScrData* scr)
 
     cmdIdx = scr->instrContent[scr->pc].opOperand16.sOperand;
     K_ASSERT(cmdIdx >= 0, 342);
-    K_ASSERT(cmdIdx < gScrCmdTable.cmdNo, 343);
+    K_ASSERT(cmdIdx < gScrCmdTable.count, 343);
 
     cmdFunc = gScrCmdTable.cmds[cmdIdx].func;
     K_ASSERT(cmdFunc != NULL, 344);
@@ -325,7 +325,7 @@ static u32 CodeFunc_Comm(ScrData* scr)
         return CODEFUNC_YIELD;
     }
 
-    scr->sp -= gScrCmdTable.cmds[cmdIdx].paramNo;
+    scr->sp -= gScrCmdTable.cmds[cmdIdx].paramCount;
 
     if (savedPc == scr->pc)
     {

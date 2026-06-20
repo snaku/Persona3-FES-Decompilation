@@ -8,6 +8,7 @@
 #include "rw/rprandom.h"
 #include "datCalendar.h"
 #include "temporary.h"
+#include "dds3Process.h"
 
 u32 scrCommand_RAND();
 u32 scrCommand_SYNC();
@@ -16,6 +17,8 @@ u32 scrCommand_PUT();
 u32 scrCommand_PUTSTR();
 u32 scrCommand_SWITCH();
 u32 scrCommand_SCR_RUN();
+u32 scrCommand_SCR_KILL();
+u32 scrCommand_SCR_KILL_SYNC();
 u32 scrCommand_SQRT();
 
 // 007b92b0
@@ -26,7 +29,7 @@ ScrCommandTable gScrCmdTable =
         { NULL, 0 },
     },
 
-    // cmdNo
+    // count
     ARRAY_SIZE(gScrCmdTable.cmds)
 };
 
@@ -153,6 +156,33 @@ u32 scrCommand_SCR_RUN()
     scrSetIntReturnVal((s32)task);
 
     return true;
+}
+
+// FUN_0035b390
+u32 scrCommand_SCR_KILL()
+{
+    KwlnTask* task;
+
+    task = (KwlnTask*)scrGetIntPara(0);
+
+    if (!dds3ProcessExists(task))
+    {
+        return true;
+    }
+
+    dds3KillProcess(task, 1);
+
+    return true;
+}
+
+// FUN_0035b400
+u32 scrCommand_SCR_KILL_SYNC()
+{
+    KwlnTask* task;
+
+    task = (KwlnTask*)scrGetIntPara(0);
+
+    return dds3ProcessExists(task) == false;
 }
 
 // FUN_0035b520

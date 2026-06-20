@@ -9,13 +9,14 @@ typedef u32 (*ScrCmdFunc)();
 typedef struct
 {
     ScrCmdFunc func; // 0x00
-    u32 paramNo;     // 0x04
+    u32 paramCount;  // 0x04
 } ScrCommand;
 
+// 4020 bytes
 typedef struct
 {
-    ScrCommand cmds[502];
-    s32 cmdNo;
+    ScrCommand cmds[502]; // 0x00
+    s32 count;            // 0xfb0
 } ScrCommandTable;
 
 extern ScrCommandTable gScrCmdTable;
