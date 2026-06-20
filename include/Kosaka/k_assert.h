@@ -12,6 +12,8 @@
         }                               \
     } while (0)
 
+#define K_ABORT(str, line) K_Abort((str), __FILE__, (line))
+
 void K_Assert(const char* file, s32 line);
 void K_Abort(const char* str, const char* file, s32 line);
 

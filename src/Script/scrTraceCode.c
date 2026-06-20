@@ -128,7 +128,7 @@ static inline s32 PopInt(ScrData* scr)
             return (s32)*f;
     }
 
-    K_Abort("PopInt(..) invalid stack type!!\n", "scrTraceCode.c", 135);
+    K_ABORT("PopInt(..) invalid stack type!!\n", 135);
 
     return 0;
 }
@@ -147,7 +147,7 @@ static inline f32 PopFloat(ScrData* scr)
         case SCR_STACK_TYPE_INTEGER: return (f32)scr->stackValues[sp].iVal;
 
         case SCR_STACK_TYPE_ADDR:
-            K_Abort("PopFloat(..) invalid stack type(RET)!!\n", "scrTraceCode.c", 152);
+            K_ABORT("PopFloat(..) invalid stack type(RET)!!\n", 152);
             return 0.0f;
 
         case SCR_STACK_TYPE_FLOAT: return scr->stackValues[sp].fVal;
@@ -158,7 +158,7 @@ static inline f32 PopFloat(ScrData* scr)
             return *f;
     }
 
-    K_Abort("PopFloat(..) invalid stack type(?)!!\n", "scrTraceCode.c", 161);
+    K_ABORT("PopFloat(..) invalid stack type(?)!!\n", 161);
 
     return 0.0f;
 }
@@ -313,9 +313,7 @@ static u32 CodeFunc_Comm(ScrData* scr)
     cmdIdx = scr->instrContent[scr->pc].opOperand16.sOperand;
     K_ASSERT(cmdIdx >= 0, 342);
     K_ASSERT(cmdIdx < gScrCmdTable.count, 343);
-
-    cmdFunc = gScrCmdTable.cmds[cmdIdx].func;
-    K_ASSERT(cmdFunc != NULL, 344);
+    K_ASSERT((cmdFunc = gScrCmdTable.cmds[cmdIdx].func) != NULL, 344);
 
     savedPc = scr->pc;
     sCurrScript = scr;
@@ -374,7 +372,7 @@ static u32 CodeFunc_Call(ScrData* scr)
 // FUN_0035d2c0
 static u32 CodeFunc_Run(ScrData* scr)
 {
-    K_Abort("CodeFunc_Run(..) Can't running command!!\n", "scrTraceCode.c", 416);
+    K_ABORT("CodeFunc_Run(..) Can't running command!!\n", 416);
 
     scr->pc++;
 
@@ -684,7 +682,7 @@ static u32 CodeFunc_Minus(ScrData* scr)
             break;
 
         case SCR_STACK_TYPE_ADDR:
-            K_Abort("CodeFunc_Minus(..) invalid stack type(RET)!!\n", "scrTraceCode.c", 648); 
+            K_ABORT("CodeFunc_Minus(..) invalid stack type(RET)!!\n", 648); 
             break;
 
         case SCR_STACK_TYPE_FLOAT:
@@ -700,7 +698,7 @@ static u32 CodeFunc_Minus(ScrData* scr)
             *f = -(*f);
             break;
         
-        default: K_Abort("CodeFunc_Minus(..) invalid stack type(?)!!\n", "scrTraceCode.c", 648);
+        default: K_ABORT("CodeFunc_Minus(..) invalid stack type(?)!!\n", 648);
     }
 
     scr->pc++;
@@ -730,11 +728,11 @@ static u32 CodeFunc_Not(ScrData* scr)
             break;
 
         case SCR_STACK_TYPE_ADDR:
-            K_Abort("CodeFunc_Not(..) invalid stack type(RET)!!\n", "scrTraceCode.c", 696);
+            K_ABORT("CodeFunc_Not(..) invalid stack type(RET)!!\n", 696);
             break;
         
         default:
-            K_Abort("CodeFunc_Not(..) invalid stack type(?)!!\n", "scrTraceCode.c", 699);
+            K_ABORT("CodeFunc_Not(..) invalid stack type(?)!!\n", 699);
     }
 
     scr->pc++;
@@ -841,12 +839,12 @@ static u32 CodeFunc_IF(ScrData* scr)
             break;
 
         case SCR_STACK_TYPE_ADDR:
-            K_Abort("CodeFunc_IF(..) invalid stack type(RET)!!\n", "scrTraceCode.c", 818);
+            K_ABORT("CodeFunc_IF(..) invalid stack type(RET)!!\n", 818);
             res = false;
             break;
         
         default:
-            K_Abort("CodeFunc_IF(..) invalid stack type(?)!!\n", "scrTraceCode.c", 822);
+            K_ABORT("CodeFunc_IF(..) invalid stack type(?)!!\n", 822);
             res = false;
     }
 
@@ -928,7 +926,7 @@ s32 scrGetIntPara(s32 paramIdx)
             return (s32)*f;
     }
 
-    K_Abort("scrGetIntPara(..) invalid stack type!!\n", "scrTraceCode.c", 956);
+    K_ABORT("scrGetIntPara(..) invalid stack type!!\n", 956);
 
     return 0;
 }
@@ -954,7 +952,7 @@ f32 scrGetFloatPara(s32 paramIdx)
             return *f;
     }
 
-    K_Abort("scrGetFloatPara(..) invalid stack type!!\n", "scrTraceCode.c", 988);
+    K_ABORT("scrGetFloatPara(..) invalid stack type!!\n", 988);
 
     return 0.0f;
 }
@@ -978,7 +976,7 @@ char* scrGetStrPara(s32 paramIdx)
         case 3:                      // fallthrough
         case SCR_STACK_TYPE_ADDR:    // fallthrough
         default:
-            K_Abort("scrGetStrPara(..) invalid stack type!!\n", "scrTraceCode.c", 1016);
+            K_ABORT("scrGetStrPara(..) invalid stack type!!\n", 1016);
             return NULL;
     }
 }

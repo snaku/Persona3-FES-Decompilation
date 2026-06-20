@@ -39,20 +39,20 @@ ScrData* scrStartScript(ScrHeader* header,
 
     if (header == NULL || entries == NULL || prcd == NULL || instr == NULL)
     {
-        K_Abort("scrStartScript(..) invalid script!!\n", "scrScriptProcess.c", 155);
+        K_ABORT("scrStartScript(..) invalid script!!\n", 155);
         return NULL;
     }
 
     if (prcdIdx < 0 || prcdIdx >= entries[SCR_CONTENT_TYPE_PROCEDURE].elementCount)
     {
-        K_Abort("scrStartScript(..) invalid start procedure!!\n", "scrScriptProcess.c", 159);
+        K_ABORT("scrStartScript(..) invalid start procedure!!\n", 159);
         return NULL;
     }
 
     scr = (ScrData*)H_Malloc(sizeof(ScrData));
     if (scr == NULL)
     {
-        K_Abort("scrStartScript(..) chip memory allock error!\n", "scrScriptProcess.c", 169);
+        K_ABORT("scrStartScript(..) chip memory allock error!\n", 169);
         return NULL;
     }
 
@@ -180,7 +180,7 @@ ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
     if (header->magic[0] != 'F' || header->magic[1] != 'L' ||
         header->magic[2] != 'W' || header->magic[3] != '0')
     {
-        K_Abort("invalid script data!!\n", "scrScriptProcess.c", 280);
+        K_ABORT("invalid script data!!\n", 280);
         return NULL;
     }
 
@@ -213,7 +213,7 @@ ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
                 break;
             
             default: 
-                K_Abort("scrStartScript2(..) Invalid type!!\n", "scrScriptProcess.c", 306);
+                K_ABORT("scrStartScript2(..) Invalid type!!\n", 306);
                 return NULL;
         }
     }
@@ -484,7 +484,7 @@ void* scrScriptProcess(KwlnTask* scrTask)
     switch (scrTraceCode(scr))
     {
         case SCRTRACE_ERROR:
-            K_Abort("scrScriptProcess(..) error script!\n", "scrScriptProcess.c", 1120);
+            K_ABORT("scrScriptProcess(..) error script!\n", 1120);
             return KWLNTASK_STOP;
 
         case SCRTRACE_YIELD:  // fallthrough

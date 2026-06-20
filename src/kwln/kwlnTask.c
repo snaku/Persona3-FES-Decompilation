@@ -44,7 +44,7 @@ void kwlnTaskRemoveFromList(KwlnTask* task)
        (taskState != KWLNTASK_STATE_RUNNING) &&
        (taskState != KWLNTASK_STATE_STAGED))
     {
-        K_Abort("Process stat Invalid!!", "kwlnTask.c", 70);
+        K_ABORT("Process stat Invalid!!", 70);
         return;
     }
 
@@ -106,7 +106,7 @@ void kwlnTaskAddToList(KwlnTask* task)
         case KWLNTASK_STATE_DESTROY: list = sDestroyTaskHead; break;
 
         case KWLNTASK_STATE_NULL: // fallthrough
-        default: K_Abort("Process stat Invalid!!", "kwlnTask.c", 143); return;
+        default: K_ABORT("Process stat Invalid!!", 143); return;
     }
 
     if (list == NULL)
@@ -779,7 +779,7 @@ u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
 
     if (task == NULL || task == (KwlnTask*)0xFFFFFFFF)
     {
-        K_Abort("ProcessID invalid!!\n", "kwlnTask.c", 1181);
+        K_ABORT("ProcessID invalid!!\n", 1181);
         return false;
     }
 
@@ -843,7 +843,7 @@ u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
 
         case KWLNTASK_STATE_NULL: // fallthrough
         default:
-            K_Abort("ProcessID invalid!!\n", "kwlnTask.c", 1204);
+            K_ABORT("ProcessID invalid!!\n", 1204);
             return false;
     }
 
