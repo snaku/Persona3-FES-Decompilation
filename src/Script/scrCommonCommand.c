@@ -19,6 +19,8 @@ u32 scrCommand_SWITCH();
 u32 scrCommand_SCR_RUN();
 u32 scrCommand_SCR_KILL();
 u32 scrCommand_SCR_KILL_SYNC();
+u32 scrCommand_SCR_EXISTS();
+u32 scrCommand_SCR_GET_TIMER();
 u32 scrCommand_SQRT();
 
 // 007b92b0
@@ -183,6 +185,44 @@ u32 scrCommand_SCR_KILL_SYNC()
     task = (KwlnTask*)scrGetIntPara(0);
 
     return dds3ProcessExists(task) == false;
+}
+
+// FUN_0035b440
+u32 scrCommand_SCR_EXISTS()
+{
+    KwlnTask* task;
+
+    task = (KwlnTask*)scrGetIntPara(0);
+
+    if (dds3ProcessExists(task))
+    {
+        scrSetIntReturnVal(true);
+    }
+    else
+    {
+        scrSetIntReturnVal(false);
+    }
+
+    return true;
+}
+
+// FUN_0035b4a0
+u32 scrCommand_SCR_GET_TIMER()
+{
+    KwlnTask* task;
+
+    task = (KwlnTask*)scrGetIntPara(0);
+
+    if (!dds3ProcessExists(task))
+    {
+        scrSetIntReturnVal(false);
+    }
+    else
+    {
+        scrSetIntReturnVal(dds3GetProcessTimer(task));
+    }
+
+    return true;
 }
 
 // FUN_0035b520
