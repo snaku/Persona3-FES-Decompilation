@@ -4,6 +4,46 @@
 #include "Kosaka/Field/k_event.h"
 #include "kwln/kwlnTask.h"
 
+// FUN_001e05b0
+void* K_Pc_UpdatePadTask(KwlnTask* rotatePcTask)
+{
+    // TODO
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001e1200
+void K_Pc_DestroyPadTask(KwlnTask* rotatePcTask)
+{
+    RwFree(rotatePcTask->workData);
+}
+
+// FUN_001e1230
+KwlnTask* K_Pc_CreatePadTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl)
+{
+    KwlnTask* task;
+    PcPadWork* work;
+
+    work = RwCalloc(1, sizeof(PcPadWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(parent,
+                                          10,
+                                          "player pad proc",
+                                          K_Pc_UpdatePadTask,
+                                          K_Pc_DestroyPadTask,
+                                          work);
+
+    work->collisCtlTask = collisCtlTask;
+    work->mdl = mdl;
+    work->rotateTask = K_Pc_CreateRotateTask(task, collisCtlTask, mdl);
+
+    return task;
+}
+
 // FUN_001e13f0
 void* K_Pc_UpdateRotateTask(KwlnTask* rotatePcTask)
 {

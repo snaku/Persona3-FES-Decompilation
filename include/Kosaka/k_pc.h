@@ -7,6 +7,16 @@
 typedef struct KwlnTask KwlnTask;
 typedef struct Model Model;
 
+// 144 bytes
+typedef struct PcPadWork
+{
+    u8 unkData1[0x50];
+    KwlnTask* rotateTask;    // 0x50
+    KwlnTask* collisCtlTask; // 0x54
+    Model* mdl;              // 0x58
+    u8 unkData2[0x34];
+} PcPadWork;
+
 typedef enum
 {
     PCROTATE_STATE_IDLE,
@@ -25,6 +35,8 @@ typedef struct PcRotateWork
     s32 steps;               // 0x58
     s32 maxSteps;            // 0x5c
 } PcRotateWork;
+
+KwlnTask* K_Pc_CreatePadTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl);
 
 KwlnTask* K_Pc_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl);
 
