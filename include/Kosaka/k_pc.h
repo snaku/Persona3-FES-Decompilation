@@ -39,5 +39,6 @@ typedef struct PcRotateWork
 KwlnTask* K_Pc_CreatePadTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl);
 
 KwlnTask* K_Pc_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl);
+u32 K_Pc_IsRotating(KwlnTask* rotatePcTask);
 
 #endif

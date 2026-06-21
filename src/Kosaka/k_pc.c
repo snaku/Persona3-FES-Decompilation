@@ -104,3 +104,9 @@ KwlnTask* K_Pc_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model
 
     return task;
 }
+
+// FUN_001e1820
+u32 K_Pc_IsRotating(KwlnTask* rotatePcTask)
+{
+    return ((PcRotateWork*)rotatePcTask->workData)->state == PCROTATE_STATE_ROTATING;
+}
