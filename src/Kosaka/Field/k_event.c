@@ -341,6 +341,12 @@ KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask)
     return fldEventTask;
 }
 
+// FUN_001cd650
+void K_FldEvent_001cd650(KwlnTask* fldEventTask, u32 param_2)
+{
+    // TODO
+}
+
 // FUN_001cd690
 void* K_FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
 {

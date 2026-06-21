@@ -53,6 +53,7 @@ void K_FldFrame_CtlSetSphereCollisRadius(KwlnTask* collisCtlTask, f32 radius);
 s32 K_FldFrame_CtlGetXGrid(KwlnTask* collisCtlTask);
 s32 K_FldFrame_CtlGetZGrid(KwlnTask* collisCtlTask);
 void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
+void K_FldFrame_CtlUpdateMdlMat(KwlnTask* collisCtlTask, const RwMatrix* mat);
 void K_FldFrame_CtlMoveInDir(f32 dist, KwlnTask* collisCtlTask, const RwV3d* normalizedDir);
 void K_FldFrame_CtlMoveForward(f32 dist, KwlnTask* collisCtlTask);
 void K_FldFrame_CtlRotate(KwlnTask* collisCtlTask, const RwV3d* axis, f32 angle);

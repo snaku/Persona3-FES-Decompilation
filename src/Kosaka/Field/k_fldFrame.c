@@ -269,6 +269,12 @@ void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask)
     *dst = vec;
 }
 
+// FUN_001ad9e0
+void K_FldFrame_CtlUpdateMdlMat(KwlnTask* collisCtlTask, const RwMatrix* mat)
+{
+    // TODO
+}
+
 // FUN_001addf0
 void K_FldFrame_CtlMoveInDir(f32 dist, KwlnTask* collisCtlTask, const RwV3d* normalizedDir)
 {

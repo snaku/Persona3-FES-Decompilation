@@ -46,6 +46,8 @@ u32 K_FldEvent_ArePosWithinDist(const RwV3d* posA, const RwV3d* posB, f32 maxDis
 ResrcModelNpc* K_FldEvent_FindInteractableNpc();
 u32 K_FldEvent_IsUnitHero(const FldUnit* fldUnit);
 u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId);
+
 KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask);
+void K_FldEvent_001cd650(KwlnTask* fldEventTask, u32 param_2);
 
 #endif

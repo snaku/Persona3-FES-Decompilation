@@ -1,10 +1,35 @@
 #include "Kosaka/k_pc.h"
+#include "Kosaka/Field/k_fldFrame.h"
+#include "Kosaka/Field/k_field.h"
+#include "Kosaka/Field/k_event.h"
 #include "kwln/kwlnTask.h"
 
 // FUN_001e13f0
 void* K_Pc_UpdateRotateTask(KwlnTask* rotatePcTask)
 {
-    // TODO
+    static const RwV3d sAxis = { 0.0f, 1.0f, 0.0f }; // 00683da0
+    PcRotateWork* work;
+    RwV3d axis;
+
+    work = (PcRotateWork*)rotatePcTask->workData;
+    axis = sAxis;
+
+    switch (work->state)
+    {
+        case PCROTATE_STATE_IDLE: break;
+
+        case PCROTATE_STATE_ROTATING:
+            work->steps++;
+
+            K_FldFrame_CtlRotate(work->collisCtlTask, &axis, work->angle);
+
+            if (work->steps >= work->maxSteps)
+            {
+                K_FldFrame_CtlUpdateMdlMat(work->collisCtlTask, &work->mat);
+                K_FldEvent_001cd650(K_Field_Get()->eventTask, false);
+                work->state = PCROTATE_STATE_IDLE;
+            }
+    }
 
     return KWLNTASK_CONTINUE;
 }
