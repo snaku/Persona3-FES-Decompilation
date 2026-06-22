@@ -40,5 +40,6 @@ void btlMainUpdateState();
 void btlMainSetStateNon();
 
 void btlMainLoadScene();
+u32 btlMainTryLoadFinishScene();
 
 #endif

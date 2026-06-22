@@ -377,3 +377,9 @@ void btlMainLoadScene()
 {
     MT_Scene_Load(gBtl->fldMajorId, gBtl->fldMinorId);
 }
+
+// FUN_0029e400
+u32 btlMainTryLoadFinishScene()
+{
+    return MT_Scene_TryLoadFinish();
+}
