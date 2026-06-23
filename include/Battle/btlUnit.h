@@ -56,8 +56,10 @@ struct BtlUnit
     RtQuat rot;                   // 0x1c
     f32 scale;                    // 0x2c
     RwRGBA cols[BTLUNIT_COL_MAX]; // 0x30
-    u8 unkData1[0x4c];
-    f32 unk_90;                   // 0x90
+    u8 unkData1[0x3c];
+    RwV3d sphereCenter;           // 0x80
+    f32 unk_8c;                   // 0x8c
+    f32 sphereRadius;             // 0x90
     s32 unk_94;                   // 0x94
     u32 flags2;                   // 0x98. Temp name. See 'BTLUNIT_FLAG2_*'
     u32 flags3;                   // 0x9c. Temp name. See 'BTLUNIT_FLAG3_*'
@@ -199,6 +201,7 @@ void btlUnitSetColor(BtlUnit* unit, RwRGBA col);
 void btlUnitSetFlags(BtlUnit* unit, u16 flags);
 void btlUnitClearFlags(BtlUnit* unit, u16 flags);
 void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4);
+void btlUnitGetSphereWorldCenter(BtlUnit* unit, RwV3d* dst);
 u32 btlUnitIsMoving(BtlUnit* unit);
 void btlUnitStopMoving(BtlUnit* unit);
 void btlUnitStopRotating(BtlUnit* unit);

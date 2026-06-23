@@ -166,6 +166,12 @@ BtlPacket* btlUnitCreatePosRotColPacket(BtlUnit* unit, const RwV3d* pos, const R
     return packet;
 }
 
+// FUN_0027ffb0
+void btlUnitGetSphereWorldCenter(BtlUnit* unit, RwV3d* dst)
+{
+    // TODO
+}
+
 // FUN_00281270
 u32 btlUnitIsMoving(BtlUnit* unit)
 {

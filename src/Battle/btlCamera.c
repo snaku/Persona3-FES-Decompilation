@@ -1,4 +1,8 @@
 #include "Battle/btlCamera.h"
+#include "Battle/battle.h"
+#include "Battle/btlUnit.h"
+#include "kwln/kwln.h"
+#include "datUnit.h"
 
 // FUN_002a38f0
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
@@ -80,4 +84,49 @@ BtlPacket* btlCameraCreateMoveToPacket(BtlAction* action,
     work->endTarget = *endTarget;
 
     return packet;
+}
+
+// FUN_002a4330
+void btlCameraCheckUnitFade()
+{
+    RwFrame* cameraFrame;
+    RwMatrix* cameraMat;
+    BtlUnitList* currUnitList;
+    BtlUnit* currUnit;
+    u16 i;
+    RwV3d sphereCenter;
+    RwV3d diff;
+
+    cameraFrame = (RwFrame*)kwlnGetMainCamera()->object.object.parent;
+    cameraMat = &cameraFrame->modelling;
+
+    // PC and EC
+    for (i = 0; i < UNIT_GENUS_PS; i++)
+    {
+        currUnitList = &gBtl->unitLists[i];
+        currUnit = currUnitList->head;
+
+        while (currUnit != NULL)
+        {
+            if (currUnit->flags3 & BTLUNIT_FLAG3_UNK08)
+            {
+                btlUnitGetSphereWorldCenter(currUnit, &sphereCenter);
+
+                diff.x = cameraMat->pos.x - sphereCenter.x;
+                diff.y = cameraMat->pos.y - sphereCenter.y;
+                diff.z = cameraMat->pos.z - sphereCenter.z;
+
+                if (RwV3dLength(&diff) <= (currUnit->sphereRadius * currUnit->scale) + 200.0f)
+                {
+                    btlUnitSetFlags(currUnit, BTLUNIT_FLAG_FADE);
+                }
+                else
+                {
+                    btlUnitClearFlags(currUnit, BTLUNIT_FLAG_FADE);
+                }
+            }
+
+            currUnit = currUnit->next;
+        }
+    }
 }
