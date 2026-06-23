@@ -7,19 +7,36 @@
 
 typedef struct BtlAction BtlAction;
 
+// 28 bytes
+typedef struct BtlCameraKeyFrame
+{
+    RwV3d pos;  // 0x00
+    RtQuat rot; // 0x0c
+} BtlCameraKeyFrame;
+
 // at least 256 bytes
 typedef struct BtlCamera
 {
-    u8 unkData1[0x9c];
-    RwV3d pos;         // 0x9c
-    RtQuat rot;        // 0xa8
-    f32 fovRad;        // 0xb8
-    u8 unkData2[0x44];
+    s32 unk_00;                     // 0x00
+    BtlCameraKeyFrame keyFrames[4]; // 0x04
+    u16 keyFrameIdx;                // 0x74
+    u8 unkData1[0x26];
+    RwV3d pos;                      // 0x9c
+    RtQuat rot;                     // 0xa8
+    f32 fovRad;                     // 0xb8
+    u8 unkData2[0x14];
+    u16 state;                      // 0xd0
+    u32 flags;                      // 0xd4
+    s32 unk_d8;                     // 0xd8
+    s32 unk_dc;                     // 0xdc
+    BtlAction* action;              // 0xe0
+    u8 unkData3[0x1c];
 } BtlCamera;
 
 typedef enum
 {
     BTLCAMERA_PACKET_SETSTATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_CAMERA, 0),
+    BTLCAMERA_PACKET_MOVETO = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_CAMERA, 1),
 } BtlCameraPacket;
 
 // 8 bytes
@@ -29,6 +46,19 @@ typedef struct BtlCameraPacketSetState
     u16 state;         // 0x04
 } BtlCameraPacketSetState;
 
+// 60 bytes
+typedef struct BtlCameraPacketMoveTo
+{
+    BtlAction* action;     // 0x00
+    RwV3d startPos;        // 0x04
+    RwV3d startTarget;     // 0x10
+    RwV3d endPos;          // 0x1c
+    RwV3d endTarget;       // 0x28
+    f32 duration;          // 0x34
+    u32 currPosAsStart; // 0x38
+} BtlCameraPacketMoveTo;
+
 BtlPacket* btlCameraCreateSetStatePacket(BtlAction* action, u16 state);
+BtlPacket* btlCameraCreateMoveToPacket(BtlAction* action, const RwV3d* startPos, const RwV3d* startTarget, const RwV3d* endPos, const RwV3d* endTarget, f32 duration);
 
 #endif

@@ -35,3 +35,49 @@ BtlPacket* btlCameraCreateSetStatePacket(BtlAction* action, u16 state)
 
     return packet;
 }
+
+// FUN_002a3ba0
+u32 btlCameraUpdateMoveToPacket(void* work)
+{
+    // TODO
+
+    return true;
+}
+
+// FUN_002a3d70
+BtlPacket* btlCameraCreateMoveToPacket(BtlAction* action, 
+                                       const RwV3d* startPos,
+                                       const RwV3d* startTarget,
+                                       const RwV3d* endPos,
+                                       const RwV3d* endTarget,
+                                       f32 duration)
+{
+    BtlPacket* packet;
+    BtlCameraPacketMoveTo* work;
+
+    packet = btlPacketCreate(BTLCAMERA_PACKET_MOVETO, sizeof(BtlCameraPacketMoveTo));
+
+    packet->updateFunc = btlCameraUpdateMoveToPacket;
+
+    work = (BtlCameraPacketMoveTo*)packet->workData;
+
+    work->action = action;
+    work->duration = duration;
+
+    if (startPos != NULL && startTarget != NULL)
+    {
+        work->startPos = *startPos;
+        work->startTarget = *startTarget;
+
+        work->currPosAsStart = false;
+    }
+    else
+    {
+        work->currPosAsStart = true;
+    }
+
+    work->endPos = *endPos;
+    work->endTarget = *endTarget;
+
+    return packet;
+}
