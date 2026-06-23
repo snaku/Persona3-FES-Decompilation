@@ -209,7 +209,7 @@ u32 K_Cmd_RESRC_MDL_ANIM()
             }
             break;
         
-        default: K_Assert("k_command.c", 527);
+        default: K_ASSERT(false, 527);
     }
 
     return true;
@@ -248,7 +248,7 @@ u32 K_Cmd_RESRC_MDL_ANIM_SYNC()
             }
             break;
         
-        default: K_Assert("k_command.c", 577);
+        default: K_ASSERT(false, 577);
     }
 
     return true;
@@ -292,7 +292,7 @@ u32 K_Cmd_RESRC_MODEL_SCALE()
             }
             break;
 
-        default: K_Assert("k_command.c", 623);
+        default: K_ASSERT(false, 623);
     }
 
     return true;
@@ -433,7 +433,7 @@ u32 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
             }
             break;
 
-        default: K_Assert("k_command.c", 1598);
+        default: K_ASSERT(false, 1598);
     }
 
     return true;

@@ -380,7 +380,7 @@ void kwlnTaskDestroy(KwlnTask* task)
         case KWLNTASK_STATE_DESTROY: return;
         case KWLNTASK_STATE_NULL: 
             printf("Process stat Invalid!!\n");
-            K_Assert("kwlnTask.c", 574);
+            K_ASSERT(false, 574);
             break;
 
         case KWLNTASK_STATE_STAGED:  // fallthrough
@@ -820,7 +820,7 @@ u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
                 case KWLNTASK_STATE_NULL:    // fallthrough
                 default: 
                     printf("Process stat Invalid!!\n");
-                    K_Assert("kwlnTask.c", 574);
+                    K_ASSERT(false, 574);
                     break;
             }
 
@@ -870,7 +870,7 @@ u32 kwlnTaskGetState(KwlnTask* task)
     }
 
     printf("Process stat Invalid!!\n");
-    K_Assert("kwlnTask.c", 1286);
+    K_ASSERT(false, 1286);
     return KWLNTASK_STATE_NULL;
 }
 

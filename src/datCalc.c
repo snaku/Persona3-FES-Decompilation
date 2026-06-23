@@ -132,7 +132,7 @@ u8 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
     return (unit->bad & badStatus);
 }
 
-// FUN_00300d80
+// FUN_003005e0
 u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
 {
     // TODO
@@ -261,7 +261,7 @@ u32 datCalcGetHeldWeaponType(DatUnit* unit)
             if (heroWeaponUnkFlag & (1 << 8) || heroWeaponUnkFlag & (1 << 0))
                 return WEAPON_TYPE_2H_SWORD;
 
-            K_Assert("datCalc.c", 4237);
+            K_ASSERT(false, 4237);
         case CHARACTER_YUKARI:            return WEAPON_TYPE_BOW;
         case CHARACTER_AIGIS:             return WEAPON_TYPE_GUN;
         case CHARACTER_MITSURU:           return WEAPON_TYPE_1H_SWORD;
@@ -272,7 +272,7 @@ u32 datCalcGetHeldWeaponType(DatUnit* unit)
         case CHARACTER_SHINJIRO_OR_METIS: return WEAPON_TYPE_AXE;
         case CHARACTER_KOROMARU:          return WEAPON_TYPE_KNIFE;
         default: 
-            K_Assert("datCalc.c", 4259);
+            K_ASSERT(false, 4259);
             break;
     }
 

@@ -74,7 +74,7 @@ u16 datGetPersonaId(u16 characterId)
             return gPlayerPersonaData.personas[gPlayerPersonaData.equippedPersona].id;
         }
 
-        K_Assert("g_data.c", 633);
+        K_ASSERT(false, 633);
     }
 
     return gCharacters[characterId].persona.id;
@@ -232,7 +232,7 @@ u8 datDidCharacterLevelUp(u16 characterId, u32 expGain)
     }
     else 
     {
-        K_Assert("g_data.c", 901);
+        K_ASSERT(false, 901);
     }
 
     level = datGetLevel(characterId);

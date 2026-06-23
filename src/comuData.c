@@ -63,7 +63,7 @@ const char* Day_GetCurrentDayString(u32 month, u32 day)
             dayString = daysStrings[CALENDAR_DAY_SATURDAY];
             break;
         default:
-            K_Assert("comuData.c", 136);
+            K_ASSERT(false, 136);
             dayString = NULL;
     }
 

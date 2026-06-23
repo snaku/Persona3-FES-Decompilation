@@ -111,7 +111,7 @@ void* kwlnRootUpdate3DOn2DDrawBeginTask()
     }
     else
     {
-        K_Assert("kwlnRoot.c", 719);
+        K_ASSERT(false, 719);
         kwlnSetFlags(KWLN_FLAG_ERR, true);
     }
 
