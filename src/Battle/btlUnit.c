@@ -10,14 +10,14 @@ static const f32 gUnk_007cad7c = 0.3f; // 007cad7c. No idea where to put this
 
 RwV3d gUnk_00957188; // 00957188
 
-BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused);
-BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
+BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
+BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused);
 
 // FUN_0027f650
 void btlUnitSetPos(BtlUnit* unit, const RwV3d* pos)
 {
-    unit->pos1 = *pos;
+    unit->pos = *pos;
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 }
 
@@ -52,6 +52,20 @@ void btlUnitSetColor(BtlUnit* unit, RwRGBA col)
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 }
 
+// FUN_0027f770
+void btlUnitSetFlags(BtlUnit* unit, u16 flags)
+{
+    unit->flags |= flags;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+}
+
+// FUN_0027f790
+void btlUnitClearFlags(BtlUnit* unit, u16 flags)
+{
+    unit->flags &= ~flags;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+}
+
 // FUN_0027f7c0
 void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4)
 {
@@ -80,7 +94,7 @@ u32 btlUnitUpdatePosRotColPacket(void* work)
     {
         unit = packet->unit;
 
-        unit->pos1 = packet->pos;
+        unit->pos = packet->pos;
         unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     }
 
@@ -164,7 +178,7 @@ void btlUnitStopMoving(BtlUnit* unit)
     unit->movementFlags &= ~BTLUNIT_MOVEMENTFLAGS_MOVE;
 }
 
-// FUN_00281290
+// FUN_002812b0
 void btlUnitStopRotating(BtlUnit* unit)
 {
     unit->movementFlags &= ~BTLUNIT_MOVEMENTFLAGS_ROTATE;
@@ -471,8 +485,8 @@ BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f
     return packet;
 }
 
-// FUN_00284200
-BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused)
+// FUN_00284600
+BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2)
 {
     // TODO
 
@@ -488,7 +502,7 @@ BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2)
 }
 
 // FUN_00284b70
-BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2)
+BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused)
 {
     // TODO
 
@@ -640,9 +654,9 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
 
     packet = (BtlUnitPacketLookAtDeactivate*)work;
 
-    if (packet->flags & (BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLPLAYER | BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLENEMY))
+    if (packet->flags & (BTLUNIT_LOOKAT_FLAG_ALLPLAYER | BTLUNIT_LOOKAT_FLAG_ALLENEMY))
     {
-        if (packet->flags & BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLPLAYER)
+        if (packet->flags & BTLUNIT_LOOKAT_FLAG_ALLPLAYER)
         {
             btl = gBtl;
             curr = btl->unitLists[UNIT_GENUS_PC].tail;
@@ -655,14 +669,14 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
                     mdlLookAtSetMaxAngles(curr->mdl, 70.0f, 75.0f);
                     mdlLookAtDisableTarget(curr->mdl);
 
-                    curr->lookAtMode = 0;
+                    curr->lookAtMode = BTLUNIT_LOOKAT_MODE_NONE;
                 }
 
                 curr = curr->prev;
             }
         }
 
-        if (packet->flags & BTLUNIT_LOOKATDEACTIVATE_FLAG_ALLENEMY)
+        if (packet->flags & BTLUNIT_LOOKAT_FLAG_ALLENEMY)
         {
             btl = gBtl;
             curr = btl->unitLists[UNIT_GENUS_EC].tail;
@@ -675,7 +689,7 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
                     mdlLookAtSetMaxAngles(curr->mdl, 70.0f, 75.0f);
                     mdlLookAtDisableTarget(curr->mdl);
 
-                    curr->lookAtMode = 0;
+                    curr->lookAtMode = BTLUNIT_LOOKAT_MODE_NONE;
                 }
 
                 curr = curr->prev;
@@ -691,7 +705,7 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
             mdlLookAtSetMaxAngles(unit->mdl, 70.0f, 75.0f);
             mdlLookAtDisableTarget(unit->mdl);
 
-            unit->lookAtMode = 0;
+            unit->lookAtMode = BTLUNIT_LOOKAT_MODE_NONE;
         }
     }
 
