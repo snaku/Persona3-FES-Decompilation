@@ -5,6 +5,9 @@
 #include "Battle/btlPacket.h"
 #include "rw/rtquat.h"
 
+#define BTLCAMERA_FLAG_LOCK  (1 << 0) // 0x01
+#define BTLCAMERA_FLAG_UNK02 (1 << 1) // 0x02
+
 typedef struct BtlAction BtlAction;
 
 // 28 bytes
@@ -27,11 +30,21 @@ typedef struct BtlCamera
     u8 unkData2[0x14];
     u16 state;                      // 0xd0
     u32 flags;                      // 0xd4
-    s32 unk_d8;                     // 0xd8
-    s32 unk_dc;                     // 0xdc
+    s32 updateCounter;              // 0xd8
+    s32 framesUntilUpdate;          // 0xdc
     BtlAction* action;              // 0xe0
     u8 unkData3[0x1c];
 } BtlCamera;
+
+// 20 bytes
+typedef struct BtlCameraStateEntry
+{
+    void (*init)(BtlCamera* camera);   // 0x00
+    void (*update)(BtlCamera* camera); // 0x04
+    u32 unk_08;                        // 0x08
+    u32 unk_0c;                        // 0x0c
+    const char* name;                  // 0x10
+} BtlCameraStateEntry;
 
 typedef enum
 {
@@ -57,6 +70,8 @@ typedef struct BtlCameraPacketMoveTo
     f32 duration;          // 0x34
     u32 currPosAsStart; // 0x38
 } BtlCameraPacketMoveTo;
+
+void btlCameraMain();
 
 BtlPacket* btlCameraCreateSetStatePacket(BtlAction* action, u16 state);
 BtlPacket* btlCameraCreateMoveToPacket(BtlAction* action, const RwV3d* startPos, const RwV3d* startTarget, const RwV3d* endPos, const RwV3d* endTarget, f32 duration);

@@ -17,8 +17,7 @@
 #define LOAD_IOP_MODULE(fileName, args, argp)                   \
     do                                                          \
     {                                                           \
-    } while (sceSifLoadModule((fileName), (args), (argp)) < 0); \
-    
+    } while (sceSifLoadModule((fileName), (args), (argp)) < 0);
 
 static RwRGBA sClearColor;         // 007ce128
 static u32 sFlags;                 // 007ce120
@@ -43,10 +42,11 @@ static RpWorld* sWorlds[2];        // 007ce0a0. Only the first index is used
 static u64 sT0Count64;             // 007ce098
 
 // a lot of them are probably temporary here
-const f32 g18deg = 3.14159274 / 10;              // 007caf00
-const f32 gRadToDegFactor = 180.0f / 3.14159274; // 007caea8
-const f32 gPI = 3.14159274;                      // 007cae58
-const f32 gAspectRatio = 4.0f / 3.0f;            // 007cad1c
+const f32 g18deg = 3.14159274 / 10;               // 007caf00
+const f32 gRadToDegFactor = 180.0f / 3.14159274;  // 007caea8
+const f32 gPI = 3.14159274;                       // 007cae58
+const f32 gRadToDegFactor2 = 180.0f / 3.14159274; // 007cadc0
+const f32 gAspectRatio = 4.0f / 3.0f;             // 007cad1c
 
 u32 sPushedRenderStates[KWLN_COMMON_RENDERSTATES]; // 00847eb0
 
@@ -110,7 +110,7 @@ void kwlnInitPS2Systems()
     DPUT_T0_COUNT(0);
     DPUT_T0_COMP(0);
     DPUT_T0_HOLD(0);
-    DPUT_T0_MODE((1 << T_MODE_CLKS_O) | (1 << T_MODE_CUE_O) | (1 << T_MODE_OVFE_O)); //001a0420
+    DPUT_T0_MODE((1 << T_MODE_CLKS_O) | (1 << T_MODE_CUE_O) | (1 << T_MODE_OVFE_O));
     DPUT_T1_COUNT(0);
 
     EnableIntc(INTC_TIM0);

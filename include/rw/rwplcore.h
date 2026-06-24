@@ -71,6 +71,19 @@ typedef struct RwV3d
     RwReal z; // 0x08
 } RwV3d;
 
+#define RwV3dScale(o, a, s)      \
+    do                                \
+    {                                 \
+        (o)->x = (((a)->x) * ( (s))); \
+        (o)->y = (((a)->y) * ( (s))); \
+        (o)->z = (((a)->z) * ( (s))); \
+    } while (0)
+
+#define RwV3dDotProductMacro(a, b)  \
+    ((((((((a)->x) * ((b)->x)))   + \
+        ((((a)->y) * ((b)->y))))) + \
+        ((((a)->z) * ((b)->z)))))
+
 // 16 bytes
 typedef struct RwV4dTag
 {
@@ -434,6 +447,7 @@ RwMatrix* RwMatrixTranslate(RwMatrix* matrix, const RwV3d* translation, RwOpComb
 RwReal RwV3dNormalize(RwV3d* out, const RwV3d* in);
 RwReal RwV3dLength(const RwV3d* in);
 RwReal RwV2dLength(const RwV2d* in);
+RwReal RwV2dNormalize(RwV2d* out, const RwV2d* in);
 RwV3d* RwV3dTransformPoint(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix* matrix);
 
 RwUInt32 RwEngineGetVersion();

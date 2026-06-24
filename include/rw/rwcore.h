@@ -233,6 +233,9 @@ RwImage* RwImageRead(const RwChar* imageName);
 RwRaster* RwRasterCreate(RwInt32 width, RwInt32 height, RwInt32 depth, RwInt32 flags);;
 RwRaster* RwRasterSetFromImage(RwRaster* raster, RwImage* image);
 
+RwFrame* RwFrameTransform(RwFrame* frame, const RwMatrix* m, RwOpCombineType combine);
+RwMatrix* RwFrameGetLTM(RwFrame* frame);
+
 RwCamera* RwCameraBeginUpdate(RwCamera* camera);
 RwCamera* RwCameraEndUpdate(RwCamera* camera);
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode);

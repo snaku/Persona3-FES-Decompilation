@@ -1,8 +1,23 @@
 #include "Battle/btlCamera.h"
 #include "Battle/battle.h"
 #include "Battle/btlUnit.h"
+#include "Battle/btlBoss.h"
+#include "Kosaka/k_view.h"
 #include "kwln/kwln.h"
 #include "datUnit.h"
+
+// 006939f0
+static const BtlCameraStateEntry sCameraStateEntries[] =
+{
+    // TODO
+    {NULL, NULL, 0, 0, "NOP"},
+};
+
+// FUN_002a31b0
+void btlCameraUpdate(BtlCamera* camera)
+{
+    // TODO
+}
 
 // FUN_002a38f0
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
@@ -128,5 +143,52 @@ void btlCameraCheckUnitFade()
 
             currUnit = currUnit->next;
         }
+    }
+}
+
+// FUN_002a46e0
+void btlCameraMain()
+{
+    const BtlCameraStateEntry* entry;
+    u16 state;
+    RwMatrix mat;
+
+    if (!(gBtl->camera.flags & BTLCAMERA_FLAG_LOCK))
+    {
+        if (gBtl->camera.framesUntilUpdate <= 0)
+        {
+            state = gBtl->camera.state;
+            entry = btlBossGetCameraStateEntry(state);
+            if (entry == NULL)
+            {
+                entry = &sCameraStateEntries[state];
+            }
+
+            if (entry->update != NULL)
+            {
+                entry->update(&gBtl->camera);
+            }
+
+            btlCameraUpdate(&gBtl->camera);
+
+            gBtl->camera.updateCounter++;
+        }
+        else
+        {
+            gBtl->camera.framesUntilUpdate--;
+        }
+
+        RtQuatConvertToMatrix(&gBtl->camera.rot, &mat);
+        mat.pos = gBtl->camera.pos;
+
+        RwFrameTransform((RwFrame*)kwlnGetMainCamera()->object.object.parent,
+                         &mat,
+                         rwCOMBINEREPLACE);
+        K_View_SetFov(kwlnGetMainCamera(), gRadToDegFactor2 * gBtl->camera.fovRad);
+    }
+
+    if (gBtl->camera.flags & BTLCAMERA_FLAG_UNK02)
+    {
+        btlCameraCheckUnitFade();
     }
 }
