@@ -4,6 +4,7 @@
 #include "Battle/btlBoss.h"
 #include "Kosaka/k_view.h"
 #include "kwln/kwln.h"
+#include "Primitive/primitive.h"
 #include "datUnit.h"
 
 // 006939f0
@@ -190,6 +191,29 @@ void btlCameraMain()
     if (gBtl->camera.flags & BTLCAMERA_FLAG_UNK02)
     {
         btlCameraCheckUnitFade();
+    }
+}
+
+// FUN_002a48f0
+void btlCameraDebugDraw()
+{
+    RwMatrix axisMat;
+    RwRGBA quadCol;
+
+    if (!(gBtl->flags & BTL_FLAG_UNK04) &&
+        !(gBtl->flags2 & BTL_FLAG2_UNK04) &&
+         (gBtl->flags2 & BTL_FLAG2_UNK08))
+    {
+        quadCol.r = 255;
+        quadCol.g = 255;
+        quadCol.b = 0;
+        quadCol.a = 255;
+
+        RtQuatConvertToMatrix(&gBtl->camera.rot, &axisMat);
+        axisMat.pos = gBtl->camera.pos;
+
+        primQuad3D(&gBtl->camera.pos, &quadCol, 6.0f, true);
+        primAxisLine3D(&axisMat, 150.0f, true);
     }
 }
 

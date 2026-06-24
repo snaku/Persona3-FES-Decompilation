@@ -8,11 +8,15 @@
 #include "rw/rwplcore.h"
 #include "datUnit.h"
 
-#define BTL_FLAG_ACTIVE      (1 << 0)  // 0x01. Currently in a battle. Destroy 'battle' task if not set
-#define BTL_FLAG_UNK40       (1 << 6)  // 0x40
-#define BTL_FLAG_UNK8000     (1 << 15) // 0x8000
-#define BTL_FLAG_MULTI_ENEMY (1 << 16) // 0x10000. More than one enemy in the battle
-#define BTL_FLAG_EXIT        (1 << 27) // 0x8000000
+#define BTL_FLAG_ACTIVE     (1 << 0)  // 0x01. Currently in a battle. Destroy 'battle' task if not set
+#define BTL_FLAG_UNK04      (1 << 2)  // 0x04
+#define BTL_FLAG_UNK40      (1 << 6)  // 0x40
+#define BTL_FLAG_UNK8000    (1 << 15) // 0x8000
+#define BTL_FLAG_MULTIENEMY (1 << 16) // 0x10000. More than one enemy in the battle
+#define BTL_FLAG_EXIT       (1 << 27) // 0x8000000
+
+#define BTL_FLAG2_UNK04 (1 << 2) // 0x04
+#define BTL_FLAG2_UNK08 (1 << 3) // 0x08
 
 #define BTL_UIDMAX  0x3FFFFFFFFFFFFFFF
 
@@ -60,7 +64,9 @@ typedef struct Battle
 {
     u8 unkData1[0x0c];
     u32 flags;                                     // 0x0c
-    u8 unkData2[0x10];
+    s32 unk_10;                                    // 0x10
+    u32 flags2;                                    // 0x14
+    u8 unkData2[0x08];
     BtlCamera camera;                              // 0x20
     u8 unkData3[0x28];
     BtlActionList actionList;                      // 0x148

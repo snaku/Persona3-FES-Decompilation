@@ -43,6 +43,12 @@ static const RwV3d sSphereRotAxis = {1.0f, 0.0f, 0.0f}; // 0069cec8
 
 // TODO: maybe 'pushRenderStates' and 'popRenderStates' inline functions
 
+// FUN_00358a30
+void primQuad3D(const RwV3d* pos, const RwRGBA* col, f32 size, u32 saveAndRestoreRenderState)
+{
+    // TODO
+}
+
 // FUN_00359110
 void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {

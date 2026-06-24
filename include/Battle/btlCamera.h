@@ -72,6 +72,7 @@ typedef struct BtlCameraPacketMoveTo
 } BtlCameraPacketMoveTo;
 
 void btlCameraMain();
+void btlCameraDebugDraw();
 void btlCameraFreeze();
 
 BtlPacket* btlCameraCreateSetStatePacket(BtlAction* action, u16 state);
