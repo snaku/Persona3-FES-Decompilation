@@ -5,8 +5,8 @@
 #include "Battle/btlPacket.h"
 #include "rw/rtquat.h"
 
-#define BTLCAMERA_FLAG_LOCK  (1 << 0) // 0x01
-#define BTLCAMERA_FLAG_UNK02 (1 << 1) // 0x02
+#define BTLCAMERA_FLAG_FREEZE (1 << 0) // 0x01
+#define BTLCAMERA_FLAG_UNK02  (1 << 1) // 0x02
 
 typedef struct BtlAction BtlAction;
 
@@ -72,6 +72,7 @@ typedef struct BtlCameraPacketMoveTo
 } BtlCameraPacketMoveTo;
 
 void btlCameraMain();
+void btlCameraFreeze();
 
 BtlPacket* btlCameraCreateSetStatePacket(BtlAction* action, u16 state);
 BtlPacket* btlCameraCreateMoveToPacket(BtlAction* action, const RwV3d* startPos, const RwV3d* startTarget, const RwV3d* endPos, const RwV3d* endTarget, f32 duration);

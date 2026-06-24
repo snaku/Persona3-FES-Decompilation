@@ -153,7 +153,7 @@ void btlCameraMain()
     u16 state;
     RwMatrix mat;
 
-    if (!(gBtl->camera.flags & BTLCAMERA_FLAG_LOCK))
+    if (!(gBtl->camera.flags & BTLCAMERA_FLAG_FREEZE))
     {
         if (gBtl->camera.framesUntilUpdate <= 0)
         {
@@ -191,4 +191,10 @@ void btlCameraMain()
     {
         btlCameraCheckUnitFade();
     }
+}
+
+// FUN_002a4c50
+void btlCameraFreeze()
+{
+    gBtl->camera.flags |= BTLCAMERA_FLAG_FREEZE;
 }
