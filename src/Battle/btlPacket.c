@@ -113,3 +113,26 @@ u64 btlPacketRegister(BtlPacket* packet, u8 type)
 
     return 0;
 }
+
+// FUN_0027ee00
+void btlPacketUpdate(BtlPacket* packet)
+{
+    // TODO
+}
+
+// FUN_0027f160
+void btlPacketUpdateList(u8 type)
+{
+    BtlPacket* curr;
+    BtlPacket* next;
+
+    curr = gBtl->packetLists[type].head;
+    while (curr != NULL)
+    {
+        next = curr->next;
+
+        btlPacketUpdate(curr);
+
+        curr = next;
+    }
+}

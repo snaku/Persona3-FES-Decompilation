@@ -59,5 +59,6 @@ u32 btlPacketCountById(u16 id);
 void btlPacket0027e4d0();
 BtlPacket* btlPacketCreate(u32 id, u32 workDataSize);
 u64 btlPacketRegister(BtlPacket* packet, u8 type);
+void btlPacketUpdateList(u8 type);
 
 #endif
