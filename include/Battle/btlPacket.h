@@ -12,6 +12,8 @@ typedef enum
     BTLPACKET_MODULE_UNIT,
     BTLPACKET_MODULE_CAMERA,
     BTLPACKET_MODULE_SOUND = 9,
+    BTLPACKET_MODULE_VOICE,
+    BTLPACKET_MODULE_FORMATION,
     BTLPACKET_MODULE_BATTLE = 255
 } BtlPacketModule;
 
@@ -31,7 +33,9 @@ typedef struct BtlPacket BtlPacket;
 // 144 bytes. Base struct for a packet
 struct BtlPacket
 {
-    u8 unkData1[0x40];
+    u8 unk_00;                       // 0x00
+    u64 parentUID;                   // 0x08
+    u8 unkData1[0x30];
     u32 id;                          // 0x40. See macro 'BTLPACKET_MAKE_ID' and enum 'BtlPacketModule'
     s8 type;                         // 0x44. See enum 'BtlPacketType'
     s8 unk_45;                       // 0x45

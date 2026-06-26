@@ -29,6 +29,7 @@ extern u32 gCurrWorldIdx;
 extern const f32 g18deg;
 extern const f32 gRadToDegFactor;
 extern const f32 gPI;
+extern const f32 gUnk_007cadd0;
 extern const f32 gRadToDegFactor2;
 extern const f32 gAspectRatio;
 

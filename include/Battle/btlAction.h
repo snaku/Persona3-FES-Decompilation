@@ -63,7 +63,7 @@ struct BtlAction
     u32 stateTimer;          // 0x1c
     u32 unk_20;              // 0x20
     s32 idleWeaponAnimTimer; // 0x24
-    s32 unk_28;              // 0x28
+    u8 unk_28;               // 0x28
     s32 unk_2c;              // 0x2c
     BtlUnit* unit;           // 0x30
     s16 unk_34;              // 0x34
@@ -73,7 +73,7 @@ struct BtlAction
     union
     {
         u32 movedAwayFromHome;  // 0x484
-        u32 passiveSkillsFlags; // 0x484
+        u32 passiveSkillsFlags; // 0x484. See 'PASSIVESKILL_FLAG_*'
     };
     u8 unkData4[0x14];
     u16 stateAfterEvt;       // 0x49c
@@ -84,6 +84,7 @@ struct BtlAction
 };
 
 u32 btlActionIdleWeaponAnim(BtlAction* action);
+void btlAction0028a780(BtlAction* action);
 BtlAction* btlActionCreate();
 void btlActionSetState(BtlAction* action, u16 state);
 void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);

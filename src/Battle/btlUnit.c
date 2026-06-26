@@ -388,6 +388,14 @@ BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags)
     return packet;
 }
 
+// FUN_00282650
+BtlPacket* btlUnit00282650(BtlUnit* unit, BtlUnit* unit2, u32 flags)
+{
+    // TODO
+
+    return NULL;
+}
+
 // FUN_00282c60
 u32 btlUnit00282c60(BtlUnit* unit)
 {
@@ -509,6 +517,14 @@ BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2)
 
 // FUN_00284b70
 BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused)
+{
+    // TODO
+
+    return NULL;
+}
+
+// FUN_00286320
+BtlPacket* btlUnit00286320(BtlUnit* unit)
 {
     // TODO
 

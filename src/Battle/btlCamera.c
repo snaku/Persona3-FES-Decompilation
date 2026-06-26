@@ -11,7 +11,8 @@
 static const BtlCameraStateEntry sCameraStateEntries[] =
 {
     // TODO
-    {NULL, NULL, 0, 0, "NOP"},
+    {NULL, NULL, false, 0, NULL}, // BTLCAMERA_STATE_NULL
+    {NULL, NULL, true, 0, "NOP"}, // BTLCAMERA_STATE_NOP
 };
 
 // FUN_002a31b0

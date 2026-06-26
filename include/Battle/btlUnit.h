@@ -50,7 +50,7 @@ typedef struct BtlUnit BtlUnit;
 // 2616 bytes
 struct BtlUnit
 {
-    u16 flags;                    // 0x00
+    u16 flags;                    // 0x00. See 'BTLUNIT_FLAG_*'
     RwV3d pos;                    // 0x04
     RwV3d posOffset;              // 0x10
     RtQuat rot;                   // 0x1c
@@ -215,6 +215,8 @@ BtlUnit* btlUnitFindFromId(u16 id);
 BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode);
 BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 speed, u32 flags);
 BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags);
+BtlPacket* btlUnit00282650(BtlUnit* unit, BtlUnit* unit2, u32 flags);
+BtlPacket* btlUnit00286320(BtlUnit* unit);
 BtlPacket* btlUnitCreateLookAtPacket(BtlUnit* unit, const RwV3d* targetPos, u16 flags);
 BtlPacket* btlUnitCreateLookAtUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u16 flags);
 BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags);

@@ -4,7 +4,10 @@
 #include "Battle/btlOrder.h"
 #include "Battle/btlUnit.h"
 #include "Battle/btlPacket.h"
+#include "Battle/btlFormation.h"
+#include "Battle/btlVoice.h"
 #include "Effect/effMisc.h"
+#include "kwln/kwln.h"
 #include "datCalc.h"
 #include "temporary.h"
 
@@ -187,6 +190,12 @@ u32 btlActionIdleWeaponAnim(BtlAction* action)
     return false;
 }
 
+// FUN_0028a780
+void btlAction0028a780(BtlAction* action)
+{
+    // TODO
+}
+
 // FUN_0028a990
 void btlActionInitStateNon(BtlAction* action)
 {
@@ -247,7 +256,85 @@ void btlActionUpdateStateStartHome(BtlAction* action)
 // FUN_0028ba50
 void btlActionInitStateChangeFormation(BtlAction* action)
 {
-    // TODO
+    BtlPacket* formPacket1;
+    BtlPacket* voicePacket;
+    BtlUnit* currUnit;
+    u32 hasBadStatus;
+    BtlPacket* unitMovePacket;
+    BtlPacket* formPacket2;
+    BtlPacket* unitPacket1;
+    BtlPacket* unitPacket2;
+    BtlPacket* cameraStatePacket;
+
+    btlAction0028a780(action);
+
+    formPacket1 = btlFormation002b8f40(1);
+    formPacket1->actionUID = action->uid;
+    btlPacketRegister(formPacket1, BTLPACKET_TYPE_0);
+
+    if (!action->unk_28)
+    {
+        voicePacket = btlVoice002e2be0(action, 23, 0, 0, 0);
+        btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+    }
+
+    currUnit = gBtl->unitLists[UNIT_GENUS_PC].head;
+    while (currUnit != NULL)
+    {
+        hasBadStatus = datCalcChkBadStatus(currUnit->datUnit, (UNIT_BADSTATUS_DOWN     |
+                                                               UNIT_BADSTATUS_DEAD     |
+                                                               UNIT_BADSTATUS_OVERHEAT |
+                                                               UNIT_BADSTATUS_SHOCK    |
+                                                               UNIT_BADSTATUS_FREEZE   |
+                                                               UNIT_BADSTATUS_RAGE     |
+                                                               UNIT_BADSTATUS_CHARM));
+
+        if (!hasBadStatus && !datCalcIsDead(currUnit->datUnit, 0))
+        {
+            unitMovePacket = btlUnitCreateMovePacket(currUnit, NULL, gUnk_007cadd0, 0x18);
+            unitMovePacket->unk_00 = 4;
+            unitMovePacket->parentUID = formPacket1->uid;
+            unitMovePacket->actionUID = action->uid;
+            btlPacketRegister(unitMovePacket, BTLPACKET_TYPE_1);
+        }
+
+        currUnit = currUnit->next;
+    }
+
+    formPacket2 = btlFormation002b8d60(2, 1);
+    formPacket2->unk_00 = 4;
+    formPacket2->parentUID = formPacket1->uid;
+    formPacket2->actionUID = action->uid;
+    btlPacketRegister(formPacket2, BTLPACKET_TYPE_0);
+    
+    currUnit = gBtl->unitLists[UNIT_GENUS_EC].head;
+    while (currUnit != NULL)
+    {
+        if (datCalcIsDead(currUnit->datUnit, 0))
+        {
+            unitPacket1 = btlUnit00286320(currUnit);
+            unitPacket1->unk_00 = 4;
+            unitPacket1->parentUID = formPacket1->uid;
+            unitPacket1->actionUID = action->uid;
+            btlPacketRegister(unitPacket1, BTLPACKET_TYPE_0);
+        }
+        else
+        {
+            unitPacket2 = btlUnit00282650(currUnit, action->unit, 0x22);
+            unitPacket2->unk_00 = 4;
+            unitPacket2->parentUID = formPacket1->uid;
+            unitPacket2->actionUID = action->uid;
+            btlPacketRegister(unitPacket2, BTLPACKET_TYPE_0);
+        }
+
+        currUnit = currUnit->next;
+    }
+
+    cameraStatePacket = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_CHANGEFORM);
+    cameraStatePacket->unk_00 = 4;
+    cameraStatePacket->parentUID = formPacket1->uid;
+    cameraStatePacket->actionUID = action->uid;
+    btlPacketRegister(cameraStatePacket, BTLPACKET_TYPE_0);
 }
 // FUN_0028bca0
 void btlActionUpdateStateChangeFormation(BtlAction* action)
@@ -577,7 +664,6 @@ void btlActionUpdateStateEndHome(BtlAction* action)
 
             rotPacket = btlUnitCreateRotatePacket(action->unit, &rot, 0);
             rotPacket->actionUID = action->uid;
-
             btlPacketRegister(rotPacket, BTLPACKET_TYPE_1);
         }
 

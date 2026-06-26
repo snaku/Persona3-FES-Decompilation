@@ -45,6 +45,7 @@ static u64 sT0Count64;             // 007ce098
 const f32 g18deg = 3.14159274 / 10;               // 007caf00
 const f32 gRadToDegFactor = 180.0f / 3.14159274;  // 007caea8
 const f32 gPI = 3.14159274;                       // 007cae58
+const f32 gUnk_007cadd0 = 0.7f;                   // 007cadd0. 0.69999999f
 const f32 gRadToDegFactor2 = 180.0f / 3.14159274; // 007cadc0
 const f32 gAspectRatio = 4.0f / 3.0f;             // 007cad1c
 
