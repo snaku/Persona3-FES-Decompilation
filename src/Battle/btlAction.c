@@ -541,7 +541,10 @@ void btlActionInitStatePacket(BtlAction* action)
 // FUN_00299100
 void btlActionUpdateStatePacket(BtlAction* action)
 {
-    // TODO
+    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) == NULL)
+    {
+        btlActionSetState(action, BTLACTION_STATE_END);
+    }
 }
 
 // FUN_00299170
