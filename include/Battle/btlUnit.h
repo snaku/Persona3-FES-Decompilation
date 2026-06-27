@@ -97,6 +97,7 @@ typedef enum
     BTLUNIT_PACKET_MOVE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 10),
     BTLUNIT_PACKET_MOVETOUNIT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 11),
     BTLUNIT_PACKET_ROTATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 13),
+    BTLUNIT_PACKET_ROTATETOWARDUNIT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 14),
     BTLUNIT_PACKET_LOOKAT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 23),
     BTLUNIT_PACKET_LOOKATUNIT = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 24),
     BTLUNIT_PACKET_LOOKATDEACTIVATE = BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 25),
@@ -158,6 +159,15 @@ typedef struct BtlUnitPacketRotate
     u32 timer;     // 0x14
 } BtlUnitPacketRotate;
 
+// 16 bytes
+typedef struct BtlUnitPacketRotateTowardUnit
+{
+    BtlUnit* unit;       // 0x00
+    BtlUnit* targetUnit; // 0x04
+    u32 flags;           // 0x08
+    u32 timer;           // 0x0c
+} BtlUnitPacketRotateTowardUnit;
+
 // 20 bytes
 typedef struct BtlUnitPacketLookAt
 {
@@ -215,7 +225,7 @@ BtlUnit* btlUnitFindFromId(u16 id);
 BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode);
 BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 speed, u32 flags);
 BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags);
-BtlPacket* btlUnit00282650(BtlUnit* unit, BtlUnit* unit2, u32 flags);
+BtlPacket* btlUnitCreateRotateTowardUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u32 flags);
 BtlPacket* btlUnit00286320(BtlUnit* unit);
 BtlPacket* btlUnitCreateLookAtPacket(BtlUnit* unit, const RwV3d* targetPos, u16 flags);
 BtlPacket* btlUnitCreateLookAtUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u16 flags);

@@ -263,7 +263,7 @@ void btlActionInitStateChangeFormation(BtlAction* action)
     BtlPacket* unitMovePacket;
     BtlPacket* formPacket2;
     BtlPacket* unitPacket1;
-    BtlPacket* unitPacket2;
+    BtlPacket* rotateTowardUnitPacket;
     BtlPacket* cameraStatePacket;
 
     btlAction0028a780(action);
@@ -320,11 +320,11 @@ void btlActionInitStateChangeFormation(BtlAction* action)
         }
         else
         {
-            unitPacket2 = btlUnit00282650(currUnit, action->unit, 0x22);
-            unitPacket2->unk_00 = 4;
-            unitPacket2->parentUID = formPacket1->uid;
-            unitPacket2->actionUID = action->uid;
-            btlPacketRegister(unitPacket2, BTLPACKET_TYPE_0);
+            rotateTowardUnitPacket = btlUnitCreateRotateTowardUnitPacket(currUnit, action->unit, 0x22);
+            rotateTowardUnitPacket->unk_00 = 4;
+            rotateTowardUnitPacket->parentUID = formPacket1->uid;
+            rotateTowardUnitPacket->actionUID = action->uid;
+            btlPacketRegister(rotateTowardUnitPacket, BTLPACKET_TYPE_0);
         }
 
         currUnit = currUnit->next;

@@ -399,12 +399,55 @@ BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags)
     return packet;
 }
 
-// FUN_00282650
-BtlPacket* btlUnit00282650(BtlUnit* unit, BtlUnit* unit2, u32 flags)
+// FUN_00282380
+void btlUnitInitRotateTowardUnitPacket(void* work)
+{
+    BtlUnitPacketRotateTowardUnit* packet;
+
+    packet = (BtlUnitPacketRotateTowardUnit*)work;
+
+    packet->unit->packetCount++;
+    packet->targetUnit->packetCount++;
+}
+
+// FUN_002823b0
+u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
 {
     // TODO
 
-    return NULL;
+    return false;
+}
+
+// FUN_00282380
+void btlUnitDestroyRotateTowardUnitPacket(void* work)
+{
+    BtlUnitPacketRotateTowardUnit* packet;
+
+    packet = (BtlUnitPacketRotateTowardUnit*)work;
+
+    packet->unit->packetCount--;
+    packet->targetUnit->packetCount--;
+}
+
+// FUN_00282650
+BtlPacket* btlUnitCreateRotateTowardUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u32 flags)
+{
+    BtlPacket* packet;
+    BtlUnitPacketRotateTowardUnit* work;
+
+    packet = btlPacketCreate(BTLUNIT_PACKET_ROTATETOWARDUNIT, sizeof(BtlUnitPacketRotateTowardUnit));
+
+    packet->initFunc = btlUnitInitRotateTowardUnitPacket;
+    packet->updateFunc = btlUnitUpdateRotateTowardUnitPacket;
+    packet->destroyFunc = btlUnitDestroyRotateTowardUnitPacket;
+
+    work = (BtlUnitPacketRotateTowardUnit*)packet->workData;
+
+    work->unit = unit;
+    work->targetUnit = targetUnit;
+    work->flags = flags;
+
+    return packet;
 }
 
 // FUN_00282c60
