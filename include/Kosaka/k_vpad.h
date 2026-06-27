@@ -1,5 +1,5 @@
-#ifndef K_PC_H
-#define K_PC_H
+#ifndef K_VPAD_H
+#define K_VPAD_H
 
 #include "Utils.h"
 #include "rw/rwplcore.h"
@@ -8,14 +8,14 @@ typedef struct KwlnTask KwlnTask;
 typedef struct Model Model;
 
 // 144 bytes
-typedef struct PcPadWork
+typedef struct VPadWork
 {
     u8 unkData1[0x50];
     KwlnTask* rotateTask;    // 0x50
     KwlnTask* collisCtlTask; // 0x54
     Model* mdl;              // 0x58
     u8 unkData2[0x34];
-} PcPadWork;
+} VPadWork;
 
 typedef enum
 {
@@ -36,9 +36,9 @@ typedef struct PcRotateWork
     s32 maxSteps;            // 0x5c
 } PcRotateWork;
 
-KwlnTask* K_Pc_CreatePadTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl);
+KwlnTask* K_VPad_CreateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl);
 
-KwlnTask* K_Pc_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl);
-u32 K_Pc_IsRotating(KwlnTask* rotatePcTask);
+KwlnTask* K_VPad_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl);
+u32 K_VPad_IsRotating(KwlnTask* rotatePcTask);
 
 #endif

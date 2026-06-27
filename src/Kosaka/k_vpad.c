@@ -1,11 +1,11 @@
-#include "Kosaka/k_pc.h"
+#include "Kosaka/k_vpad.h"
 #include "Kosaka/Field/k_fldFrame.h"
 #include "Kosaka/Field/k_field.h"
 #include "Kosaka/Field/k_event.h"
 #include "kwln/kwlnTask.h"
 
 // FUN_001e05b0
-void* K_Pc_UpdatePadTask(KwlnTask* rotatePcTask)
+void* K_VPad_UpdateTask(KwlnTask* rotatePcTask)
 {
     // TODO
 
@@ -13,18 +13,18 @@ void* K_Pc_UpdatePadTask(KwlnTask* rotatePcTask)
 }
 
 // FUN_001e1200
-void K_Pc_DestroyPadTask(KwlnTask* rotatePcTask)
+void K_VPad_DestroyTask(KwlnTask* rotatePcTask)
 {
     RwFree(rotatePcTask->workData);
 }
 
 // FUN_001e1230
-KwlnTask* K_Pc_CreatePadTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl)
+KwlnTask* K_VPad_CreateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl)
 {
     KwlnTask* task;
-    PcPadWork* work;
+    VPadWork* work;
 
-    work = RwCalloc(1, sizeof(PcPadWork), rwMEMHINTDUR_GLOBAL);
+    work = RwCalloc(1, sizeof(VPadWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;
@@ -33,19 +33,19 @@ KwlnTask* K_Pc_CreatePadTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* m
     task = kwlnTaskCreateWithAutoPriority(parent,
                                           10,
                                           "player pad proc",
-                                          K_Pc_UpdatePadTask,
-                                          K_Pc_DestroyPadTask,
+                                          K_VPad_UpdateTask,
+                                          K_VPad_DestroyTask,
                                           work);
 
     work->collisCtlTask = collisCtlTask;
     work->mdl = mdl;
-    work->rotateTask = K_Pc_CreateRotateTask(task, collisCtlTask, mdl);
+    work->rotateTask = K_VPad_CreateRotateTask(task, collisCtlTask, mdl);
 
     return task;
 }
 
 // FUN_001e13f0
-void* K_Pc_UpdateRotateTask(KwlnTask* rotatePcTask)
+void* K_VPad_UpdateRotateTask(KwlnTask* rotatePcTask)
 {
     static const RwV3d sAxis = { 0.0f, 1.0f, 0.0f }; // 00683da0
     PcRotateWork* work;
@@ -75,13 +75,13 @@ void* K_Pc_UpdateRotateTask(KwlnTask* rotatePcTask)
 }
 
 // FUN_001e14b0
-void K_Pc_DestroyRotateTask(KwlnTask* rotatePcTask)
+void K_VPad_DestroyRotateTask(KwlnTask* rotatePcTask)
 {
     RwFree(rotatePcTask->workData);
 }
 
 // FUN_001e14e0
-KwlnTask* K_Pc_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl)
+KwlnTask* K_VPad_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl)
 {
     PcRotateWork* work;
     KwlnTask* task;
@@ -95,8 +95,8 @@ KwlnTask* K_Pc_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model
     task = kwlnTaskCreateWithAutoPriority(parent,
                                           10,
                                           "rotate pc",
-                                          K_Pc_UpdateRotateTask,
-                                          K_Pc_DestroyRotateTask,
+                                          K_VPad_UpdateRotateTask,
+                                          K_VPad_DestroyRotateTask,
                                           work);
 
     work->collisCtlTask = collisCtlTask;
@@ -106,7 +106,7 @@ KwlnTask* K_Pc_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model
 }
 
 // FUN_001e1820
-u32 K_Pc_IsRotating(KwlnTask* rotatePcTask)
+u32 K_VPad_IsRotating(KwlnTask* rotatePcTask)
 {
     return ((PcRotateWork*)rotatePcTask->workData)->state == PCROTATE_STATE_ROTATING;
 }
