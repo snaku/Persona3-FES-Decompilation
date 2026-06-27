@@ -169,7 +169,18 @@ BtlPacket* btlUnitCreatePosRotColPacket(BtlUnit* unit, const RwV3d* pos, const R
 // FUN_0027ffb0
 void btlUnitGetSphereWorldCenter(BtlUnit* unit, RwV3d* dst)
 {
-    // TODO
+    RwV3d scaledCenter;
+    RwV3d rotatedCenter;
+
+    scaledCenter.x = unit->sphereCenter.x * unit->scale;
+    scaledCenter.y = unit->sphereCenter.y * unit->scale;
+    scaledCenter.z = unit->sphereCenter.z * unit->scale;
+
+    RtQuatTransformVectors(&rotatedCenter, &scaledCenter, 1, &unit->rot);
+
+    dst->x = rotatedCenter.x + unit->pos.x;
+    dst->y = rotatedCenter.y + unit->pos.y;
+    dst->z = rotatedCenter.z + unit->pos.z;
 }
 
 // FUN_00281270

@@ -57,5 +57,6 @@ typedef struct RtQuat
     } while (0)
 
 RwBool RtQuatConvertFromMatrix(RtQuat* quat, const RwMatrix* matrix);
+RwV3d* RtQuatTransformVectors(RwV3d* vectorsOut, const RwV3d* vectorsIn, const RwInt32 numPoints, const RtQuat* quat);
 
 #endif
