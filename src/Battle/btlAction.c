@@ -339,7 +339,10 @@ void btlActionInitStateChangeFormation(BtlAction* action)
 // FUN_0028bca0
 void btlActionUpdateStateChangeFormation(BtlAction* action)
 {
-    // TODO
+    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) == NULL)
+    {
+        btlActionSetState(action, BTLACTION_STATE_START);
+    }
 }
 
 // FUN_0028bd10
