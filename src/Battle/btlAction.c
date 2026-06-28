@@ -250,7 +250,19 @@ void btlActionInitStateStartHome(BtlAction* action)
 // FUN_0028b9c0
 void btlActionUpdateStateStartHome(BtlAction* action)
 {
-    // TODO
+    RwV3d rot;
+    BtlPacket* rotPacket;
+
+    if (!btlUnitIsMoving(action->unit))
+    {
+        btlUnit0027f7c0(action->unit, NULL, NULL, &rot);
+
+        rotPacket = btlUnitCreateRotatePacket(action->unit, &rot, 0);
+        rotPacket->actionUID = action->uid;
+        btlPacketRegister(rotPacket, BTLPACKET_TYPE_1);
+
+        btlActionSetState(action, action->unk_14);
+    }
 }
 
 // FUN_0028ba50
