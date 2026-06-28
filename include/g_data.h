@@ -130,23 +130,23 @@ typedef enum
 } WeaponTypes;
 
 // 6 bytes
-typedef struct
+typedef struct DatSocial
 {
     u16 academicPoint;
     u16 charmPoint;
     u16 couragePoint;
-} SocialStats;
+} DatSocial;
 
 // 6 bytes
-typedef struct 
+typedef struct DatPhysical
 {
     u16 physicalCondition; // See enum CharacterPhysicalCondition
     u16 fatigueCounter;    // if 0, character will become tired
     u16 oldFatigueCounter; // value before entering tartarus
-} PhysicalState;
+} DatPhysical;
 
 // 20 bytes
-typedef struct 
+typedef struct DatEquipment
 {
     u16 id;
     u32 type;
@@ -156,48 +156,48 @@ typedef struct
     u16 secondStat;
     u16 sUnk2;
     u8 unkData[0x04];
-} EquipmentData;
+} DatEquipment;
 
 // 16 bytes
-typedef struct
+typedef struct DatHeroEquipment
 {
-    u16 equipmentsIdx[4];      // See enum EquipmentTypes to access each idx
-    EquipmentData* equipments; // 00836794 -> 010c15f0
-    void* unkPtr;              // 00836798 -> 010c2d90
-} PlayerEquipmentData;
+    u16 equipmentsIdx[4];     // See enum EquipmentTypes to access each idx
+    DatEquipment* equipments; // 00836794 -> 010c15f0
+    void* unkPtr;             // 00836798 -> 010c2d90
+} DatHeroEquipment;
 
-typedef struct
+typedef struct DatHeroPersona
 {
     s16 equippedPersona;         // 0 to 11
     DatPersonaWork personas[12];
-} PlayerPersonaData;
+} DatHeroPersona;
 
-typedef struct
+typedef struct DatHeroStatus
 {
-    SocialStats socialStats;
+    DatSocial socialStats;
     u32 nextExp;
-    PhysicalState physicalState;
+    DatPhysical physicalState;
     u16 activeSocialLink;
     u8 socialLinkStat[29];
-} PlayerStatusData;
+} DatHeroStatus;
 
 // 868 bytes
-typedef struct
+typedef struct DatPc
 {
     DatUnit unit;
-    SocialStats socialStats;
+    DatSocial socialStats;
     u8 unkData1[0x06];
-    PhysicalState physicalState;
+    DatPhysical physicalState;
     u16 equipmentsIdx[4];         // always 0, 1, 2, 3
-    EquipmentData equipments[4];
+    DatEquipment equipments[4];
     u8 unkData2[0x4C];
     DatPersonaWork persona;
     u8 unkData3[0x297]; // TODO
-} CharacterData;
+} DatPc;
 
-extern CharacterData gCharacters[PC_MAX - 1];
+extern DatPc gPcs[PC_MAX - 1];
 
-extern PlayerPersonaData gPlayerPersonaData;
+extern DatHeroPersona gHeroPersona;
 
 void datSetScenarioMode(u32 scenario);
 u32 datGetScenarioMode();

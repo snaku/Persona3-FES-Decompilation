@@ -136,13 +136,13 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId)
 
     if (IS_HERO(pcId))
     {
-        persona = datPersonaGetHeroPersona(gPlayerPersonaData.equippedPersona);
+        persona = datPersonaGetHeroPersona(gHeroPersona.equippedPersona);
     }
     else 
     {
         K_ASSERT(pcId < PC_MAX, 779);
 
-        persona = &gCharacters[pcId].persona;
+        persona = &gPcs[pcId].persona;
     }
 
     K_ASSERT(persona != NULL, 783);
@@ -153,7 +153,7 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId)
 // FUN_00174960
 u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx)
 {
-    return (gPlayerPersonaData.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
+    return (gHeroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
 }
 
 // FUN_00174a90
@@ -173,7 +173,7 @@ DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx)
     }
     else 
     {
-        persona = &gPlayerPersonaData.personas[heroPersonaIdx];
+        persona = &gHeroPersona.personas[heroPersonaIdx];
     }
     
     return persona;
@@ -182,7 +182,7 @@ DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx)
 // FUN_001757f0
 void datPersonaClearHeroPersonas()
 {
-    memset(gPlayerPersonaData.personas, 0, sizeof(gPlayerPersonaData.personas));
+    memset(gHeroPersona.personas, 0, sizeof(gHeroPersona.personas));
 }
 
 // FUN_001764b0
