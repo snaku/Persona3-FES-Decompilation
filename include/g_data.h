@@ -6,10 +6,9 @@
 #include "datUnit.h"
 #include "datPersona.h"
 #include "datCalendar.h"
+#include "pcId.h"
 
 #define MAX_CHARACTER_LEVEL 99
-
-#define IS_HERO(characterId) ((characterId) == CHARACTER_HERO)
 
 #define SOCIAL_STAT_MIN_POINT 0
 #define SOCIAL_STAT_MAX_POINT 999
@@ -19,22 +18,6 @@ typedef enum
     SCENARIO_MODE_JOURNEY,
     SCENARIO_MODE_ANSWER
 } ScenarioMode; 
-
-typedef enum
-{
-    CHARACTER_NONE,
-    CHARACTER_HERO,
-    CHARACTER_YUKARI,
-    CHARACTER_AIGIS,
-    CHARACTER_MITSURU,
-    CHARACTER_JUNPEI,
-    CHARACTER_FUUKA,
-    CHARACTER_AKIHIKO,
-    CHARACTER_KEN,
-    CHARACTER_SHINJIRO_OR_METIS, // Shinjiro if playing The Journey, Metis if The Answer
-    CHARACTER_KOROMARU,
-    CHARACTER_MAX
-} CharactersEnum;
 
 typedef enum
 {
@@ -212,7 +195,7 @@ typedef struct
     u8 unkData3[0x297]; // TODO
 } CharacterData;
 
-extern CharacterData gCharacters[CHARACTER_MAX - 1];
+extern CharacterData gCharacters[PC_MAX - 1];
 
 extern PlayerPersonaData gPlayerPersonaData;
 
@@ -221,40 +204,40 @@ u32 datGetScenarioMode();
 
 void FUN_0016f3e0(u32 idx, u32 value);
 
-DatUnit* datGetUnit(s16 characterId);
-void datInitUnit(u16 characterId);
-u8 datGetLevel(u16 characterId);
-u16 datGetPersonaId(u16 characterId);
-u32 datGetBadStatusNoDown(u16 characterId);
-void datSetBadStatus(u16 characterId, u32 flags);
-void datSetOldFatigueCounter(u16 characterId, u16 oldFatigueCounter);
-void datClearBadStatus(u16 characterId, u32 flags);
-u32 datGetExpUntilNextLevel(u16 characterId);
-u8 datDidCharacterLevelUp(u16 characterId, u32 expGain);
-void datSetAiTactic(u16 characterId, u8 aiTacticId);
+DatUnit* datGetUnit(s16 pcId);
+void datInitUnit(u16 pcId);
+u8 datGetLevel(u16 pcId);
+u16 datGetPersonaId(u16 pcId);
+u32 datGetBadStatusNoDown(u16 pcId);
+void datSetBadStatus(u16 pcId, u32 flags);
+void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter);
+void datClearBadStatus(u16 pcId, u32 flags);
+u32 datGetExpUntilNextLevel(u16 pcId);
+u8 datDidCharacterLevelUp(u16 pcId, u32 expGain);
+void datSetAiTactic(u16 pcId, u8 aiTacticId);
 u16 datGetPartyId(s32 idx);
-u8 datGetAiTactic(u16 characterId);
-void datSetPhysicalCondition(u16 characterId, u16 physicalCondition);
-void datSetFatigueCounter(u16 characterId, u16 fatigueCounter);
-void datSetHp(u16 characterId, u16 hp);
+u8 datGetAiTactic(u16 pcId);
+void datSetPhysicalCondition(u16 pcId, u16 physicalCondition);
+void datSetFatigueCounter(u16 pcId, u16 fatigueCounter);
+void datSetHp(u16 pcId, u16 hp);
 void datSetActiveSocialLink(u16 activeSocialLink);
 s16 datGetDaysSinceApr5();
 s8 datGetTime();
 s16 datGetDaysSkipTarget();
 s8 datGetTimeSkipTarget();
 u32 datGetSkipToTarget();
-void datSetAcademicPoint(u16 characterId, u16 academicPoint);
-void datSetCharmPoint(u16 characterId, u16 charmPoint);
-void datSetCouragePoint(u16 characterId, u16 couragePoint);
-u16 datGetAcademicPoint(u16 characterId);
-u16 datGetCharmPoint(u16 characterId);
-u16 datGetCouragePoint(u16 characterId);
+void datSetAcademicPoint(u16 pcId, u16 academicPoint);
+void datSetCharmPoint(u16 pcId, u16 charmPoint);
+void datSetCouragePoint(u16 pcId, u16 couragePoint);
+u16 datGetAcademicPoint(u16 pcId);
+u16 datGetCharmPoint(u16 pcId);
+u16 datGetCouragePoint(u16 pcId);
 u16 datGetAcademicLevel(u16 academicPoint);
 u16 datGetCharmLevel(u16 charmPoint);
 u16 datGetCourageLevel(u16 couragePoint);
-u32 datGetNextExp(u16 characterId);
-u16 datGetPhysicalCondition(u16 characterId);
-u16 datGetEquipmentIdx(u16 characterId, u16 equipmentType);
+u32 datGetNextExp(u16 pcId);
+u16 datGetPhysicalCondition(u16 pcId);
+u16 datGetEquipmentIdx(u16 pcId, u16 equipmentType);
 void datSetDaysSinceApr5(s16 daysSinceApr5);
 void datSetTime(s8 time);
 void datSetDaysSkipTarget(s16 days);
@@ -263,9 +246,9 @@ void datSetSkipToTarget(u32 val);
 u32 datGetFlag(s32 bit);
 void datSetFlag(s32 bit, u8 enabled);
 void datClearFlagAll();
-u16 datGetEquipmentId(u16 characterId, u16 equipmentIdx);
-u8 datGetEquipmentEffect(u16 characterId, u16 equipmentIdx);
-void datInitPersona(u32 characterId);
+u16 datGetEquipmentId(u16 pcId, u16 equipmentIdx);
+u8 datGetEquipmentEffect(u16 pcId, u16 equipmentIdx);
+void datInitPersona(u32 pcId);
 void datCompendiumInit();
 u16 datGetActiveSocialLink();
 u8 datGetSocialLinkLevel(u16 socialLink);

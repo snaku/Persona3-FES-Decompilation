@@ -191,7 +191,7 @@ u32 btlScrCmd_CALL_BATTLE()
     BtlEncountTable* encount;
     BtlStartInfo startInfo;
     u16 i;
-    u16 currCharId;
+    u16 currPcId;
     u16 encountId;
 
     btlFadeCreateTask(1);
@@ -201,13 +201,13 @@ u32 btlScrCmd_CALL_BATTLE()
 
     memset(&startInfo, 0, sizeof(BtlStartInfo));
 
-    startInfo.partyUnits[0] = datUnitCreatePc(CHARACTER_HERO);
+    startInfo.partyUnits[0] = datUnitCreatePc(PC_HERO);
     for (i = 0; i < 4; i++)
     {
-        currCharId = datGetPartyId(i);
-        if (currCharId != CHARACTER_NONE)
+        currPcId = datGetPartyId(i);
+        if (currPcId != PC_NONE)
         {
-            startInfo.partyUnits[i + 1] = datUnitCreatePc(currCharId);
+            startInfo.partyUnits[i + 1] = datUnitCreatePc(currPcId);
         }
     }
 
@@ -242,7 +242,7 @@ u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
 
         if (!sIsDead)
         {
-            if (datCalcIsDead(datGetUnit(CHARACTER_HERO), 0))
+            if (datCalcIsDead(datGetUnit(PC_HERO), 0))
             {
                 datSetFlag(FLG_HERO_DIED, true);
 

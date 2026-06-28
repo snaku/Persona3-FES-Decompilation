@@ -81,20 +81,20 @@ typedef struct DatPersonaWork
 } DatPersonaWork;
 
 u8 datPersonaGetLevel(DatPersonaWork* persona);
-u8 datPersonaGetLevelCharacterId(u16 characterId);
+u8 datPersonaGetLevelByPcId(u16 pcId);
 u32 datPersonaGetNextExp(DatPersonaWork* persona);
 u16* datPersonaGetSkills(DatPersonaWork* persona);
-u16* datPersonaGetSkillsByCharacterId(u16 characterId);
+u16* datPersonaGetSkillsByPcId(u16 pcId);
 u16 datPersonaGetTotalStat(DatPersonaWork* persona, u16 statId);
 u8 datPersonaGetNaturalStat(DatPersonaWork* persona, u16 statId);
 u8 datPersonaGetBonusStat(DatPersonaWork* persona, u16 statId);
-void datPersonaSetBonusStatByCharacterId(u16 characterId, u16 statId, u8 amount);
-void datPersonaAddToBonusStatByCharacterId(u16 characterId, u16 statId, s8 amount);
+void datPersonaSetBonusStatByPcId(u16 pcId, u16 statId, u8 amount);
+void datPersonaAddToBonusStatByPcId(u16 pcId, u16 statId, s8 amount);
 u8 datPersonaGetStat3(DatPersonaWork* persona, u16 statId);
 u16 datPersonaAddToNaturalStat(DatPersonaWork* persona, u16 statId, s8 amount);
 u16 datPersonaAddToNaturalStatHeroPersona(u16 heroPersonaIdx, u16 statId, s8 amount);
 
-DatPersonaWork* datPersonaGetByCharacterId(u16 characterId);
+DatPersonaWork* datPersonaGetByPcId(u16 pcId);
 u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx);
 DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx);
 void datPersonaClearHeroPersonas();

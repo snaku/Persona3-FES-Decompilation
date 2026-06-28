@@ -39,7 +39,7 @@ u8 datCalcGetLevel(DatUnit* unit){
 
     if (!(unit->flags & UNIT_FLAG_ENEMY) && !IS_HERO(unit->id))
     {
-        persona = datPersonaGetByCharacterId(unit->id);
+        persona = datPersonaGetByPcId(unit->id);
         K_ASSERT(persona != NULL, 66);
 
         level = datPersonaGetLevel(persona);
@@ -127,7 +127,7 @@ void datCalcClearBadStatus(DatUnit* unit, u32 badStatus)
 }
 
 // FUN_00300580
-u8 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
+u32 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
 {
     return (unit->bad & badStatus);
 }
@@ -141,27 +141,27 @@ u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
 }
 
 // FUN_00300870. Return the number of equipments with the effect
-u8 datCalcCountEquipmentWithEffectById(u16 characterId, u16 effect)
+u8 datCalcCountEquipmentWithEffectById(u16 pcId, u16 effect)
 {
     u8 equipWithEffectNum = 0;
     u16 equipIdx;
     u8 equipEffect;
 
-    K_ASSERT(characterId < CHARACTER_MAX, 646);
+    K_ASSERT(pcId < PC_MAX, 646);
 
     // weapon
-    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_WEAPON);
-    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
+    equipIdx = datGetEquipmentIdx(pcId, EQUIPMENT_TYPE_WEAPON);
+    equipEffect = datGetEquipmentEffect(pcId, equipIdx);
     if (effect == equipEffect) equipWithEffectNum++;
 
     // armor
-    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_ARMOR);
-    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
+    equipIdx = datGetEquipmentIdx(pcId, EQUIPMENT_TYPE_ARMOR);
+    equipEffect = datGetEquipmentEffect(pcId, equipIdx);
     if (effect == equipEffect) equipWithEffectNum++;
 
     // boots
-    equipIdx = datGetEquipmentIdx(characterId, EQUIPMENT_TYPE_BOOTS);
-    equipEffect = datGetEquipmentEffect(characterId, equipIdx);
+    equipIdx = datGetEquipmentIdx(pcId, EQUIPMENT_TYPE_BOOTS);
+    equipEffect = datGetEquipmentEffect(pcId, equipIdx);
     if (effect == equipEffect) equipWithEffectNum++;
 
     return equipWithEffectNum;
@@ -239,9 +239,9 @@ u32 datCalcGetHeldWeaponType(DatUnit* unit)
 
     switch (unit->id)
     {
-        case CHARACTER_HERO:
-            heroWeaponIdx = datGetEquipmentIdx(CHARACTER_HERO, EQUIPMENT_TYPE_WEAPON);
-            heroWeaponId = datGetEquipmentId(CHARACTER_HERO, heroWeaponIdx);
+        case PC_HERO:
+            heroWeaponIdx = datGetEquipmentIdx(PC_HERO, EQUIPMENT_TYPE_WEAPON);
+            heroWeaponId = datGetEquipmentId(PC_HERO, heroWeaponIdx);
             // unkStruct = FUN_00170d60(heroWeaponId);
             // heroWeaponUnkFlag = unkStruct->flags;
             if (heroWeaponUnkFlag & (1 << 15) || heroWeaponUnkFlag & (1 << 7))
@@ -262,15 +262,15 @@ u32 datCalcGetHeldWeaponType(DatUnit* unit)
                 return WEAPON_TYPE_2H_SWORD;
 
             K_ASSERT(false, 4237);
-        case CHARACTER_YUKARI:            return WEAPON_TYPE_BOW;
-        case CHARACTER_AIGIS:             return WEAPON_TYPE_GUN;
-        case CHARACTER_MITSURU:           return WEAPON_TYPE_1H_SWORD;
-        case CHARACTER_JUNPEI:            return WEAPON_TYPE_2H_SWORD;
-        case CHARACTER_FUUKA:             return WEAPON_TYPE_1H_SWORD;
-        case CHARACTER_AKIHIKO:           return WEAPON_TYPE_FIST;
-        case CHARACTER_KEN:               return WEAPON_TYPE_SPEAR;
-        case CHARACTER_SHINJIRO_OR_METIS: return WEAPON_TYPE_AXE;
-        case CHARACTER_KOROMARU:          return WEAPON_TYPE_KNIFE;
+        case PC_YUKARI:            return WEAPON_TYPE_BOW;
+        case PC_AIGIS:             return WEAPON_TYPE_GUN;
+        case PC_MITSURU:           return WEAPON_TYPE_1H_SWORD;
+        case PC_JUNPEI:            return WEAPON_TYPE_2H_SWORD;
+        case PC_FUUKA:             return WEAPON_TYPE_1H_SWORD;
+        case PC_AKIHIKO:           return WEAPON_TYPE_FIST;
+        case PC_KEN:               return WEAPON_TYPE_SPEAR;
+        case PC_SHINJIRO_OR_METIS: return WEAPON_TYPE_AXE;
+        case PC_KOROMARU:          return WEAPON_TYPE_KNIFE;
         default: 
             K_ASSERT(false, 4259);
             break;

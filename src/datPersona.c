@@ -10,9 +10,9 @@ u8 datPersonaGetLevel(DatPersonaWork* persona)
 }
 
 // FUN_00173300
-u8 datPersonaGetLevelCharacterId(u16 characterId)
+u8 datPersonaGetLevelByPcId(u16 pcId)
 {
-    DatPersonaWork* persona = datPersonaGetPersonaByCharacterId(characterId);
+    DatPersonaWork* persona = datPersonaGetPersonaByPcId(pcId);
     return persona->level;
 }
 
@@ -29,9 +29,9 @@ u16* datPersonaGetSkills(DatPersonaWork* persona)
 }
 
 // FUN_00173380
-u16* datPersonaGetSkillsByCharacterId(u16 characterId)
+u16* datPersonaGetSkillsByPcId(u16 pcId)
 {
-    DatPersonaWork* persona = datPersonaGetPersonaByCharacterId(characterId);
+    DatPersonaWork* persona = datPersonaGetPersonaByPcId(pcId);
 
     return persona->skills;
 }
@@ -70,17 +70,17 @@ u8 datPersonaGetBonusStat(DatPersonaWork* persona, u16 statId)
 }
 
 // FUN_00173b60
-void datPersonaSetBonusStatByCharacterId(u16 characterId, u16 statId, u8 amount)
+void datPersonaSetBonusStatByPcId(u16 pcId, u16 statId, u8 amount)
 {
-    DatPersonaWork* persona = datPersonaGetPersonaByCharacterId(characterId);
+    DatPersonaWork* persona = datPersonaGetPersonaByPcId(pcId);
 
     persona->bonusStats[statId] = amount;
 }
 
 // FUN_00173bb0
-void datPersonaAddToBonusStatByCharacterId(u16 characterId, u16 statId, s8 amount)
+void datPersonaAddToBonusStatByPcId(u16 pcId, u16 statId, s8 amount)
 {
-    DatPersonaWork* persona = datPersonaGetPersonaByCharacterId(characterId);
+    DatPersonaWork* persona = datPersonaGetPersonaByPcId(pcId);
 
     persona->bonusStats[statId] += amount;
 }
@@ -130,19 +130,19 @@ u16 datPersonaAddToNaturalStatHeroPersona(u16 heroPersonaIdx, u16 statId, s8 amo
 }
 
 // FUN_00174800
-DatPersonaWork* datPersonaGetByCharacterId(u16 characterId)
+DatPersonaWork* datPersonaGetByPcId(u16 pcId)
 {
     DatPersonaWork* persona;
 
-    if (IS_HERO(characterId))
+    if (IS_HERO(pcId))
     {
         persona = datPersonaGetHeroPersona(gPlayerPersonaData.equippedPersona);
     }
     else 
     {
-        K_ASSERT(characterId < CHARACTER_MAX, 779);
+        K_ASSERT(pcId < PC_MAX, 779);
 
-        persona = &gCharacters[characterId].persona;
+        persona = &gCharacters[pcId].persona;
     }
 
     K_ASSERT(persona != NULL, 783);
