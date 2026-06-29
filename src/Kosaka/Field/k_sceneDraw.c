@@ -1,6 +1,8 @@
 #include "Kosaka/Field/k_sceneDraw.h"
 #include "Kosaka/Field/k_shadow.h"
 #include "kwln/kwlnTask.h"
+#include "kwln/kwln.h"
+#include "Model/mdlManager.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "rw/rwplcore.h"
@@ -59,6 +61,33 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
     // TODO
 
     return KWLNTASK_CONTINUE;
+}
+
+// FUN_0019ee40. qsort comparator
+s32 K_SceneDraw_CompareNpcDistToCamera(const void* npcPtr1, const void* npcPtr2)
+{
+    RwFrame* camFrame;
+    const ResrcModelNpc* npc1;
+    const ResrcModelNpc* npc2;
+    RwV3d diffToCam1;
+    RwV3d diffToCam2;
+    RwV3d camPos;
+
+    camFrame = (RwFrame*)kwlnGetMainCamera()->object.object.parent;
+    camPos = RwFrameGetLTM(camFrame)->pos;
+
+    npc1 = *(const ResrcModelNpc**)npcPtr1;
+    npc2 = *(const ResrcModelNpc**)npcPtr2;
+
+    diffToCam1.x = mdlGetMatrix(npc1->mdl)->pos.x - camPos.x;
+    diffToCam1.y = mdlGetMatrix(npc1->mdl)->pos.y - camPos.y;
+    diffToCam1.z = mdlGetMatrix(npc1->mdl)->pos.z - camPos.z;
+
+    diffToCam2.x = mdlGetMatrix(npc2->mdl)->pos.x - camPos.x;
+    diffToCam2.y = mdlGetMatrix(npc2->mdl)->pos.y - camPos.y;
+    diffToCam2.z = mdlGetMatrix(npc2->mdl)->pos.z - camPos.z;
+
+    return (s32)(RwV3dLength(&diffToCam1) - RwV3dLength(&diffToCam2));
 }
 
 // FUN_0019ef80. 'draw trans NPC(sort)'
