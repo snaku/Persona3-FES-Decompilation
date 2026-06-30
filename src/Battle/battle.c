@@ -7,12 +7,12 @@
 #include "Scene/resrcManager.h"
 #include "Script/scrTraceCode.h"
 #include "Script/scrScriptProcess.h"
+#include "Yajima/y_timeLimit.h"
 #include "admini.h"
 #include "datCalc.h"
 #include "g_data.h"
 #include "g_flags.h"
 #include "temporary.h"
-#include "y_timeLimit.h"
 
 #define BTL_CHAR_RESID_BASE 0x100
 #define BTL_CHAR_RESID_MAX  0x200
