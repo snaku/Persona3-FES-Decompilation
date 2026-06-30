@@ -55,6 +55,7 @@ void H_Cdvd_001007f0();
 void H_Cdvd_Init();
 void H_Cdvd_Read();
 
+u32 H_Cdvd_FileExists(const char* path);
 HCdvd* H_Cdvd_Request(const char* path, u32 fileMode);
 u8 H_Cdvd_Destroy(HCdvd* cdvd);
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst);

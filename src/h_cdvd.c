@@ -43,6 +43,14 @@ void H_Cdvd_Init()
     sCdvdListHead.adxf = NULL;
 }
 
+// FUN_001008b0
+u32 H_Cdvd_FileExists(const char* path)
+{
+    // TODO
+
+    return true;
+}
+
 // FUN_00100980. Asynchronous read
 void H_Cdvd_Read()
 {
