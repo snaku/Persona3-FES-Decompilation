@@ -278,4 +278,7 @@ u8 datGetSocialLinkLevel(u16 socialLink);
 u32 datGetTotalBtl();
 DatPersonaWork* datGetPersonaByCompendium(s32 idx);
 
+u32 datScrCmd_CLEAR_PARTY_ID();
+u32 datScrCmd_GET_PARTY_ID();
+
 #endif // G_DATA_H

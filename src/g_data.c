@@ -1,9 +1,8 @@
-#include "datPersona.h"
 #include "g_data.h"
-#include "g_flags.h"
+#include "Kosaka/k_assert.h"
+#include "Script/scrTraceCode.h"
 #include "datCalc.h"
 #include "temporary.h"
-#include "Kosaka/k_assert.h"
 
 // 005dc050
 static const u32 sPlayerExpThreshold[MAX_CHARACTER_LEVEL] = 
@@ -361,6 +360,22 @@ void datSetHp(u16 pcId, u16 hp)
 void datSetActiveSocialLink(u16 activeSocialLink)
 {
     gGlobalWork.heroStatus.activeSocialLink = activeSocialLink;
+}
+
+// FUN_0016ec40
+u32 datScrCmd_CLEAR_PARTY_ID()
+{
+    gGlobalWork.partyIds[scrGetIntPara(0)] = PC_NONE;
+
+    return true;
+}
+
+// FUN_0016ec80
+u32 datScrCmd_GET_PARTY_ID()
+{
+    scrSetIntReturnVal(gGlobalWork.partyIds[scrGetIntPara(0)]);
+
+    return true;
 }
 
 // FUN_0016ef20
