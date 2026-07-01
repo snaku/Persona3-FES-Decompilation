@@ -83,24 +83,29 @@ DatUnit* datGetUnit(s16 pcId)
 }
 
 // FUN_0016cdf0
-void datInitUnit(u16 pcId)
+void datInitUnit(s16 pcId)
 {
+    u32 idx;
+    DatPc* pcsNoReserved;
+
     if (IS_HERO(pcId))
     {
         memset(&gGlobalWork.heroUnit, 0, sizeof(DatUnit));
 
+        gGlobalWork.heroUnit.id = pcId;
+        gGlobalWork.heroUnit.id2 = pcId;
         gGlobalWork.heroUnit.aiTactic = AI_TACTIC_ACT_FREELY;
-        gGlobalWork.heroUnit.id = PC_HERO;
-        gGlobalWork.heroUnit.flags = UNIT_FLAG_ACTIVE;
 
         return;
     }
 
-    memset(&gGlobalWork.pcs[pcId].unit, 0, sizeof(DatUnit));
+    idx = pcId - PC_YUKARI;
+    pcsNoReserved = &gGlobalWork.pcs[PC_YUKARI];
+    memset(&pcsNoReserved[idx].unit, 0, sizeof(DatUnit));
 
     gGlobalWork.pcs[pcId].unit.id = pcId;
+    gGlobalWork.pcs[pcId].unit.id2 = pcId;
     gGlobalWork.pcs[pcId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
-    gGlobalWork.pcs[pcId].unit.flags = UNIT_FLAG_ACTIVE;
 }
 
 // FUN_0016c470
@@ -246,9 +251,7 @@ void datSetAiTactic(u16 pcId, u8 aiTacticId)
 // FUN_0016dd60
 s16 datGetPartyId(s32 idx)
 {
-    // TODO
-
-    return 0;
+    return gGlobalWork.partyIds[idx];
 }
 
 // FUN_0016dd80

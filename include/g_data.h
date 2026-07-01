@@ -190,11 +190,11 @@ typedef struct DatPc
     DatSocial socialStats;
     u8 unkData1[0x06];
     DatPhysical physicalState;
-    u16 equipmentsIdx[4];         // always 0, 1, 2, 3
+    u16 equipmentsIdx[4];       // always 0, 1, 2, 3
     DatEquipment equipments[4];
-    u8 unkData2[0x4C];
+    u8 unkData2[0x30];
     DatPersonaWork persona;
-    u8 unkData3[0x297]; // TODO
+    u8 unkData3[0x25c];         // TODO
 } DatPc;
 
 // at least 28064 bytes
@@ -222,7 +222,7 @@ u32 datGetScenarioMode();
 void FUN_0016f3e0(u32 idx, u32 value);
 
 DatUnit* datGetUnit(s16 pcId);
-void datInitUnit(u16 pcId);
+void datInitUnit(s16 pcId);
 u8 datGetLevel(u16 pcId);
 u16 datGetPersonaId(u16 pcId);
 u32 datGetBadStatusNoDown(u16 pcId);
