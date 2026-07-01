@@ -211,6 +211,10 @@ typedef struct DatGlobal
     u32 unk_0083a4dc[128];          // 0083a4dc
     u32 heroMoney;                  // 0083a6dc
     s16 partyIds[4];                // 0083a6e0
+    u32 totalBtl;                   // 0083a6e8
+    u32 savedFldMajorId;            // 0083a6ec
+    u32 savedFldMinorId;            // 0083a6f0
+    u32 savedDungeonFloor;           // 0083a6f4
     // TODO: other data
 } DatGlobal;
 
@@ -232,7 +236,9 @@ void datClearBadStatus(u16 pcId, u32 flags);
 u32 datGetExpUntilNextLevel(u16 pcId);
 u8 datDidCharacterLevelUp(u16 pcId, u32 expGain);
 void datSetAiTactic(u16 pcId, u8 aiTacticId);
+u32 datGetMoney();
 s16 datGetPartyId(s32 idx);
+void datSetPartyId(s32 idx, s16 pcId);
 u8 datGetAiTactic(u16 pcId);
 void datSetPhysicalCondition(u16 pcId, u16 physicalCondition);
 void datSetFatigueCounter(u16 pcId, u16 fatigueCounter);
@@ -269,6 +275,7 @@ void datInitPersona(u32 pcId);
 void datCompendiumInit();
 u16 datGetActiveSocialLink();
 u8 datGetSocialLinkLevel(u16 socialLink);
+u32 datGetTotalBtl();
 DatPersonaWork* datGetPersonaByCompendium(s32 idx);
 
 #endif // G_DATA_H

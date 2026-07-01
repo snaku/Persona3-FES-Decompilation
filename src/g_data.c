@@ -248,10 +248,22 @@ void datSetAiTactic(u16 pcId, u8 aiTacticId)
     gGlobalWork.pcs[pcId].unit.aiTactic = aiTacticId;
 }
 
+// FUN_0016dd50
+u32 datGetMoney()
+{
+    return gGlobalWork.heroMoney;
+}
+
 // FUN_0016dd60
 s16 datGetPartyId(s32 idx)
 {
     return gGlobalWork.partyIds[idx];
+}
+
+// FUN_0016e990
+void datSetPartyId(s32 idx, s16 pcId)
+{
+    gGlobalWork.partyIds[idx] = pcId;
 }
 
 // FUN_0016dd80
@@ -762,6 +774,12 @@ u16 datGetCharmLevel(u16 charmPoint)
 u16 datGetCourageLevel(u16 couragePoint)
 {
     return Inl_Character_GetSocialStatLevel(couragePoint, courageLevelThreshold, 6);
+}
+
+// FUN_0017b170
+u32 datGetTotalBtl()
+{
+    return gGlobalWork.totalBtl;
 }
 
 // FUN_0017c8c0
