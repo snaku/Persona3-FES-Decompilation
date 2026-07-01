@@ -133,6 +133,8 @@ u16 datPersonaAddToNaturalStatHeroPersona(u16 heroPersonaIdx, u16 statId, s8 amo
 DatPersonaWork* datPersonaGetByPcId(u16 pcId)
 {
     DatPersonaWork* persona;
+    DatPc* pcsNoReserved;
+    u32 idx;
 
     if (IS_HERO(pcId))
     {
@@ -142,7 +144,9 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId)
     {
         K_ASSERT(pcId < PC_MAX, 779);
 
-        persona = &gGlobalWork.pcs[pcId].persona;
+        idx = pcId - PC_YUKARI;
+        pcsNoReserved = &gPcs[PC_YUKARI];
+        persona = &pcsNoReserved[idx].persona;
     }
 
     K_ASSERT(persona != NULL, 783);

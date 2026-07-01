@@ -39,7 +39,8 @@ static const char* physicalConditionsString[13] =
 
 static u32 sScenarioMode; // 007cdfa4. See enum 'ScenarioMode'
 
-DatGlobal gGlobalWork; // 00833948
+DatGlobal gGlobalWork; // 00836200
+DatPc gPcs[PC_MAX];    // 00833948
 
 void FUN_00172890();
 void FUN_00172e10();
@@ -65,7 +66,7 @@ u16 datGetPersonaId(u16 pcId)
         K_ASSERT(false, 633);
     }
 
-    return gGlobalWork.pcs[pcId].persona.id;
+    return gPcs[pcId].persona.id;
 }
 
 // FUN_0016cd60
@@ -78,7 +79,7 @@ DatUnit* datGetUnit(s16 pcId)
 
     K_ASSERT(pcId < PC_MAX, 737);
 
-    return &gGlobalWork.pcs[pcId].unit;
+    return &gPcs[pcId].unit;
 }
 
 // FUN_0016cdf0
@@ -99,12 +100,12 @@ void datInitUnit(s16 pcId)
     }
 
     idx = pcId - PC_YUKARI;
-    pcsNoReserved = &gGlobalWork.pcs[PC_YUKARI];
+    pcsNoReserved = &gPcs[PC_YUKARI];
     memset(&pcsNoReserved[idx].unit, 0, sizeof(DatUnit));
 
-    gGlobalWork.pcs[pcId].unit.id = pcId;
-    gGlobalWork.pcs[pcId].unit.id2 = pcId;
-    gGlobalWork.pcs[pcId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
+    gPcs[pcId].unit.id = pcId;
+    gPcs[pcId].unit.id2 = pcId;
+    gPcs[pcId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
 }
 
 // FUN_0016c470
@@ -115,7 +116,7 @@ u8 datGetLevel(u16 pcId)
         return datCalcGetLevel(&gGlobalWork.heroUnit);
     }
 
-    return datCalcGetLevel(&gGlobalWork.pcs[pcId].unit);
+    return datCalcGetLevel(&gPcs[pcId].unit);
 }
 
 // FUN_0016c970
@@ -126,7 +127,7 @@ u32 datGetBadStatusNoDown(u16 pcId)
         return datCalcGetBadStatusNoDown(&gGlobalWork.heroUnit);
     }
 
-    return datCalcGetBadStatusNoDown(&gGlobalWork.pcs[pcId].unit);
+    return datCalcGetBadStatusNoDown(&gPcs[pcId].unit);
 }
 
 // FUN_0016d8b0
@@ -138,7 +139,7 @@ void datSetBadStatus(u16 pcId, u32 flags)
         return;
     }
 
-    datCalcSetBadStatus(&gGlobalWork.pcs[pcId].unit, flags);
+    datCalcSetBadStatus(&gPcs[pcId].unit, flags);
 }
 
 // FUN_0016d980
@@ -150,7 +151,7 @@ void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter)
         return;
     }
 
-    gGlobalWork.pcs[pcId].physicalState.oldFatigueCounter = oldFatigueCounter;
+    gPcs[pcId].physicalState.oldFatigueCounter = oldFatigueCounter;
 }
 
 // FUN_0016d9d0
@@ -162,7 +163,7 @@ void datClearBadStatus(u16 pcId, u32 flags)
         return;
     }
 
-    datCalcClearBadStatus(&gGlobalWork.pcs[pcId].unit, flags);
+    datCalcClearBadStatus(&gPcs[pcId].unit, flags);
 }
 
 // FUN_0016d2f0
@@ -244,7 +245,7 @@ void datSetAiTactic(u16 pcId, u8 aiTacticId)
         return;
     }
 
-    gGlobalWork.pcs[pcId].unit.aiTactic = aiTacticId;
+    gPcs[pcId].unit.aiTactic = aiTacticId;
 }
 
 // FUN_0016dd50
@@ -273,7 +274,7 @@ u8 datGetAiTactic(u16 pcId)
         return gGlobalWork.heroUnit.aiTactic;
     }
 
-    return gGlobalWork.pcs[pcId].unit.aiTactic;
+    return gPcs[pcId].unit.aiTactic;
 }
 
 // FUN_0016d6b0
@@ -284,7 +285,7 @@ void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
 
     if (!IS_HERO(pcId))
     {
-        currentPhysicalCondition = gGlobalWork.pcs[pcId].physicalState.physicalCondition;
+        currentPhysicalCondition = gPcs[pcId].physicalState.physicalCondition;
     }
 
     if (currentPhysicalCondition != physicalCondition)
@@ -314,7 +315,7 @@ void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
 
         if (!IS_HERO(pcId))
         {
-            oldFatigueCounter = gGlobalWork.pcs[pcId].physicalState.oldFatigueCounter;
+            oldFatigueCounter = gPcs[pcId].physicalState.oldFatigueCounter;
         }
 
         datSetFatigueCounter(pcId, oldFatigueCounter);
@@ -324,7 +325,7 @@ void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
 
     if (!IS_HERO(pcId))
     {
-        gGlobalWork.pcs[pcId].physicalState.physicalCondition = physicalCondition;
+        gPcs[pcId].physicalState.physicalCondition = physicalCondition;
         currentPhysicalCondition = gGlobalWork.heroStatus.physicalState.physicalCondition;
     }
 
@@ -340,7 +341,7 @@ void datSetFatigueCounter(u16 pcId, u16 fatigueCounter)
         return;
     }
 
-    gGlobalWork.pcs[pcId].physicalState.fatigueCounter = fatigueCounter;
+    gPcs[pcId].physicalState.fatigueCounter = fatigueCounter;
 }
 
 void datSetHp(u16 pcId, u16 hp)
@@ -349,7 +350,7 @@ void datSetHp(u16 pcId, u16 hp)
 
     if (!IS_HERO(pcId))
     {
-        gGlobalWork.pcs[pcId].unit.hp = hp;
+        gPcs[pcId].unit.hp = hp;
         tmp = gGlobalWork.heroUnit.hp;
     }
 
@@ -419,7 +420,7 @@ void datSetAcademicPoint(u16 pcId, u16 academicPoint)
         return;
     }
 
-    gGlobalWork.pcs[pcId].socialStats.academicPoint = academicPoint;
+    gPcs[pcId].socialStats.academicPoint = academicPoint;
 }
 
 // FUN_0016d090
@@ -435,7 +436,7 @@ void datSetCharmPoint(u16 pcId, u16 charmPoint)
         return;
     }
 
-    gGlobalWork.pcs[pcId].socialStats.charmPoint = charmPoint;
+    gPcs[pcId].socialStats.charmPoint = charmPoint;
 }
 
 // FUN_0016d160
@@ -451,7 +452,7 @@ void datSetCouragePoint(u16 pcId, u16 couragePoint)
         return;
     }
 
-    gGlobalWork.pcs[pcId].socialStats.couragePoint = couragePoint;
+    gPcs[pcId].socialStats.couragePoint = couragePoint;
 }
 
 static inline u16 Inl_Character_GetSocialStatPoint(u16 pcId, u16 baseHeroPoint, u16 baseOtherCharPoint)
@@ -472,7 +473,7 @@ u16 datGetAcademicPoint(u16 pcId)
     return Inl_Character_GetSocialStatPoint(
         pcId,
         gGlobalWork.heroStatus.socialStats.academicPoint,
-        gGlobalWork.pcs[pcId].socialStats.academicPoint);
+        gPcs[pcId].socialStats.academicPoint);
 }
 
 // FUN_0016c6f0
@@ -481,7 +482,7 @@ u16 datGetCharmPoint(u16 pcId)
     return Inl_Character_GetSocialStatPoint(
         pcId,
         gGlobalWork.heroStatus.socialStats.charmPoint,
-        gGlobalWork.pcs[pcId].socialStats.charmPoint);
+        gPcs[pcId].socialStats.charmPoint);
 }
 
 u16 datGetCouragePoint(u16 pcId)
@@ -489,7 +490,7 @@ u16 datGetCouragePoint(u16 pcId)
     return Inl_Character_GetSocialStatPoint(
         pcId,
         gGlobalWork.heroStatus.socialStats.couragePoint,
-        gGlobalWork.pcs[pcId].socialStats.couragePoint);
+        gPcs[pcId].socialStats.couragePoint);
 }
 
 // TODO
@@ -501,8 +502,8 @@ void FUN_0016ca90(u16 pcId, u16 param_2)
 
     if (!IS_HERO(pcId))
     {
-        oldFatigueCounter = gGlobalWork.pcs[pcId].physicalState.oldFatigueCounter;
-        fatigueCounter = gGlobalWork.pcs[pcId].physicalState.fatigueCounter;
+        oldFatigueCounter = gPcs[pcId].physicalState.oldFatigueCounter;
+        fatigueCounter = gPcs[pcId].physicalState.fatigueCounter;
     }
 
     uVar3 = fatigueCounter + param_2;
@@ -543,7 +544,7 @@ u16 datGetPhysicalCondition(u16 pcId)
         return gGlobalWork.heroStatus.physicalState.physicalCondition;
     }
 
-    return gGlobalWork.pcs[pcId].physicalState.physicalCondition;
+    return gPcs[pcId].physicalState.physicalCondition;
 }
 
 // FUN_0016dd40
@@ -574,7 +575,7 @@ u16 datGetEquipmentIdx(u16 pcId, u16 equipmentType)
         return gGlobalWork.heroEquip.equipmentsIdx[equipmentType];
     }
 
-    return gGlobalWork.pcs[pcId].equipmentsIdx[equipmentType];
+    return gPcs[pcId].equipmentsIdx[equipmentType];
 }
 
 // FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags
@@ -707,7 +708,7 @@ u16 datGetEquipmentId(u16 pcId, u16 equipmentIdx)
     }
     else if (pcId <= 255)
     {
-        return gGlobalWork.pcs[pcId].equipments[equipmentIdx].id;
+        return gPcs[pcId].equipments[equipmentIdx].id;
     }
 
     // return (&DAT_007fd6c8 + equipmentIdx * 0x14 + pcId * 0x364);
@@ -726,7 +727,7 @@ u8 datGetEquipmentEffect(u16 pcId, u16 equipmentIdx)
     }
     else if (pcId <= 255)
     {
-        return gGlobalWork.pcs[pcId].equipments[equipmentIdx].effect;
+        return gPcs[pcId].equipments[equipmentIdx].effect;
     }
 
     // return (equpementIdx * 0x14 + pcId * 0x364 + 0x7fd6d1);
@@ -754,7 +755,7 @@ void datInitPersona(u32 pcId)
         return;
     }
 
-    memset(&gGlobalWork.pcs[pcId].persona, 0, sizeof(DatPersonaWork));
+    memset(&gPcs[pcId].persona, 0, sizeof(DatPersonaWork));
 }
 
 // FUN_00175c70

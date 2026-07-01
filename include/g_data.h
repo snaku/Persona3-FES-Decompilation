@@ -179,7 +179,7 @@ typedef struct DatHeroStatus
     u32 nextExp;
     DatPhysical physicalState;
     u16 activeSocialLink;
-    u8 socialLinkStat[29];
+    u8 socialLinkStat[30];
 } DatHeroStatus;
 
 // 868 bytes
@@ -197,16 +197,20 @@ typedef struct DatPc
     u8 unkData3[0x25c];         // TODO
 } DatPc;
 
-// at least 28064 bytes
+// at least 17656 bytes
 typedef struct DatGlobal
 {
-    DatPc pcs[PC_MAX];              // 00833948
+    u8 unkData1[0x24];
     DatUnit heroUnit;               // 00836224
     DatHeroStatus heroStatus;       // 00836260
+    u8 unkData2[0x4f6];
     DatHeroEquipment heroEquip;     // 0083678c
     CalendarWork calendarWork;      // 0083679c
+    u8 unkData3[0x400];
     DatHeroPersona heroPersona;     // 00836ba8
+    u8 unkData4[0x60];
     DatPersonaWork compendium[256]; // 00836e1c
+    u8 unkData5[0x800];
     u32 flags[FLG_ARR_SIZE];        // 0083a21c. See 'g_flags.h'
     u32 unk_0083a4dc[128];          // 0083a4dc
     u32 heroMoney;                  // 0083a6dc
@@ -214,11 +218,12 @@ typedef struct DatGlobal
     u32 totalBtl;                   // 0083a6e8
     u32 savedFldMajorId;            // 0083a6ec
     u32 savedFldMinorId;            // 0083a6f0
-    u32 savedDungeonFloor;           // 0083a6f4
+    u32 savedDungeonFloor;          // 0083a6f4
     // TODO: other data
 } DatGlobal;
 
 extern DatGlobal gGlobalWork;
+extern DatPc gPcs[PC_MAX];
 
 void datSetScenarioMode(u32 scenario);
 u32 datGetScenarioMode();
