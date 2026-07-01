@@ -37,7 +37,8 @@ static const char* physicalConditionsString[13] =
     "The medicine cured your illness."
 };
 
-static u32 sScenarioMode; // 007cdfa4. See enum 'ScenarioMode'
+static s16 sSavedPartyIds[4]; // 007cdfa8
+static u32 sScenarioMode;     // 007cdfa4. See enum 'ScenarioMode'
 
 DatGlobal gGlobalWork; // 00836200
 DatPc gPcs[PC_MAX];    // 00833948
@@ -361,6 +362,42 @@ void datSetHp(u16 pcId, u16 hp)
 void datSetActiveSocialLink(u16 activeSocialLink)
 {
     gGlobalWork.heroStatus.activeSocialLink = activeSocialLink;
+}
+
+// FUN_0016eb80
+u32 datScrCmd_SAVE_PARTY()
+{
+    s16 i;
+    DatGlobal* globalWork;
+    s16* savedIds;
+
+    i = 0;
+    globalWork = &gGlobalWork; // TODO: should be a1 instead of a2
+    savedIds = sSavedPartyIds; // TODO: should be v1 instead of a1
+    for (; i < 4; i++)
+    {
+        savedIds[i] = globalWork->partyIds[i];
+    }
+
+    return true;
+}
+
+// FUN_0016ebe0
+u32 datScrCmd_RESTORE_PARTY()
+{
+    s16 i;
+    s16* savedIds;
+    DatGlobal* globalWork;
+
+    i = 0;
+    savedIds = sSavedPartyIds; // TODO: should be a1 instead of a2
+    globalWork = &gGlobalWork; // TODO: should be v1 instead of a1
+    for (; i < 4; i++)
+    {
+        globalWork->partyIds[i] = savedIds[i];
+    }
+
+    return true;
 }
 
 // FUN_0016ec40

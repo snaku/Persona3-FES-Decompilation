@@ -283,6 +283,8 @@ u8 datGetSocialLinkLevel(u16 socialLink);
 u32 datGetTotalBtl();
 DatPersonaWork* datGetPersonaByCompendium(s32 idx);
 
+u32 datScrCmd_SAVE_PARTY();
+u32 datScrCmd_RESTORE_PARTY();
 u32 datScrCmd_CLEAR_PARTY_ID();
 u32 datScrCmd_GET_PARTY_ID();
 
