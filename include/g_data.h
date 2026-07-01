@@ -7,6 +7,7 @@
 #include "datPersona.h"
 #include "datCalendar.h"
 #include "pcId.h"
+#include "g_flags.h"
 
 #define MAX_CHARACTER_LEVEL 99
 
@@ -184,6 +185,7 @@ typedef struct DatHeroStatus
 // 868 bytes
 typedef struct DatPc
 {
+    s32 unk_00;
     DatUnit unit;
     DatSocial socialStats;
     u8 unkData1[0x06];
@@ -195,9 +197,24 @@ typedef struct DatPc
     u8 unkData3[0x297]; // TODO
 } DatPc;
 
-extern DatPc gPcs[PC_MAX - 1];
+// at least 28064 bytes
+typedef struct DatGlobal
+{
+    DatPc pcs[PC_MAX];              // 00833948
+    DatUnit heroUnit;               // 00836224
+    DatHeroStatus heroStatus;       // 00836260
+    DatHeroEquipment heroEquip;     // 0083678c
+    CalendarWork calendarWork;      // 0083679c
+    DatHeroPersona heroPersona;     // 00836ba8
+    DatPersonaWork compendium[256]; // 00836e1c
+    u32 flags[FLG_ARR_SIZE];        // 0083a21c. See 'g_flags.h'
+    u32 unk_0083a4dc[128];          // 0083a4dc
+    u32 heroMoney;                  // 0083a6dc
+    s16 partyIds[4];                // 0083a6e0
+    // TODO: other data
+} DatGlobal;
 
-extern DatHeroPersona gHeroPersona;
+extern DatGlobal gGlobalWork;
 
 void datSetScenarioMode(u32 scenario);
 u32 datGetScenarioMode();
@@ -215,7 +232,7 @@ void datClearBadStatus(u16 pcId, u32 flags);
 u32 datGetExpUntilNextLevel(u16 pcId);
 u8 datDidCharacterLevelUp(u16 pcId, u32 expGain);
 void datSetAiTactic(u16 pcId, u8 aiTacticId);
-u16 datGetPartyId(s32 idx);
+s16 datGetPartyId(s32 idx);
 u8 datGetAiTactic(u16 pcId);
 void datSetPhysicalCondition(u16 pcId, u16 physicalCondition);
 void datSetFatigueCounter(u16 pcId, u16 fatigueCounter);

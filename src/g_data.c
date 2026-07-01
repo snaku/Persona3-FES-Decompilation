@@ -40,18 +40,7 @@ static const char* physicalConditionsString[13] =
 
 static u32 sScenarioMode; // 007cdfa4. See enum 'ScenarioMode'
 
-DatPc gPcs[PC_MAX - 1];
-
-static DatUnit sHeroUnit;               // 00836224
-static DatHeroStatus sHeroStatus;       // 00836260
-static DatHeroEquipment sHeroEquip;     // 0083678c
-static CalendarWork sCalendarWork;      // 0083679c
-DatHeroPersona gHeroPersona;            // 00836ba8
-static DatPersonaWork sCompendium[256]; // 00836e1c
-
-static u32 gFlags[FLG_ARR_SIZE]; // 0083a21c. See 'flags.h' !!!
-static u32 gIUnkArr[128];        // 0083a4dc
-
+DatGlobal gGlobalWork; // 00833948
 
 void FUN_00172890();
 void FUN_00172e10();
@@ -61,7 +50,7 @@ void FUN_0016f3e0(u32 idx, u32 value)
 {
     K_ASSERT(idx <= 127, 2007);
 
-    gIUnkArr[idx] = value;
+    gGlobalWork.unk_0083a4dc[idx] = value;
 }
 
 // FUN_0016c860
@@ -69,15 +58,15 @@ u16 datGetPersonaId(u16 pcId)
 {
     if (IS_HERO(pcId))
     {
-        if (gHeroPersona.equippedPersona < ARRAY_SIZE(gHeroPersona.personas))
+        if (gGlobalWork.heroPersona.equippedPersona < ARRAY_SIZE(gGlobalWork.heroPersona.personas))
         {
-            return gHeroPersona.personas[gHeroPersona.equippedPersona].id;
+            return gGlobalWork.heroPersona.personas[gGlobalWork.heroPersona.equippedPersona].id;
         }
 
         K_ASSERT(false, 633);
     }
 
-    return gPcs[pcId].persona.id;
+    return gGlobalWork.pcs[pcId].persona.id;
 }
 
 // FUN_0016cd60
@@ -85,12 +74,12 @@ DatUnit* datGetUnit(s16 pcId)
 {
     if (IS_HERO(pcId))
     {
-        return &sHeroUnit;
+        return &gGlobalWork.heroUnit;
     }
 
     K_ASSERT(pcId < PC_MAX, 737);
 
-    return &gPcs[pcId].unit;
+    return &gGlobalWork.pcs[pcId].unit;
 }
 
 // FUN_0016cdf0
@@ -98,20 +87,20 @@ void datInitUnit(u16 pcId)
 {
     if (IS_HERO(pcId))
     {
-        memset(&sHeroUnit, 0, sizeof(DatUnit));
+        memset(&gGlobalWork.heroUnit, 0, sizeof(DatUnit));
 
-        sHeroUnit.aiTactic = AI_TACTIC_ACT_FREELY;
-        sHeroUnit.id = PC_HERO;
-        sHeroUnit.flags = UNIT_FLAG_ACTIVE;
+        gGlobalWork.heroUnit.aiTactic = AI_TACTIC_ACT_FREELY;
+        gGlobalWork.heroUnit.id = PC_HERO;
+        gGlobalWork.heroUnit.flags = UNIT_FLAG_ACTIVE;
 
         return;
     }
 
-    memset(&gPcs[pcId].unit, 0, sizeof(DatUnit));
+    memset(&gGlobalWork.pcs[pcId].unit, 0, sizeof(DatUnit));
 
-    gPcs[pcId].unit.id = pcId;
-    gPcs[pcId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
-    gPcs[pcId].unit.flags = UNIT_FLAG_ACTIVE;
+    gGlobalWork.pcs[pcId].unit.id = pcId;
+    gGlobalWork.pcs[pcId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
+    gGlobalWork.pcs[pcId].unit.flags = UNIT_FLAG_ACTIVE;
 }
 
 // FUN_0016c470
@@ -119,10 +108,10 @@ u8 datGetLevel(u16 pcId)
 {
     if (IS_HERO(pcId))
     {
-        return datCalcGetLevel(&sHeroUnit);
+        return datCalcGetLevel(&gGlobalWork.heroUnit);
     }
 
-    return datCalcGetLevel(&gPcs[pcId].unit);
+    return datCalcGetLevel(&gGlobalWork.pcs[pcId].unit);
 }
 
 // FUN_0016c970
@@ -130,10 +119,10 @@ u32 datGetBadStatusNoDown(u16 pcId)
 {
     if (IS_HERO(pcId))
     {
-        return datCalcGetBadStatusNoDown(&sHeroUnit);
+        return datCalcGetBadStatusNoDown(&gGlobalWork.heroUnit);
     }
 
-    return datCalcGetBadStatusNoDown(&gPcs[pcId].unit);
+    return datCalcGetBadStatusNoDown(&gGlobalWork.pcs[pcId].unit);
 }
 
 // FUN_0016d8b0
@@ -141,11 +130,11 @@ void datSetBadStatus(u16 pcId, u32 flags)
 {
     if (IS_HERO(pcId))
     {
-        datCalcSetBadStatus(&sHeroUnit, flags);
+        datCalcSetBadStatus(&gGlobalWork.heroUnit, flags);
         return;
     }
 
-    datCalcSetBadStatus(&gPcs[pcId].unit, flags);
+    datCalcSetBadStatus(&gGlobalWork.pcs[pcId].unit, flags);
 }
 
 // FUN_0016d980
@@ -153,11 +142,11 @@ void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter)
 {
     if (IS_HERO(pcId))
     {
-        sHeroStatus.physicalState.oldFatigueCounter = oldFatigueCounter;
+        gGlobalWork.heroStatus.physicalState.oldFatigueCounter = oldFatigueCounter;
         return;
     }
 
-    gPcs[pcId].physicalState.oldFatigueCounter = oldFatigueCounter;
+    gGlobalWork.pcs[pcId].physicalState.oldFatigueCounter = oldFatigueCounter;
 }
 
 // FUN_0016d9d0
@@ -165,18 +154,18 @@ void datClearBadStatus(u16 pcId, u32 flags)
 {
     if (IS_HERO(pcId))
     {
-        datCalcClearBadStatus(&sHeroUnit, flags);
+        datCalcClearBadStatus(&gGlobalWork.heroUnit, flags);
         return;
     }
 
-    datCalcClearBadStatus(&gPcs[pcId].unit, flags);
+    datCalcClearBadStatus(&gGlobalWork.pcs[pcId].unit, flags);
 }
 
 // FUN_0016d2f0
 u32 datGetExpUntilNextLevel(u16 pcId)
 {
     u32 nextExpTmp;
-    u32 nextExp = sHeroStatus.nextExp;
+    u32 nextExp = gGlobalWork.heroStatus.nextExp;
     DatPersonaWork* persona;
     u8 i;
 
@@ -201,7 +190,7 @@ u32 datGetExpUntilNextLevel(u16 pcId)
     K_ASSERT(i != 0 && i < MAX_CHARACTER_LEVEL, 876);
 
     nextExp = sPlayerExpThreshold[i];
-    nextExpTmp = sHeroStatus.nextExp;
+    nextExpTmp = gGlobalWork.heroStatus.nextExp;
 
     nextExp -= nextExpTmp;
 
@@ -217,12 +206,12 @@ u8 datDidCharacterLevelUp(u16 pcId, u32 expGain)
 
     if (IS_HERO(pcId))
     {
-        sHeroStatus.nextExp += expGain;
+        gGlobalWork.heroStatus.nextExp += expGain;
         count = 0;
 
         for (i = 0; i < ARRAY_SIZE(sPlayerExpThreshold); i++)
         {
-            if (sHeroStatus.nextExp < sPlayerExpThreshold[i]) break;
+            if (gGlobalWork.heroStatus.nextExp < sPlayerExpThreshold[i]) break;
             
             count++;
         }
@@ -247,15 +236,15 @@ void datSetAiTactic(u16 pcId, u8 aiTacticId)
 
     if (IS_HERO(pcId))
     {
-        sHeroUnit.aiTactic = aiTacticId;
+        gGlobalWork.heroUnit.aiTactic = aiTacticId;
         return;
     }
 
-    gPcs[pcId].unit.aiTactic = aiTacticId;
+    gGlobalWork.pcs[pcId].unit.aiTactic = aiTacticId;
 }
 
 // FUN_0016dd60
-u16 datGetPartyId(s32 idx)
+s16 datGetPartyId(s32 idx)
 {
     // TODO
 
@@ -267,21 +256,21 @@ u8 datGetAiTactic(u16 pcId)
 {
     if (IS_HERO(pcId))
     {
-        return sHeroUnit.aiTactic;
+        return gGlobalWork.heroUnit.aiTactic;
     }
 
-    return gPcs[pcId].unit.aiTactic;
+    return gGlobalWork.pcs[pcId].unit.aiTactic;
 }
 
 // FUN_0016d6b0
 void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
 {
-    u16 currentPhysicalCondition = sHeroStatus.physicalState.physicalCondition;
+    u16 currentPhysicalCondition = gGlobalWork.heroStatus.physicalState.physicalCondition;
     u16 oldFatigueCounter;
 
     if (!IS_HERO(pcId))
     {
-        currentPhysicalCondition = gPcs[pcId].physicalState.physicalCondition;
+        currentPhysicalCondition = gGlobalWork.pcs[pcId].physicalState.physicalCondition;
     }
 
     if (currentPhysicalCondition != physicalCondition)
@@ -307,11 +296,11 @@ void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
     if (currentPhysicalCondition == PHYSICAL_CONDITION_TIRED && 
         physicalCondition != PHYSICAL_CONDITION_TIRED)
     {
-        oldFatigueCounter = sHeroStatus.physicalState.oldFatigueCounter;
+        oldFatigueCounter = gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
 
         if (!IS_HERO(pcId))
         {
-            oldFatigueCounter = gPcs[pcId].physicalState.oldFatigueCounter;
+            oldFatigueCounter = gGlobalWork.pcs[pcId].physicalState.oldFatigueCounter;
         }
 
         datSetFatigueCounter(pcId, oldFatigueCounter);
@@ -321,11 +310,11 @@ void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
 
     if (!IS_HERO(pcId))
     {
-        gPcs[pcId].physicalState.physicalCondition = physicalCondition;
-        currentPhysicalCondition = sHeroStatus.physicalState.physicalCondition;
+        gGlobalWork.pcs[pcId].physicalState.physicalCondition = physicalCondition;
+        currentPhysicalCondition = gGlobalWork.heroStatus.physicalState.physicalCondition;
     }
 
-    sHeroStatus.physicalState.physicalCondition = currentPhysicalCondition;
+    gGlobalWork.heroStatus.physicalState.physicalCondition = currentPhysicalCondition;
 }
 
 // FUN_0016d930
@@ -333,11 +322,11 @@ void datSetFatigueCounter(u16 pcId, u16 fatigueCounter)
 {
     if (IS_HERO(pcId))
     {
-        sHeroStatus.physicalState.fatigueCounter = fatigueCounter;
+        gGlobalWork.heroStatus.physicalState.fatigueCounter = fatigueCounter;
         return;
     }
 
-    gPcs[pcId].physicalState.fatigueCounter = fatigueCounter;
+    gGlobalWork.pcs[pcId].physicalState.fatigueCounter = fatigueCounter;
 }
 
 void datSetHp(u16 pcId, u16 hp)
@@ -346,47 +335,47 @@ void datSetHp(u16 pcId, u16 hp)
 
     if (!IS_HERO(pcId))
     {
-        gPcs[pcId].unit.hp = hp;
-        tmp = sHeroUnit.hp;
+        gGlobalWork.pcs[pcId].unit.hp = hp;
+        tmp = gGlobalWork.heroUnit.hp;
     }
 
-    sHeroUnit.hp = tmp;
+    gGlobalWork.heroUnit.hp = tmp;
 }
 
 // FUN_0016e920
 void datSetActiveSocialLink(u16 activeSocialLink)
 {
-    sHeroStatus.activeSocialLink = activeSocialLink;
+    gGlobalWork.heroStatus.activeSocialLink = activeSocialLink;
 }
 
 // FUN_0016ef20
 s16 datGetDaysSinceApr5()
 {
-    return sCalendarWork.daysSinceApr5;
+    return gGlobalWork.calendarWork.daysSinceApr5;
 }
 
 // FUN_0016ef30
 s8 datGetTime()
 {
-    return sCalendarWork.time;
+    return gGlobalWork.calendarWork.time;
 }
 
 // FUN_0016ef40
 s16 datGetDaysSkipTarget()
 {
-    return sCalendarWork.daysSkipTarget;
+    return gGlobalWork.calendarWork.daysSkipTarget;
 }
 
 // FUN_0016ef50
 s8 datGetTimeSkipTarget()
 {
-    return sCalendarWork.timeSkipTarget;
+    return gGlobalWork.calendarWork.timeSkipTarget;
 }
 
 // FUN_0016ef60
 u32 datGetSkipToTarget()
 {
-    return sCalendarWork.skipToTarget;
+    return gGlobalWork.calendarWork.skipToTarget;
 }
 
 // FUN_0016cfe0
@@ -396,11 +385,11 @@ void datSetAcademicPoint(u16 pcId, u16 academicPoint)
 
     if (IS_HERO(pcId))
     {
-        sHeroStatus.socialStats.academicPoint = academicPoint;
+        gGlobalWork.heroStatus.socialStats.academicPoint = academicPoint;
         return;
     }
 
-    gPcs[pcId].socialStats.academicPoint = academicPoint;
+    gGlobalWork.pcs[pcId].socialStats.academicPoint = academicPoint;
 }
 
 // FUN_0016d090
@@ -410,13 +399,13 @@ void datSetCharmPoint(u16 pcId, u16 charmPoint)
 
     if (IS_HERO(pcId))
     {
-        datGetCharmLevel(sHeroStatus.socialStats.charmPoint); // ??
-        sHeroStatus.socialStats.charmPoint = charmPoint;
+        datGetCharmLevel(gGlobalWork.heroStatus.socialStats.charmPoint); // ??
+        gGlobalWork.heroStatus.socialStats.charmPoint = charmPoint;
         datGetCharmLevel(charmPoint); // ??
         return;
     }
 
-    gPcs[pcId].socialStats.charmPoint = charmPoint;
+    gGlobalWork.pcs[pcId].socialStats.charmPoint = charmPoint;
 }
 
 // FUN_0016d160
@@ -426,13 +415,13 @@ void datSetCouragePoint(u16 pcId, u16 couragePoint)
 
     if (IS_HERO(pcId))
     {
-        datGetCourageLevel(sHeroStatus.socialStats.couragePoint); // ??
-        sHeroStatus.socialStats.couragePoint = couragePoint;
+        datGetCourageLevel(gGlobalWork.heroStatus.socialStats.couragePoint); // ??
+        gGlobalWork.heroStatus.socialStats.couragePoint = couragePoint;
         datGetCourageLevel(couragePoint); // ??
         return;
     }
 
-    gPcs[pcId].socialStats.couragePoint = couragePoint;
+    gGlobalWork.pcs[pcId].socialStats.couragePoint = couragePoint;
 }
 
 static inline u16 Inl_Character_GetSocialStatPoint(u16 pcId, u16 baseHeroPoint, u16 baseOtherCharPoint)
@@ -452,8 +441,8 @@ u16 datGetAcademicPoint(u16 pcId)
 {
     return Inl_Character_GetSocialStatPoint(
         pcId,
-        sHeroStatus.socialStats.academicPoint,
-        gPcs[pcId].socialStats.academicPoint);
+        gGlobalWork.heroStatus.socialStats.academicPoint,
+        gGlobalWork.pcs[pcId].socialStats.academicPoint);
 }
 
 // FUN_0016c6f0
@@ -461,29 +450,29 @@ u16 datGetCharmPoint(u16 pcId)
 {
     return Inl_Character_GetSocialStatPoint(
         pcId,
-        sHeroStatus.socialStats.charmPoint,
-        gPcs[pcId].socialStats.charmPoint);
+        gGlobalWork.heroStatus.socialStats.charmPoint,
+        gGlobalWork.pcs[pcId].socialStats.charmPoint);
 }
 
 u16 datGetCouragePoint(u16 pcId)
 {
     return Inl_Character_GetSocialStatPoint(
         pcId,
-        sHeroStatus.socialStats.couragePoint,
-        gPcs[pcId].socialStats.couragePoint);
+        gGlobalWork.heroStatus.socialStats.couragePoint,
+        gGlobalWork.pcs[pcId].socialStats.couragePoint);
 }
 
 // TODO
 void FUN_0016ca90(u16 pcId, u16 param_2)
 {
-    u16 oldFatigueCounter = sHeroStatus.physicalState.oldFatigueCounter;
-    u16 fatigueCounter = sHeroStatus.physicalState.fatigueCounter;
+    u16 oldFatigueCounter = gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
+    u16 fatigueCounter = gGlobalWork.heroStatus.physicalState.fatigueCounter;
     s32 uVar3;
 
     if (!IS_HERO(pcId))
     {
-        oldFatigueCounter = gPcs[pcId].physicalState.oldFatigueCounter;
-        fatigueCounter = gPcs[pcId].physicalState.fatigueCounter;
+        oldFatigueCounter = gGlobalWork.pcs[pcId].physicalState.oldFatigueCounter;
+        fatigueCounter = gGlobalWork.pcs[pcId].physicalState.fatigueCounter;
     }
 
     uVar3 = fatigueCounter + param_2;
@@ -507,7 +496,7 @@ u32 datGetNextExp(u16 pcId)
 
     if (IS_HERO(pcId))
     {
-        return sHeroStatus.nextExp;
+        return gGlobalWork.heroStatus.nextExp;
     }
 
     persona = datPersonaGetByPcId(pcId);
@@ -521,22 +510,22 @@ u16 datGetPhysicalCondition(u16 pcId)
 {
     if (IS_HERO(pcId))
     {
-        return sHeroStatus.physicalState.physicalCondition;
+        return gGlobalWork.heroStatus.physicalState.physicalCondition;
     }
 
-    return gPcs[pcId].physicalState.physicalCondition;
+    return gGlobalWork.pcs[pcId].physicalState.physicalCondition;
 }
 
 // FUN_0016dd40
 u16 datGetActiveSocialLink()
 {
-    return sHeroStatus.activeSocialLink;
+    return gGlobalWork.heroStatus.activeSocialLink;
 }
 
 // FUN_0016dba0
 u8 datGetSocialLinkLevel(u16 socialLink)
 {
-    return sHeroStatus.socialLinkStat[socialLink];
+    return gGlobalWork.heroStatus.socialLinkStat[socialLink];
 }
 
 // FUN_0016e100
@@ -544,7 +533,7 @@ u8 datSocialLinkLevelIsNotZero(u16 socialLink)
 {
     K_ASSERT(socialLink > SOCIAL_LINK_SEES && socialLink < SOCIAL_LINK_NYX_TEAM, 1429);
 
-    return sHeroStatus.socialLinkStat[socialLink] > 0;
+    return gGlobalWork.heroStatus.socialLinkStat[socialLink] > 0;
 }
 
 // FUN_0016cb80
@@ -552,10 +541,10 @@ u16 datGetEquipmentIdx(u16 pcId, u16 equipmentType)
 {
     if (IS_HERO(pcId))
     {
-        return sHeroEquip.equipmentsIdx[equipmentType];
+        return gGlobalWork.heroEquip.equipmentsIdx[equipmentType];
     }
 
-    return gPcs[pcId].equipmentsIdx[equipmentType];
+    return gGlobalWork.pcs[pcId].equipmentsIdx[equipmentType];
 }
 
 // FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags
@@ -573,14 +562,14 @@ void datSetDaysSinceApr5(s16 daysSinceApr5)
     datSetFlag(FLG_DAY_IS_SUNDAY, false);
     datSetFlag(FLG_DAY_IS_DAYOFF, false);
 
-    if (daysSinceApr5 != sCalendarWork.daysSinceApr5)
+    if (daysSinceApr5 != gGlobalWork.calendarWork.daysSinceApr5)
     {
         FUN_00172890(); 
         FUN_00172e10();
         datSetFlag(2444, false);
     }
 
-    sCalendarWork.daysSinceApr5 = daysSinceApr5;
+    gGlobalWork.calendarWork.daysSinceApr5 = daysSinceApr5;
 
     currentWeekDay = datGetCurrentWeekDay();
     switch (currentWeekDay)
@@ -604,25 +593,25 @@ void datSetDaysSinceApr5(s16 daysSinceApr5)
 // FUN_0016f150
 void datSetTime(s8 time)
 {
-    sCalendarWork.time = time;
+    gGlobalWork.calendarWork.time = time;
 }
 
 // FUN_0016f160
 void datSetDaysSkipTarget(s16 days)
 {
-    sCalendarWork.daysSkipTarget = days;
+    gGlobalWork.calendarWork.daysSkipTarget = days;
 }
 
 // FUN_0016f170
 void datSetTimeSkipTarget(s8 time)
 {
-    sCalendarWork.timeSkipTarget = time;
+    gGlobalWork.calendarWork.timeSkipTarget = time;
 }
 
 // FUN_0016f180
 void datSetSkipToTarget(u32 val)
 {
-    sCalendarWork.skipToTarget = val;
+    gGlobalWork.calendarWork.skipToTarget = val;
 }
 
 // FUN_0016f190
@@ -652,11 +641,11 @@ void datSetFlag(s32 bit, u8 enabled)
     
     if (enabled)
     {
-        gFlags[idx] |= mask;
+        gGlobalWork.flags[idx] |= mask;
         return;
     }
 
-    gFlags[idx] &= ~mask;
+    gGlobalWork.flags[idx] &= ~mask;
 }
 
 // FUN_0016f2e0
@@ -666,7 +655,7 @@ void datClearFlagAll()
     u32* flags;
 
     i = 0;
-    flags = gFlags;
+    flags = gGlobalWork.flags;
     for (; i < FLG_ARR_SIZE; i++)
     {
         flags[i] = 0;
@@ -684,11 +673,11 @@ u16 datGetEquipmentId(u16 pcId, u16 equipmentIdx)
     }
     else if (IS_HERO(pcId))
     {
-        return sHeroEquip.equipments[equipmentIdx].id;
+        return gGlobalWork.heroEquip.equipments[equipmentIdx].id;
     }
     else if (pcId <= 255)
     {
-        return gPcs[pcId].equipments[equipmentIdx].id;
+        return gGlobalWork.pcs[pcId].equipments[equipmentIdx].id;
     }
 
     // return (&DAT_007fd6c8 + equipmentIdx * 0x14 + pcId * 0x364);
@@ -703,11 +692,11 @@ u8 datGetEquipmentEffect(u16 pcId, u16 equipmentIdx)
     }
     else if (IS_HERO(pcId))
     {
-        return sHeroEquip.equipments[equipmentIdx].effect;
+        return gGlobalWork.heroEquip.equipments[equipmentIdx].effect;
     }
     else if (pcId <= 255)
     {
-        return gPcs[pcId].equipments[equipmentIdx].effect;
+        return gGlobalWork.pcs[pcId].equipments[equipmentIdx].effect;
     }
 
     // return (equpementIdx * 0x14 + pcId * 0x364 + 0x7fd6d1);
@@ -729,19 +718,19 @@ void datInitPersona(u32 pcId)
 {
     if (IS_HERO(pcId))
     {
-        gHeroPersona.equippedPersona = -1;
-        memset(gHeroPersona.personas, 0, sizeof(gHeroPersona.personas));
+        gGlobalWork.heroPersona.equippedPersona = -1;
+        memset(gGlobalWork.heroPersona.personas, 0, sizeof(gGlobalWork.heroPersona.personas));
 
         return;
     }
 
-    memset(&gPcs[pcId].persona, 0, sizeof(DatPersonaWork));
+    memset(&gGlobalWork.pcs[pcId].persona, 0, sizeof(DatPersonaWork));
 }
 
 // FUN_00175c70
 void datCompendiumInit()
 {
-    memset(sCompendium, 0, sizeof(sCompendium));
+    memset(gGlobalWork.compendium, 0, sizeof(gGlobalWork.compendium));
 }
 
 static inline u16 Inl_Character_GetSocialStatLevel(u16 point, const u16* threshold, u32 size)
@@ -777,12 +766,12 @@ DatPersonaWork* datGetPersonaByCompendium(s32 idx)
 {
     K_ASSERT(idx > 0 && idx < 256, 6177);
 
-    if (!(sCompendium[idx].flags & PERSONA_FLAG_VALID))
+    if (!(gGlobalWork.compendium[idx].flags & PERSONA_FLAG_VALID))
     {
         return NULL;
     }
 
-    return &sCompendium[idx];
+    return &gGlobalWork.compendium[idx];
 }
 
 // FUN_0017d7f0

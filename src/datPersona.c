@@ -12,7 +12,7 @@ u8 datPersonaGetLevel(DatPersonaWork* persona)
 // FUN_00173300
 u8 datPersonaGetLevelByPcId(u16 pcId)
 {
-    DatPersonaWork* persona = datPersonaGetPersonaByPcId(pcId);
+    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
     return persona->level;
 }
 
@@ -31,7 +31,7 @@ u16* datPersonaGetSkills(DatPersonaWork* persona)
 // FUN_00173380
 u16* datPersonaGetSkillsByPcId(u16 pcId)
 {
-    DatPersonaWork* persona = datPersonaGetPersonaByPcId(pcId);
+    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
 
     return persona->skills;
 }
@@ -72,7 +72,7 @@ u8 datPersonaGetBonusStat(DatPersonaWork* persona, u16 statId)
 // FUN_00173b60
 void datPersonaSetBonusStatByPcId(u16 pcId, u16 statId, u8 amount)
 {
-    DatPersonaWork* persona = datPersonaGetPersonaByPcId(pcId);
+    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
 
     persona->bonusStats[statId] = amount;
 }
@@ -80,7 +80,7 @@ void datPersonaSetBonusStatByPcId(u16 pcId, u16 statId, u8 amount)
 // FUN_00173bb0
 void datPersonaAddToBonusStatByPcId(u16 pcId, u16 statId, s8 amount)
 {
-    DatPersonaWork* persona = datPersonaGetPersonaByPcId(pcId);
+    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
 
     persona->bonusStats[statId] += amount;
 }
@@ -136,13 +136,13 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId)
 
     if (IS_HERO(pcId))
     {
-        persona = datPersonaGetHeroPersona(gHeroPersona.equippedPersona);
+        persona = datPersonaGetHeroPersona(gGlobalWork.heroPersona.equippedPersona);
     }
     else 
     {
         K_ASSERT(pcId < PC_MAX, 779);
 
-        persona = &gPcs[pcId].persona;
+        persona = &gGlobalWork.pcs[pcId].persona;
     }
 
     K_ASSERT(persona != NULL, 783);
@@ -153,7 +153,7 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId)
 // FUN_00174960
 u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx)
 {
-    return (gHeroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
+    return (gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
 }
 
 // FUN_00174a90
@@ -173,7 +173,7 @@ DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx)
     }
     else 
     {
-        persona = &gHeroPersona.personas[heroPersonaIdx];
+        persona = &gGlobalWork.heroPersona.personas[heroPersonaIdx];
     }
     
     return persona;
@@ -182,7 +182,7 @@ DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx)
 // FUN_001757f0
 void datPersonaClearHeroPersonas()
 {
-    memset(gHeroPersona.personas, 0, sizeof(gHeroPersona.personas));
+    memset(gGlobalWork.heroPersona.personas, 0, sizeof(gGlobalWork.heroPersona.personas));
 }
 
 // FUN_001764b0
