@@ -439,6 +439,14 @@ u32 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
     return true;
 }
 
+// FUN_001c5460
+u32 K_Cmd_GET_BGM()
+{
+    scrSetIntReturnVal(H_Snd_GetCurrentBgmId());
+
+    return true;
+}
+
 // FUN_001c54a0
 u32 K_Cmd_PLAY_BGM()
 {
