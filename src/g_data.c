@@ -416,6 +416,14 @@ u32 datScrCmd_GET_PARTY_ID()
     return true;
 }
 
+// FUN_0016edd0
+u32 datScrCmd_GET_MONEY()
+{
+    scrSetIntReturnVal(gGlobalWork.heroMoney);
+
+    return true;
+}
+
 // FUN_0016ef20
 s16 datGetDaysSinceApr5()
 {

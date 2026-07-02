@@ -455,6 +455,14 @@ u32 K_Cmd_PLAY_BGM()
     return true;
 }
 
+// FUN_001c5510
+u32 K_Cmd_STOP_BGM_FADE()
+{
+    H_Snd_StopBgmFade(scrGetIntPara(0));
+
+    return true;
+}
+
 // FUN_001c56a0
 u32 K_Cmd_GET_NPC_COUNT()
 {

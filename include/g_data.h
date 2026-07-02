@@ -287,5 +287,6 @@ u32 datScrCmd_SAVE_PARTY();
 u32 datScrCmd_RESTORE_PARTY();
 u32 datScrCmd_CLEAR_PARTY_ID();
 u32 datScrCmd_GET_PARTY_ID();
+u32 datScrCmd_GET_MONEY();
 
 #endif // G_DATA_H
