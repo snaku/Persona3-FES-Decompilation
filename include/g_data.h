@@ -242,6 +242,8 @@ u32 datGetExpUntilNextLevel(u16 pcId);
 u8 datDidCharacterLevelUp(u16 pcId, u32 expGain);
 void datSetAiTactic(u16 pcId, u8 aiTacticId);
 u32 datGetMoney();
+void datSetMoney(u32 money);
+u32 datAddMoney(s32 amount);
 s16 datGetPartyId(s32 idx);
 void datSetPartyId(s32 idx, s16 pcId);
 u8 datGetAiTactic(u16 pcId);

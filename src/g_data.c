@@ -261,12 +261,6 @@ s16 datGetPartyId(s32 idx)
     return gGlobalWork.partyIds[idx];
 }
 
-// FUN_0016e990
-void datSetPartyId(s32 idx, s16 pcId)
-{
-    gGlobalWork.partyIds[idx] = pcId;
-}
-
 // FUN_0016dd80
 u8 datGetAiTactic(u16 pcId)
 {
@@ -362,6 +356,42 @@ void datSetHp(u16 pcId, u16 hp)
 void datSetActiveSocialLink(u16 activeSocialLink)
 {
     gGlobalWork.heroStatus.activeSocialLink = activeSocialLink;
+}
+
+// FUN_0016e930
+void datSetMoney(u32 money)
+{
+    K_ASSERT(money <= 9999999, 1674);
+
+    gGlobalWork.heroMoney = money;
+}
+
+// FUN_0016e990
+void datSetPartyId(s32 idx, s16 pcId)
+{
+    gGlobalWork.partyIds[idx] = pcId;
+}
+
+// FUN_0016e9b0
+u32 datAddMoney(s32 amount)
+{
+    s32 finalMoney;
+
+    finalMoney = amount + gGlobalWork.heroMoney;
+    if (finalMoney > 9999999)
+    {
+        finalMoney = 9999999;
+    }
+    else if (finalMoney < 0)
+    {
+        finalMoney = 0;
+    }
+
+    K_ASSERT((u32)finalMoney <= 9999999, 1674);
+
+    gGlobalWork.heroMoney = finalMoney;
+
+    return finalMoney;
 }
 
 // FUN_0016eb80
