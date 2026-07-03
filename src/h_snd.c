@@ -32,22 +32,28 @@ s16 H_Snd_GetCurrentBgmId()
 {
     if (sBgmWork.isBgmPlaying == HSND_BGM_NOT_PLAYING)
     {
-        return BGM_ID_NONE;
+        return HSND_BGM_NONE;
     }
 
     return sBgmWork.id;
 }
 
-// FUN_00108e50
-void H_Snd_StopPlayingBgm()
+// FUN_00108f70
+void H_Snd_StopBgm()
 {
     if (sBgmWork.isBgmPlaying != HSND_BGM_NOT_PLAYING)
     {
         // FUN_0054d100(bgm.unk5);
         sBgmWork.isBgmPlaying = HSND_BGM_NOT_PLAYING;
         sBgmWork.unk4 = 0;
-        sBgmWork.id = BGM_ID_NONE;
+        sBgmWork.id = HSND_BGM_NONE;
     }
+}
+
+// FUN_00108fd0
+void H_Snd_StopBgmFade(s16 fadeDuration)
+{
+    // TODO
 }
 
 // FUN_00109180
@@ -63,7 +69,7 @@ u8 H_Snd_PlayBgm(s16 id, s32 unused)
 
     if (sBgmWork.isBgmPlaying == HSND_BGM_NOT_PLAYING)
     {
-        sBgmWork.id = BGM_ID_NONE;
+        sBgmWork.id = HSND_BGM_NONE;
     }
 
     if (id != sBgmWork.id)
