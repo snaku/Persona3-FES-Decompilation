@@ -213,7 +213,7 @@ typedef struct DatGlobal
     u8 unkData5[0x800];
     u32 flags[FLG_ARR_SIZE];        // 0083a21c. See 'g_flags.h'
     u32 unk_0083a4dc[128];          // 0083a4dc
-    u32 heroMoney;                  // 0083a6dc
+    s32 heroMoney;                  // 0083a6dc
     s16 partyIds[4];                // 0083a6e0
     u32 totalBtl;                   // 0083a6e8
     u32 savedFldMajorId;            // 0083a6ec
@@ -241,7 +241,7 @@ void datClearBadStatus(u16 pcId, u32 flags);
 u32 datGetExpUntilNextLevel(u16 pcId);
 u8 datDidCharacterLevelUp(u16 pcId, u32 expGain);
 void datSetAiTactic(u16 pcId, u8 aiTacticId);
-u32 datGetMoney();
+s32 datGetMoney();
 void datSetMoney(u32 money);
 u32 datAddMoney(s32 amount);
 s16 datGetPartyId(s32 idx);
@@ -290,5 +290,7 @@ u32 datScrCmd_RESTORE_PARTY();
 u32 datScrCmd_CLEAR_PARTY_ID();
 u32 datScrCmd_GET_PARTY_ID();
 u32 datScrCmd_GET_MONEY();
+u32 datScrCmd_ADD_MONEY();
+u32 datScrCmd_REMOVE_MONEY();
 
 #endif // G_DATA_H

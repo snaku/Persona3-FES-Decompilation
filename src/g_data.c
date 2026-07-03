@@ -250,7 +250,7 @@ void datSetAiTactic(u16 pcId, u8 aiTacticId)
 }
 
 // FUN_0016dd50
-u32 datGetMoney()
+s32 datGetMoney()
 {
     return gGlobalWork.heroMoney;
 }
@@ -450,6 +450,49 @@ u32 datScrCmd_GET_PARTY_ID()
 u32 datScrCmd_GET_MONEY()
 {
     scrSetIntReturnVal(gGlobalWork.heroMoney);
+
+    return true;
+}
+
+// FUN_0016ee00
+u32 datScrCmd_ADD_MONEY()
+{
+    s32 baseMoney;
+    s32 finalMoney;
+
+    baseMoney = gGlobalWork.heroMoney;
+    finalMoney = baseMoney + scrGetIntPara(0);
+    if (finalMoney > 9999999)
+    {
+        finalMoney = 9999999;
+    }
+
+    K_ASSERT((u32)finalMoney <= 9999999, 1674);
+
+    gGlobalWork.heroMoney = finalMoney;
+
+    return true;
+}
+
+// FUN_0016ee90
+u32 datScrCmd_REMOVE_MONEY()
+{
+    s32 baseMoney;
+    s32 finalMoney;
+
+    baseMoney = gGlobalWork.heroMoney;
+    if (baseMoney < scrGetIntPara(0))
+    {
+        finalMoney = 0;
+    }
+    else
+    {
+        finalMoney = baseMoney - scrGetIntPara(0);
+    }
+
+    K_ASSERT((u32)finalMoney <= 9999999, 1674);
+
+    gGlobalWork.heroMoney = finalMoney;
 
     return true;
 }
