@@ -1,5 +1,5 @@
 #include "h_snd.h"
-#include "g_data.h"
+#include "Main/g_data.h"
 #include "temporary.h"
 
 // 007cb2a8. See enum BgmId

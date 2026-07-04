@@ -3,8 +3,8 @@
 #include "Kosaka/k_assert.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Model/mdlManager.h"
+#include "Main/g_data.h"
 #include "h_cdvd.h"
-#include "g_data.h"
 #include "temporary.h"
 
 void* gFldScrMemory; // 007ce228

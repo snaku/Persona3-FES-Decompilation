@@ -1,5 +1,5 @@
 #include "datPersona.h"
-#include "g_data.h"
+#include "Main/g_data.h"
 #include "temporary.h"
 #include "Kosaka/k_assert.h"
 

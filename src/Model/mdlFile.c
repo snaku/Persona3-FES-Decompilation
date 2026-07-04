@@ -1,9 +1,9 @@
 #include "Model/mdlFile.h"
 #include "Model/mdlManager.h"
 #include "Model/mdlFldCharIds.h"
+#include "Main/g_data.h"
 #include "datCalc.h"
 #include "datUnit.h"
-#include "g_data.h"
 #include "temporary.h"
 
 #define MODEL_PATH "model/"

@@ -1,8 +1,8 @@
 #include "Kosaka/Field/k_unit.h"
 #include "Model/mdlManager.h"
 #include "Battle/battle.h"
+#include "Main/g_data.h"
 #include "datUnit.h"
-#include "g_data.h"
 
 FldUnitMdl gFldUnitsPcMdl[FLDUNIT_PC_MAX]; // 00871ea0
 FldUnit gFldUnitsPc[FLDUNIT_PC_MAX];       // 008717a0

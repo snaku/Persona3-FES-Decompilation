@@ -1,5 +1,5 @@
 #include "comuData.h"
-#include "g_data.h"
+#include "Main/g_data.h"
 #include "Kosaka/k_assert.h"
 
 static const char* daysStrings[CALENDAR_DAY_MAX] =

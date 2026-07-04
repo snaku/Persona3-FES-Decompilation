@@ -1,11 +1,11 @@
 #include "Kosaka/Field/k_dungeon.h"
 #include "Kosaka/k_data.h"
 #include "Kernel/Kwln/kwlnTask.h"
+#include "Main/g_data.h"
 #include "Model/mdlManager.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
 #include "h_cdvd.h"
-#include "g_data.h"
 
 KwlnTask* gDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
 Model* gDungeonTpMdl;   // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?

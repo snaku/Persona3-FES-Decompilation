@@ -1,7 +1,7 @@
 #include "Battle/btlSound.h"
 #include "Battle/battle.h"
 #include "Battle/btlPacket.h"
-#include "g_data.h"
+#include "Main/g_data.h"
 #include "h_snd.h"
 #include "h_cdvd.h"
 #include "temporary.h"

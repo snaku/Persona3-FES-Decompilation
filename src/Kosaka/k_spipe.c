@@ -1,9 +1,9 @@
 #include "Kosaka/k_spipe.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
+#include "Main/g_data.h"
 #include "rw/rwcore.h"
 #include "temporary.h"
-#include "g_data.h"
 
 static KwlnTask* sDraw3DTask; // 007ce134. Task name = "3D Draw"
 

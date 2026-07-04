@@ -2,7 +2,7 @@
 #include "Kernel/Kwln/kwln.h"
 #include "Kernel/h_malloc.h"
 #include "Kosaka/k_assert.h"
-#include "g_data.h"
+#include "Main/g_data.h"
 #include "h_pad.h"
 #include "temporary.h"
 

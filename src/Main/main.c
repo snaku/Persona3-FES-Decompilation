@@ -1,5 +1,5 @@
-#include "main.h"
-#include "Kernel/Kwln/kwlnTask.h"
+#include "Main/main.h"
+#include "Kernel/Kwln/kwln.h"
 #include "temporary.h"
 
 // FUN_00193980

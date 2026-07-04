@@ -1,4 +1,4 @@
-#include "g_data.h"
+#include "Main/g_data.h"
 #include "Kosaka/k_assert.h"
 #include "Script/scrTraceCode.h"
 #include "datCalc.h"

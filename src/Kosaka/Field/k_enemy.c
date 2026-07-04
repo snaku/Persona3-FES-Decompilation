@@ -1,5 +1,5 @@
 #include "Kosaka/Field/k_enemy.h"
-#include "g_data.h"
+#include "Main/g_data.h"
 #include "h_cdvd.h"
 #include "temporary.h"
 

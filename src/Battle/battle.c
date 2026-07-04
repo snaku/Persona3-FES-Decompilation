@@ -8,9 +8,9 @@
 #include "Script/scrTraceCode.h"
 #include "Script/scrScriptProcess.h"
 #include "Yajima/y_timeLimit.h"
-#include "admini.h"
+#include "Main/admini.h"
+#include "Main/g_data.h"
 #include "datCalc.h"
-#include "g_data.h"
 #include "g_flags.h"
 #include "temporary.h"
 

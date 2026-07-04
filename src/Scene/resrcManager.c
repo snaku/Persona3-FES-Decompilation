@@ -1,8 +1,8 @@
 #include "Scene/resrcManager.h"
-#include "rw/rwplcore.h"
+#include "Main/g_data.h"
 #include "Model/mdlManager.h"
+#include "rw/rwplcore.h"
 #include "temporary.h"
-#include "g_data.h"
 
 // FUN_003b4fc0
 ResrcManager* resrcMngCreate()
