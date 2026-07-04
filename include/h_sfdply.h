@@ -8,6 +8,12 @@ typedef struct KwlnTask KwlnTask;
 // TODO
 typedef enum
 {
+    HSFD_ORPHEUSAWAKENING = 7
+} HSfdId;
+
+// TODO
+typedef enum
+{
     HSFD_STATE_IDLE,
     HSFD_STATE_INIT = 2
 } HSfdState;
@@ -18,7 +24,7 @@ typedef struct HSfd
     u8 unkData1[0x1e4];
     s16 state;          // 0x1e4. See enum 'HSfdState'
     u8 unkData2[0x04];
-    u16 id;             // 0x1ea
+    u16 id;             // 0x1ea. See enum 'HSfdId'
     s16 unk_1ec;        // 0x1ec
     u16 unk_1ee;        // 0x1ee
     u8 unkData3[0x04];
@@ -34,6 +40,7 @@ typedef struct HSfd
 
 KwlnTask* H_SfdPlay_CreateTaskIdle(KwlnTask* parent);
 
+u32 H_SfdPlayCmd_CALL_MOVIE();
 u32 H_SfdPlayCmd_MOVIE_SYNC();
 
 #endif

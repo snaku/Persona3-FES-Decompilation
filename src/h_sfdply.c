@@ -43,13 +43,56 @@ KwlnTask* H_SfdPlay_CreateTaskIdle(KwlnTask* parent)
         return NULL;
     }
 
-    work->id = 7;
+    work->id = HSFD_ORPHEUSAWAKENING;
     work->isStart = false;
     work->unk_1fc = 0;
 
     sSfdPlayTask = task;
 
     return task;
+}
+
+// FUN_0010be60
+u32 H_SfdPlayCmd_CALL_MOVIE()
+{
+    HSfd* work;
+    KwlnTask* task;
+    s32 id;
+
+    id = scrGetIntPara(0);
+
+    if (sSfdPlayTask == NULL)
+    {
+        work = RwCalloc(1, sizeof(HSfd), rwMEMHINTDUR_GLOBAL);
+        if (work != NULL)
+        {
+            task = kwlnTaskCreate(NULL,
+                                  "H_SfdPlay",
+                                  7383,
+                                  H_SfdPlay_UpdateTask,
+                                  H_SfdPlay_DestroyTask,
+                                  work);
+
+            if (task != NULL)
+            {
+                work->id = HSFD_ORPHEUSAWAKENING;
+                work->isStart = false;
+                work->unk_1fc = 0;
+
+                sSfdPlayTask = task;
+            }
+        }
+    }
+
+    work = (HSfd*)sSfdPlayTask->workData;
+    work->id = id;
+    work->unk_1ee = 0;
+    work->unk_204 = 0;
+    work->unk_208 = 0;
+    work->state = HSFD_STATE_INIT;
+    work->unk_20c = 0;
+
+    return true;
 }
 
 // FUN_0010bf40
