@@ -1,5 +1,5 @@
+#include "Main/Battle/Data/datCalc.h"
 #include "Main/g_data.h"
-#include "datCalc.h"
 #include "Kosaka/k_assert.h"
 #include "Effect/effMisc.h"
 

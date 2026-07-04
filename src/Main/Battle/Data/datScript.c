@@ -1,4 +1,4 @@
-#include "datScript.h"
+#include "Main/Battle/Data/datScript.h"
 
 static ScrData* sUnk_007ce514; // doesn't looks like it's used
 

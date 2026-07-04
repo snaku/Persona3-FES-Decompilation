@@ -9,7 +9,7 @@
 #include "Effect/effMisc.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
-#include "datCalc.h"
+#include "Main/Battle/Data/datCalc.h"
 #include "temporary.h"
 
 #define BTLACTION_IDMAX 0xFFFFFFF

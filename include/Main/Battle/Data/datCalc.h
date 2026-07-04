@@ -1,8 +1,6 @@
 #ifndef DATCALC_H
 #define DATCALC_H
 
-#include "datPersona.h"
-
 #define DATCALC_RAND_PERCENT 100
 
 #define PASSIVESKILL_FLAG_REGENERATE1   (1 << 0) // 0x01

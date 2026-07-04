@@ -1,4 +1,4 @@
-#include "datPersona.h"
+#include "Main/Battle/Data/datPersona.h"
 #include "Main/g_data.h"
 #include "temporary.h"
 #include "Kosaka/k_assert.h"

@@ -2,7 +2,7 @@
 #include "Model/mdlManager.h"
 #include "Battle/battle.h"
 #include "Main/g_data.h"
-#include "datUnit.h"
+#include "Main/Battle/Data/datUnit.h"
 
 FldUnitMdl gFldUnitsPcMdl[FLDUNIT_PC_MAX]; // 00871ea0
 FldUnit gFldUnitsPc[FLDUNIT_PC_MAX];       // 008717a0

@@ -1,7 +1,7 @@
 #include "Main/g_data.h"
+#include "Main/Battle/Data/datCalc.h"
 #include "Kosaka/k_assert.h"
 #include "Script/scrTraceCode.h"
-#include "datCalc.h"
 #include "temporary.h"
 
 // 005dc050

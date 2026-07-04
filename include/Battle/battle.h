@@ -5,8 +5,8 @@
 #include "Battle/btlOrder.h"
 #include "Battle/btlPacket.h"
 #include "Battle/btlCamera.h"
+#include "Main/Battle/Data/datUnit.h"
 #include "rw/rwplcore.h"
-#include "datUnit.h"
 
 #define BTL_FLAG_ACTIVE     (1 << 0)  // 0x01. Currently in a battle. Destroy 'battle' task if not set
 #define BTL_FLAG_UNK04      (1 << 2)  // 0x04
@@ -23,6 +23,7 @@
 #define BTL_MAXACTIONS 12
 
 typedef struct KwlnTask KwlnTask;
+typedef struct HCdvd HCdvd;
 typedef struct BtlAction BtlAction;
 typedef struct BtlUnit BtlUnit;
 typedef struct BtlPacket BtlPacket;
@@ -77,14 +78,16 @@ typedef struct Battle
     u16 fldMinorId;                                // 0x246
     BtlOrder order;                                // 0x248
     BtlStateWork stateWork;                        // 0x2b4
-    u8 unkData5[0x8e5];
+    u8 unkData5[0x854];
+    HCdvd* bossPakCdvd;                            // 0xb14
+    u8 unkData6[0x8d];
     u8 hasNoStartInfo;                             // 0xba5
     BtlStartInfo startInfo;                        // 0xba8
-    u8 unkData6[0x13c];
+    u8 unkData7[0x13c];
     KwlnTask* btlTask;                             // 0xd18
-    u8 unkData7[0x10];
+    u8 unkData8[0x10];
     KwlnTask* btlPanelTask;                        // 0xd2c
-    u8 unkData8[0x40];
+    u8 unkData9[0x40];
 } Battle;
 
 typedef enum
@@ -101,6 +104,7 @@ typedef struct BtlBattleFlagPacket
 
 typedef enum
 {
+    
     BTLENCOUNT_REAPER = 506
 } BtlEncountId;
 

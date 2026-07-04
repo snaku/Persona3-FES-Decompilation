@@ -4,8 +4,8 @@
 #include "Battle/btlBoss.h"
 #include "Kosaka/k_view.h"
 #include "Kernel/Kwln/kwln.h"
+#include "Main/Battle/Data/datUnit.h"
 #include "Primitive/primitive.h"
-#include "datUnit.h"
 
 // 006939f0
 static const BtlCameraStateEntry sCameraStateEntries[] =

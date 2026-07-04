@@ -2,8 +2,8 @@
 #include "Model/mdlManager.h"
 #include "Model/mdlFldCharIds.h"
 #include "Main/g_data.h"
-#include "datCalc.h"
-#include "datUnit.h"
+#include "Main/Battle/Data/datCalc.h"
+#include "Main/Battle/Data/datUnit.h"
 #include "temporary.h"
 
 #define MODEL_PATH "model/"

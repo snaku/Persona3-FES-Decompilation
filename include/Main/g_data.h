@@ -3,8 +3,8 @@
 #ifndef G_DATA_H
 #define G_DATA_H
 
-#include "datUnit.h"
-#include "datPersona.h"
+#include "Main/Battle/Data/datUnit.h"
+#include "Main/Battle/Data/datPersona.h"
 #include "datCalendar.h"
 #include "pcId.h"
 #include "g_flags.h"

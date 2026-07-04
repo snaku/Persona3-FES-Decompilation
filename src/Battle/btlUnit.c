@@ -1,8 +1,8 @@
 #include "Battle/btlUnit.h"
 #include "Battle/btlPacket.h"
 #include "Battle/battle.h"
+#include "Main/Battle/Data/datUnit.h"
 #include "Model/mdlManager.h"
-#include "datUnit.h"
 
 static u32 sNextId = 1; // 007cc51c
 
