@@ -58,9 +58,16 @@ KwlnTask* gmRootCreateTask(KwlnTask* parent)
 // FUN_00266590
 void* gmRootUpdateTask(KwlnTask* gmRootTask)
 {
-    // TODO
+    gmRootUpdate();
 
-    return KWLNTASK_CONTINUE;
+    K_ASSERT(sWork != NULL, 90);
+
+    if (sWork->flags & GMROOT_FLAG_ACTIVE)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    return KWLNTASK_STOP;
 }
 
 // FUN_00266600
