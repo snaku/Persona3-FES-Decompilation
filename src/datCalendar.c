@@ -359,7 +359,7 @@ KwlnTask* clndCreateTask()
     sClndTask = clndTask;
 
     work->state = 3;
-    H_SfdPlay_CreateTask(clndTask);
+    H_SfdPlay_CreateTaskIdle(clndTask);
 
     return clndTask;
 }

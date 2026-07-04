@@ -1,4 +1,5 @@
 #include "kwln/kwlnTask.h"
+#include "Script/scrTraceCode.h"
 #include "rw/rwplcore.h"
 #include "h_sfdply.h"
 #include "temporary.h"
@@ -20,28 +21,44 @@ void H_SfdPlay_DestroyTask(KwlnTask* sfdPlayTask)
 }
 
 // FUN_0010bda0
-KwlnTask* H_SfdPlay_CreateTask(KwlnTask* calendarTask)
+KwlnTask* H_SfdPlay_CreateTaskIdle(KwlnTask* parent)
 {
-    KwlnTask* sfdPlayTask;
-    SfdPlay* sfdPlay;
+    KwlnTask* task;
+    HSfd* work;
 
-    sfdPlay = RwCalloc(1, sizeof(SfdPlay), rwMEMHINTDUR_GLOBAL);
-    if (sfdPlay == NULL)
+    work = RwCalloc(1, sizeof(HSfd), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
     {
         return NULL;
     }
 
-    sfdPlayTask = kwlnTaskCreate(calendarTask, "H_SfdPlay", 7383, H_SfdPlay_UpdateTask, H_SfdPlay_DestroyTask, sfdPlay);
-    if (sfdPlayTask == NULL)
+    task = kwlnTaskCreate(parent,
+                          "H_SfdPlay",
+                          7383,
+                          H_SfdPlay_UpdateTask,
+                          H_SfdPlay_DestroyTask,
+                          work);
+    if (task == NULL)
     {
         return NULL;
     }
 
-    sfdPlay->unk_1ea = 7;
-    sfdPlay->unk_1f4 = 0;
-    sfdPlay->unk_1fc = 0;
+    work->id = 7;
+    work->isStart = false;
+    work->unk_1fc = 0;
 
-    sSfdPlayTask = sfdPlayTask;
+    sSfdPlayTask = task;
 
-    return sfdPlayTask;
+    return task;
+}
+
+// FUN_0010bf40
+u32 H_SfdPlayCmd_MOVIE_SYNC()
+{
+    if (sSfdPlayTask == NULL)
+    {
+        return true;
+    }
+
+    return ((HSfd*)sSfdPlayTask->workData)->state == HSFD_STATE_IDLE;
 }
