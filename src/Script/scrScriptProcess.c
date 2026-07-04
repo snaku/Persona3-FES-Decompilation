@@ -1,10 +1,10 @@
 #include "Script/scrScriptProcess.h"
 #include "Script/scrTraceCode.h"
+#include "Kernel/h_malloc.h"
 #include "Kosaka/k_assert.h"
 #include "itfMesManager.h"
 #include "dds3Process.h"
 #include "h_dbprt.h"
-#include "h_malloc.h"
 #include "datScript.h"
 #include "temporary.h"
 

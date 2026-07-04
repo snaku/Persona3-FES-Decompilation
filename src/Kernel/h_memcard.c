@@ -1,11 +1,12 @@
-#include "h_memcard.h"
+#include "Kernel/h_memcard.h"
 #include "sce/libmc2.h"
 #include "sce/libdbc.h"
 
-static u_long128 sAddr[SCE_MC2_DMA_BUFFER_MAX] __attribute__((aligned(64))); // 00846b80
 static SceMc2SocketParam sSocketParam; // 00846eb0
+static u_long128 sAddr[SCE_MC2_DMA_BUFFER_MAX] __attribute__((aligned(64))); // 00846b80
 
-static s32 sSocketNo; // 007ce024
+static s32 sMemcardSeqMode; // 007ce03c
+static s32 sSocketNo;       // 007ce024
 
 // FUN_0018f100
 void H_Memcard_Init()

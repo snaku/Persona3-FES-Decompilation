@@ -1,8 +1,8 @@
-#include "kwln/kwlnTask.h"
-#include "kwln/kwln.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwln.h"
+#include "Kernel/h_malloc.h"
 #include "Kosaka/k_assert.h"
 #include "g_data.h"
-#include "h_malloc.h"
 #include "h_pad.h"
 #include "temporary.h"
 
