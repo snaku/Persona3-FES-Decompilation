@@ -1,7 +1,7 @@
 #include "Kosaka/Field/k_fldrc.h"
 #include "Kosaka/Field/k_fldFilter.h"
 #include "Kosaka/Field/k_field.h"
-#include "kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwlnTask.h"
 #include "h_cdvd.h"
 #include "temporary.h"
 
@@ -98,6 +98,14 @@ void K_Fldrc_DestroyFldFpc()
 void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
 {
     // TODO
+}
+
+// FUN_001b10f0
+u32 K_Fldrc_Init()
+{
+    // TODO
+
+    return false;
 }
 
 // FUN_001b5850

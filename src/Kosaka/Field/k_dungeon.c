@@ -1,6 +1,6 @@
 #include "Kosaka/Field/k_dungeon.h"
 #include "Kosaka/k_data.h"
-#include "kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwlnTask.h"
 #include "Model/mdlManager.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
@@ -26,6 +26,7 @@ void* K_FldDungeon_UpdateTask(KwlnTask* dungeonTask)
     return KWLNTASK_CONTINUE;
 }
 
+// FUN_001bfaf0
 void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
 {
     // TODO

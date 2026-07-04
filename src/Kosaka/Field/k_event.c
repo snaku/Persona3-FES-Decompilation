@@ -7,7 +7,7 @@
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "Model/mdlManager.h"
-#include "kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwlnTask.h"
 
 KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 

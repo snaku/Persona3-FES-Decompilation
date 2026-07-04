@@ -1,7 +1,7 @@
 #include "Kosaka/k_sequence.h"
 #include "Kosaka/Field/k_dungeon.h"
 #include "Kosaka/Field/k_field.h"
-#include "kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwlnTask.h"
 
 // FUN_001b7850
 s32 K_Seq_ExitField()

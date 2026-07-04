@@ -4,7 +4,7 @@
 #include "Script/scr.h"
 #include "Kosaka/k_command.h"
 #include "Kosaka/k_assert.h"
-#include "kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwlnTask.h"
 #include "rw/rprandom.h"
 #include "datCalendar.h"
 #include "temporary.h"

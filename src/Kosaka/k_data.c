@@ -1,7 +1,7 @@
 #include "Kosaka/k_data.h"
 #include "Kosaka/Field/k_dungeon.h"
 #include "Kosaka/k_assert.h"
-#include "kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwlnTask.h"
 #include "Model/mdlManager.h"
 #include "h_cdvd.h"
 #include "g_data.h"

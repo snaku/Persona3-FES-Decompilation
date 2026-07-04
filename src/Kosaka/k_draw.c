@@ -1,6 +1,6 @@
 #include "Kosaka/k_draw.h"
-#include "kwln/kwlnTask.h"
-#include "kwln/kwln.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwln.h"
 #include "Primitive/primitive.h"
 
 static RwRGBA sCylinderColor = {0, 168, 168, 168}; // 007cc1b8
@@ -22,6 +22,7 @@ void* K_Draw_UpdatePointTask(KwlnTask* pointTask)
     return KWLNTASK_CONTINUE;
 }
 
+// FUN_001a46c0
 void K_Draw_DestroyPointTask(KwlnTask* pointTask)
 {
     RwFree(pointTask->workData);

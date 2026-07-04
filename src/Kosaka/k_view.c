@@ -1,5 +1,5 @@
 #include "Kosaka/k_view.h"
-#include "kwln/kwln.h"
+#include "Kernel/Kwln/kwln.h"
 #include "temporary.h"
 
 // FUN_001a4580

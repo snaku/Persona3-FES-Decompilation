@@ -7,7 +7,8 @@
 #include "Battle/btlFormation.h"
 #include "Battle/btlVoice.h"
 #include "Effect/effMisc.h"
-#include "kwln/kwln.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwln.h"
 #include "datCalc.h"
 #include "temporary.h"
 

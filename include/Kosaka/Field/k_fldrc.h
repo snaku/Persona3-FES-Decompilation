@@ -16,6 +16,8 @@ void K_Fldrc_RequestFldFpc(s16 majorId, s16 minorId);
 void K_Fldrc_DestroyFldFpc();
 void K_Fldrc_001b0a20(s16 majorId, s16 minorId);
 
+u32 K_Fldrc_Init();
+
 KwlnTask* K_Fldrc_CreateFilterTask(KwlnTask* parent);
 
 #endif

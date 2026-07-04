@@ -1,6 +1,6 @@
 #include "h_fade.h"
-#include "kwln/kwlnTask.h"
-#include "kwln/kwln.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwln.h"
 #include "g_data.h"
 #include "h_cdvd.h"
 #include "h_maestro.h"

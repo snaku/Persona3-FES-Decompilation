@@ -1,5 +1,5 @@
 #include "Kosaka/Field/k_shadow.h"
-#include "kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwlnTask.h"
 #include "rw/rwcore.h"
 
 typedef struct

@@ -3,7 +3,7 @@
 #include "Battle/btlUnit.h"
 #include "Battle/btlBoss.h"
 #include "Kosaka/k_view.h"
-#include "kwln/kwln.h"
+#include "Kernel/Kwln/kwln.h"
 #include "Primitive/primitive.h"
 #include "datUnit.h"
 

@@ -1,6 +1,6 @@
 #include "h_cursor.h"
-#include "kwln/kwlnTask.h"
-#include "kwln/kwln.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwln.h"
 
 // FUN_00100230
 void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)

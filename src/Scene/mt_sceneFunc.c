@@ -1,5 +1,5 @@
 #include "Scene/mt_sceneFunc.h"
-#include "kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwlnTask.h"
 
 // FUN_003bd0b0
 void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)

@@ -1,5 +1,5 @@
 #include "Kosaka/k_misc.h"
-#include "kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwlnTask.h"
 #include "Model/mdlManager.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"

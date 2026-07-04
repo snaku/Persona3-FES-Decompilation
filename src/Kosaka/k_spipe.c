@@ -1,6 +1,6 @@
 #include "Kosaka/k_spipe.h"
-#include "kwln/kwlnTask.h"
-#include "kwln/kwln.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwln.h"
 #include "rw/rwcore.h"
 #include "temporary.h"
 #include "g_data.h"
