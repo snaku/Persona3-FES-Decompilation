@@ -6,7 +6,7 @@
 #include "Kosaka/Field/k_fldFrame.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
-#include "Model/mdlManager.h"
+#include "Graphics/Model/mdlManager.h"
 #include "Kernel/Kwln/kwlnTask.h"
 
 KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);

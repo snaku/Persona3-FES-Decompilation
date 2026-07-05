@@ -1,4 +1,4 @@
-#include "Effect/effMisc.h"
+#include "Graphics/Effect/effMisc.h"
 
 static EffRandState sRandState; // 00957bf0
 

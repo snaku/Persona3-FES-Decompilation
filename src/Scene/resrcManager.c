@@ -1,6 +1,6 @@
 #include "Scene/resrcManager.h"
 #include "Main/g_data.h"
-#include "Model/mdlManager.h"
+#include "Graphics/Model/mdlManager.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
 

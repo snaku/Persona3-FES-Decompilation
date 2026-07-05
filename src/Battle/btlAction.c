@@ -6,7 +6,7 @@
 #include "Battle/btlPacket.h"
 #include "Battle/btlFormation.h"
 #include "Battle/btlVoice.h"
-#include "Effect/effMisc.h"
+#include "Graphics/Effect/effMisc.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
 #include "Main/Battle/Data/datCalc.h"

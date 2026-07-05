@@ -1,4 +1,4 @@
-#include "Primitive/primitive.h"
+#include "Graphics/primitive.h"
 #include "Kernel/Kwln/kwln.h"
 #include "sce/eestruct.h"
 #include "temporary.h"

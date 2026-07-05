@@ -5,7 +5,7 @@
 #include "Kosaka/Field/k_fldFrame.h"
 #include "Kosaka/Field/k_sceneDraw.h"
 #include "Kosaka/Field/k_shadow.h"
-#include "Model/mdlManager.h"
+#include "Graphics/Model/mdlManager.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
 

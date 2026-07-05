@@ -1,7 +1,7 @@
 #include "Kosaka/k_draw.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
-#include "Primitive/primitive.h"
+#include "Graphics/primitive.h"
 
 static RwRGBA sCylinderColor = {0, 168, 168, 168}; // 007cc1b8
 

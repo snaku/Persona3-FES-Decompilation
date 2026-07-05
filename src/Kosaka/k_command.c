@@ -6,7 +6,7 @@
 #include "Kosaka/Field/k_field.h"
 #include "Kosaka/Field/k_fldFrame.h"
 #include "Script/scrTraceCode.h"
-#include "Model/mdlManager.h"
+#include "Graphics/Model/mdlManager.h"
 #include "Scene/resrcManager.h"
 #include "Scene/mt_scene.h"
 #include "Main/g_data.h"

@@ -2,7 +2,7 @@
 #include "Kosaka/k_data.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Main/g_data.h"
-#include "Model/mdlManager.h"
+#include "Graphics/Model/mdlManager.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
 #include "h_cdvd.h"

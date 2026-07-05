@@ -1,5 +1,5 @@
-#include "Model/mdlManager.h"
-#include "Model/mdlFile.h"
+#include "Graphics/Model/mdlManager.h"
+#include "Graphics/Model/mdlFile.h"
 #include "rw/rpworld.h"
 #include "rw/rphanim.h"
 #include "temporary.h"

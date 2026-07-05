@@ -1,7 +1,7 @@
 #include "Main/Battle/Data/datCalc.h"
 #include "Main/g_data.h"
 #include "Kosaka/k_assert.h"
-#include "Effect/effMisc.h"
+#include "Graphics/Effect/effMisc.h"
 
 static u32 sPrevPercentRand; // 007ce510
 

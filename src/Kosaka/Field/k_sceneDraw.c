@@ -2,7 +2,7 @@
 #include "Kosaka/Field/k_shadow.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
-#include "Model/mdlManager.h"
+#include "Graphics/Model/mdlManager.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "rw/rwplcore.h"

@@ -2,7 +2,7 @@
 #include "Kosaka/Field/k_dungeon.h"
 #include "Kosaka/k_assert.h"
 #include "Kernel/Kwln/kwlnTask.h"
-#include "Model/mdlManager.h"
+#include "Graphics/Model/mdlManager.h"
 #include "Main/g_data.h"
 #include "h_cdvd.h"
 #include "temporary.h"
