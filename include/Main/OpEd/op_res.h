@@ -25,4 +25,8 @@ void opResRequestTitle();
 u32 opResCheckRequestTitle();
 RwRaster* opResGetTitleRaster(u32 id);
 
+void opResRequestLogo();
+u32 opResCheckRequestLogo();
+RwRaster* opResGetLogoRaster(u32 id);
+
 #endif
