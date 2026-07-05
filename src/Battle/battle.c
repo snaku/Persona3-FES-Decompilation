@@ -9,6 +9,7 @@
 #include "Script/scrScriptProcess.h"
 #include "Yajima/y_timeLimit.h"
 #include "Main/Battle/Data/datCalc.h"
+#include "Main/Battle/Panel/bp_root.h"
 #include "Main/admini.h"
 #include "Main/g_data.h"
 #include "g_flags.h"
@@ -23,9 +24,6 @@ static u16 sCurrCharResId = BTL_CHAR_RESID_BASE; // 007cc518
 BtlEncountTable* gEncountTbl; // 007ce4a8
 static u32 sIsDead;           // 007ce3f0
 Battle* gBtl;                 // 007ce3ec. NULL when not in a battle
-
-KwlnTask* BP_Root_CreateTasks(KwlnTask* parent); // temporary here
-void BP_Root_001ff350();                         // temporary here
 
 u32 btlDestroy();
 
@@ -150,8 +148,8 @@ KwlnTask* btlStart(BtlStartInfo* startInfo)
                    NULL,
                    NULL);
 
-    gBtl->btlPanelTask = BP_Root_CreateTasks(gBtl->btlTask);
-    BP_Root_001ff350();
+    gBtl->btlPanelTask = bpRootCreateTasks(gBtl->btlTask);
+    bpRoot001ff350();
 
     btlTask = gBtl->btlTask;
 
