@@ -11,7 +11,7 @@ void opFadeStart(u32 duration)
     K_ASSERT(sWork != NULL, 31);
     work = sWork;
 
-    work->state = 0;
+    work->state = OPFADE_STATE_START;
     work->duration = duration;
 }
 
@@ -24,4 +24,28 @@ void opFadeSetColor(const RwRGBA* color)
     work = sWork;
 
     work->color = *color;
+}
+
+// FUN_00272290
+void opFadeIn()
+{
+    OpFadeWork* work;
+
+    K_ASSERT(sWork != NULL, 31);
+    work = sWork;
+
+    work->state = OPFADE_STATE_IN;
+    work->timer = work->duration;
+}
+
+// FUN_002722e0
+void opFadeOut()
+{
+    OpFadeWork* work;
+
+    K_ASSERT(sWork != NULL, 31);
+    work = sWork;
+
+    work->state = OPFADE_STATE_OUT;
+    work->timer = work->duration;
 }
