@@ -17,6 +17,7 @@ typedef enum
     BSROOT_INIT_MAX
 } BsRootInitContent;
 
+void bsRootInit();
 RwRaster* bsRootGetRaster(u32 id);
 
 #endif
