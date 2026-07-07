@@ -5,6 +5,15 @@
 
 static OpResWork* sWork; // 007ce394
 
+// FUN_00266670
+void opResInit(OpResWork* work)
+{
+    work->requestFlags = 0;
+    work->destroyFlags = 0;
+
+    sWork = work;
+}
+
 // FUN_00266710
 void opResUpdate()
 {

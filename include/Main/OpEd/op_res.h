@@ -59,6 +59,7 @@ typedef struct OpResWork
     RwRaster* logoRasters[OPRES_LOGO_MAX];        // 0x4c
 } OpResWork;
 
+void opResInit(OpResWork* work);
 void opResUpdate();
 
 void opResRequestTitle();
