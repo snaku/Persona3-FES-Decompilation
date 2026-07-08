@@ -2,8 +2,8 @@
 #include "Battle/battle.h"
 #include "Battle/btlPacket.h"
 #include "Main/g_data.h"
-#include "h_snd.h"
-#include "h_cdvd.h"
+#include "Tohyama/h_snd.h"
+#include "Tohyama/h_cdvd.h"
 #include "temporary.h"
 
 // FUN_002dcd30

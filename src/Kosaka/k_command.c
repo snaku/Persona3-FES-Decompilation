@@ -10,9 +10,9 @@
 #include "Scene/resrcManager.h"
 #include "Scene/mt_scene.h"
 #include "Main/g_data.h"
+#include "Tohyama/h_fade.h"
+#include "Tohyama/h_snd.h"
 #include "datCalendar.h"
-#include "h_fade.h"
-#include "h_snd.h"
 #include "temporary.h"
 
 // FUN_001c2480

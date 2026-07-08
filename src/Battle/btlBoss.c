@@ -1,6 +1,6 @@
 #include "Battle/btlBoss.h"
 #include "Battle/battle.h"
-#include "h_cdvd.h"
+#include "Tohyama/h_cdvd.h"
 
 // FUN_002f7dc0
 void btlBoss002f7dc0()

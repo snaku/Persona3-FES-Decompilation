@@ -3,9 +3,9 @@
 #include "Kernel/h_malloc.h"
 #include "Kosaka/k_assert.h"
 #include "Main/Battle/Data/datScript.h"
+#include "Tohyama/h_dbprt.h"
 #include "itfMesManager.h"
 #include "dds3Process.h"
-#include "h_dbprt.h"
 #include "temporary.h"
 
 #define SCR_LOCALINT_MAX   256

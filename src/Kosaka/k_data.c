@@ -4,7 +4,7 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Graphics/Model/mdlManager.h"
 #include "Main/g_data.h"
-#include "h_cdvd.h"
+#include "Tohyama/h_cdvd.h"
 #include "temporary.h"
 
 void* gFldScrMemory; // 007ce228

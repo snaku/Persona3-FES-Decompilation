@@ -2,6 +2,7 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwlnRoot.h"
 #include "Kernel/h_memcard.h"
+#include "Tohyama/h_pad.h"
 #include "rw/rpworld.h"
 #include "rw/rprandom.h"
 #include "sce/eekernel.h"
@@ -9,7 +10,6 @@
 #include "sce/sifdev.h"
 #include "sce/sifrpc.h"
 #include "sce/libcdvd.h"
-#include "h_pad.h"
 #include "temporary.h"
 
 #define KWLN_COMMON_RENDERSTATES (rwRENDERSTATEFOGDENSITY + 1)

@@ -1,5 +1,5 @@
-#include "h_cdvd.h"
-#include "h_dbprt.h"
+#include "Tohyama/h_cdvd.h"
+#include "Tohyama/h_dbprt.h"
 #include "sce/libcdvd.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"

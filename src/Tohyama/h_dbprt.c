@@ -1,5 +1,5 @@
-#include "h_dbprt.h"
-#include "h_cdvd.h"
+#include "Tohyama/h_dbprt.h"
+#include "Tohyama/h_cdvd.h"
 #include "temporary.h"
 
 #define HDBPRT_LOG_MAXLINE 15

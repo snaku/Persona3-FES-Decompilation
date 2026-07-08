@@ -4,7 +4,7 @@
 #include "Script/scrCommonCommand.h"
 #include "Kosaka/k_assert.h"
 #include "Kosaka/k_data.h"
-#include "h_dbprt.h"
+#include "Tohyama/h_dbprt.h"
 #include "temporary.h"
 
 static ScrMemory sMemory;         // 00957c00

@@ -1,7 +1,7 @@
+#include "Tohyama/h_sfdply.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Script/scrTraceCode.h"
 #include "rw/rwplcore.h"
-#include "h_sfdply.h"
 #include "temporary.h"
 
 static KwlnTask* sSfdPlayTask; // 007cdf14. Task name = "H_SfdPlay"

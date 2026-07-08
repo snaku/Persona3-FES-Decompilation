@@ -1,9 +1,9 @@
 #include "Graphics/Model/mdlManager.h"
 #include "Graphics/Model/mdlFile.h"
+#include "Tohyama/h_cdvd.h"
 #include "rw/rpworld.h"
 #include "rw/rphanim.h"
 #include "temporary.h"
-#include "h_cdvd.h"
 
 const f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where to place this
 

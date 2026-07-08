@@ -1,11 +1,11 @@
 #include "Kernel/Kwln/kwlnRoot.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
+#include "Tohyama/h_snd.h"
+#include "Tohyama/h_fade.h"
+#include "Tohyama/h_dbprt.h"
 #include "rw/rwcore.h"
 #include "temporary.h"
-#include "h_snd.h"
-#include "h_fade.h"
-#include "h_dbprt.h"
 
 KwlnTask* kwlnRootCreate2DDrawBeginTask();
 KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask();

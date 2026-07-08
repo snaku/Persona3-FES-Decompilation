@@ -1,4 +1,4 @@
-#include "h_snd.h"
+#include "Tohyama/h_snd.h"
 #include "Main/g_data.h"
 #include "temporary.h"
 

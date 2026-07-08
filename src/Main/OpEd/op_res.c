@@ -1,7 +1,7 @@
 #include "Main/OpEd/op_res.h"
 #include "Main/Battle/Panel/bp_tex.h"
 #include "Kosaka/k_assert.h"
-#include "h_cdvd.h"
+#include "Tohyama/h_cdvd.h"
 
 static OpResWork* sWork; // 007ce394
 

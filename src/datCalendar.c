@@ -4,10 +4,10 @@
 #include "Event/Comu/comuFunction.h"
 #include "Main/admini.h"
 #include "Main/g_data.h"
-#include "h_cursor.h"
-#include "h_dbprt.h"
-#include "h_pad.h"
-#include "h_sfdply.h"
+#include "Tohyama/h_cursor.h"
+#include "Tohyama/h_dbprt.h"
+#include "Tohyama/h_pad.h"
+#include "Tohyama/h_sfdply.h"
 #include "temporary.h"
 
 typedef struct

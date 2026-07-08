@@ -1,6 +1,6 @@
 #include "Main/Battle/Panel/bs_root.h"
 #include "Main/Battle/Panel/bp_tex.h"
-#include "h_cdvd.h"
+#include "Tohyama/h_cdvd.h"
 #include "rw/rwcore.h"
 
 #define BSROOT_INIT_TMXCOUNT 2
