@@ -60,14 +60,17 @@ typedef struct OpResWork
 } OpResWork;
 
 void opResInit(OpResWork* work);
+void opResDestroy();
 void opResUpdate();
 
 void opResRequestTitle();
 u32 opResCheckRequestTitle();
+void opResDestroyTitle();
 RwRaster* opResGetTitleRaster(u32 id);
 
 void opResRequestLogo();
 u32 opResCheckRequestLogo();
+void opResDestroyLogo();
 RwRaster* opResGetLogoRaster(u32 id);
 
 #endif

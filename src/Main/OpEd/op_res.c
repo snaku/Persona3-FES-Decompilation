@@ -14,6 +14,26 @@ void opResInit(OpResWork* work)
     sWork = work;
 }
 
+// FUN_00266690
+void opResDestroy()
+{
+    OpResWork* work;
+
+    K_ASSERT(sWork != NULL, 68);
+    work = sWork;
+
+    if (work->destroyFlags & OPRES_FLAG_TITLE)
+    {
+        opResDestroyTitle();
+    }
+    if (work->destroyFlags & OPRES_FLAG_LOGO)
+    {
+        opResDestroyLogo();
+    }
+
+    sWork = NULL;
+}
+
 // FUN_00266710
 void opResUpdate()
 {
@@ -136,6 +156,12 @@ u32 opResCheckRequestTitle()
     return sWork->requestFlags & OPRES_FLAG_TITLE;
 }
 
+// FUN_00266b30
+void opResDestroyTitle()
+{
+    // TODO
+}
+
 // FUN_00266bf0
 RwRaster* opResGetTitleRaster(u32 id)
 {
@@ -165,6 +191,12 @@ u32 opResCheckRequestLogo()
     K_ASSERT(sWork != NULL, 68);
 
     return sWork->requestFlags & OPRES_FLAG_LOGO;
+}
+
+// FUN_00266dc0
+void opResDestroyLogo()
+{
+    // TODO
 }
 
 // FUN_00266e50
