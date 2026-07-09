@@ -155,32 +155,32 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId)
 }
 
 // FUN_00174960
-u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx)
+u32 datPersonaHeroPersonaValid(s16 heroPersonaIdx)
 {
-    return (gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
+    return (gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID) != 0;
 }
 
 // FUN_00174a90
-DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx)
+DatPersonaWork* datPersonaGetHeroPersona(s16 heroPersonaIdx)
 {
-    DatPersonaWork* persona;
+    s16 equippedPersona;
 
-    /* TODO
-    if (((long)heroPersonaIdx < 0) || (uVar3 = FUN_00175410(), (long)(uVar3 & 0xffff) <= (long)heroPersonaIdx)) 
-    {
-        K_Assert("datPersona.c", 848);
-    }*/
+    K_ASSERT(heroPersonaIdx >= 0 && heroPersonaIdx < datPersonaGetHeroMax(), 848);
 
-    if (!datPersonaIsHeroPersonaValid(heroPersonaIdx))
+    if (!(gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID))
     {
-        persona = NULL;
-    }
-    else 
-    {
-        persona = &gGlobalWork.heroPersona.personas[heroPersonaIdx];
+        return NULL;
     }
     
-    return persona;
+    return &gGlobalWork.heroPersona.personas[heroPersonaIdx];
+}
+
+// FUN_00175410
+u16 datPersonaGetHeroMax()
+{
+    // TODO
+
+    return 0;
 }
 
 // FUN_001757f0
