@@ -282,6 +282,7 @@ void datInitPersona(u32 pcId);
 void datCompendiumInit();
 u16 datGetActiveSocialLink();
 u8 datGetSocialLinkLevel(u16 socialLink);
+u32 datStartedSocialLink(s16 socialLink);
 u32 datGetTotalBtl();
 DatPersonaWork* datGetPersonaByCompendium(s32 idx);
 

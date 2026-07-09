@@ -678,11 +678,27 @@ u8 datGetSocialLinkLevel(u16 socialLink)
 }
 
 // FUN_0016e100
-u8 datSocialLinkLevelIsNotZero(u16 socialLink)
+u32 datStartedSocialLink(s16 socialLink)
 {
-    K_ASSERT(socialLink > SOCIAL_LINK_SEES && socialLink < SOCIAL_LINK_NYX_TEAM, 1429);
+    u32 isValidSocialLink;
 
-    return gGlobalWork.heroStatus.socialLinkStat[socialLink] > 0;
+    if (socialLink < SOCIAL_LINK_SEES || socialLink >= SOCIAL_LINK_MAX)
+    {
+        isValidSocialLink = false;
+    }
+    else
+    {
+        isValidSocialLink = true;
+    }
+
+    K_ASSERT(isValidSocialLink, 1429);
+
+    if (gGlobalWork.heroStatus.socialLinkStat[socialLink] <= 0)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 // FUN_0016cb80
@@ -766,9 +782,13 @@ void datSetSkipToTarget(u32 val)
 // FUN_0016f190
 u32 datGetFlag(s32 bit)
 {
-    // TODO
+    s32 bitOff;
+    s32 idx;
 
-    return false;
+    idx = bit / 32;
+    bitOff = bit % 32;
+
+    return (gGlobalWork.flags[idx] & (1 << bitOff)) != 0;
 }
 
 // FUN_0016f1f0. See 'g_flags.h' !!!
