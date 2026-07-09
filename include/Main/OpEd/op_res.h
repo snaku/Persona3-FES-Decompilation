@@ -54,7 +54,7 @@ typedef struct OpResWork
     u32 destroyFlags;                             // 0x04
     HCdvd* titleCdvd;                             // 0x08
     RwRaster* titleRasters[OPRES_TITLE_TMXCOUNT]; // 0x0c
-    void* unk_44[OPRES_TITLE_SPRCOUNT];           // 0x44
+    void* titleSprs[OPRES_TITLE_SPRCOUNT];        // 0x44
     HCdvd* logoCdvd;                              // 0x48
     RwRaster* logoRasters[OPRES_LOGO_MAX];        // 0x4c
 } OpResWork;

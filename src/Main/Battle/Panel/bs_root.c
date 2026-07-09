@@ -6,7 +6,7 @@
 #define BSROOT_INIT_TMXCOUNT 2
 #define BSROOT_INIT_SPRCOUNT 1
 
-static void* sUnk_007ce3a8[BSROOT_INIT_SPRCOUNT]; // 007ce3a8
+static void* sSprs[BSROOT_INIT_SPRCOUNT]; // 007ce3a8
 static RwRaster* sRasters[BSROOT_INIT_TMXCOUNT];  // 007ce3a0
 
 // FUN_00267260
@@ -34,7 +34,7 @@ void bsRootInit()
                 break;
             
             case BSROOT_INIT_RUSH:
-                sUnk_007ce3a8[BSROOT_INIT_RUSH] = bpTex0021c9f0(file);
+                sSprs[BSROOT_INIT_RUSH] = bpTexCreateSpr(file);
                 break;
         }
     }

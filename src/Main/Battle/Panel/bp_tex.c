@@ -1,11 +1,17 @@
 #include "Main/Battle/Panel/bp_tex.h"
 
 // FUN_0021c9f0
-void* bpTex0021c9f0(void* sprMemory)
+void* bpTexCreateSpr(void* sprMemory)
 {
     // TODO
 
     return NULL;
+}
+
+// FUN_00266b30
+void bpTexDestroySpr(void* spr)
+{
+    // TODO
 }
 
 // FUN_0021ec40

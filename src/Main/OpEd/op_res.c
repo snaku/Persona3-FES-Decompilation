@@ -2,6 +2,7 @@
 #include "Main/Battle/Panel/bp_tex.h"
 #include "Kosaka/k_assert.h"
 #include "Tohyama/h_cdvd.h"
+#include "rw/rwcore.h"
 
 static OpResWork* sWork; // 007ce394
 
@@ -55,7 +56,7 @@ void opResUpdate()
             switch (i)
             {
                 case OPRES_TITLE_AGSTITLESPR01:
-                    work->unk_44[OPRES_TITLE_AGSTITLESPR01] = bpTex0021c9f0(file);
+                    work->titleSprs[OPRES_TITLE_AGSTITLESPR01] = bpTexCreateSpr(file);
                     break;
 
                 case OPRES_TITLE_NEWTITLE009:
@@ -159,7 +160,22 @@ u32 opResCheckRequestTitle()
 // FUN_00266b30
 void opResDestroyTitle()
 {
-    // TODO
+    OpResWork* work;
+    s32 i;
+
+    K_ASSERT(sWork != NULL, 68);
+    work = sWork;
+
+    for (i = 0; i < OPRES_TITLE_TMXCOUNT; i++)
+    {
+        RwRasterDestroy(work->titleRasters[i]); // TODO: addu v0, s0, v0 instead of addu v0, v0, s0
+    }
+    for (i = 0; i < OPRES_TITLE_SPRCOUNT; i++)
+    {
+        bpTexDestroySpr(work->titleSprs[i]); // TODO: addu v0, s0, v0 instead of addu v0, v0, s0
+    }
+
+    work->destroyFlags &= ~OPRES_FLAG_TITLE;
 }
 
 // FUN_00266bf0
@@ -196,7 +212,18 @@ u32 opResCheckRequestLogo()
 // FUN_00266dc0
 void opResDestroyLogo()
 {
-    // TODO
+    OpResWork* work;
+    s32 i;
+
+    K_ASSERT(sWork != NULL, 68);
+    work = sWork;
+
+    for (i = 0; i < OPRES_LOGO_MAX; i++)
+    {
+        RwRasterDestroy(work->logoRasters[i]); // TODO: addu v0, s0, v0 instead of addu v0, v0, s0
+    }
+
+    work->destroyFlags &= ~OPRES_FLAG_LOGO;
 }
 
 // FUN_00266e50

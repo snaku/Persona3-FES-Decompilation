@@ -5,7 +5,9 @@
 
 typedef struct RwRaster RwRaster;
 
-void* bpTex0021c9f0(void* sprMemory);
+void* bpTexCreateSpr(void* sprMemory);
+void bpTexDestroySpr(void* spr);
+
 RwRaster* bpTexCreateTmxRaster(void* tmxMemory);
 
 #endif
