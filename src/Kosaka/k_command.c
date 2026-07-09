@@ -423,9 +423,9 @@ u32 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
 
                 if (npc->baseMdl != NULL)
                 {
-                    baseMdlScale.x = sphereCollisRadius;
-                    baseMdlScale.y = sphereCollisRadius;
                     baseMdlScale.z = sphereCollisRadius;
+                    baseMdlScale.y = sphereCollisRadius;
+                    baseMdlScale.x = sphereCollisRadius;
 
                     mdlScale(npc->baseMdl, &baseMdlScale, rwCOMBINEPOSTCONCAT);
                     mdl00317730(npc->baseMdl);
