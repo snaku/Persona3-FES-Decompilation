@@ -78,6 +78,7 @@ typedef struct DatPersonaWork
     u8 naturalStats[PERSONA_STAT_MAX]; // stats gained naturally. See enum PersonaStats
     u8 bonusStats[PERSONA_STAT_MAX];   // stats gained through incense cards. See enum PersonaStats
     u8 stats3[PERSONA_STAT_MAX];       // ??
+    u8 unkData[0x08];
 } DatPersonaWork;
 
 u8 datPersonaGetLevel(DatPersonaWork* persona);
@@ -96,7 +97,7 @@ u16 datPersonaAddToNaturalStatHeroPersona(u16 heroPersonaIdx, u16 statId, s8 amo
 
 DatPersonaWork* datPersonaGetByPcId(u16 pcId);
 u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx);
-DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx);
+DatPersonaWork* datPersonaGetHeroPersona(s16 heroPersonaIdx);
 void datPersonaClearHeroPersonas();
 
 void datPersonaAddExp(DatPersonaWork* persona, u32 exp);

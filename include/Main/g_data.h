@@ -83,6 +83,8 @@ typedef enum
     SOCIAL_LINK_NOZOMI,
     SOCIAL_LINK_AKINARI,
     SOCIAL_LINK_NYX_TEAM,
+
+    SOCIAL_LINK_MAX
 } PlayerSocialLink;
 
 typedef enum
@@ -179,7 +181,7 @@ typedef struct DatHeroStatus
     u32 nextExp;
     DatPhysical physicalState;
     u16 activeSocialLink;
-    u8 socialLinkStat[30];
+    s8 socialLinkStat[SOCIAL_LINK_MAX];
 } DatHeroStatus;
 
 // 868 bytes
@@ -208,9 +210,7 @@ typedef struct DatGlobal
     CalendarWork calendarWork;      // 0083679c
     u8 unkData3[0x400];
     DatHeroPersona heroPersona;     // 00836ba8
-    u8 unkData4[0x60];
     DatPersonaWork compendium[256]; // 00836e1c
-    u8 unkData5[0x800];
     u32 flags[FLG_ARR_SIZE];        // 0083a21c. See 'g_flags.h'
     u32 unk_0083a4dc[128];          // 0083a4dc
     s32 heroMoney;                  // 0083a6dc
