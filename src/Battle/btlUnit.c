@@ -585,6 +585,12 @@ BtlPacket* btlUnit00286320(BtlUnit* unit)
     return NULL;
 }
 
+// FUN_00287400
+void btlUnitLookAtUpdateAll()
+{
+    // TODO
+}
+
 // FUN_002875a0
 BtlUnit* btlUnitCreate(u8 genus)
 {

@@ -1,8 +1,12 @@
 #include "Battle/battle.h"
 #include "Battle/btlFade.h"
+#include "Battle/btlUnit.h"
+#include "Battle/btlEffect.h"
+#include "Graphics/Model/mdlEffect.h"
 #include "Kosaka/k_data.h"
 #include "Kosaka/k_misc.h"
 #include "Kernel/Kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwln.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "Script/scrTraceCode.h"
@@ -65,7 +69,16 @@ void* btlUpdateTask(KwlnTask* btlTask)
 // FUN_0027ccf0
 void* btlUpdateDraw3DTask(KwlnTask* btlDraw3DTask)
 {
-    // TODO
+    if (kwlnCameraBeginUpdate() != NULL)
+    {
+        mdlEffect00321120(2);
+        btlPacketUpdateList(BTLPACKET_TYPE_3D);
+        btlUnitLookAtUpdateAll();
+        btlEffectUpdate();
+        btlCameraDebugDraw();
+
+        kwlnCameraEndUpdate();
+    }
 
     return KWLNTASK_CONTINUE;
 }
