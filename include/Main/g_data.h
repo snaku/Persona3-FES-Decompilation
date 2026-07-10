@@ -196,7 +196,7 @@ typedef struct DatPc
     DatEquipment equipments[4];
     u8 unkData2[0x30];
     DatPersonaWork persona;
-    u8 unkData3[0x25c];         // TODO
+    u8 unkData3[0x254];         // TODO
 } DatPc;
 
 // at least 17656 bytes
@@ -232,12 +232,12 @@ void FUN_0016f3e0(u32 idx, u32 value);
 
 DatUnit* datGetUnit(s16 pcId);
 void datInitUnit(s16 pcId);
-u8 datGetLevel(u16 pcId);
-u16 datGetPersonaId(u16 pcId);
-u32 datGetBadStatusNoDown(u16 pcId);
-void datSetBadStatus(u16 pcId, u32 flags);
-void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter);
-void datClearBadStatus(u16 pcId, u32 flags);
+u8 datGetLevel(s16 pcId);
+u16 datGetPersonaId(s16 pcId);
+u32 datGetBadStatusNoDown(s16 pcId);
+void datSetBadStatus(s16 pcId, u32 flags);
+void datSetOldFatigueCounter(s16 pcId, u16 oldFatigueCounter);
+void datClearBadStatus(s16 pcId, u32 flags);
 u32 datGetExpUntilNextLevel(u16 pcId);
 u8 datDidCharacterLevelUp(u16 pcId, u32 expGain);
 void datSetAiTactic(u16 pcId, u8 aiTacticId);

@@ -55,16 +55,16 @@ void FUN_0016f3e0(u32 idx, u32 value)
 }
 
 // FUN_0016c860
-u16 datGetPersonaId(u16 pcId)
+u16 datGetPersonaId(s16 pcId)
 {
+    s16 equippedPersona;
+
     if (IS_HERO(pcId))
     {
-        if (gGlobalWork.heroPersona.equippedPersona < ARRAY_SIZE(gGlobalWork.heroPersona.personas))
-        {
-            return gGlobalWork.heroPersona.personas[gGlobalWork.heroPersona.equippedPersona].id;
-        }
+        equippedPersona = gGlobalWork.heroPersona.equippedPersona;
+        K_ASSERT(equippedPersona < 12, 633);
 
-        K_ASSERT(false, 633);
+        return gGlobalWork.heroPersona.personas[equippedPersona].id;
     }
 
     return gPcs[pcId].persona.id;
@@ -110,41 +110,56 @@ void datInitUnit(s16 pcId)
 }
 
 // FUN_0016c470
-u8 datGetLevel(u16 pcId)
+u8 datGetLevel(s16 pcId)
 {
+    u32 idx;
+    DatPc* pcsNoReserved;
+
     if (IS_HERO(pcId))
     {
         return datCalcGetLevel(&gGlobalWork.heroUnit);
     }
 
-    return datCalcGetLevel(&gPcs[pcId].unit);
+    idx = pcId - PC_YUKARI;
+    pcsNoReserved = &gPcs[PC_YUKARI];
+    return datCalcGetLevel(&pcsNoReserved[idx].unit);
 }
 
 // FUN_0016c970
-u32 datGetBadStatusNoDown(u16 pcId)
+u32 datGetBadStatusNoDown(s16 pcId)
 {
+    u32 idx;
+    DatPc* pcsNoReserved;
+
     if (IS_HERO(pcId))
     {
         return datCalcGetBadStatusNoDown(&gGlobalWork.heroUnit);
     }
 
-    return datCalcGetBadStatusNoDown(&gPcs[pcId].unit);
+    idx = pcId - PC_YUKARI;
+    pcsNoReserved = &gPcs[PC_YUKARI];
+    return datCalcGetBadStatusNoDown(&pcsNoReserved[idx].unit);
 }
 
 // FUN_0016d8b0
-void datSetBadStatus(u16 pcId, u32 flags)
+void datSetBadStatus(s16 pcId, u32 flags)
 {
+    u32 idx;
+    DatPc* pcsNoReserved;
+
     if (IS_HERO(pcId))
     {
         datCalcSetBadStatus(&gGlobalWork.heroUnit, flags);
         return;
     }
 
-    datCalcSetBadStatus(&gPcs[pcId].unit, flags);
+    idx = pcId - PC_YUKARI;
+    pcsNoReserved = &gPcs[PC_YUKARI];
+    datCalcSetBadStatus(&pcsNoReserved[idx].unit, flags);
 }
 
 // FUN_0016d980
-void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter)
+void datSetOldFatigueCounter(s16 pcId, u16 oldFatigueCounter)
 {
     if (IS_HERO(pcId))
     {
@@ -156,15 +171,20 @@ void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter)
 }
 
 // FUN_0016d9d0
-void datClearBadStatus(u16 pcId, u32 flags)
+void datClearBadStatus(s16 pcId, u32 flags)
 {
+    u32 idx;
+    DatPc* pcsNoReserved;
+
     if (IS_HERO(pcId))
     {
         datCalcClearBadStatus(&gGlobalWork.heroUnit, flags);
         return;
     }
 
-    datCalcClearBadStatus(&gPcs[pcId].unit, flags);
+    idx = pcId - PC_YUKARI;
+    pcsNoReserved = &gPcs[PC_YUKARI];
+    datCalcClearBadStatus(&pcsNoReserved[idx].unit, flags);
 }
 
 // FUN_0016d2f0
