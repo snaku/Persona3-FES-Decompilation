@@ -5,11 +5,16 @@
 #include "Kosaka/k_command.h"
 #include "Kosaka/k_assert.h"
 #include "Kernel/Kwln/kwlnTask.h"
+#include "Main/g_data.h"
 #include "rw/rprandom.h"
 #include "datCalendar.h"
 #include "temporary.h"
 #include "dds3Process.h"
+#include "mt_misc.h"
 
+u32 scrCommand_BIT_CHK();
+u32 scrCommand_BIT_ON();
+u32 scrCommand_BIT_OFF();
 u32 scrCommand_RAND();
 u32 scrCommand_SYNC();
 u32 scrCommand_WAIT();
@@ -34,6 +39,44 @@ ScrCommandTable gScrCmdTable =
     // count
     ARRAY_SIZE(gScrCmdTable.cmds)
 };
+
+// FUN_0035aeb0
+u32 scrCommand_BIT_CHK()
+{
+    u32 bit;
+
+    bit = scrGetIntPara(0);
+
+    scrSetIntReturnVal(MT_Misc_BitChk(bit));
+
+    return true;
+}
+
+// FUN_0035af50
+u32 scrCommand_BIT_ON()
+{
+    u32 bit;
+
+    bit = scrGetIntPara(0);
+    K_ASSERT(bit < FLG_MAX, 117);
+
+    MT_Misc_BitOn(bit);
+
+    return true;
+}
+
+// FUN_0035af50
+u32 scrCommand_BIT_OFF()
+{
+    u32 bit;
+
+    bit = scrGetIntPara(0);
+    K_ASSERT(bit < FLG_MAX, 132);
+
+    MT_Misc_BitOff(bit);
+
+    return true;
+}
 
 // FUN_0035afb0
 u32 scrCommand_RAND()
