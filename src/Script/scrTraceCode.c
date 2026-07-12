@@ -1016,6 +1016,12 @@ u32 scrGetCmdTimer()
     return sCurrScript->cmdTimer;
 }
 
+// FUN_0035f140
+s32 scrGetMesHandleIdx()
+{
+    return sCurrScript->mesHandleIdx;
+}
+
 // FUN_0035f150
 ScrData* scrGetCurrent()
 {
