@@ -96,6 +96,7 @@ u16 datPersonaAddToNaturalStat(DatPersonaWork* persona, u16 statId, s8 amount);
 u16 datPersonaAddToNaturalStatHeroPersona(u16 heroPersonaIdx, u16 statId, s8 amount);
 
 DatPersonaWork* datPersonaGetByPcId(u16 pcId);
+s16 datPersonaFindFreeHeroPersonaSlot();
 u32 datPersonaHeroPersonaValid(s16 heroPersonaIdx);
 DatPersonaWork* datPersonaGetHeroPersona(s16 heroPersonaIdx);
 u16 datPersonaGetHeroMax();

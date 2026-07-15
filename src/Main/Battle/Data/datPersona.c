@@ -154,6 +154,27 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId)
     return persona;
 }
 
+// FUN_001748c0
+s16 datPersonaFindFreeHeroPersonaSlot()
+{
+    u16 i;
+    DatGlobal* globalWork;
+    u16 flags;
+
+    for (i = 0; i < datPersonaGetHeroMax(); i++)
+    {
+        globalWork = &gGlobalWork;
+
+        // TODO: lhu v0, 0x9ac(v0) instead of lhu v0, 0x0(v0)
+        if (!(globalWork->heroPersona.personas[i].flags & PERSONA_FLAG_VALID))
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 // FUN_00174960
 u32 datPersonaHeroPersonaValid(s16 heroPersonaIdx)
 {
