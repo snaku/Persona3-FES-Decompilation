@@ -44,3 +44,45 @@ KwlnTask* H_FileSetup_CreateHonpenTask()
 
     return task;
 }
+
+// FUN_00192980
+void* H_FileSetup_UpdateGojitudanTask(KwlnTask* gojitudanTask)
+{
+    // TODO
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00192a70
+void H_FileSetup_DestroyGojituanTask(KwlnTask* gojitudanTask)
+{
+    // TODO
+}
+
+// FUN_00192aa0
+KwlnTask* H_FileSetup_CreateGojitudanTask()
+{
+    HFileSetupWork* work;
+    KwlnTask* task;
+
+    work = RwCalloc(1, sizeof(HFileSetupWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(NULL,
+                                          4207,
+                                          "GojitudanFileSetup",
+                                          H_FileSetup_UpdateGojitudanTask,
+                                          H_FileSetup_DestroyGojituanTask,
+                                          work);
+    if (task == NULL)
+    {
+        return NULL;
+    }
+
+    datSetScenarioMode(SCENARIO_MODE_ANSWER);
+
+    return task;
+}

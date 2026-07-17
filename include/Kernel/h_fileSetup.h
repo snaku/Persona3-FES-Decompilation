@@ -14,5 +14,6 @@ typedef struct HFileSetupWork
 } HFileSetupWork;
 
 KwlnTask* H_FileSetup_CreateHonpenTask();
+KwlnTask* H_FileSetup_CreateGojitudanTask();
 
 #endif
