@@ -56,7 +56,7 @@ void* H_FileSetup_UpdateGojitudanTask(KwlnTask* gojitudanTask)
 // FUN_00192a70
 void H_FileSetup_DestroyGojituanTask(KwlnTask* gojitudanTask)
 {
-    // TODO
+    RwFree(gojitudanTask->workData);
 }
 
 // FUN_00192aa0
