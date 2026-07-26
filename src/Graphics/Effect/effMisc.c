@@ -5,40 +5,30 @@ static EffRandState sRandState; // 00957bf0
 // FUN_00357dd0
 void effMiscQuatMultiplyVU()
 {
-    __asm__ volatile (
-        ".set noreorder               \n"
-        "vmul.xyzw vf2, vf10, vf11    \n"
-        "vopmula.xyz ACC, vf10, vf11  \n"
-        "vmaddaw.xyz ACC, vf11, vf10  \n"
-        "vmaddaw.xyz ACC, vf10, vf11  \n"
-        "vopmsub.xyz vf10, vf11, vf10 \n"
-        "vmulaw.w ACC, vf10, vf11     \n"
-        "vmsubax.w ACC, vf0, vf2      \n"
-        "vmsubay.w ACC, vf0, vf2      \n"
-        "vmsubz.w vf10, vf0, vf2      \n"
-        ".set reorder"
-        :
-        :
-        : "vf2", "ACC", "memory"
+    asm (
+        vmul.xyzw vf2, vf10, vf11
+        vopmula.xyz ACC, vf10, vf11
+        vmaddaw.xyz ACC, vf11, vf10
+        vmaddaw.xyz ACC, vf10, vf11
+        vopmsub.xyz vf10, vf11, vf10
+        vmulaw.w ACC, vf10, vf11
+        vmsubax.w ACC, vf0, vf2
+        vmsubay.w ACC, vf0, vf2
+        vmsubz.w vf10, vf0, vf2
     );
 }
 
 // FUN_00357e00
 void effMiscNormalizeVU()
 {
-    __asm__ volatile (
-        ".set noreorder            \n"
-        "vmul.xyzw vf2, vf10, vf10 \n"
-        "vaddax.w ACC, vf2, vf2    \n"
-        "vmadday.w ACC, vf0, vf2   \n"
-        "vmaddz.w vf3, vf0, vf2    \n"
-        "vrsqrt Q, vf0, vf3        \n"
-        "vwaitq                    \n"
-        "vmulq.xyzw vf10, vf10, Q  \n"
-        ".set reorder"
-        :
-        :
-        : "vf2", "vf3", "ACC", "Q", "memory"
+    asm (
+        vmul.xyzw vf2, vf10, vf10
+        vaddax.w ACC, vf2, vf2
+        vmadday.w ACC, vf0, vf2
+        vmaddz.w vf3, vf0, vf2
+        vrsqrt Q, vf0w, vf3w
+        vwaitq
+        vmulq.xyzw vf10, vf10, Q
     );
 }
 

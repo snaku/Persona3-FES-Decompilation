@@ -1,6 +1,10 @@
 #ifndef TYPE_H
 #define TYPE_H
 
+#if defined(__INTELLISENSE__) || defined(__clang__) || defined(__clang_analyzer__)
+#define asm(...) ((void)0)
+#endif
+
 typedef unsigned char u8;
 typedef signed char s8;
 
