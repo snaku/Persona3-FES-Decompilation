@@ -240,7 +240,7 @@ RwCamera* RwCameraBeginUpdate(RwCamera* camera);
 RwCamera* RwCameraEndUpdate(RwCamera* camera);
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode);
 RwFrustumTestResult RwCameraFrustumTestSphere(const RwCamera* camera, const RwSphere* sphere);
-RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projType);
+RwCamera* RwCameraSetProjection(RwCamera* camera, RwCameraProjection projType);
 RwCamera* RwCameraSetViewWindow(RwCamera* camera, const RwV2d* viewWindow);
 
 RwBool RpSkyRenderStateSet(RpSkyRenderState nState, void *pParam);

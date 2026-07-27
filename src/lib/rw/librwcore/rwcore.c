@@ -50,7 +50,7 @@ RwFrustumTestResult RwCameraFrustumTestSphere(const RwCamera* camera, const RwSp
 }
 
 // FUN_004c9f00
-RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projType)
+RwCamera* RwCameraSetProjection(RwCamera* camera, RwCameraProjection projType)
 {
     // TODO
 
