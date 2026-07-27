@@ -1,0 +1,2 @@
+splat64[mips]
+pyelftools

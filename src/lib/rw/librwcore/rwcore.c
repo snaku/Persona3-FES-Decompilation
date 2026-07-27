@@ -44,9 +44,29 @@ RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clea
 // FUN_004c9df0
 RwFrustumTestResult RwCameraFrustumTestSphere(const RwCamera* camera, const RwSphere* sphere)
 {
-    // TODO
+    const RwFrustumPlane *frustumPlane;
+    RwInt32 planeCount;
+    RwFrustumTestResult result;
+    RwReal dot;
 
-    return rwSPHEREOUTSIDE;
+    result = rwSPHEREINSIDE;
+    frustumPlane = camera->frustumPlanes;
+    planeCount = 6;
+    while (planeCount--)
+    {
+        dot = ((((((((&sphere->center)->x) * ((&frustumPlane->plane.normal)->x))) + ((((&sphere->center)->y) * ((&frustumPlane->plane.normal)->y))))) + ((((&sphere->center)->z) * ((&frustumPlane->plane.normal)->z)))));
+        dot -= frustumPlane->plane.distance;
+        if (dot > sphere->radius)
+        {
+            return (rwSPHEREOUTSIDE);
+        }
+        else if (dot > (-sphere->radius))
+        {
+            result = rwSPHEREBOUNDARY;
+        }
+        frustumPlane++;
+    }
+    return result;
 }
 
 // FUN_004c9f00

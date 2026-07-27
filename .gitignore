@@ -7,3 +7,21 @@
 /LMGR326B.DLL
 /Makefile
 /Memory.txt
+
+/.venv
+/tools
+/build.ninja
+/objdiff.json
+.ninja_log
+.ninja_deps
+__pycache__/
+*.pyc
+
+# Original files
+orig/*/*
+!orig/*/.gitkeep
+*.irx
+*.elf
+*.o
+
+ignore/

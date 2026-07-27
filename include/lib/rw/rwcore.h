@@ -192,7 +192,33 @@ typedef enum
     rwPERSPECTIVE
 } RwCameraProjection;
 
-// TODO
+// 16 bytes
+struct RwPlane {
+    RwV3d normal;       // 0x00
+    RwReal distance;    // 0x0C
+};
+
+typedef struct RwPlane RwPlane;
+
+// 20 bytes
+struct RwFrustumPlane {
+    RwPlane plane;      // 0x00
+    RwUInt8 closestX;   // 0x10
+    RwUInt8 closestY;   // 0x11
+    RwUInt8 closestZ;   // 0x12
+    RwUInt8 pad;        // 0x13
+};
+typedef struct RwFrustumPlane RwFrustumPlane;
+
+// 24 bytes
+struct RwBBox
+{
+    RwV3d sup; // 0x00
+    RwV3d inf; // 0x0C
+};
+typedef struct RwBBox RwBBox;
+
+// 388 bytes
 struct RwCamera
 {
     RwObjectHasFrame object;             // 0x00
@@ -210,6 +236,9 @@ struct RwCamera
     RwReal fogPlane;                     // 0x88
     RwReal zScale;                       // 0x8c
     RwReal zShift;                       // 0x90
+    RwFrustumPlane frustumPlanes[6];     // 0x94
+    RwBBox frustumBoundBox;              // 0xA8
+    RwV3d frustumCorners[8];             // 0xC0
 };
 
 typedef enum
