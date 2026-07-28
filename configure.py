@@ -10,8 +10,10 @@ import subprocess
 import sys
 import tarfile
 import urllib.request
+import zipfile
 from dataclasses import dataclass
 from pathlib import Path
+from typing import NoReturn
 
 ROOT = Path(__file__).resolve().parent
 GAMEID = "SLUS_216.21"
@@ -22,6 +24,26 @@ VENV = ROOT / ".venv"
 REQUIREMENTS = ROOT / "requirements.txt"
 
 WIBO = TOOLS / "wibo"
+BINUTILS = TOOLS / "binutils"  # decompals PS2 MIPS binutils
+MAIN_BIN = BUILD / "main.bin"
+SPLAT_YAML = ROOT / "config" / GAMEID / "splat.yaml"
+ASM_DIR = BUILD / "asm"
+
+def die(reason: str) -> NoReturn:
+    sys.exit(f"{reason}; run `python configure.py`")
+
+def venv_bin(name: str) -> Path:
+    sub = "Scripts" if platform.system() == "Windows" else "bin"
+    exe = f"{name}.exe" if platform.system() == "Windows" else name
+    return VENV / sub / exe
+
+def venv_python() -> str:
+    python = venv_bin("python")
+    return str(python) if python.exists() else sys.executable
+
+def resolve_mips_binutils(name: str) -> str:
+    local = BINUTILS / (f"mips-ps2-decompals-{name}" + (".exe" if platform.system() == "Windows" else ""))
+    return str(local) if local.exists() else f"mips-linux-gnu-{name}"
 
 def get_compiler_executable_path(comp_id: str) -> Path:
     if comp_id.startswith("ee-gcc"):
@@ -29,23 +51,14 @@ def get_compiler_executable_path(comp_id: str) -> Path:
         return pe if pe.exists() else TOOLS / comp_id / "bin" / "ee-gcc"
     return TOOLS / comp_id / "mwccps2.exe"
 
-MAIN_BIN = BUILD / "main.bin"
-SPLAT_YAML = ROOT / "config" / GAMEID / "splat.yaml"
-ASM_DIR = BUILD / "asm"
-
-def venv_python() -> str:
-    p = VENV / ("Scripts" if platform.system() == "Windows" else "bin") / \
-        ("python.exe" if platform.system() == "Windows" else "python")
-    return str(p) if p.exists() else sys.executable
-
 def run_executable(exe: Path, args: list[str]) -> int:
     if not exe.exists():
-        sys.exit(f"{exe.name} not found; run `python configure.py`")
+        die(f"{exe.name} not found")
     env = os.environ.copy()
     env.setdefault("MWCIncludes", str(exe.parent))  # silence mwccps2's usage warning
     if exe.suffix == ".exe" and platform.system() != "Windows":
         if not WIBO.exists():
-            sys.exit("wibo not found; run `python configure.py`")
+            die("wibo not found")
         argv = [str(WIBO), str(exe), *args]
     else:
         argv = [str(exe), *args]
@@ -80,7 +93,7 @@ GCC296 = CompilerProfile("ee-gcc2.96", ["-O2", "-G0", "-fno-common"])
 GCC296_O1 = CompilerProfile("ee-gcc2.96", ["-O1", "-G0", "-fno-common"])
 DEFAULT_COMPILER = CompilerProfile("mwcps2-3.0-011126", ["-O2", "-gccincludes"])
 
-COMPILER_MAP: list[Libs] = [
+LIBRARIES: list[Libs] = [
     Libs("RenderWare 3.7 SDK", {
         "librwcore": RW, "librpcollis": RW, "librphanim": RW, "librpmatfx": RW,
         "librpmorph": RW, "librprandom": RW, "librpspline": RW, "librptoon": RW,
@@ -96,7 +109,7 @@ COMPILER_MAP: list[Libs] = [
         "libgcc": GCC296, 
         "libhttps": GCC296, 
     }),
-    Libs("CRI / middleware", {  # ee-gcc 2.96
+    Libs("CRI middleware", { 
         "libadxe": GCC296, "libmwsfde": GCC296,
         "librofs": Lib(GCC296, [
             Obj("cri_cvmh", GCC29), 
@@ -104,16 +117,16 @@ COMPILER_MAP: list[Libs] = [
     }),
 ]
 
-LIBRARIES: dict[str, CompilerProfile | Lib] = {
+LIBRARIES_MAP: dict[str, CompilerProfile | Lib] = {
     name: entry
-    for group in COMPILER_MAP
+    for group in LIBRARIES
     for name, entry in group.archives.items()
 }
 
-def get_compiler(module: str) -> CompilerProfile:
+def get_module_compiler(module: str) -> CompilerProfile:
     parts = module.split("/")
     library = parts[-2] if len(parts) >= 2 else parts[0]
-    entry = LIBRARIES.get(library)
+    entry = LIBRARIES_MAP.get(library)
     if entry is None:
         return DEFAULT_COMPILER
     if isinstance(entry, CompilerProfile):
@@ -155,8 +168,8 @@ def generate_ninja(units: list[Unit]) -> None:
         f"  command = {py} {cfg} cc $compiler $in $out -- $cflags",
         "  description = CC $out",
         "",
-        "rule asm_target",
-        f"  command = {py} {cfg} asm-target $unit $out",
+        "rule as",
+        f"  command = {py} {cfg} as $unit $out",
         "  description = TARGET $out",
         "",
         "rule ctx",
@@ -173,12 +186,12 @@ def generate_ninja(units: list[Unit]) -> None:
         src = (SRC / f"{module}.c").relative_to(ROOT)
         nonmatchings = sorted(p.relative_to(ROOT) for p in (ASM_DIR / "nonmatchings" / module).glob("*.s"))
         ctx = (BUILD / "ctx" / f"{module}.c").relative_to(ROOT)
-        build = get_compiler(module)
+        compiler = get_module_compiler(module)
         n += [
             f"build {base}: cc {src}",
-            f"  compiler = {build.id}",
-            f"  cflags = {' '.join(build.cflags)}",
-            f"build {target}: asm_target {' '.join(str(p) for p in nonmatchings)}",
+            f"  compiler = {compiler.id}",
+            f"  cflags = {' '.join(compiler.cflags)}",
+            f"build {target}: as {' '.join(str(p) for p in nonmatchings)}",
             f"  unit = {module}",
             f"build {ctx}: ctx {src}",
             "",
@@ -188,8 +201,8 @@ def generate_ninja(units: list[Unit]) -> None:
             "metadata": {"auto_generated": False},
             "scratch": {
                 "platform": "ps2",
-                "compiler": build.id,
-                "c_flags": " ".join(build.cflags),
+                "compiler": compiler.id,
+                "c_flags": " ".join(compiler.cflags),
                 "ctx_path": str(ctx),
                 "build_ctx": True,
             },
@@ -198,7 +211,7 @@ def generate_ninja(units: list[Unit]) -> None:
 
     objdiff = {
         "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
-        "custom_make": "ninja",
+        "custom_make": venv_bin("ninja").relative_to(ROOT).as_posix(),
         "build_target": True,
         "build_base": True,
         "watch_patterns": ["src/**/*.c", "include/**/*.h", "config/**/*"],
@@ -260,36 +273,25 @@ def assemble(src: Path, out: Path) -> int:
     macro_inc = BUILD / "include"
     # -mabi=eabi: EE convention, and it makes ld/sd real single instructions rather
     # than $at-using macros (which the disassembly's ".set noat" would reject).
-    return subprocess.run(["mips-linux-gnu-as", "-march=r5900", "-mabi=eabi", "-EL",
+    return subprocess.run([resolve_mips_binutils("as"), "-march=r5900", "-mabi=eabi", "-EL",
                            "-I", str(macro_inc), "-o", str(out), str(src)]).returncode
 
 
-def vu_to_word(text: str) -> str:
-    # TODO: remove this hack
-    # GNU as does not assemble R5900 VU macros well, so emit them as the raw .word from the
-    # bytes in the disassembly comment.
-    vu_line = re.compile(r"^\s*/\* \w+ \w+ ([0-9A-Fa-f]{8}) \*/\s+v\w")
-    out = []
-    for line in text.splitlines():
-        m = vu_line.match(line)
-        if m:
-            b = m.group(1)
-            out.append(f"    .word 0x{b[6:8]}{b[4:6]}{b[2:4]}{b[0:2]}")
-        else:
-            out.append(line)
-    return "\n".join(out)
+def rabbitizer_vu_syntax_to_gas(text: str) -> str:
+    # rabbitizer prints the R5900 VU special registers bare (ACC, Q, I, R, P); GNU as wants a $.
+    return re.sub(r"(?<![\w$])(ACC|[IQRP])\b", r"$\1", text)
 
-
-def cmd_asm_target(unit: str, out: Path) -> int:
-    # TODO: remove this hack
-    # Manually assembly nonmatching assembly from the asm dir
+def cmd_as(unit: str, out: Path) -> int:
+    # TODO: maybe we should use INCLUDE_ASM instead?
+    # splat excepts us to include nonmatchings via INCLUDE_ASM, which expects the asm prologue to already exist
+    # we don't use that, so we add it ourselves before passing it to the assembler
     prologue = '.include "macro.inc"\n.set noat\n.set noreorder\n.section .text, "ax"\n'
     out.parent.mkdir(parents=True, exist_ok=True)
     nonmatchings = sorted((ASM_DIR / "nonmatchings" / unit).glob("*.s"))
     if not nonmatchings:
-        sys.exit(f"no nonmatchings for {unit}; run `python configure.py` first")
+        die(f"no nonmatchings for {unit}")
     combined = (ASM_DIR / "nonmatchings" / unit).with_suffix(".target.s")
-    combined.write_text(prologue + "\n".join(vu_to_word(s.read_text()) for s in nonmatchings))
+    combined.write_text(rabbitizer_vu_syntax_to_gas(prologue + "\n".join(s.read_text() for s in nonmatchings)))
     return assemble(combined, out)
 
 
@@ -299,17 +301,25 @@ def download(url: str, dest: Path) -> None:
     with urllib.request.urlopen(url) as r, open(dest, "wb") as f:
         shutil.copyfileobj(r, f)
 
+def extract_archive(archive: Path, dest: Path) -> None:
+    dest.mkdir(parents=True, exist_ok=True)
+    if archive.suffix == ".zip":
+        with zipfile.ZipFile(archive) as z:
+            z.extractall(dest)
+    elif archive.suffix in [".gz", ".xz"]:
+        with tarfile.open(archive) as t:
+            t.extractall(dest, filter="data")
+    else:
+        print(f"received unexpected archive file type: {archive}")
+
 def download_compiler(comp_id: str) -> None:
     dest = TOOLS / comp_id
     if dest.exists():
         return
     ext = "tar.xz" if comp_id == "ee-gcc2.96" else "tar.gz"
-    url = f"https://github.com/decompme/compilers/releases/download/compilers/{comp_id}.{ext}"
     archive = TOOLS / f"{comp_id}.{ext}"
-    download(url, archive)
-    dest.mkdir(parents=True, exist_ok=True)
-    with tarfile.open(archive) as t:
-        t.extractall(dest, filter="data")
+    download(f"https://github.com/decompme/compilers/releases/download/compilers/{comp_id}.{ext}", archive)
+    extract_archive(archive, dest)
     archive.unlink()
 
 def get_wibo_asset_name() -> str:
@@ -317,6 +327,23 @@ def get_wibo_asset_name() -> str:
     if platform.system() == "Darwin":
         return "wibo-macos"
     return "wibo-i686" if m in ("i386", "i686", "x86") else "wibo-x86_64"
+
+def get_binutils_asset_name() -> str | None:
+    system, m = platform.system(), platform.machine().lower()
+    if system == "Linux" and m in ("x86_64", "amd64"):
+        return "linux-x86-64.tar.gz"
+    if system == "Darwin" and m in ("arm64", "aarch64"):
+        return "macos-arm64.tar.gz"
+    if system == "Windows" and m in ("x86_64", "amd64"):
+        return "windows-x86-64.zip"
+    return None
+
+def download_binutils(asset: str) -> None:
+    archive = TOOLS / f"binutils-{asset}"
+    download("https://github.com/decompals/binutils-mips-ps2-decompals/releases/latest/download/"
+             f"binutils-mips-ps2-decompals-{asset}", archive)
+    extract_archive(archive, BINUTILS)
+    archive.unlink()
 
 def get_objdiff_asset_name() -> str:
     system, m = platform.system(), platform.machine().lower()
@@ -332,7 +359,7 @@ def get_objdiff_asset_name() -> str:
 
 def compiler_ids() -> set[str]:
     ids = {DEFAULT_COMPILER.id}
-    for entry in LIBRARIES.values():
+    for entry in LIBRARIES_MAP.values():
         if isinstance(entry, CompilerProfile):
             ids.add(entry.id)
         else:
@@ -352,14 +379,16 @@ def ensure_toolchain() -> None:
         objdiff.chmod(0o755)
     if not VENV.exists():
         subprocess.run([sys.executable, "-m", "venv", str(VENV)], check=True)
-    pip = VENV / ("Scripts" if platform.system() == "Windows" else "bin") / "pip"
-    subprocess.run([str(pip), "install", "-q", "-r", str(REQUIREMENTS)], check=True)
-    for tool in ("ninja", "mips-linux-gnu-as"):
-        if not shutil.which(tool):
-            print(f"  host tool {tool} NOT FOUND (install it)")
+    subprocess.run([str(venv_bin("pip")), "install", "-q", "-r", str(REQUIREMENTS)], check=True)
+    if not Path(resolve_mips_binutils("as")).is_absolute():
+        asset = get_binutils_asset_name()
+        if asset:
+            download_binutils(asset)
+        elif not shutil.which("mips-linux-gnu-as"):
+            print("unable to provision mips binutils, please install mips-linux-gnu-as.")
 
 def extract_main_bin() -> None:
-    orig_elf = ROOT / "orig" / f"{GAMEID}.elf"
+    orig_elf = ROOT / "orig" / f"{GAMEID}"
     main_off, main_size = 0x80, 0x6CDE80
     BUILD.mkdir(parents=True, exist_ok=True)
     if not orig_elf.exists():
@@ -383,7 +412,7 @@ def main() -> None:
     cc = sub.add_parser("cc")
     cc.add_argument("compiler"), cc.add_argument("src"), cc.add_argument("out")
     cc.add_argument("cflags", nargs="*")
-    tgt = sub.add_parser("asm-target")
+    tgt = sub.add_parser("as")
     tgt.add_argument("unit"), tgt.add_argument("out")
     ctx = sub.add_parser("ctx")
     ctx.add_argument("src"), ctx.add_argument("out")
@@ -391,8 +420,8 @@ def main() -> None:
 
     if args.cmd == "cc":
         sys.exit(cmd_cc(args.compiler, Path(args.src), Path(args.out), args.cflags))
-    if args.cmd == "asm-target":
-        sys.exit(cmd_asm_target(args.unit, Path(args.out)))
+    if args.cmd == "as":
+        sys.exit(cmd_as(args.unit, Path(args.out)))
     if args.cmd == "ctx":
         sys.exit(cmd_ctx(Path(args.src), Path(args.out)))
     configure()
