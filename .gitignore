@@ -12,6 +12,7 @@
 /tools
 /build.ninja
 /objdiff.json
+/compile_commands.json
 .ninja_log
 .ninja_deps
 __pycache__/
