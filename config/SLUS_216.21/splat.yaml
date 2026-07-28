@@ -596,5 +596,6 @@ segments:
       - [0x4A1108, asm, lib/cri/libmwsfde/sud_lib]
       - [0x4A19C0, asm, lib/cri/libmwsfde/uty_tmr]
       - [0x4A9D3C, data, lib/cri/librofs/rofs_dir]
-      - [0x569D3C, data, data_00669D3C]
+      - [0x569D3C, .data]
+      - [0x6B5180, .rodata]
   - [0x6CDE80]
