@@ -54,13 +54,15 @@ RwFrustumTestResult RwCameraFrustumTestSphere(const RwCamera* camera, const RwSp
     planeCount = 6;
     while (planeCount--)
     {
-        dot = ((((((((&sphere->center)->x) * ((&frustumPlane->plane.normal)->x))) + ((((&sphere->center)->y) * ((&frustumPlane->plane.normal)->y))))) + ((((&sphere->center)->z) * ((&frustumPlane->plane.normal)->z)))));
+        dot = sphere->center.x * frustumPlane->plane.normal.x
+            + sphere->center.y * frustumPlane->plane.normal.y
+            + sphere->center.z * frustumPlane->plane.normal.z;
         dot -= frustumPlane->plane.distance;
         if (dot > sphere->radius)
         {
-            return (rwSPHEREOUTSIDE);
+            return rwSPHEREOUTSIDE;
         }
-        else if (dot > (-sphere->radius))
+        else if (dot > -sphere->radius)
         {
             result = rwSPHEREBOUNDARY;
         }
