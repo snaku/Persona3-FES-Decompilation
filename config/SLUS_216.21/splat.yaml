@@ -14,6 +14,10 @@ options:
   gp_value: 0x7D2CF0
   find_file_boundaries: false
   disassemble_all: true
+  migrate_rodata_to_functions: true
+  pair_rodata_to_text: true
+  create_c_files: false
+  section_order: [".text", ".rodata", ".data", ".bss"]
 segments:
   - name: main
     type: code
@@ -21,7 +25,7 @@ segments:
     vram: 0x100000
     bss_size: 0x1DEE00
     subsegments:
-      - [0x0, asm, crt0]
+      - [0x0, asm, lib/sce/crt0]
       - [0x230, c, Tohyama/h_cursor]
       - [0x7F0, c, Tohyama/h_cdvd]
       - [0x3000, c, Tohyama/h_pad]
@@ -595,7 +599,6 @@ segments:
       - [0x4A1088, asm, lib/cri/libmwsfde/sh_ftrv]
       - [0x4A1108, asm, lib/cri/libmwsfde/sud_lib]
       - [0x4A19C0, asm, lib/cri/libmwsfde/uty_tmr]
-      - [0x4A9D3C, data, lib/cri/librofs/rofs_dir]
-      - [0x569D3C, .data]
-      - [0x6B5180, .rodata]
+      - [0x4A9D3C, data]
+      - [0x6B5180, rodata]
   - [0x6CDE80]
