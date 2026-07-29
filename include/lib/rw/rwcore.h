@@ -195,7 +195,7 @@ typedef enum
 // 16 bytes
 struct RwPlane {
     RwV3d normal;       // 0x00
-    RwReal distance;    // 0x0C
+    RwReal distance;    // 0x0c
 };
 
 typedef struct RwPlane RwPlane;
@@ -214,7 +214,7 @@ typedef struct RwFrustumPlane RwFrustumPlane;
 struct RwBBox
 {
     RwV3d sup; // 0x00
-    RwV3d inf; // 0x0C
+    RwV3d inf; // 0x0c
 };
 typedef struct RwBBox RwBBox;
 
@@ -237,8 +237,8 @@ struct RwCamera
     RwReal zScale;                       // 0x8c
     RwReal zShift;                       // 0x90
     RwFrustumPlane frustumPlanes[6];     // 0x94
-    RwBBox frustumBoundBox;              // 0xA8
-    RwV3d frustumCorners[8];             // 0xC0
+    RwBBox frustumBoundBox;              // 0xa8
+    RwV3d frustumCorners[8];             // 0xc0
 };
 
 typedef enum
