@@ -192,7 +192,33 @@ typedef enum
     rwPERSPECTIVE
 } RwCameraProjection;
 
-// TODO
+// 16 bytes
+struct RwPlane {
+    RwV3d normal;       // 0x00
+    RwReal distance;    // 0x0c
+};
+
+typedef struct RwPlane RwPlane;
+
+// 20 bytes
+struct RwFrustumPlane {
+    RwPlane plane;      // 0x00
+    RwUInt8 closestX;   // 0x10
+    RwUInt8 closestY;   // 0x11
+    RwUInt8 closestZ;   // 0x12
+    RwUInt8 pad;        // 0x13
+};
+typedef struct RwFrustumPlane RwFrustumPlane;
+
+// 24 bytes
+struct RwBBox
+{
+    RwV3d sup; // 0x00
+    RwV3d inf; // 0x0c
+};
+typedef struct RwBBox RwBBox;
+
+// 388 bytes
 struct RwCamera
 {
     RwObjectHasFrame object;             // 0x00
@@ -210,6 +236,9 @@ struct RwCamera
     RwReal fogPlane;                     // 0x88
     RwReal zScale;                       // 0x8c
     RwReal zShift;                       // 0x90
+    RwFrustumPlane frustumPlanes[6];     // 0x94
+    RwBBox frustumBoundBox;              // 0xa8
+    RwV3d frustumCorners[8];             // 0xc0
 };
 
 typedef enum
@@ -240,7 +269,7 @@ RwCamera* RwCameraBeginUpdate(RwCamera* camera);
 RwCamera* RwCameraEndUpdate(RwCamera* camera);
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode);
 RwFrustumTestResult RwCameraFrustumTestSphere(const RwCamera* camera, const RwSphere* sphere);
-RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projType);
+RwCamera* RwCameraSetProjection(RwCamera* camera, RwCameraProjection projType);
 RwCamera* RwCameraSetViewWindow(RwCamera* camera, const RwV2d* viewWindow);
 
 RwBool RpSkyRenderStateSet(RpSkyRenderState nState, void *pParam);

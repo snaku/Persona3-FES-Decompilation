@@ -44,13 +44,33 @@ RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clea
 // FUN_004c9df0
 RwFrustumTestResult RwCameraFrustumTestSphere(const RwCamera* camera, const RwSphere* sphere)
 {
-    // TODO
+    const RwFrustumPlane* frustumPlane;
+    RwInt32 planeCount;
+    RwFrustumTestResult result;
+    RwReal dot;
 
-    return rwSPHEREOUTSIDE;
+    result = rwSPHEREINSIDE;
+    frustumPlane = camera->frustumPlanes;
+    planeCount = 6;
+    while (planeCount--)
+    {
+        dot = RwV3dDotProductMacro(&sphere->center, &frustumPlane->plane.normal);
+        dot -= frustumPlane->plane.distance;
+        if (dot > sphere->radius)
+        {
+            return rwSPHEREOUTSIDE;
+        }
+        else if (dot > -sphere->radius)
+        {
+            result = rwSPHEREBOUNDARY;
+        }
+        frustumPlane++;
+    }
+    return result;
 }
 
 // FUN_004c9f00
-RwCamera* RwCameraSetProjectionType(RwCamera* camera, RwCameraProjection projType)
+RwCamera* RwCameraSetProjection(RwCamera* camera, RwCameraProjection projType)
 {
     // TODO
 
@@ -63,12 +83,4 @@ RwCamera* RwCameraSetViewWindow(RwCamera* camera, const RwV2d* viewWindow)
     // TODO
 
     return camera;
-}
-
-// FUN_004d7f60
-RwBool RpSkyRenderStateSet(RpSkyRenderState nState, void *pParam)
-{
-    // TODO
-
-    return true;
 }

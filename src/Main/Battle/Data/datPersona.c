@@ -210,6 +210,12 @@ void datPersonaClearHeroPersonas()
     memset(gGlobalWork.heroPersona.personas, 0, sizeof(gGlobalWork.heroPersona.personas));
 }
 
+// FUN_00175c70
+void datCompendiumInit()
+{
+    memset(gGlobalWork.compendium, 0, sizeof(gGlobalWork.compendium));
+}
+
 // FUN_001764b0
 void datPersonaAddExp(DatPersonaWork* persona, u32 exp)
 {
@@ -320,4 +326,36 @@ u32 datPersonaCountValidSkills(DatPersonaWork* persona)
     }
 
     return validSkills;
+}
+
+static const u16 academicLevelThreshold[6] = { 0, 20, 80, 140, 200, 260 }; // 005e3068
+static const u16 charmLevelThreshold[6] =    { 0, 15, 30, 45, 65, 80 };    // 005e3078
+static const u16 courageLevelThreshold[6] =  { 0, 15, 30, 45, 65, 80 };    // 005e3088
+
+static inline u16 Inl_Character_GetSocialStatLevel(u16 point, const u16* threshold, u32 size)
+{
+    u16 idx = size - 1;
+
+    while (point < threshold[idx])
+        idx--;
+
+    return idx;
+}
+
+// FUN_00177280
+u16 datGetAcademicLevel(u16 academicPoint)
+{
+    return Inl_Character_GetSocialStatLevel(academicPoint, academicLevelThreshold, 6);
+}
+
+// FUN_001772f0
+u16 datGetCharmLevel(u16 charmPoint)
+{
+    return Inl_Character_GetSocialStatLevel(charmPoint, charmLevelThreshold, 6);
+}
+
+// FUN_00177360
+u16 datGetCourageLevel(u16 couragePoint)
+{
+    return Inl_Character_GetSocialStatLevel(couragePoint, courageLevelThreshold, 6);
 }

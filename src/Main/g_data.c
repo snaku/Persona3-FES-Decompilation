@@ -15,10 +15,6 @@ static const u32 sPlayerExpThreshold[MAX_CHARACTER_LEVEL] =
     136280, 145362, 154838, // ! 005dc110 !
 };
 
-static const u16 academicLevelThreshold[6] = { 0, 20, 80, 140, 200, 260 }; // 005e3068
-static const u16 charmLevelThreshold[6] =    { 0, 15, 30, 45, 65, 80 };    // 005e3078
-static const u16 courageLevelThreshold[6] =  { 0, 15, 30, 45, 65, 80 };    // 005e3088
-
 // 005e4150
 static const char* physicalConditionsString[13] = 
 {
@@ -38,7 +34,6 @@ static const char* physicalConditionsString[13] =
 };
 
 static s16 sSavedPartyIds[4]; // 007cdfa8
-static u32 sScenarioMode;     // 007cdfa4. See enum 'ScenarioMode'
 
 DatGlobal gGlobalWork; // 00836200
 DatPc gPcs[PC_MAX];    // 00833948
@@ -914,69 +909,4 @@ void datInitPersona(u32 pcId)
     }
 
     memset(&gPcs[pcId].persona, 0, sizeof(DatPersonaWork));
-}
-
-// FUN_00175c70
-void datCompendiumInit()
-{
-    memset(gGlobalWork.compendium, 0, sizeof(gGlobalWork.compendium));
-}
-
-static inline u16 Inl_Character_GetSocialStatLevel(u16 point, const u16* threshold, u32 size)
-{
-    u16 idx = size - 1;
-
-    while (point < threshold[idx])
-        idx--;
-
-    return idx;
-}
-
-// FUN_00177280
-u16 datGetAcademicLevel(u16 academicPoint)
-{
-    return Inl_Character_GetSocialStatLevel(academicPoint, academicLevelThreshold, 6);
-}
-
-// FUN_001772f0
-u16 datGetCharmLevel(u16 charmPoint)
-{
-    return Inl_Character_GetSocialStatLevel(charmPoint, charmLevelThreshold, 6);
-}
-
-// FUN_00177360
-u16 datGetCourageLevel(u16 couragePoint)
-{
-    return Inl_Character_GetSocialStatLevel(couragePoint, courageLevelThreshold, 6);
-}
-
-// FUN_0017b170
-u32 datGetTotalBtl()
-{
-    return gGlobalWork.totalBtl;
-}
-
-// FUN_0017c8c0
-DatPersonaWork* datGetPersonaByCompendium(s32 idx)
-{
-    K_ASSERT(idx > 0 && idx < 256, 6177);
-
-    if (!(gGlobalWork.compendium[idx].flags & PERSONA_FLAG_VALID))
-    {
-        return NULL;
-    }
-
-    return &gGlobalWork.compendium[idx];
-}
-
-// FUN_0017d7f0
-void datSetScenarioMode(u32 scenario)
-{
-    sScenarioMode = scenario;
-}
-
-// FUN_0017d800
-u32 datGetScenarioMode()
-{
-    return sScenarioMode;
 }
