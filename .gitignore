@@ -27,3 +27,4 @@ orig/*/*
 *.o
 
 ignore/
+include/ida_types.h

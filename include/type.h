@@ -17,6 +17,9 @@ typedef signed int s32;
 typedef unsigned long long u64;
 typedef signed long long s64;
 
+typedef unsigned int u128 __attribute__((mode(TI)));
+typedef signed int s128 __attribute__((mode(TI)));
+
 typedef float f32;
 typedef double f64;
 

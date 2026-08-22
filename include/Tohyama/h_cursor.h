@@ -13,19 +13,23 @@ typedef enum
     HCURSOR_STATE_STOP
 } HCursorState;
 
-// 336 bytes
-typedef struct HCursorWork
+// 324 bytes
+typedef struct H_Cursor_Work
 {
-    RwIm2DVertex vertices[4]; // 0x00
-    u8 unusedData[0x10];
-    s16 state;                // 0x110. See enum 'HCursorState'
-    RwV2d pos;                // 0x114
-    RwRect rect;              // 0x11c
-    f32 zOffset;              // 0x12c
-    RwRGBA colors[4];         // 0x130
-    u32 shouldDraw;           // 0x140
-    s16 unused_144;           // 0x144
-} HCursorWork;
+    RwIm2DVertex verts[4]; // 0x00
+    INSERT_PADDING(0x10);  // 0x100
+    RwInt16 state;         // 0x110
+    RwInt16 pad112;        // 0x112
+    RwReal posX;           // 0x114
+    RwReal posY;           // 0x118
+    RwUInt32 unk11C;       // 0x11c
+    RwUInt32 unk120;       // 0x120
+    RwInt32 width;         // 0x124
+    RwInt32 height;        // 0x128
+    RwReal zBias;          // 0x12c
+    RwRGBA colors[4];      // 0x130
+    RwUInt32 active;       // 0x140
+} H_Cursor_Work;
 
 KwlnTask* H_Cursor_CreateTask(KwlnTask* parent, f32 zOffset, RwV2d pos, RwRect rect, RwRGBA color);
 u32 H_Cursor_GetShouldDraw(KwlnTask* hcursorTask);
