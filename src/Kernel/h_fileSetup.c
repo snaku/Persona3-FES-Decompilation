@@ -1,7 +1,64 @@
 #include "Kernel/h_fileSetup.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Main/g_data.h"
+#include "Tohyama/h_cdvd.h"
 #include "rw/rwplcore.h"
+
+// FUN_00192570
+void* H_FileSetup_UpdateGojitudanItemTblTask(KwlnTask* itemTblReadTask)
+{
+    // TODO
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001926a0
+void H_FileSetup_DestroyGojitudanItemTblTask(KwlnTask* itemTblReadTask)
+{
+    HFileSetupItemTblWork* work;
+
+    work = (HFileSetupItemTblWork*)itemTblReadTask->workData;
+
+    if (work->tblCdvd != NULL)
+    {
+        H_Cdvd_Destroy(work->tblCdvd);
+        work->tblCdvd = NULL;
+    }
+
+    if (work->seqCdvd != NULL)
+    {
+        H_Cdvd_Destroy(work->seqCdvd);
+        work->seqCdvd = NULL;
+    }
+
+    RwFree(work);
+}
+
+// FUN_00192710
+KwlnTask* H_FileSetup_CreateGojitudanItemTblTask(KwlnTask* parent)
+{
+    HFileSetupItemTblWork* work;
+    KwlnTask* task;
+
+    work = RwCalloc(1, sizeof(HFileSetupItemTblWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(parent,
+                                          4207,
+                                          "GojitudanItemTblDataRead",
+                                          H_FileSetup_UpdateGojitudanItemTblTask,
+                                          H_FileSetup_DestroyGojitudanItemTblTask,
+                                          work);
+    if (task == NULL)
+    {
+        return NULL;
+    }
+
+    return task;
+}
 
 // FUN_001927b0
 void* H_FileSetup_UpdateHonpenTask(KwlnTask* honpenTask)

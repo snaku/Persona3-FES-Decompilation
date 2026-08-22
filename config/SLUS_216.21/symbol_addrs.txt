@@ -1184,6 +1184,9 @@ h_malloc_001926a0 = 0x001926A0; // type:func
 h_malloc_00192710 = 0x00192710; // type:func
 
 // Kernel/h_fileSetup
+H_FileSetup_UpdateGojitudanItemTblTask = 0x00192570; // type:func
+H_FileSetup_DestroyGojitudanItemTblTask = 0x001926A0; // type:func
+H_FileSetup_CreateGojitudanItemTblTask = 0x00192710; // type:func
 H_FileSetup_UpdateHonpenTask = 0x001927B0; // type:func
 H_FileSetup_DestroyHonpenTask = 0x001928A0; // type:func
 H_FileSetup_CreateHonpenTask = 0x001928D0; // type:func
