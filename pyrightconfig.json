@@ -1,0 +1,12 @@
+{
+    "venvPath": ".",
+    "venv": ".venv",
+    "reportMissingModuleSource": "none",
+    "executionEnvironments": [
+        {
+            "root": "scripts/ghidra",
+            "reportWildcardImportFromLibrary": "none",
+            "reportArgumentType": "none"
+        }
+    ]
+}
