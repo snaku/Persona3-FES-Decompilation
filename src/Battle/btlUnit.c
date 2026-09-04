@@ -588,7 +588,25 @@ BtlPacket* btlUnit00286320(BtlUnit* unit)
 // FUN_00287400
 void btlUnitLookAtUpdateAll()
 {
-    // TODO
+    u32 i;
+    BtlUnitList* currList;
+    BtlUnit* curr;
+
+    for (i = 0; i < UNIT_GENUS_MAX; i++)
+    {
+        currList = &gBtl->unitLists[i];
+        curr = currList->tail;
+
+        while (curr != NULL)
+        {
+            if (curr->flags2 & BTLUNIT_FLAG2_UPDATE)
+            {
+                btlUnitLookAtUpdate(curr);
+            }
+
+            curr = curr->prev;
+        }
+    }
 }
 
 // FUN_002875a0
@@ -597,6 +615,12 @@ BtlUnit* btlUnitCreate(u8 genus)
     // TODO
 
     return NULL;
+}
+
+// FUN_00287ea0
+void btlUnitLookAtUpdate(BtlUnit* unit)
+{
+    // TODO
 }
 
 // FUN_00288170

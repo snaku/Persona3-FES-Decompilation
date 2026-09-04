@@ -219,6 +219,7 @@ u32 btlUnit00282c60(BtlUnit* unit);
 void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode);
 s16 btlUnitGetAnimFrame(BtlUnit* unit);
 void btlUnitLookAtUpdateAll();
+void btlUnitLookAtUpdate(BtlUnit* unit);
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id);
 void btlUnitInitPersona(BtlUnit* unit, u16 personaId);
 BtlUnit* btlUnitFindFromId(u16 id);
