@@ -262,7 +262,7 @@ def export_decls():
     body += new_sigs
     out = ["#ifndef IDA_TYPES_H", "#define IDA_TYPES_H", "", '#include "type.h"', "",
            *macro, "", *body, "", "#endif // IDA_TYPES_H", ""]
-    with open(TYPES_H, "w") as f:
+    with open(TYPES_H, "w", newline="\n") as f:
         f.write("\n".join(out))
     print("exported %d types (new or changed), %d signatures to %s (%d types matched the "
           "headers and were skipped)"
@@ -310,7 +310,7 @@ def main():
     for a in new_addrs[ni:]:
         out.append(symbol_line(a, names[a]))
 
-    with open(common.SYMBOLS, "w") as f:
+    with open(common.SYMBOLS, "w", newline="\n") as f:
         f.write("\n".join(out) + "\n")
     print("updated %d names, dropped %d mid-function symbols, inserted %d new in %s"
           % (updated, dropped, len(new_addrs), os.path.relpath(common.SYMBOLS, common.REPO)))
