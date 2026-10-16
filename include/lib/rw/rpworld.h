@@ -25,13 +25,14 @@ struct RpClump
 // 60 bytes
 typedef struct RpLight
 {
-    RwObjectHasFrame object;  // 0x00
-    RwReal radius;            // 0x14
-    RwRGBAReal color;         // 0x18
-    RwLinkList minusCosAngle; // 0x28
-    RwLLLink inWorld;         // 0x30
-    RwUInt16 lightFrame;      // 0x38
-    RwUInt16 pad;             // 0x3a
+    RwObjectHasFrame object;        // 0x00
+    RwReal radius;                  // 0x14
+    RwRGBAReal color;               // 0x18
+    RwReal minusCosAngle;           // 0x28
+    RwLinkList WorldSectorsInLight; // 0x2c
+    RwLLLink inWorld;               // 0x34
+    RwUInt16 lightFrame;            // 0x3c
+    RwUInt16 pad;                   // 0x3e
 } RpLight;
 
 #endif

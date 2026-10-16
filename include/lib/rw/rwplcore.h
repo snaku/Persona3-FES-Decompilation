@@ -149,8 +149,9 @@ typedef struct RwMatrixTolerance
 typedef enum
 {
     rwCOMBINEREPLACE = 0,
-    rwCOMBINEPRECONCAT,
-    rwCOMBINEPOSTCONCAT,
+    rwCOMBINEPRECONCAT = 1,
+    rwCOMBINEPOSTCONCAT = 2,
+    rwOPCOMBINETYPEFORCEENUMSIZEINT = 2147483647,
 } RwOpCombineType;
 
 #define rwMatrixSetFlags(m, flagsbit) ((m)->flags = (flagsbit))
@@ -272,91 +273,91 @@ typedef RwSky2DVertex RwIm2DVertex;
 
 typedef enum
 {
-    rwRENDERSTATENARENDERSTATE,
-
-    rwRENDERSTATETEXTURERASTER,
-    rwRENDERSTATETEXTUREADDRESS,
-    rwRENDERSTATETEXTUREADDRESSU,
-    rwRENDERSTATETEXTUREADDRESSV,
-    rwRENDERSTATETEXTUREPERSPECTIVE,
-    rwRENDERSTATEZTESTENABLE,            // true or false
-    rwRENDERSTATESHADEMODE,              // See enum 'RwShadeMode'
-    rwRENDERSTATEZWRITEENABLE,           // true or false
-    rwRENDERSTATETEXTUREFILTER,          // See enum 'RwTextureFilterMode'
-    rwRENDERSTATESRCBLEND,               // See enum 'RwBlendFunction'
-    rwRENDERSTATEDESTBLEND,              // See enum 'RwBlendFunction'
-    rwRENDERSTATEVERTEXALPHAENABLE,      // true or false
-    rwRENDERSTATEBORDERCOLOR,
-    rwRENDERSTATEFOGENABLE,
-    rwRENDERSTATEFOGCOLOR,
-    rwRENDERSTATEFOGTYPE,                // See enum 'RwFogType'
-    rwRENDERSTATEFOGDENSITY,
-    rwRENDERSTATECULLMODE = 20,          // See enum 'RwCullMode'
-    rwRENDERSTATESTENCILENABLE,
-    rwRENDERSTATESTENCILFAIL,
-    rwRENDERSTATESTENCILZFAIL,
-    rwRENDERSTATESTENCILPASS,
-    rwRENDERSTATESTENCILFUNCTION,
-    rwRENDERSTATESTENCILFUNCTIONREF,
-    rwRENDERSTATESTENCILFUNCTIONMASK,
-    rwRENDERSTATESTENCILFUNCTIONWRITEMASK,
-    rwRENDERSTATEALPHATESTFUNCTION,
-    rwRENDERSTATEALPHATESTFUNCTIONREF
+    rwRENDERSTATENARENDERSTATE = 0,
+    rwRENDERSTATETEXTURERASTER = 1,
+    rwRENDERSTATETEXTUREADDRESS = 2,
+    rwRENDERSTATETEXTUREADDRESSU = 3,
+    rwRENDERSTATETEXTUREADDRESSV = 4,
+    rwRENDERSTATETEXTUREPERSPECTIVE = 5,
+    rwRENDERSTATEZTESTENABLE = 6,            // true or false
+    rwRENDERSTATESHADEMODE = 7,              // See enum 'RwShadeMode'
+    rwRENDERSTATEZWRITEENABLE = 8,           // true or false
+    rwRENDERSTATETEXTUREFILTER = 9,          // See enum 'RwTextureFilterMode'
+    rwRENDERSTATESRCBLEND = 10,              // See enum 'RwBlendFunction'
+    rwRENDERSTATEDESTBLEND = 11,             // See enum 'RwBlendFunction'
+    rwRENDERSTATEVERTEXALPHAENABLE = 12,     // true or false
+    rwRENDERSTATEBORDERCOLOR = 13,
+    rwRENDERSTATEFOGENABLE = 14,
+    rwRENDERSTATEFOGCOLOR = 15,
+    rwRENDERSTATEFOGTYPE = 16,               // See enum 'RwFogType'
+    rwRENDERSTATEFOGDENSITY = 17,
+    rwRENDERSTATECULLMODE = 20,              // See enum 'RwCullMode'
+    rwRENDERSTATESTENCILENABLE = 21,
+    rwRENDERSTATESTENCILFAIL = 22,
+    rwRENDERSTATESTENCILZFAIL = 23,
+    rwRENDERSTATESTENCILPASS = 24,
+    rwRENDERSTATESTENCILFUNCTION = 25,
+    rwRENDERSTATESTENCILFUNCTIONREF = 26,
+    rwRENDERSTATESTENCILFUNCTIONMASK = 27,
+    rwRENDERSTATESTENCILFUNCTIONWRITEMASK = 28,
+    rwRENDERSTATEALPHATESTFUNCTION = 29,
+    rwRENDERSTATEALPHATESTFUNCTIONREF = 30,
+    rwRENDERSTATEFORCEENUMSIZEINT = 2147483647,
 } RwRenderState;
 
 typedef enum
 {
-    rwSHADEMODENASHADEMODE,
-
-    rwSHADEMODEFLAT,
-    rwSHADEMODEGOURAUD
+    rwSHADEMODENASHADEMODE = 0,
+    rwSHADEMODEFLAT = 1,
+    rwSHADEMODEGOURAUD = 2,
+    rwSHADEMODEFORCEENUMSIZEINT = 2147483647,
 } RwShadeMode;
 
 typedef enum
 {
-    rwBLENDNABLEND,
-
-    rwBLENDZERO,
-    rwBLENDONE,
-    rwBLENDSRCCOLOR,
-    rwBLENDINVSRCCOLOR,
-    rwBLENDSRCALPHA,
-    rwBLENDINVSRCALPHA,
-    rwBLENDDESTALPHA,
-    rwBLENDINVDESTALPHA,
-    rwBLENDDESTCOLOR,
-    rwBLENDINVDESTCOLOR,
-    rwBLENDSRCALPHASAT
+    rwBLENDNABLEND = 0,
+    rwBLENDZERO = 1,
+    rwBLENDONE = 2,
+    rwBLENDSRCCOLOR = 3,
+    rwBLENDINVSRCCOLOR = 4,
+    rwBLENDSRCALPHA = 5,
+    rwBLENDINVSRCALPHA = 6,
+    rwBLENDDESTALPHA = 7,
+    rwBLENDINVDESTALPHA = 8,
+    rwBLENDDESTCOLOR = 9,
+    rwBLENDINVDESTCOLOR = 10,
+    rwBLENDSRCALPHASAT = 11,
+    rwBLENDFUNCTIONFORCEENUMSIZEINT = 2147483647,
 } RwBlendFunction;
 
 typedef enum
 {
-    rwFILTERNAFILTERMODE,
-
-    rwFILTERNEAREST,
-    rwFILTERLINEAR,
-    rwFILTERMIPNEAREST,
-    rwFILTERMIPLINEAR,
-    rwFILTERLINEARMIPNEAREST,
-    rwFILTERLINEARMIPLINEAR
+    rwFILTERNAFILTERMODE = 0,
+    rwFILTERNEAREST = 1,
+    rwFILTERLINEAR = 2,
+    rwFILTERMIPNEAREST = 3,
+    rwFILTERMIPLINEAR = 4,
+    rwFILTERLINEARMIPNEAREST = 5,
+    rwFILTERLINEARMIPLINEAR = 6,
+    rwTEXTUREFILTERMODEFORCEENUMSIZEINT = 2147483647,
 } RwTextureFilterMode;
 
 typedef enum
 {
-    rwFOGTYPENAFOGTYPE,
-
-    rwFOGTYPELINEAR,
-    rwFOGTYPEEXPONENTIAL,
-    rwFOGTYPEEXPONENTIAL2
+    rwFOGTYPENAFOGTYPE = 0,
+    rwFOGTYPELINEAR = 1,
+    rwFOGTYPEEXPONENTIAL = 2,
+    rwFOGTYPEEXPONENTIAL2 = 3,
+    rwFOGTYPEFORCEENUMSIZEINT = 2147483647,
 } RwFogType;
 
 typedef enum
 {
-    rwCULLMODENACULLMODE,
-
-    rwCULLMODECULLNONE,
-    rwCULLMODECULLBACK,
-    rwCULLMODECULLFRONT
+    rwCULLMODENACULLMODE = 0,
+    rwCULLMODECULLNONE = 1,
+    rwCULLMODECULLBACK = 2,
+    rwCULLMODECULLFRONT = 3,
+    rwCULLMODEFORCEENUMSIZEINT = 2147483647,
 } RwCullMode;
 
 typedef enum
@@ -368,13 +369,14 @@ typedef enum
 
 typedef enum
 {
-    rwPRIMTYPENAPRIMTYPE,
-    rwPRIMTYPELINELIST,
-    rwPRIMTYPEPOLYLINE,
-    rwPRIMTYPETRILIST,
-    rwPRIMTYPETRISTRIP,
-    rwPRIMTYPETRIFAN,
-    rwPRIMTYPEPOINTLIST,
+    rwPRIMTYPENAPRIMTYPE = 0,
+    rwPRIMTYPELINELIST = 1,
+    rwPRIMTYPEPOLYLINE = 2,
+    rwPRIMTYPETRILIST = 3,
+    rwPRIMTYPETRISTRIP = 4,
+    rwPRIMTYPETRIFAN = 5,
+    rwPRIMTYPEPOINTLIST = 6,
+    rwPRIMITIVETYPEFORCEENUMSIZEINT = 2147483647,
 } RwPrimitiveType;
 
 typedef RwBool (*RwStandardFunc)(void* out, void* inOut, RwInt32 nI);
@@ -396,9 +398,14 @@ typedef struct RwDevice
     RwReal zBufferFar;                   // 0x0c
     RwRenderStateSetFunc setRenderState; // 0x10
     RwRenderStateGetFunc getRenderState; // 0x14                 
-    u8 unkData1[0x08];
-    RwIm2DRenderPrimitiveFunction fpIm2DRenderPrimitive;
-    u8 unkData2[0x00];
+    void* fpIm2DRenderLine;                              // 0x18
+    void* fpIm2DRenderTriangle;                          // 0x1c
+    RwIm2DRenderPrimitiveFunction fpIm2DRenderPrimitive; // 0x20
+    void* fpIm2DRenderIndexedPrimitive;                  // 0x24
+    void* fpIm3DRenderLine;                              // 0x28
+    void* fpIm3DRenderTriangle;                          // 0x2c
+    void* fpIm3DRenderPrimitive;                         // 0x30
+    void* fpIm3DRenderIndexedPrimitive;                  // 0x34
 } RwDevice;
 
 typedef enum

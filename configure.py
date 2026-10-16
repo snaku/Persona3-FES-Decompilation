@@ -11,9 +11,11 @@ import sys
 import tarfile
 import urllib.request
 import zipfile
-import ninja_syntax
 from dataclasses import dataclass
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
+import ninja_syntax
 from typing import NoReturn
 
 ROOT = Path(__file__).resolve().parent

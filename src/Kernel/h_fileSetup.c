@@ -5,7 +5,7 @@
 #include "rw/rwplcore.h"
 
 // FUN_00192570
-void* H_FileSetup_UpdateGojitudanItemTblTask(KwlnTask* itemTblReadTask)
+void* H_FileSetup_UpdateGojitudanItemTblDataReadTask(KwlnTask* itemTblReadTask)
 {
     // TODO
 
@@ -13,7 +13,7 @@ void* H_FileSetup_UpdateGojitudanItemTblTask(KwlnTask* itemTblReadTask)
 }
 
 // FUN_001926a0
-void H_FileSetup_DestroyGojitudanItemTblTask(KwlnTask* itemTblReadTask)
+void H_FileSetup_DestroyGojitudanItemTblDataReadTask(KwlnTask* itemTblReadTask)
 {
     HFileSetupItemTblWork* work;
 
@@ -35,7 +35,7 @@ void H_FileSetup_DestroyGojitudanItemTblTask(KwlnTask* itemTblReadTask)
 }
 
 // FUN_00192710
-KwlnTask* H_FileSetup_CreateGojitudanItemTblTask(KwlnTask* parent)
+KwlnTask* H_FileSetup_CreateGojitudanItemTblDataReadTask(KwlnTask* parent)
 {
     HFileSetupItemTblWork* work;
     KwlnTask* task;
@@ -49,8 +49,8 @@ KwlnTask* H_FileSetup_CreateGojitudanItemTblTask(KwlnTask* parent)
     task = kwlnTaskCreateWithAutoPriority(parent,
                                           4207,
                                           "GojitudanItemTblDataRead",
-                                          H_FileSetup_UpdateGojitudanItemTblTask,
-                                          H_FileSetup_DestroyGojitudanItemTblTask,
+                                          H_FileSetup_UpdateGojitudanItemTblDataReadTask,
+                                          H_FileSetup_DestroyGojitudanItemTblDataReadTask,
                                           work);
     if (task == NULL)
     {

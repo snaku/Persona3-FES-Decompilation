@@ -82,7 +82,8 @@ typedef enum
     rwRASTERTYPEMASK = 0x07,
 
     rwRASTERPALETTEVOLATILE = 0x40,
-    rwRASTERDONTALLOCATE = 0x80
+    rwRASTERDONTALLOCATE = 0x80,
+    rwRASTERTYPEFORCEENUMSIZEINT = 2147483647,
 } RwRasterType;
 
 typedef enum
@@ -105,10 +106,11 @@ typedef enum
     rwRASTERFORMATPAL8 = 0x2000,
     rwRASTERFORMATPAL4 = 0x4000,
 
-    rwRASTERFORMATMIPMAP = 0x8000,  /**<Mip mapping on */
+    rwRASTERFORMATMIPMAP = 0x8000,
 
     rwRASTERFORMATPIXELFORMATMASK = 0x0f00,
-    rwRASTERFORMATMASK = 0xff00
+    rwRASTERFORMATMASK = 0xff00,
+    rwRASTERFORMATFORCEENUMSIZEINT = 2147483647,
 } RwRasterFormat;
 
 typedef struct RwRaster RwRaster;
@@ -163,19 +165,16 @@ struct RwFrame
     RwFrame* root;            // 0xa0
 };
 
-
-
 typedef enum
 {
     rpSKYRENDERSTATENARENDERSTATE = 0,
-    rpSKYRENDERSTATEDITHER,
-    rpSKYRENDERSTATEALPHA_1,
-    rpSKYRENDERSTATEATEST_1,
-    rpSKYRENDERSTATEFARFOGPLANE,
-    rpSKYRENDERSTATEMAXMIPLEVELS
+    rpSKYRENDERSTATEDITHER = 1,
+    rpSKYRENDERSTATEALPHA_1 = 2,
+    rpSKYRENDERSTATEATEST_1 = 3,
+    rpSKYRENDERSTATEFARFOGPLANE = 4,
+    rpSKYRENDERSTATEMAXMIPLEVELS = 5,
+    rpSKYRENDERSTATEFORCEENUMSIZEINT = 2147483647,
 } RpSkyRenderState;
-
-
 
 #define rwCAMERA 4
 
@@ -188,8 +187,10 @@ typedef struct RwCamera* (*RwCameraEndUpdateFunc)(struct RwCamera* camera);
 
 typedef enum
 {
-    rwPROJECTION0,
-    rwPERSPECTIVE
+    rwNACAMERAPROJECTION = 0,
+    rwPERSPECTIVE = 1,
+    rwPARALLEL = 2,
+    rwCAMERAPROJECTIONFORCEENUMSIZEINT = 2147483647,
 } RwCameraProjection;
 
 // 16 bytes
@@ -251,9 +252,10 @@ typedef enum
 
 typedef enum
 {
-    rwSPHEREOUTSIDE,
-    rwSPHEREBOUNDARY,
-    rwSPHEREINSIDE,
+    rwSPHEREOUTSIDE = 0,
+    rwSPHEREBOUNDARY = 1,
+    rwSPHEREINSIDE = 2,
+    rwFRUSTUMTESTRESULTFORCEENUMSIZEINT = 2147483647,
 } RwFrustumTestResult;
 
 RwBool RwImageDestroy(RwImage* image);

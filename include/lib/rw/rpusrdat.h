@@ -8,9 +8,10 @@ typedef struct RpMaterial RpMaterial; // TODO: Create in 'rpworld.h'
 typedef enum
 {
     rpNAUSERDATAFORMAT = 0,
-    rpINTUSERDATA,
-    rpREALUSERDATA,
-    rpSTRINGUSERDATA,
+    rpINTUSERDATA = 1,
+    rpREALUSERDATA = 2,
+    rpSTRINGUSERDATA = 3,
+    rpUSERDATAFORCEENUMSIZEINT = 2147483647,
 } RpUserDataFormat;
 
 // 16 bytes
