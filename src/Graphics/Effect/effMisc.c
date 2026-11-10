@@ -5,7 +5,7 @@ static EffRandState sRandState; // 00957bf0
 // FUN_00357dd0
 void effMiscQuatMultiplyVU()
 {
-    asm (
+    asm volatile (
         vmul.xyzw vf2, vf10, vf11
         vopmula.xyz ACC, vf10, vf11
         vmaddaw.xyz ACC, vf11, vf10
@@ -21,7 +21,7 @@ void effMiscQuatMultiplyVU()
 // FUN_00357e00
 void effMiscNormalizeVU()
 {
-    asm (
+    asm volatile (
         vmul.xyzw vf2, vf10, vf10
         vaddax.w ACC, vf2, vf2
         vmadday.w ACC, vf0, vf2

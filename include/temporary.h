@@ -29,4 +29,7 @@ float tanf(float x);
 float sqrtf(float x);
 float fabsf(float x);
 
+// Main/g_data
+void g_data_0016dfb0(s16 arg0);
+
 #endif

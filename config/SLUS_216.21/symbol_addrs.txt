@@ -1179,9 +1179,6 @@ h_malloc_00192370 = 0x00192370; // type:func
 h_malloc_001923b0 = 0x001923B0; // type:func
 h_malloc_00192480 = 0x00192480; // type:func
 h_malloc_001924d0 = 0x001924D0; // type:func
-h_malloc_00192570 = 0x00192570; // type:func
-h_malloc_001926a0 = 0x001926A0; // type:func
-h_malloc_00192710 = 0x00192710; // type:func
 
 // Kernel/h_fileSetup
 H_FileSetup_UpdateGojitudanItemTblTask = 0x00192570; // type:func
@@ -6246,12 +6243,12 @@ CodeFunc_Goto = 0x0035D310; // type:func
 scrOperation = 0x0035D350; // type:func
 CodeFunc_Add = 0x0035DFE0; // type:func
 CodeFunc_Sub = 0x0035E020; // type:func
-scrTraceCode_0035e060 = 0x0035E060; // type:func
+CodeFunc_Mul = 0x0035E060; // type:func
 CodeFunc_Div = 0x0035E0A0; // type:func
 CodeFunc_Minus = 0x0035E0E0; // type:func
 CodeFunc_Not = 0x0035E250; // type:func
-CodeFunc_And = 0x0035E650; // type:func
-scrTraceCode_0035e690 = 0x0035E690; // type:func
+CodeFunc_Or = 0x0035E650; // type:func
+CodeFunc_And = 0x0035E690; // type:func
 CodeFunc_Eq = 0x0035E6D0; // type:func
 CodeFunc_Neq = 0x0035E710; // type:func
 CodeFunc_S = 0x0035E750; // type:func
@@ -15717,6 +15714,7 @@ courageLevelThreshold = 0x005E3088;
 
 // data
 sSphereRotAxis = 0x0069CEC8;
+gScrCmdTable = 0x007B92B0; // size:0xFB4
 gAspectRatio = 0x007CAD1C;
 gUnk_007cad7c = 0x007CAD7C;
 gRadToDegFactor2 = 0x007CADC0;

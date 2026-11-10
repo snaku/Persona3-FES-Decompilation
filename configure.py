@@ -92,7 +92,7 @@ RW_RT = CompilerProfile("mwcps2-3.0-011126", ["-O3"])
 GCC29 = CompilerProfile("ee-gcc2.9-991111", ["-O2", "-G0", "-fno-common"])
 GCC296 = CompilerProfile("ee-gcc2.96", ["-O2", "-G0", "-fno-common"])
 GCC296_O1 = CompilerProfile("ee-gcc2.96", ["-O1", "-G0", "-fno-common"])
-DEFAULT_COMPILER = CompilerProfile("mwcps2-3.0-011126", ["-O2", "-gccincludes"])
+DEFAULT_COMPILER = CompilerProfile("mwcps2-3.0.1b210-060308", ["-O2", "-gccincludes"])
 
 LIBRARIES: list[Libs] = [
     Libs("RenderWare 3.7 SDK", {
@@ -231,13 +231,18 @@ def get_include_dirs(src: Path) -> list[Path]:
 def cmd_cc(compiler: str, src: Path, out: Path, cflags: list[str]) -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     incdirs = get_include_dirs(src)
+    exe = get_compiler_executable_path(compiler)
     if compiler.startswith("ee-gcc"):
+        # ee-gcc 2.96's driver segfaults on some hosts when it runs cc1 and as in one -c step,
+        # so emit asm first, then let the same driver assemble it (it passes the same as flags)
+        asm = out.with_suffix(".s")
         inc = [f"-I{d}" for d in incdirs]
-    else:
-        inc = []
-        for d in incdirs:
-            inc += ["-i", str(d)]
-    return run_executable(get_compiler_executable_path(compiler), [*cflags, *inc, "-c", "-o", str(out), str(src)])
+        rc = run_executable(exe, [*cflags, *inc, "-S", "-o", str(asm), str(src)])
+        return rc or run_executable(exe, [*cflags, "-c", "-o", str(out), str(asm)])
+    inc = []
+    for d in incdirs:
+        inc += ["-i", str(d)]
+    return run_executable(exe, [*cflags, *inc, "-c", "-o", str(out), str(src)])
 
 _INCLUDE_RE = re.compile(r'\s*#\s*include\s*"(?P<path>[^"]+)"')
 

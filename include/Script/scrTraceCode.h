@@ -57,5 +57,7 @@ void scrSetPC(u32 pc);
 u32 scrGetCmdTimer();
 s32 scrGetMesHandleIdx();
 ScrData* scrGetCurrent();
+s32 scrTraceCode_0035f160();
+u32 scrTraceCode_0035f170();
 
 #endif
