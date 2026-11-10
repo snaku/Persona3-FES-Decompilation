@@ -232,7 +232,11 @@ static u32 CodeFunc_PushLFX(ScrData* scr)
 // FUN_0035c7c0
 static u32 CodeFunc_PushSTR(ScrData* scr)
 {
-    PushString(scr, scr->stringsContent + scr->instrContent[scr->pc].opOperand16.sOperand); // TODO: fix load order
+    char* str;
+
+    str = scr->stringsContent;
+    str += scr->instrContent[scr->pc].opOperand16.sOperand;
+    PushString(scr, str);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
@@ -352,10 +356,7 @@ static u32 CodeFunc_End(ScrData* scr)
 // FUN_0035d1d0. Jump to a procedure
 static u32 CodeFunc_Jmp(ScrData* scr)
 {
-    s16 prcdIdx;
-
-    prcdIdx = scr->instrContent[scr->pc].opOperand16.sOperand;
-    scr->pc = scr->proceduresContent[prcdIdx].addr;
+    scr->pc = scr->proceduresContent[scr->instrContent[scr->pc].opOperand16.sOperand].addr;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -382,10 +383,7 @@ static u32 CodeFunc_Run(ScrData* scr)
 // FUN_0035d310. Jump to a label
 static u32 CodeFunc_Goto(ScrData* scr)
 {
-    s16 lblIdx;
-
-    lblIdx = scr->instrContent[scr->pc].opOperand16.sOperand;
-    scr->pc = scr->labelsContent[lblIdx].addr;
+    scr->pc = scr->labelsContent[scr->instrContent[scr->pc].opOperand16.sOperand].addr;
 
     return CODEFUNC_NEXTINSTR;
 }
@@ -648,7 +646,7 @@ static u32 CodeFunc_Sub(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035e60
+// FUN_0035e060
 static u32 CodeFunc_Mul(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_MUL);
@@ -698,7 +696,7 @@ static u32 CodeFunc_Minus(ScrData* scr)
             *f = -(*f);
             break;
         
-        default: K_ABORT("CodeFunc_Minus(..) invalid stack type(?)!!\n", 648);
+        default: K_ABORT("CodeFunc_Minus(..) invalid stack type(?)!!\n", 662);
     }
 
     scr->pc++;
@@ -749,7 +747,7 @@ static u32 CodeFunc_Or(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035e650
+// FUN_0035e690
 static u32 CodeFunc_And(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_AND);
@@ -1026,4 +1024,18 @@ s32 scrGetMesHandleIdx()
 ScrData* scrGetCurrent()
 {
     return sCurrScript;
+}
+
+// FUN_0035f160
+s32 scrTraceCode_0035f160()
+{
+    return sCurrScript->unk_f0;
+}
+
+// FUN_0035f170
+u32 scrTraceCode_0035f170()
+{
+    g_data_0016dfb0(scrGetIntPara(0));
+
+    return 1;
 }
