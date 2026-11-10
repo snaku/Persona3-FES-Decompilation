@@ -1179,9 +1179,6 @@ h_malloc_00192370 = 0x00192370; // type:func
 h_malloc_001923b0 = 0x001923B0; // type:func
 h_malloc_00192480 = 0x00192480; // type:func
 h_malloc_001924d0 = 0x001924D0; // type:func
-h_malloc_00192570 = 0x00192570; // type:func
-h_malloc_001926a0 = 0x001926A0; // type:func
-h_malloc_00192710 = 0x00192710; // type:func
 
 // Kernel/h_fileSetup
 H_FileSetup_UpdateGojitudanItemTblTask = 0x00192570; // type:func
