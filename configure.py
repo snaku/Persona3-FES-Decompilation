@@ -92,7 +92,7 @@ RW_RT = CompilerProfile("mwcps2-3.0-011126", ["-O3"])
 GCC29 = CompilerProfile("ee-gcc2.9-991111", ["-O2", "-G0", "-fno-common"])
 GCC296 = CompilerProfile("ee-gcc2.96", ["-O2", "-G0", "-fno-common"])
 GCC296_O1 = CompilerProfile("ee-gcc2.96", ["-O1", "-G0", "-fno-common"])
-DEFAULT_COMPILER = CompilerProfile("mwcps2-3.0-011126", ["-O2", "-gccincludes"])
+DEFAULT_COMPILER = CompilerProfile("mwcps2-3.0.1b210-060308", ["-O2", "-gccincludes"])
 
 LIBRARIES: list[Libs] = [
     Libs("RenderWare 3.7 SDK", {
